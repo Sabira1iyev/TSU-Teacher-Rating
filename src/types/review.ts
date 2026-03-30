@@ -7,6 +7,11 @@ export type ReviewTag =
     | "Punctual"
     | "Clear explanation"
     | "Flexible"
+    | "Confident"
+    | "Friendly"
+    | "Master"
+    | "Funny"
+    | "Hardest Teacher"
 
 
 export interface ReviewCriteria {
