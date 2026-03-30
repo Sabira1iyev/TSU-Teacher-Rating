@@ -70,7 +70,7 @@ export const mockProfessor: Professor[] = [
     title: "Associate Professor",
     faculty: "Faculty of Exact and Natural Sciences",
     department: "Computer Science",
-    courses: ["Basics of C++", "Object Oriented Programming in C++"],
+    courses: ["C", "Object Oriented Programming in C++"],
     criteria: {
       teaching: 4.2,
       examDifficulty: 4.5,

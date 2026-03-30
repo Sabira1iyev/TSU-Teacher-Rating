@@ -12,7 +12,8 @@ export type Faculty =
   | "Faculty of Social and Political Sciences"
   | "Faculty of Psychology and Educational Sciences"
   | "Faculty of Economics and Business"
-  | "Faculty of Law";
+  | "Faculty of Law"
+  | "Faculty of Medicine";
 
 export interface ProfessorCriteria {
   teaching: number;
