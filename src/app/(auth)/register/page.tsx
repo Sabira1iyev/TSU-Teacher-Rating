@@ -55,7 +55,7 @@ export default function RegisterPage() {
 
     return (
 
-        <div className="min-h-screen bg-bg flex-col">
+        <div className="min-h-screen bg-bg flex-col px-5">
 
             {/*Header*/}
             <div className="flex items-center justify-between px-5 pt-8 pb-4">

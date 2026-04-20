@@ -123,7 +123,7 @@ export default function OnBoardingPage() {
                 </p>
 
                 {isLast && (
-                    <div className="flex w-[300px] h-[100px] justify-center text-center items-center gap-10 bg-[#13131a] border border-[#ffffff0f] rounded-2xl overflow-hidden">
+                    <div className="flex w-[300px] h-[100px] justify-center text-center items-center gap-1 bg-[#13131a] border border-[#ffffff0f] rounded-2xl overflow-hidden px-20">
                         <div className="flex-1 p-4 text-center border-r border-[#ffffff0f]">
                             <div className="text-2xl font-bold text-[#39BC81]">12K+</div>
                             <div className="text-xs text-[#55555f] mt-1">Students</div>
