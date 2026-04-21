@@ -50,7 +50,10 @@ export default function RegisterPage() {
         }
         setError("");
         setSuccess("Informations about student are correct.");
-        
+
+        setTimeout(() => {
+            router.push("/verify");
+        }, 1500);
     }
 
     return (
