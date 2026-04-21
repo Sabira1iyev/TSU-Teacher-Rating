@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { userAgent } from "next/server";
 
 
 export default function VerifyPage() {
@@ -32,13 +31,36 @@ export default function VerifyPage() {
         }
     }
 
+    const handlePaste = (e: React.ClipboardEvent) => {
+        e.preventDefault();
+        const pasted = e.clipboardData.getData("text").slice(0, 6);
+        if(!/^\d*$/.test(pasted))return;
+
+        const newCode = [...code];
+        pasted.split("").forEach((char, i) => {
+            newCode[i] = char;
+        });
+        setCode(newCode);
+        inputs.current[Math.min(pasted.length, 5)]?.focus();
+    }
+
     const handleSubmit = () => {
-
+        const fullCode = code.join("");
+        if(fullCode.length < 6){
+            setError("Please enter the full 6-digit code.");
+            return;
+        }
+        setError("");
+        router.push("/dashboard");
     }
 
-    const isComplete = () => {
-
+    const handleResend = () =>{
+        setCode(["", "", "", "", "", ""]);
+        setError("");
+        inputs.current[0]?.focus();
     }
+
+    const isComplete = code.every((d) => d !== ""); 
 
     return (
 
@@ -102,6 +124,7 @@ export default function VerifyPage() {
                             maxLength={1}
                             onChange={(e) => handleChange(i, e.target.value)}
                             onKeyDown={(e) => handleKeyDown(i, e)}
+                            onPaste={handlePaste}
                             className={`w-12 h-14 text-center text-xl font-semibold rounded-xl border outline-none transition-all duration-200 bg-bg3 text-text
                                 ${digit
                                     ? "border-primary bg-primary-dim"
@@ -126,7 +149,7 @@ export default function VerifyPage() {
                     disabled={!isComplete}
                     className={`
                     w-full py-4 rounded-xl text-sm font-semibold transition-all cursor-pointer
-                    ${!isComplete
+                    ${isComplete
                             ? "bg-primary text-lg hover:opacity-90"
                             : "bg-bg3 text-text3 cursor-not-allowed"
                         }
@@ -140,6 +163,7 @@ export default function VerifyPage() {
                     <p className="text-xs text-text3">
                         Didn't receive the code? {" "}
                         <span
+                            onClick={handleResend}
                             className="text-primary cursor-pointer hover:opacity-80 transition-opacity">
                             Resend code
                         </span>
