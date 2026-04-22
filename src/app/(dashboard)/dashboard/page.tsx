@@ -1,13 +1,11 @@
 "use client"
 
-import { act, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { mockProfessor } from "@/data/mockTeachers"
 import { Professor } from "@/types/teacher"
 import { FACULTIES } from "@/lib/constants"
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils"
-import { isatty } from "tty"
-import { spawn } from "child_process"
 
 
 
@@ -84,7 +82,7 @@ export default function DashBoardPage() {
                 </p>
 
                 {/* Desktop Grid */}
-                <div className="hidden lg: grid grid-cols-4 gap-2">
+                <div className="hidden lg:grid grid-cols-4 gap-2">
                     {FACULTIES.map((faculty) => {
                         const isActive = selectedFaculty === faculty;
                         const count = faculty === "All"
@@ -118,7 +116,7 @@ export default function DashBoardPage() {
                 </div>
 
                 {/* Mobile scroll */}
-                <div className="flex lg-hidden gap-2 overflow-x-auto pb-1 -mx-5 px-5">
+                <div className="flex lg:hidden gap-2 overflow-x-auto pb-1 -mx-5 px-5">
                     {FACULTIES.map((faculty) => {
                         const isActive = selectedFaculty === faculty;
                         const count = faculty === "All"
@@ -204,9 +202,9 @@ export default function DashBoardPage() {
                     </span>
                 </div>
 
-
+                {/* Desktop: Table list */}
                 <div className="hidden lg:block bg-bg2 border border-border rounded-xl overflow-hidden">
-                    <div className="grid grid-cols-[32px_1fr_80px_70px_100px] px-4 py-2.5 border-b border-border">
+                    <div className="grid grid-cols-[40px_2.5fr_1fr_1fr_1fr] gap-2 px-4 py-2.5 border-b border-border">
                         {["#", "Professor", "Rating", "Reviews", "Status"].map((h, i) => (
                             <span key={h} className={`text-[9px] text-text3 uppercase tracking-wider ${i === 4 ? "text-right" : ""}`}>
                                 {h}
@@ -228,7 +226,7 @@ export default function DashBoardPage() {
                                     <div
                                         key={professor.id}
                                         onClick={() => router.push(`/professor/${professor.id}`)}
-                                        className="grid grid-cols-[32px_1fr_80px_70px_100px] px-4 py-2.5 border-b border-border last:border-none hover:bg-bg3 cursor-pointer transition-colors items-center"
+                                        className="grid grid-cols-[40px_2.5fr_1fr_1fr_1fr] gap-2 px-4 py-2.5 border-b border-border last:border-none hover:bg-bg3 cursor-pointer transition-colors items-center"
                                     >
                                         <span className="text-[11px] text-text3">{index + 1}</span>
                                         <div className="flex items-center gap-2">
