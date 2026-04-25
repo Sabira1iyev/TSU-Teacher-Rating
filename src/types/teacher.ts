@@ -20,6 +20,7 @@ export interface ProfessorCriteria {
   examDifficulty: number;
   homeWork: number;
   accessibility: number;
+  examControlLevel: number;
 }
 
 export interface TrendData {
