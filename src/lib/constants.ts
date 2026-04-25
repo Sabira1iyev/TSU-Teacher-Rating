@@ -32,13 +32,14 @@ export const REVIEW_TAGS = [
   "Master",
   "Funny",
   "Hardest Teacher",
-];
+] as const;
 
 export const CRITERIS_LABELS = {
   teaching: "Teaching Quality",
   examDifficulty: "Exam Difficulty",
   homeWork: "Homework Load",
   accessibility: "Accessibility",
+  examControlLevel: "Exam Control Level",
 };
 
 export const SEMESTERS = [
