@@ -127,7 +127,7 @@ export const mockProfessor: Professor[] = [
   },
 
 
-    {
+  {
     id: "5",
     firstName: "Teimuraz",
     lastName: "Akhobadze",
@@ -158,7 +158,7 @@ export const mockProfessor: Professor[] = [
     createdAt: "2026-01-01",
   },
 
-    {
+  {
     id: "6",
     firstName: "Oleg",
     lastName: "Kharshiladze ",
@@ -166,7 +166,7 @@ export const mockProfessor: Professor[] = [
     faculty: "Faculty of Exact and Natural Sciences",
     department: "Physics",
     courses: [
-      "Radiophysics & Simulation of Physical Processes","Introduction to Physics"
+      "Radiophysics & Simulation of Physical Processes", "Introduction to Physics"
     ],
     criteria: {
       teaching: 3.0,
