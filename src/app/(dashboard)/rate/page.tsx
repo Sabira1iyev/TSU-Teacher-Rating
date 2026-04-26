@@ -6,7 +6,9 @@ import { mockProfessor, getProfessorById } from "@/data/mockTeachers";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { REVIEW_TAGS, SEMESTERS, CRITERIS_LABELS } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
+
 import { Key } from "lucide-react";
+
 
 
 const STAR_COLOR = {
@@ -14,10 +16,16 @@ const STAR_COLOR = {
     examDifficulty: "#e8a233",
     homeWork: "#e8a233",
     accessibility: "#3ecf8e",
+
     examControlLevel: "#e8a233",
 } as const;
 
 export default function RatePage() {
+
+} as const;
+
+export default function RatePage(){
+
     const router = useRouter();
     const searchParams = useSearchParams();
     const professorId = searchParams.get("professorId");
@@ -29,11 +37,18 @@ export default function RatePage() {
         semester: SEMESTERS[0],
         overallRating: 0,
         criteria: {
+
             teaching: 0,
             examDifficulty: 0,
             homeWork: 0,
             accessibility: 0,
             examControlLevel: 0,
+
+            teaching:0,
+            examDifficulty: 0,
+            homeWork: 0,
+            accessibility: 0,
+
         },
 
         comment: "",
@@ -43,6 +58,7 @@ export default function RatePage() {
 
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState("");
+
 
     const handleOverallRating = (rating: number) => {
         setForm((prev) => ({ ...prev, overallRating: rating }));
@@ -432,3 +448,8 @@ export default function RatePage() {
         </div>
     )
 }
+ 
+    
+    
+}
+ 
