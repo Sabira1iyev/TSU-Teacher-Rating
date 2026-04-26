@@ -20,9 +20,7 @@ const STAR_COLOR = {
     examControlLevel: "#e8a233",
 } as const;
 
-export default function RatePage() {
-
-} as const;
+ 
 
 export default function RatePage(){
 
@@ -37,18 +35,11 @@ export default function RatePage(){
         semester: SEMESTERS[0],
         overallRating: 0,
         criteria: {
-
             teaching: 0,
             examDifficulty: 0,
             homeWork: 0,
             accessibility: 0,
             examControlLevel: 0,
-
-            teaching:0,
-            examDifficulty: 0,
-            homeWork: 0,
-            accessibility: 0,
-
         },
 
         comment: "",
@@ -451,5 +442,5 @@ export default function RatePage(){
  
     
     
-}
+
  
