@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { mockProfessor, getProfessorById } from "@/data/mockTeachers";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
@@ -22,7 +22,7 @@ const STAR_COLOR = {
 
  
 
-export default function RatePage(){
+function RatePageContent(){
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -439,8 +439,11 @@ export default function RatePage(){
         </div>
     )
 }
- 
-    
-    
 
- 
+export default function RatePage() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-[60vh] text-text3">Loading...</div>}>
+            <RatePageContent />
+        </Suspense>
+    );
+}
