@@ -12,6 +12,7 @@ export const mockReviews: Review[] = [
       examDifficulty: 4.5,
       homeWork: 4.0,
       accessibility: 5,
+      examControlLevel: 4.0,
     },
     comment:
       "He’s an absolute expert in his field. Since he’s young and a bit over-enthusiastic, he sometimes gets ahead of himself trying to teach everything at once, which can be a little confusing. He has a great rapport with his students; he’s more like a friend to them.",
@@ -32,6 +33,7 @@ export const mockReviews: Review[] = [
       examDifficulty: 4.5,
       homeWork: 4.0,
       accessibility: 5,
+      examControlLevel: 4.2,
     },
     comment:
       "He’s a highly confident teacher who really knows his stuff. He has a way of passing that confidence onto his students, and because of that, he’s genuinely loved by almost everyone in the class.",
@@ -52,6 +54,7 @@ export const mockReviews: Review[] = [
       examDifficulty: 4.5,
       homeWork: 3.5,
       accessibility: 4.5,
+      examControlLevel: 3.8,
     },
     comment:
       "He is highly respected by most students; he bridges the gap between years of experience and a deep familiarity with the latest trends.",
@@ -72,6 +75,7 @@ export const mockReviews: Review[] = [
       examDifficulty: 4.8,
       homeWork: 4.6,
       accessibility: 4.2,
+      examControlLevel: 4.0,
     },
     comment:
       "He’s an emotional and witty teacher who has the rare ability to build complex algorithms from scratch. He’s got a great bond with his students and especially favors the hard-working ones.",
@@ -92,6 +96,7 @@ export const mockReviews: Review[] = [
       examDifficulty: 4.8,
       homeWork: 4.2,
       accessibility: 4.0,
+      examControlLevel: 4.1,
     },
     comment:
       "He has years of accumulated experience and is a powerhouse in his field. He loves being challenged with questions and never hands out 'free' points, yet he’s a true ally to hardworking students. He’s most famous for his signature phrase, 'Ki Batono' (Yes, sir/ma'am).",
@@ -112,6 +117,7 @@ export const mockReviews: Review[] = [
       examDifficulty: 4.5,
       homeWork: 4.5,
       accessibility: 3.0,
+      examControlLevel: 2.5,
     },
     comment: "He doesn't like being challenged or argued with.",
     tags: ["Hard exams", "Hardest Teacher"],
