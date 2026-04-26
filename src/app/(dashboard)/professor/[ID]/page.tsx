@@ -15,8 +15,8 @@ export default function ProfessorProfilePage() {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<Tab>("Overview");
 
-    const professor = getProfessorById(params.id as string);
-    const reviews = getReviewsByProfessorId(params.id as string);
+    const professor = getProfessorById(params.ID as string);
+    const reviews = getReviewsByProfessorId(params.ID as string);
 
     if (!professor) {
         return (
