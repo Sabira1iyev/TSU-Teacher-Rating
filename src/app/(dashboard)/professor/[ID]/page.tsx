@@ -6,7 +6,6 @@ import { getProfessorById } from "@/data/mockTeachers";
 import { getReviewsByProfessorId } from "@/data/mockReviews";
 import { getInitials, formatRating, getRatingColor, getRatingBarColor } from "@/lib/utils";
 import { CRITERIS_LABELS } from "@/lib/constants";
-import { styleText } from "util";
 
 type Tab = "Overview" | "Reviews" | "Courses";
 
@@ -73,39 +72,130 @@ export default function ProfessorProfilePage() {
                 </button>
             </div>
 
-            {/* Avatar info */}
-            <div className="flex items-start gap-4 flex-1">
-                <div className="w-14 h-14 lg:w-[72px] lg:h-[72px] rounded-full bg-[#2a1e08] flex items-center justify-center text-xl lg:text-2xl text-amber font-semibold flex-shrink-0 border-2 border-border2">
-                    {getInitials(professor.firstName, professor.lastName)}
-                </div>
-                <div className="flex-1 min-w-0">
-                    <h1 className="text-lg lg:text-2xl font-bold text-text leading-tight" style={{ fontFamily: "Syne, sans-serif" }}>
-                        {professor.title} {professor.firstName} {professor.lastName}
-                    </h1>
-                    <p className="text-xs text-primary mt-1">{professor.faculty}</p>
-                    <p className="text-xs text-text3 mt-0.5">Tbilisi State University</p>
-                    <div className="flex flex-wrap gap-1.5 mt-2.5">
-                        {professor.courses.map((course) => (
-                            <span key={course}
-                                className="px-2 py-1 bg-bg3 border border-border2 rounded-lg text-[10px] text-text2">
-                                {course}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </div>
+            {/* Hero Section */}
+            <div className="relative overflow-hidden" style={{
+                background: "linear-gradient(135deg, rgba(62,207,142,0.08) 0%, rgba(44,70,216,0.06) 50%, rgba(157,95,232,0.05) 100%)",
+                border: "1px solid rgba(255,255,255,0.06)",
+            }}>
+                {/* Subtle glow orbs */}
+                <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20 blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, #3ecf8e 0%, transparent 70%)" }} />
+                <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, #2c46d8 0%, transparent 70%)" }} />
 
-            {/* Score 3 */}
-            <div className="flex gap-2 lg:gap-3 flex-shrink-0 mt-2">
-                <div className="flex-1 lg:flex-none text-center bg-bg3 border border-border rounded-xl px-4 py-3">
-                    <p className={`text-xl lg:text-2xl font-semibold ${getRatingColor(professor.overallRating)}`}>
-                        {formatRating(professor.overallRating)}
-                    </p>
-                    <p className="text-[9px] text-text3 mt-1">Overall</p>
-                </div>
-                <div className="flex-1 lg:flex-none text-center bg-bg3 border border-border rounded-xl px-4 py-3">
-                    <p className="text-xl lg:text-2xl font-semibold text-text">{professor.recommendationRate}%</p>
-                    <p className="text-[9px] text-text3 mt-1">Recommend</p>
+                <div className="relative p-5 lg:p-6">
+                    {/* Avatar + Info */}
+                    <div className="flex items-start gap-4 lg:gap-5">
+                        {/* Avatar with glow ring */}
+                        <div className="relative flex-shrink-0">
+                            <div className="absolute -inset-1 rounded-full opacity-40 blur-sm" style={{ background: "linear-gradient(135deg, #3ecf8e, #2c46d8)" }} />
+                            <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-xl lg:text-2xl font-bold flex-shrink-0" style={{
+                                background: "linear-gradient(135deg, #1a3d2e 0%, #2a1e08 100%)",
+                                border: "2px solid rgba(62,207,142,0.3)",
+                                color: "#e8a233",
+                            }}>
+                                {getInitials(professor.firstName, professor.lastName)}
+                            </div>
+                        </div>
+
+                        {/* Name & details */}
+                        <div className="flex-1 min-w-0">
+                            <p className="text-[10px] uppercase tracking-[0.15em] text-text3 mb-1">{professor.title}</p>
+                            <h1 className="text-xl lg:text-[28px] font-bold text-text leading-tight tracking-tight" style={{ fontFamily: "Syne, sans-serif" }}>
+                                {professor.firstName} {professor.lastName}
+                            </h1>
+                            <div className="flex items-center gap-2 mt-2">
+                                <span className="text-[11px] text-primary font-medium">{professor.faculty}</span>
+                                <span className="w-1 h-1 rounded-full bg-text3" />
+                                <span className="text-[11px] text-text3">Tbilisi State University</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1.5 mt-3">
+                                {professor.courses.map((course) => (
+                                    <span key={course}
+                                        className="px-2.5 py-1 rounded-lg text-[10px] text-text2 font-medium"
+                                        style={{
+                                            background: "rgba(255,255,255,0.04)",
+                                            border: "1px solid rgba(255,255,255,0.08)",
+                                            backdropFilter: "blur(4px)",
+                                        }}>
+                                        {course}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Score Cards */}
+                    <div className="flex gap-3 mt-5">
+                        {/* Overall Rating Card */}
+                        <div className="flex-1 relative rounded-xl overflow-hidden p-4" style={{
+                            background: "linear-gradient(145deg, rgba(62,207,142,0.1) 0%, rgba(62,207,142,0.02) 100%)",
+                            border: "1px solid rgba(62,207,142,0.15)",
+                        }}>
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-widest text-text3 mb-1.5">Overall Rating</p>
+                                    <div className="flex items-baseline gap-1.5">
+                                        <span className={`text-3xl lg:text-4xl font-bold tracking-tight ${getRatingColor(professor.overallRating)}`}>
+                                            {formatRating(professor.overallRating)}
+                                        </span>
+                                        <span className="text-[11px] text-text3 font-medium">/ 5.0</span>
+                                    </div>
+                                </div>
+                                {/* Mini circular indicator */}
+                                <div className="relative w-12 h-12 lg:w-14 lg:h-14">
+                                    <svg className="w-full h-full -rotate-90" viewBox="0 0 44 44">
+                                        <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3" />
+                                        <circle cx="22" cy="22" r="18" fill="none" stroke="#3ecf8e" strokeWidth="3" strokeLinecap="round"
+                                            strokeDasharray={`${(professor.overallRating / 5) * 113.1} 113.1`}
+                                            style={{ transition: "stroke-dasharray 0.8s ease" }}
+                                        />
+                                    </svg>
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <span className="text-[10px] font-bold text-primary">
+                                            {Math.round((professor.overallRating / 5) * 100)}%
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-1 mt-2">
+                                <span className="text-[10px] text-text3">{professor.reviewCount} reviews</span>
+                            </div>
+                        </div>
+
+                        {/* Recommend Card */}
+                        <div className="flex-1 relative rounded-xl overflow-hidden p-4" style={{
+                            background: "linear-gradient(145deg, rgba(74,158,221,0.1) 0%, rgba(74,158,221,0.02) 100%)",
+                            border: "1px solid rgba(74,158,221,0.15)",
+                        }}>
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-widest text-text3 mb-1.5">Would Recommend</p>
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-3xl lg:text-4xl font-bold tracking-tight text-aqua">
+                                            {professor.recommendationRate}
+                                        </span>
+                                        <span className="text-lg font-bold text-aqua">%</span>
+                                    </div>
+                                </div>
+                                {/* Mini circular indicator */}
+                                <div className="relative w-12 h-12 lg:w-14 lg:h-14">
+                                    <svg className="w-full h-full -rotate-90" viewBox="0 0 44 44">
+                                        <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3" />
+                                        <circle cx="22" cy="22" r="18" fill="none" stroke="#4a9edd" strokeWidth="3" strokeLinecap="round"
+                                            strokeDasharray={`${(professor.recommendationRate / 100) * 113.1} 113.1`}
+                                            style={{ transition: "stroke-dasharray 0.8s ease" }}
+                                        />
+                                    </svg>
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <span className="text-[9px] font-bold text-aqua">👍</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-1 mt-2">
+                                <span className="text-[10px] text-primary">✓</span>
+                                <span className="text-[10px] text-text3">of students recommend</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -347,13 +437,13 @@ export default function ProfessorProfilePage() {
             {/* Mobile rate button */}
             <div className="lg:hidden bottom-[57px] left-0 right-0 px-4 py-3 bg-bg border-border z-10 ">
                 <button
-                onClick={() => router.push(`/rate?professorId=${professor.id}`)}
-                className="w-full py-3.5 bg-primary rounded-xl text-sm font-semibold text-bg hover:opacity-90 transition-opacity cursor-pointer"
+                    onClick={() => router.push(`/rate?professorId=${professor.id}`)}
+                    className="w-full py-3.5 bg-primary rounded-xl text-sm font-semibold text-bg hover:opacity-90 transition-opacity cursor-pointer"
                 >
                     Rate this professor →
                 </button>
             </div>
-                   </div>
+        </div>
 
     )
 }

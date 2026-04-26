@@ -183,7 +183,7 @@ export default function RatePage(){
                             (
                                 <div className="flex flex-col gap-2">
                                     <p className="text-xs text-text3 mb-1">Select a professor to rate</p>
-                                    <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
+                                    <div className="flex flex-col gap-2 h-auto overflow-y-auto">
                                         {mockProfessor.map((p) => (
                                             <div
                                                 key={p.id}
@@ -427,11 +427,11 @@ export default function RatePage(){
                                         <span className="text-text3 w-12">{star} stars</span>
                                         <div className="flex-1 h-[3px] bg-bg4 rounded-full overflow-hidden">
                                             <div
-                                            className="h-full rounded-full"
-                                            style={{
-                                                width: `${percent}`,
-                                                background : star >= 4 ? "#3ecf8e" : star >= 2 ? "#e8a233" : "#e25555",
-                                            }}
+                                                className="h-full rounded-full"
+                                                style={{
+                                                    width: `${percent}`,
+                                                    background: star >= 4 ? "#3ecf8e" : star >= 2 ? "#e8a233" : "#e25555",
+                                                }}
 
                                             />
                                         </div>

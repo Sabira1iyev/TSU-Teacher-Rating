@@ -115,8 +115,8 @@ export default function DashBoardPage() {
                     })}
                 </div>
 
-                {/* Mobile scroll */}
-                <div className="flex lg:hidden gap-2 overflow-x-auto pb-1 -mx-5 px-5">
+                {/* Mobile grid */}
+                <div className="grid lg:hidden grid-cols-2 gap-2">
                     {FACULTIES.map((faculty) => {
                         const isActive = selectedFaculty === faculty;
                         const count = faculty === "All"
@@ -126,10 +126,10 @@ export default function DashBoardPage() {
                             <button
                                 key={faculty}
                                 onClick={() => setSelectedFaculty(faculty)}
-                                className={`flex-shrink-0 min-w-[110px] text-left p-3 rounded-xl border transition-all cursor-pointer
+                                className={`text-left p-3 rounded-xl border transition-all cursor-pointer
                                 ${isActive ?
                                         "bg-primary-dim border-primary-dim" :
-                                        "bg-bg2 border-boder"
+                                        "bg-bg2 border-border"
                                     }`}
                             >
                                 <div className="text-lg mb-1.5">{FACULTY_ICONS[faculty] || "🎓"}</div>
@@ -149,7 +149,7 @@ export default function DashBoardPage() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <div className="bg-bg2 border-border rounded-xl p-3">
                     <p className="text-[9px] text-text3 mb-1.5">Professors</p>
                     <p className="text-xl font-semibold text-primary">{filteredProfessors.length}</p>
@@ -181,7 +181,7 @@ export default function DashBoardPage() {
             <div>
                 {/* Tabs */}
                 <div className="flex items-center justify-between mb-3">
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 overflow-x-auto -mx-1 px-1">
                         {TABS.map((tab) => (
                             <button
                                 key={tab}
@@ -294,7 +294,7 @@ export default function DashBoardPage() {
                                     className="bg-bg2 border border-border rounded-xl px-3 py-2.5 flex items-center gap-2.5 cursor-pointer active:bg-bg3 transition-colors"
                                 >
                                     <span className="text-[11px] text-text3 w-3.5">{index + 1}</span>
-                                    <div className={`w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-medium flex-shrink-0 ${colors.bg} ${colors.bg}`}>
+                                    <div className={`w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-medium flex-shrink-0 ${colors.bg} ${colors.text}`}>
                                         {getInitials(professor.firstName, professor.lastName)}
                                     </div>
                                     <div className="flex-1 min-w-0">
