@@ -6,6 +6,7 @@ import { Professor } from "@/types/teacher"
 import { mockProfessor } from "@/data/mockTeachers"
 import { getInitials } from "@/lib/utils"
 import Link from "next/link"
+import { useUser } from "@/context/UserContext"
 
 const navItems = [
   {
@@ -57,6 +58,10 @@ const navItems = [
   },
 ];
 
+
+
+
+
 export default function DashboardLayout({
   children,
 }: {
@@ -64,6 +69,8 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useUser();
+  const initials = user ? getInitials(user.firstName, user.lastName) : "??";
 
   return (
     <div className="min-h-screen bg-bg flex">
@@ -132,7 +139,7 @@ export default function DashboardLayout({
         <div className="px-3 py-3 border-t border-border">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-full bg-blue-dim flex items-center justify-center text-[10px] text-blue font-medium flex-shrink-0">
-              SA
+              {initials}
             </div>
           </div>
         </div>
@@ -171,7 +178,7 @@ export default function DashboardLayout({
               <span className="text-text3 text-[12px]">Search professor or course...</span>
             </div>
             <div className="w-8 h-8 rounded-full bg-blue-dim flex items-center justify-center text-[10px] text-blue font-medium cursor-pointer">
-              SA
+              {initials}
             </div>
           </div>
         </div>

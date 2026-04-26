@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FACULTIES } from "@/lib/constants";
+import { useUser } from "@/context/UserContext";
 
 
 export default function RegisterPage() {
@@ -17,6 +18,7 @@ export default function RegisterPage() {
         studyYear: "",
     })
 
+    const { setUser } = useUser();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -49,6 +51,16 @@ export default function RegisterPage() {
             return;
         }
         setError("");
+
+        setUser({
+            firstName: formdata.firstName,
+            lastName: formdata.lastName,
+            email: formdata.email,
+            faculty: formdata.faculty,
+            studyYear: formdata.studyYear,
+        })
+
+
         setSuccess("Informations about student are correct.");
 
         setTimeout(() => {
