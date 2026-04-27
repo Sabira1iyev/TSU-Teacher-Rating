@@ -1,10 +1,11 @@
-export type AcademicTitle = 
-"Instructor" | 
-"Prof. Dr." | 
-"Associate Professor" | 
-"Dr." | 
-"Res. Asst." |
-"Assistant Professor";
+export type AcademicTitle =
+  | "Instructor"
+  | "Prof. Dr."
+  | "Associate Professor"
+  | "Dr."
+  | "Res. Asst."
+  | "Assistant Professor"
+  | "Professor";
 
 export type Faculty =
   | "Faculty of Exact and Natural Sciences"

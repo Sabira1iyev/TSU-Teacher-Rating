@@ -71,11 +71,11 @@ export default function SearchPage() {
 
 
     const AVATAR_COLORS = [
-        { bg: "bg-[#2a1e08]", text: "text-amber" },
-        { bg: "bg-blue-dim", text: "text-blue" },
-        { bg: "bg-[#1e1030]", text: "text-[#9d5fe8]" },
-        { bg: "bg-primary-dim", text: "text-primary" },
-        { bg: "bg-amber-dim", text: "text-amber" },
+        { bg: "bg-[#fdf6e3]", text: "text-[#b8860b]" },
+        { bg: "bg-[#e8f1fa]", text: "text-[#0060a9]" },
+        { bg: "bg-[#f3eefa]", text: "text-[#6f42c1]" },
+        { bg: "bg-[#e8f1fa]", text: "text-[#0060a9]" },
+        { bg: "bg-[#fdf6e3]", text: "text-[#b8860b]" },
     ];
 
     const getAvatarColor = (id: string) => {

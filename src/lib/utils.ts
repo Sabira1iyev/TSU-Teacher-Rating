@@ -23,13 +23,13 @@ export function getInitials(firstName: string, lastName: string): string {
 }
 
 export function getRatingColor(rating: number): string {
-  if (rating >= 4.0) return "text-green-500";
-  if (rating >= 2.5) return "text-amber-500";
-  return "text-red-500";
+  if (rating >= 4.0) return "text-[#0060a9]";
+  if (rating >= 2.5) return "text-[#b8860b]";
+  return "text-[#dc2626]";
 }
 
 export function getRatingBarColor(rating: number): string {
-  if (rating >= 4.0) return "#22c55e";
-  if (rating >= 2.5) return "#f59e0b";
-  return "#ef4444";
+  if (rating >= 4.0) return "#0060a9";
+  if (rating >= 2.5) return "#d4a017";
+  return "#dc2626";
 }

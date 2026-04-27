@@ -1,23 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0c0c0f;
-  --color-bg2: #13131a;
-  --color-bg3: #1a1a24;
-  --color-bg4: #22222e;
-  --color-primary: #3ecf8e;
-  --color-primary-dim: #1a3d2e;
-  --color-blue: #2c46d8;
-  --color-green-dim: #1a3d2e;
-  --color-amber: #e8a233;
-  --color-aqua: #4a9edd;
-  --color-purple: #9d5fe8;
-  --color-red: #e25555;
-  --color-text: #f0f0f5;
-  --color-text2: #888898;
-  --color-text3: #55555f;
-  --color-border: rgba(255, 255, 255, 0.06);
-  --color-border2: rgba(255, 255, 255, 0.10);
+  --color-bg: #f2f5f7;
+  --color-bg2: #ffffff;
+  --color-bg3: #f8fafb;
+  --color-bg4: #e4eaf0;
+  --color-primary: #0060a9;
+  --color-primary-dim: #e8f1fa;
+  --color-primary-mid: #a3c8e8;
+  --color-blue: #0060a9;
+  --color-blue-dim: #e8f1fa;
+  --color-green-dim: #e8f5ee;
+  --color-amber: #d4a017;
+  --color-amber-dim: #fdf6e3;
+  --color-aqua: #2b7ab5;
+  --color-purple: #6f42c1;
+  --color-red: #dc2626;
+  --color-text: #1a2a3a;
+  --color-text2: #5a6a7a;
+  --color-text3: #8a97a4;
+  --color-border: #e4eaf0;
+  --color-border2: #d8dfe6;
 }
 
 @layer base {

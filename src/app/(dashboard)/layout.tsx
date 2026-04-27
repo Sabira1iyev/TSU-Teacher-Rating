@@ -60,8 +60,6 @@ const navItems = [
 
 
 
-
-
 export default function DashboardLayout({
   children,
 }: {
@@ -73,31 +71,31 @@ export default function DashboardLayout({
   const initials = user ? getInitials(user.firstName, user.lastName) : "??";
 
   return (
-    <div className="min-h-screen bg-bg flex">
+    <div className="min-h-screen bg-[#f2f5f7] flex">
 
       {/* Sidebar desktop */}
 
-      <aside className="hidden lg:flex w-[220px] flex-shrink-0 flex-col bg-bg2 border-r border-border fixed top-0 left-0 h-full z-10">
+      <aside className="hidden lg:flex w-[220px] flex-shrink-0 flex-col bg-white border-r border-[#e4eaf0] fixed top-0 left-0 h-full z-10 shadow-[1px_0_8px_rgba(0,40,80,0.04)]">
 
         {/* Logo */}
-        <div className="flex items-center gap-3 px-5 py-5 border-border">
-          <div className="w-8 h-8 rounded-[9px] bg-primary-dim flex items-center justify-center flex-shrink-0">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3ecf8e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <div className="flex items-center gap-3 px-5 py-5">
+          <div className="w-8 h-8 rounded-[9px] bg-[#0060a9] flex items-center justify-center flex-shrink-0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 2L2 7l10 5 10-5-10-5z" />
               <path d="M2 17l10 5 10-5" />
               <path d="M2 12l10 5 10-5" />
             </svg>
           </div>
-          <span className="font-bold text-[15px] text-text"
+          <span className="font-bold text-[15px] text-[#1a2a3a]"
             style={{
               fontFamily: "Syne, sans-serif",
-            }}>Teacher <span className="text-primary">Rating</span></span>
+            }}>Teacher <span className="text-[#0060a9]">Rating</span></span>
         </div>
 
         {/* Nav */}
 
         <nav className="flex flex-col gap-1 flex-1 px-3 py-3">
-          <p className="text-[9px] text-text3 uppercase tracking-widest px-2 py-2">Explore</p>
+          <p className="text-[9px] text-[#8a97a4] uppercase tracking-widest px-2 py-2">Explore</p>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -105,8 +103,8 @@ export default function DashboardLayout({
                 key={item.href}
                 href={item.href}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${isActive
-                  ? "bg-primary-dim text-primary font-medium rounded-lg"
-                  : "text-text2 hover:bg-bg3 rounded-lg"
+                  ? "bg-[#e8f1fa] text-[#0060a9] font-medium rounded-lg"
+                  : "text-[#5a6a7a] hover:bg-[#f0f4f7] rounded-lg"
                   }`}
               >
                 {item.icon}
@@ -116,7 +114,7 @@ export default function DashboardLayout({
             )
           })}
 
-          <p className="text-[9px] text-text3 uppercase tracking-widest px-2 py-2 mt-2">Actions</p>
+          <p className="text-[9px] text-[#8a97a4] uppercase tracking-widest px-2 py-2 mt-2">Actions</p>
           {navItems.slice(2).map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -124,8 +122,8 @@ export default function DashboardLayout({
                 key={item.href}
                 href={item.href}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${isActive
-                  ? "bg-primary-dim text-primary font-medium rounded-lg"
-                  : "text-text2 hover:bg-bg3 rounded-lg"
+                  ? "bg-[#e8f1fa] text-[#0060a9] font-medium rounded-lg"
+                  : "text-[#5a6a7a] hover:bg-[#f0f4f7] rounded-lg"
                   } `}
               >
                 {item.icon}
@@ -136,9 +134,9 @@ export default function DashboardLayout({
         </nav>
 
         {/* User */}
-        <div className="px-3 py-3 border-t border-border">
+        <div className="px-3 py-3 border-t border-[#e4eaf0]">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-blue-dim flex items-center justify-center text-[10px] text-blue font-medium flex-shrink-0">
+            <div className="w-7 h-7 rounded-full bg-[#e8f1fa] flex items-center justify-center text-[10px] text-[#0060a9] font-medium flex-shrink-0">
               {initials}
             </div>
           </div>
@@ -149,35 +147,35 @@ export default function DashboardLayout({
       <main className="flex-1 lg:ml-[220px] flex flex-col min-h-screen">
 
         {/* Desktop topbar */}
-        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-0 z-110">
-          <h1 className="font-bold text-[16px] text-text" style={{
+        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-[#e4eaf0] bg-white sticky top-0 z-110 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+          <h1 className="font-bold text-[16px] text-[#1a2a3a]" style={{
             fontFamily: "Syne, sans-serif",
           }}>Dashboard</h1>
-          <div className="flex items-center gap-3 bg-bg3 border border-border2 rounded-[9px] px-3 py-2 w-56 cursor-pointer"
+          <div className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 w-56 cursor-pointer hover:border-[#0060a9] transition-colors"
             onClick={() => router.push("/search")}
           >
-            <span className="text-text3 text-sm">⌕</span>
-            <span className="text-[12px] text-text3">Search professor or course...</span>
+            <span className="text-[#8a97a4] text-sm">⌕</span>
+            <span className="text-[12px] text-[#8a97a4]">Search professor or course...</span>
           </div>
         </div>
 
         {/* Mobile topbar */}
-        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-0 z-10">
-          <span className="font-bold text-[16px] text-text"
+        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-[#e4eaf0] bg-white sticky top-0 z-10 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+          <span className="font-bold text-[16px] text-[#1a2a3a]"
             style={{
               fontFamily: "Syne, sans-serif"
             }}
-          >Teacher <span className="text-primary">Rating</span>
+          >Teacher <span className="text-[#0060a9]">Rating</span>
           </span>
           <div className="flex items-center gap-2">
             <div
-              className="flex items-center gap-3 bg-bg3 border border-border2 rounded-[9px] px-3 py-2 w-56 cursor-pointer"
+              className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 w-56 cursor-pointer"
               onClick={() => router.push("/search")}
             >
-              <span className="text-text3 text-[12px]">⌕</span>
-              <span className="text-text3 text-[12px]">Search professor or course...</span>
+              <span className="text-[#8a97a4] text-[12px]">⌕</span>
+              <span className="text-[#8a97a4] text-[12px]">Search professor or course...</span>
             </div>
-            <div className="w-8 h-8 rounded-full bg-blue-dim flex items-center justify-center text-[10px] text-blue font-medium cursor-pointer">
+            <div className="w-8 h-8 rounded-full bg-[#e8f1fa] flex items-center justify-center text-[10px] text-[#0060a9] font-medium cursor-pointer">
               {initials}
             </div>
           </div>
@@ -190,7 +188,7 @@ export default function DashboardLayout({
 
         {/* Bottom nav mobile */}
 
-        <nav className="flex lg:hidden border-t border-border bg-bg2 fixed bottom-0 left-0 right-0 z-50">
+        <nav className="flex lg:hidden border-t border-[#e4eaf0] bg-white fixed bottom-0 left-0 right-0 z-50 shadow-[0_-1px_4px_rgba(0,40,80,0.04)]">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -201,12 +199,12 @@ export default function DashboardLayout({
               >
                 <span className={
                   isActive
-                    ? "text-primary"
-                    : "text-text3"
+                    ? "text-[#0060a9]"
+                    : "text-[#8a97a4]"
                 }>{item.icon}</span>
                 <span className={`text-[9px] ${isActive
-                  ? "text-primary text-[8px] font-semibold"
-                  : "text-text3 text-[10px] font-semibold"
+                  ? "text-[#0060a9] text-[8px] font-semibold"
+                  : "text-[#8a97a4] text-[10px] font-semibold"
                   }`}>
                   {item.label}
                 </span>

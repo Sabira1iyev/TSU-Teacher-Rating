@@ -5,7 +5,7 @@ import { useState } from "react";
 import { getProfessorById } from "@/data/mockTeachers";
 import { getReviewsByProfessorId } from "@/data/mockReviews";
 import { getInitials, formatRating, getRatingColor, getRatingBarColor } from "@/lib/utils";
-import { CRITERIS_LABELS } from "@/lib/constants";
+import { CRITERIS_LABELS, FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 
 type Tab = "Overview" | "Reviews" | "Courses";
 
@@ -18,19 +18,25 @@ export default function ProfessorProfilePage() {
     const professor = getProfessorById(params.ID as string);
     const reviews = getReviewsByProfessorId(params.ID as string);
 
+    // Get faculty-specific color palette
+    const fc = professor
+        ? FACULTY_COLORS[professor.faculty] || DEFAULT_FACULTY_COLOR
+        : DEFAULT_FACULTY_COLOR;
+
+
     if (!professor) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen gap-4">
                 <p className="text-4xl">🎓</p>
-                <h2 className="text-xl font-bold text-text" style={{
+                <h2 className="text-xl font-bold text-[#1a2a3a]" style={{
                     fontFamily: "Syne, sans-serif"
                 }}>
                     Professor not found
                 </h2>
-                <p className="text-sm text-text3">This professor does not exist or has been removed</p>
+                <p className="text-sm text-[#8a97a4]">This professor does not exist or has been removed</p>
                 <button
                     onClick={() => router.push("/dashboard")}
-                    className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-bg cursor-pointer hover:opacity-90 transition-opacity"
+                    className="px-5 py-2.5 bg-[#0060a9] rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
                 >
                     ← Back to Dashboard
                 </button>
@@ -57,16 +63,20 @@ export default function ProfessorProfilePage() {
         <div className="flex flex-col">
 
             {/* Desktop topBar */}
-            <div className="hidden lg:flex items-center justify-between px-6 py-3 border-b border-border bg-bg2 sticky top-[-57px] z-10">
+            <div className="hidden lg:flex items-center justify-between px-6 py-3 sticky top-[-57px] z-10"
+                style={{
+                    background: `linear-gradient(135deg, ${fc.light} 0%, transparent 100%)`,
+                }}>
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 text-sm text-text2 hover:text-text transition-colors cursor-pointer">
+                    className="flex items-center gap-2 text-sm text-[#5a6a7a] hover:text-[#1a2a3a] transition-colors cursor-pointer">
                     ← Back
                 </button>
 
                 <button
                     onClick={() => router.push(`/rate?professorId=${professor.id}`)}
-                    className="px-4 py-2 bg-primary rounded-lg text-xs font-semibold text-bg hover:opacity-90 transition-opacity cursor-pointer"
+                    className="px-4 py-2 rounded-lg text-xs font-semibold text-white transition-colors cursor-pointer"
+                    style={{ backgroundColor: fc.primary, boxShadow: `0 2px 8px ${fc.mid}` }}
                 >
                     Rate this professor →
                 </button>
@@ -74,23 +84,23 @@ export default function ProfessorProfilePage() {
 
             {/* Hero Section */}
             <div className="relative overflow-hidden" style={{
-                background: "linear-gradient(135deg, rgba(62,207,142,0.08) 0%, rgba(44,70,216,0.06) 50%, rgba(157,95,232,0.05) 100%)",
-                border: "1px solid rgba(255,255,255,0.06)",
+                background: `linear-gradient(135deg, ${fc.light} 0%, transparent 50%, rgba(212,160,23,0.03) 100%)`,
+                borderBottom: "1px solid #e4eaf0",
             }}>
                 {/* Subtle glow orbs */}
-                <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20 blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, #3ecf8e 0%, transparent 70%)" }} />
-                <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, #2c46d8 0%, transparent 70%)" }} />
+                <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20 blur-3xl pointer-events-none" style={{ background: `radial-gradient(circle, ${fc.primary} 0%, transparent 70%)` }} />
+                <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 blur-3xl pointer-events-none" style={{ background: `radial-gradient(circle, ${fc.primary} 0%, transparent 70%)` }} />
 
                 <div className="relative p-5 lg:p-6">
                     {/* Avatar + Info */}
                     <div className="flex items-start gap-4 lg:gap-5">
                         {/* Avatar with glow ring */}
                         <div className="relative flex-shrink-0">
-                            <div className="absolute -inset-1 rounded-full opacity-40 blur-sm" style={{ background: "linear-gradient(135deg, #3ecf8e, #2c46d8)" }} />
+                            <div className="absolute -inset-1 rounded-full opacity-40 blur-sm" style={{ background: `linear-gradient(135deg, ${fc.primary}, ${fc.primary})` }} />
                             <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-xl lg:text-2xl font-bold flex-shrink-0" style={{
-                                background: "linear-gradient(135deg, #1a3d2e 0%, #2a1e08 100%)",
-                                border: "2px solid rgba(62,207,142,0.3)",
-                                color: "#e8a233",
+                                background: `linear-gradient(135deg, ${fc.light} 0%, #fdf6e3 100%)`,
+                                border: `2px solid ${fc.mid}`,
+                                color: fc.primary,
                             }}>
                                 {getInitials(professor.firstName, professor.lastName)}
                             </div>
@@ -103,7 +113,7 @@ export default function ProfessorProfilePage() {
                                 {professor.firstName} {professor.lastName}
                             </h1>
                             <div className="flex items-center gap-2 mt-2">
-                                <span className="text-[11px] text-primary font-medium">{professor.faculty}</span>
+                                <span className="text-[11px] font-medium" style={{ color: fc.primary }}>{professor.faculty}</span>
                                 <span className="w-1 h-1 rounded-full bg-text3" />
                                 <span className="text-[11px] text-text3">Tbilisi State University</span>
                             </div>
@@ -112,8 +122,8 @@ export default function ProfessorProfilePage() {
                                     <span key={course}
                                         className="px-2.5 py-1 rounded-lg text-[10px] text-text2 font-medium"
                                         style={{
-                                            background: "rgba(255,255,255,0.04)",
-                                            border: "1px solid rgba(255,255,255,0.08)",
+                                            background: fc.light,
+                                            border: `1px solid ${fc.mid}`,
                                             backdropFilter: "blur(4px)",
                                         }}>
                                         {course}
@@ -127,8 +137,8 @@ export default function ProfessorProfilePage() {
                     <div className="flex gap-3 mt-5">
                         {/* Overall Rating Card */}
                         <div className="flex-1 relative rounded-xl overflow-hidden p-4" style={{
-                            background: "linear-gradient(145deg, rgba(62,207,142,0.1) 0%, rgba(62,207,142,0.02) 100%)",
-                            border: "1px solid rgba(62,207,142,0.15)",
+                            background: `linear-gradient(145deg, ${fc.light} 0%, transparent 100%)`,
+                            border: `1px solid ${fc.mid}`,
                         }}>
                             <div className="flex items-center justify-between">
                                 <div>
@@ -143,14 +153,14 @@ export default function ProfessorProfilePage() {
                                 {/* Mini circular indicator */}
                                 <div className="relative w-12 h-12 lg:w-14 lg:h-14">
                                     <svg className="w-full h-full -rotate-90" viewBox="0 0 44 44">
-                                        <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3" />
-                                        <circle cx="22" cy="22" r="18" fill="none" stroke="#3ecf8e" strokeWidth="3" strokeLinecap="round"
+                                        <circle cx="22" cy="22" r="18" fill="none" stroke="#e4eaf0" strokeWidth="3" />
+                                        <circle cx="22" cy="22" r="18" fill="none" stroke={fc.primary} strokeWidth="3" strokeLinecap="round"
                                             strokeDasharray={`${(professor.overallRating / 5) * 113.1} 113.1`}
                                             style={{ transition: "stroke-dasharray 0.8s ease" }}
                                         />
                                     </svg>
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <span className="text-[10px] font-bold text-primary">
+                                        <span className="text-[10px] font-bold" style={{ color: fc.primary }}>
                                             {Math.round((professor.overallRating / 5) * 100)}%
                                         </span>
                                     </div>
@@ -163,8 +173,8 @@ export default function ProfessorProfilePage() {
 
                         {/* Recommend Card */}
                         <div className="flex-1 relative rounded-xl overflow-hidden p-4" style={{
-                            background: "linear-gradient(145deg, rgba(74,158,221,0.1) 0%, rgba(74,158,221,0.02) 100%)",
-                            border: "1px solid rgba(74,158,221,0.15)",
+                            background: `linear-gradient(145deg, ${fc.light} 0%, transparent 100%)`,
+                            border: `1px solid ${fc.mid}`,
                         }}>
                             <div className="flex items-center justify-between">
                                 <div>
@@ -179,8 +189,8 @@ export default function ProfessorProfilePage() {
                                 {/* Mini circular indicator */}
                                 <div className="relative w-12 h-12 lg:w-14 lg:h-14">
                                     <svg className="w-full h-full -rotate-90" viewBox="0 0 44 44">
-                                        <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3" />
-                                        <circle cx="22" cy="22" r="18" fill="none" stroke="#4a9edd" strokeWidth="3" strokeLinecap="round"
+                                        <circle cx="22" cy="22" r="18" fill="none" stroke="#e4eaf0" strokeWidth="3" />
+                                        <circle cx="22" cy="22" r="18" fill="none" stroke={fc.primary} strokeWidth="3" strokeLinecap="round"
                                             strokeDasharray={`${(professor.recommendationRate / 100) * 113.1} 113.1`}
                                             style={{ transition: "stroke-dasharray 0.8s ease" }}
                                         />
@@ -191,7 +201,7 @@ export default function ProfessorProfilePage() {
                                 </div>
                             </div>
                             <div className="flex items-center gap-1 mt-2">
-                                <span className="text-[10px] text-primary">✓</span>
+                                <span className="text-[10px]" style={{ color: fc.primary }}>✓</span>
                                 <span className="text-[10px] text-text3">of students recommend</span>
                             </div>
                         </div>
@@ -265,7 +275,7 @@ export default function ProfessorProfilePage() {
                                                 <div className="w-full rounded-t-sm"
                                                     style={{
                                                         height,
-                                                        background: "#3ecf8e",
+                                                        background: "#0060a9",
                                                         opacity: isLast ? 1 : 0.4,
                                                         minHeight: "6px",
                                                     }}
@@ -292,7 +302,7 @@ export default function ProfessorProfilePage() {
                                                             className="w-[10px] h-[10px]"
                                                             style={{
                                                                 clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
-                                                                background: star <= review.overallRating ? "#3ecf8e" : "#22222e",
+                                                                background: star <= review.overallRating ? "#0060a9" : "#d8dfe6",
                                                             }}
                                                         />
                                                     ))}
@@ -333,7 +343,7 @@ export default function ProfessorProfilePage() {
                                                     className="h-full rounded-full"
                                                     style={{
                                                         width: `${percent}`,
-                                                        background: star >= 4 ? "#3ecf8e" : star === 3 ? "#e8a233" : "#e22222",
+                                                        background: star >= 4 ? "#0060a9" : star === 3 ? "#d4a017" : "#dc2626",
                                                     }}
                                                 />
                                             </div>
@@ -435,15 +445,16 @@ export default function ProfessorProfilePage() {
             </div>
 
             {/* Mobile rate button */}
-            <div className="lg:hidden bottom-[57px] left-0 right-0 px-4 py-3 bg-bg border-border z-10 ">
+            <div className="lg:hidden bottom-[57px] left-0 right-0 px-4 py-3 bg-[#f2f5f7] z-10">
                 <button
                     onClick={() => router.push(`/rate?professorId=${professor.id}`)}
-                    className="w-full py-3.5 bg-primary rounded-xl text-sm font-semibold text-bg hover:opacity-90 transition-opacity cursor-pointer"
+                    className="w-full py-3.5 rounded-xl text-sm font-semibold text-white transition-colors cursor-pointer"
+                    style={{ backgroundColor: fc.primary, boxShadow: `0 2px 12px ${fc.mid}` }}
                 >
                     Rate this professor →
                 </button>
             </div>
-        </div>
+        </div >
 
     )
 }

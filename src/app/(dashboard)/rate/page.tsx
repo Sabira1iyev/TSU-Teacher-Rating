@@ -12,12 +12,12 @@ import { Key } from "lucide-react";
 
 
 const STAR_COLOR = {
-    teaching: "#3ecf8e",
-    examDifficulty: "#e8a233",
-    homeWork: "#e8a233",
-    accessibility: "#3ecf8e",
+    teaching: "#0060a9",
+    examDifficulty: "#d4a017",
+    homeWork: "#d4a017",
+    accessibility: "#0060a9",
 
-    examControlLevel: "#e8a233",
+    examControlLevel: "#d4a017",
 } as const;
 
  
@@ -98,21 +98,21 @@ function RatePageContent(){
     if (submitted) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-6">
-                <div className="w-16 h-16 rounded-full bg-primary-dim flex items-center justify-center">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3ecf8e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className="w-16 h-16 rounded-full bg-[#e8f1fa] flex items-center justify-center">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0060a9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                     </svg>
                 </div>
-                <h2 className="text-xl font-bold text-text text-center" style={{ fontFamily: "Syne, sans-serif" }}>
+                <h2 className="text-xl font-bold text-[#1a2a3a] text-center" style={{ fontFamily: "Syne, sans-serif" }}>
                     Review Submitted!
                 </h2>
-                <p className="text-sm text-text3 text-center max-w-sm">
+                <p className="text-sm text-[#5a6a7a] text-center max-w-sm">
                     Your anonymous review has been submitted successfull. Thank you for helping other students!
                 </p>
                 <div className="flex gap-3 mt-2">
                     <button
                         onClick={() => router.push(`/professor/${form.professorId}`)}
-                        className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-bg cursor-pointer hover:opacity-90 transition-opacity"
+                        className="px-5 py-2.5 bg-[#0060a9] rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
                     >
                         Dashboard
                     </button>
@@ -153,8 +153,8 @@ function RatePageContent(){
                     <div>
                         <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">Professor</p>
                         {professor ? (
-                            <div className="flex items-center gap-3 bg-bg3 border border-border rounded-xl p-3">
-                                <div className="w-11 h-11 rounded-full bg-[#2a1e08] flex items-center justify-center text-sm text-amber font-semibold flex-shrink-0">
+                            <div className="flex items-center gap-3 bg-[#f8fafb] border border-[#e4eaf0] rounded-xl p-3">
+                                <div className="w-11 h-11 rounded-full bg-[#fdf6e3] flex items-center justify-center text-sm text-[#b8860b] font-semibold flex-shrink-0">
                                     {getInitials(professor.firstName, professor.lastName)}
                                 </div>
                                 <div className="flex-1">
@@ -256,7 +256,7 @@ function RatePageContent(){
                                             <svg width="38" height="38" viewBox="0 0 24 24">
                                                 <polygon
                                                     points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"
-                                                    fill={star <= form.overallRating ? (form.overallRating > 3 ? "#3ecf8e" : form.overallRating === 1 ? "#e22222" : "#e8a233") : "#22222e"}
+                                                    fill={star <= form.overallRating ? (form.overallRating > 3 ? "#0060a9" : form.overallRating === 1 ? "#dc2626" : "#d4a017") : "#d8dfe6"}
                                                 />
                                             </svg>
                                         </button>
@@ -284,7 +284,7 @@ function RatePageContent(){
                                                         <svg width="20" height="20" viewBox="0 0 24 24">
                                                             <polygon
                                                                 points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"
-                                                                fill={star <= form.criteria[key] ? (form.criteria[key] > 3 ? "#3ecf8e" : form.criteria[key] === 1 ? "#e22222" : "#e8a233") : "#22222e"}
+                                                                fill={star <= form.criteria[key] ? (form.criteria[key] > 3 ? "#0060a9" : form.criteria[key] === 1 ? "#dc2626" : "#d4a017") : "#d8dfe6"}
                                                             />
                                                         </svg>
                                                     </button>
@@ -361,7 +361,7 @@ function RatePageContent(){
                             {/* Submit */}
                             <button
                                 onClick={handleSubmit}
-                                className="w-full py-3.5 bg-primary rounded-xl text-sm font-semibold text-bg hover:opacity-90 transition-opacity cursor-pointer"
+                                className="w-full py-3.5 bg-[#0060a9] rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
                             >
                                 Submit review →
                             </button>
@@ -421,7 +421,7 @@ function RatePageContent(){
                                                 className="h-full rounded-full"
                                                 style={{
                                                     width: `${percent}`,
-                                                    background: star >= 4 ? "#3ecf8e" : star >= 2 ? "#e8a233" : "#e25555",
+                                                    background: star >= 4 ? "#0060a9" : star >= 2 ? "#d4a017" : "#dc2626",
                                                 }}
 
                                             />
