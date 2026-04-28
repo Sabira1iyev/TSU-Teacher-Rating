@@ -125,6 +125,26 @@ export const mockReviews: Review[] = [
     displayDate: "1 Month Ago",
     createdAt: "2026-03-15",
   },
+
+  {
+    id: "7",
+    professorId: "7",
+    courseName: "History of Georgia",
+    semester: "2024-2025 Fall",
+    overallRating: 5,
+    criteria: {
+      teaching: 5,
+      examDifficulty: 5,
+      homeWork: 5,
+      accessibility: 5,
+      examControlLevel: 5,
+    },
+    comment: "Best Professor I ever seen",
+    tags: ["Hard exams", "Hardest Teacher"],
+    wouldRecommend: false,
+    displayDate: "1 Month Ago",
+    createdAt: "2026-03-15",
+  },
 ];
 
 export const getReviewsByProfessorId = (professorId: string): Review[] => {

@@ -6,7 +6,7 @@ export const FACULTIES = [
   "Faculty of Economics and Business",
   "Faculty of Humanities",
   "Faculty of Medicine",
-  "Faculty of Law and Political Sciences",
+  "Faculty of Law",
 ];
 
 export const ACADEMIC_TITLES = [

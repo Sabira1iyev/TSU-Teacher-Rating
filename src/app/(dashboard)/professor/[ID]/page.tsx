@@ -144,7 +144,10 @@ export default function ProfessorProfilePage() {
                                 <div>
                                     <p className="text-[10px] uppercase tracking-widest text-text3 mb-1.5">Overall Rating</p>
                                     <div className="flex items-baseline gap-1.5">
-                                        <span className={`text-3xl lg:text-4xl font-bold tracking-tight ${getRatingColor(professor.overallRating)}`}>
+                                        <span
+                                            className="text-3xl lg:text-4xl font-bold tracking-tight"
+                                            style={{ color: fc.primary }}
+                                        >
                                             {formatRating(professor.overallRating)}
                                         </span>
                                         <span className="text-[11px] text-text3 font-medium">/ 5.0</span>
@@ -180,10 +183,10 @@ export default function ProfessorProfilePage() {
                                 <div>
                                     <p className="text-[10px] uppercase tracking-widest text-text3 mb-1.5">Would Recommend</p>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-3xl lg:text-4xl font-bold tracking-tight text-aqua">
+                                        <span className="text-3xl lg:text-4xl font-bold tracking-tight" style={{ color: fc.primary }}>
                                             {professor.recommendationRate}
                                         </span>
-                                        <span className="text-lg font-bold text-aqua">%</span>
+                                        <span className="text-lg font-bold" style={{ color: fc.primary }}>%</span>
                                     </div>
                                 </div>
                                 {/* Mini circular indicator */}
@@ -215,9 +218,10 @@ export default function ProfessorProfilePage() {
                     <button
                         onClick={() => setActiveTab(tab)}
                         className={`px-5 py-3 text-xs cursor-pointer border-b-2 transition-colors ${activeTab === tab
-                            ? "text-primary border-primary font-medium"
+                            ? "font-medium"
                             : "text-text3 border-transparent hover:text-text2"
                             }`}
+                        style={activeTab === tab ? { color: fc.primary, borderColor: fc.primary } : {}}
                     >
                         {tab}
                     </button>
@@ -275,7 +279,7 @@ export default function ProfessorProfilePage() {
                                                 <div className="w-full rounded-t-sm"
                                                     style={{
                                                         height,
-                                                        background: "#0060a9",
+                                                        background: `${fc.primary}`,
                                                         opacity: isLast ? 1 : 0.4,
                                                         minHeight: "6px",
                                                     }}
@@ -302,7 +306,7 @@ export default function ProfessorProfilePage() {
                                                             className="w-[10px] h-[10px]"
                                                             style={{
                                                                 clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
-                                                                background: star <= review.overallRating ? "#0060a9" : "#d8dfe6",
+                                                                background: star <= review.overallRating ? `${fc.primary}` : "#d8dfe6",
                                                             }}
                                                         />
                                                     ))}
@@ -310,11 +314,15 @@ export default function ProfessorProfilePage() {
 
                                                 <span className="text-[10px] text-text3">{review.displayDate}</span>
                                             </div>
-                                            <p className="text-[11px] text-primary mb-1.5">{review.courseName}</p>
+                                            <p className="text-[11px] mb-1.5" style={{ color: fc.primary }}>{review.courseName}</p>
                                             <p className="text-[12px] text-text2 leading-relaxed">{review.comment}</p>
                                             <div className="flex flex-wrap gap-1.5 mt-2.5">
                                                 {review.tags.map((tag) => (
-                                                    <span key={tag} className="px-2 py-0.5 bg-primary-dim text-primary text-[9px] rounded-lg">
+                                                    <span key={tag} className="px-2 py-0.5 text-[9px] rounded-lg"
+                                                        style={{
+                                                            background: `${fc.light}`,
+                                                            color: fc.primary
+                                                        }}>
                                                         {tag}
                                                     </span>
                                                 ))}
@@ -343,7 +351,7 @@ export default function ProfessorProfilePage() {
                                                     className="h-full rounded-full"
                                                     style={{
                                                         width: `${percent}`,
-                                                        background: star >= 4 ? "#0060a9" : star === 3 ? "#d4a017" : "#dc2626",
+                                                        background: star >= 4 ? `${fc.primary}` : star === 3 ? "#d4a017" : "#dc2626",
                                                     }}
                                                 />
                                             </div>
