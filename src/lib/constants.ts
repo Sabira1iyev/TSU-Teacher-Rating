@@ -1,6 +1,6 @@
 export const FACULTIES = [
   "All",
-  "Faculty of Law",
+  "Faculty of Social and Political Sciences",
   "Faculty of Exact and Natural Sciences",
   "Faculty of Psychology and Educational Sciences",
   "Faculty of Economics and Business",
@@ -56,42 +56,49 @@ export const UNIVERSITY_EMAIL_DOMAIN = "@hum.tsu.edu.ge";
 // faculty color
 export const FACULTY_COLORS: Record<
   string,
-  { primary: string; light: string; mid: string }
+  { primary: string; light: string; mid: string; shadow: string }
 > = {
   "Faculty of Law": {
     primary: "#C72E31",
     light: "rgba(199,46,49,0.08)",
     mid: "rgba(199,46,49,0.18)",
+    shadow: "0 0 18px rgba(199, 46, 49, 0.45)",
   },
   "Faculty of Exact and Natural Sciences": {
     primary: "#2e8b57",
     light: "rgba(46,139,87,0.08)",
     mid: "rgba(46,139,87,0.18)",
+    shadow: "0 0 18px rgba(46, 139, 87, 0.45)",
   },
   "Faculty of Humanities": {
     primary: "#d4a017",
     light: "rgba(212,160,23,0.08)",
     mid: "rgba(212,160,23,0.18)",
+    shadow: "0 0 18px rgba(212, 160, 23, 0.45)",
   },
   "Faculty of Social and Political Sciences": {
     primary: "#e07020",
     light: "rgba(224,112,32,0.08)",
     mid: "rgba(224,112,32,0.18)",
+    shadow: "0 0 18px rgba(224, 112, 32, 0.45)",
   },
   "Faculty of Psychology and Education": {
     primary: "#1a3a6b",
     light: "rgba(26,58,107,0.08)",
     mid: "rgba(26,58,107,0.18)",
+    shadow: "0 0 18px rgba(26, 58, 107, 0.45)",
   },
   "Faculty of Medicine": {
     primary: "#3a9ec7",
     light: "rgba(58,158,199,0.08)",
     mid: "rgba(58,158,199,0.18)",
+    shadow: "0 0 18px rgba(58, 158, 199, 0.45)",
   },
   "Faculty of Economics and Business": {
     primary: "#5a9999",
     light: "rgba(179,204,204,0.15)",
     mid: "rgba(179,204,204,0.35)",
+    shadow: "0 0 18px rgba(90, 153, 153, 0.45)",
   },
 };
 
@@ -100,4 +107,5 @@ export const DEFAULT_FACULTY_COLOR = {
   primary: "#0060a9",
   light: "rgba(0,96,169,0.06)",
   mid: "rgba(0,96,169,0.15)",
+  shadow: "0 0 18px rgba(0, 96, 169, 0.45)",
 };

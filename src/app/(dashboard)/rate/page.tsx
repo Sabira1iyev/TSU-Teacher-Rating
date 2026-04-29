@@ -4,8 +4,9 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { mockProfessor, getProfessorById } from "@/data/mockTeachers";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
-import { REVIEW_TAGS, SEMESTERS, CRITERIS_LABELS } from "@/lib/constants";
+import { REVIEW_TAGS, SEMESTERS, CRITERIS_LABELS, FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
+
 
 import { Key } from "lucide-react";
 
@@ -20,9 +21,9 @@ const STAR_COLOR = {
     examControlLevel: "#d4a017",
 } as const;
 
- 
 
-function RatePageContent(){
+
+function RatePageContent() {
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -93,6 +94,10 @@ function RatePageContent(){
         setError("");
         setSubmitted(true);
     };
+
+    const fc = professor
+        ? FACULTY_COLORS[professor.faculty] || DEFAULT_FACULTY_COLOR
+        : DEFAULT_FACULTY_COLOR;
 
     {/* Success state */ }
     if (submitted) {
@@ -175,31 +180,41 @@ function RatePageContent(){
                                 <div className="flex flex-col gap-2">
                                     <p className="text-xs text-text3 mb-1">Select a professor to rate</p>
                                     <div className="flex flex-col gap-2 h-auto overflow-y-auto">
-                                        {mockProfessor.map((p) => (
-                                            <div
-                                                key={p.id}
-                                                onClick={() => {
-                                                    setForm((prev) => ({
-                                                        ...prev,
-                                                        professorId: p.id,
-                                                        courseName: p.courses[0],
-                                                    }))
-                                                    router.push(`/rate?professorId=${p.id}`);
-                                                }}
-                                                className="flex items-center gap-3 bg-bg2 border border-border rounded-xl p-3 cursor-pointer hover:bg-bg3 transition-colors"
-                                            >
-                                                <div className="w-9 h-9 rounded-full bg-primary-dim flex items-center justify-center text-xs text-primary font-semibold flex-shrink-0">
-                                                    {getInitials(p.firstName, p.lastName)}
+                                        {mockProfessor.map((p) => {
+                                            const pColor = FACULTY_COLORS[p.faculty] || DEFAULT_FACULTY_COLOR;
+                                            return (
+                                                <div
+                                                    key={p.id}
+                                                    onClick={() => {
+                                                        setForm((prev) => ({
+                                                            ...prev,
+                                                            professorId: p.id,
+                                                            courseName: p.courses[0],
+                                                        }))
+                                                        router.push(`/rate?professorId=${p.id}`);
+                                                    }}
+                                                    className="flex items-center gap-3 border border-border rounded-xl p-3 cursor-pointer transition-colors"
+                                                    style={{
+                                                        background: pColor.light,
+                                                        borderColor: pColor.mid
+                                                    }}
+                                                >
+                                                    <div 
+                                                        className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
+                                                        style={{ background: pColor.mid, color: pColor.primary }}
+                                                    >
+                                                        {getInitials(p.firstName, p.lastName)}
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-medium text-text">{p.title} {p.firstName} {p.lastName}</p>
+                                                        <p className="text-xs text-text3">{p.department}</p>
+                                                    </div>
+                                                    <span className={`ml-auto text-sm font-semibold ${getRatingColor(p.overallRating)}`}>
+                                                        {formatRating(p.overallRating)}
+                                                    </span>
                                                 </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-text">{p.title} {p.firstName} {p.lastName}</p>
-                                                    <p className="text-xs text-text3">{p.department}</p>
-                                                </div>
-                                                <span className={`ml-auto text-sm font-semibold ${getRatingColor(p.overallRating)}`}>
-                                                    {formatRating(p.overallRating)}
-                                                </span>
-                                            </div>
-                                        ))}
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             )}
@@ -321,11 +336,18 @@ function RatePageContent(){
                                         <button
                                             key={tag}
                                             onClick={() => handleTagToggle(tag)}
-                                            className={`px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all border ${form.tags.includes(tag)
-                                                ? "bg-primary-dim border-primary-mid text-primary"
-                                                : "bg-bg3 border-border2 text-text2 hover:border-border"
+                                            className={`px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all border ${!form.tags.includes(tag)
+                                                ? "bg-bg3 border-border2 text-text2 hover:border-border"
+                                                : ""
                                                 }`}
-                                        >{tag}</button>
+                                            style={
+                                                form.tags.includes(tag)
+                                                    ? { backgroundColor: fc.light, borderColor: fc.primary, color: fc.primary }
+                                                    : {}
+                                            }
+                                        >
+                                            {tag}
+                                        </button>
                                     ))}
                                 </div>
                             </div>
@@ -361,8 +383,11 @@ function RatePageContent(){
                             {/* Submit */}
                             <button
                                 onClick={handleSubmit}
-                                className="w-full py-3.5 bg-[#0060a9] rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
-                            >
+                                className="w-full py-3.5 rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer"
+                                style={{
+                                    background: `${fc.primary}`,
+                                    boxShadow: `${fc.shadow}`
+                                }}>
                                 Submit review →
                             </button>
                         </>
@@ -401,9 +426,11 @@ function RatePageContent(){
                 {/* Current Rating */}
                 {professor && (
                     <div>
-                        <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">Current rating</p>
+                        <p className="text-[10px] text-text3 uppercase tracking-widest mb-3 ml-5">Current rating</p>
                         <div className="bg-bg3 rounded-xl p-4">
-                            <p className={`text-4xl font-bold text-center mb-1 ${getRatingColor(professor.overallRating)}`}>
+                            <p className={`text-4xl font-bold text-center mb-1`} style={{
+                                color: `${fc.primary}`
+                            }}>
                                 {formatRating(professor.overallRating)}
                             </p>
                             <p className="text-[11px] text-text3 text-center mb-4">

@@ -96,7 +96,7 @@ export default function ProfessorProfilePage() {
                     <div className="flex items-start gap-4 lg:gap-5">
                         {/* Avatar with glow ring */}
                         <div className="relative flex-shrink-0">
-                            <div className="absolute -inset-1 rounded-full opacity-40 blur-sm" style={{ background: `linear-gradient(135deg, ${fc.primary}, ${fc.primary})` }} />
+                            <div className="absolute  inset-3 rounded-full opacity-40 blur-sm" style={{ background: `linear-gradient(135deg, ${fc.primary}, ${fc.primary})` }} />
                             <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-xl lg:text-2xl font-bold flex-shrink-0" style={{
                                 background: `linear-gradient(135deg, ${fc.light} 0%, #fdf6e3 100%)`,
                                 border: `2px solid ${fc.mid}`,
@@ -105,7 +105,7 @@ export default function ProfessorProfilePage() {
                                 {getInitials(professor.firstName, professor.lastName)}
                             </div>
                         </div>
-
+ 
                         {/* Name & details */}
                         <div className="flex-1 min-w-0">
                             <p className="text-[10px] uppercase tracking-[0.15em] text-text3 mb-1">{professor.title}</p>

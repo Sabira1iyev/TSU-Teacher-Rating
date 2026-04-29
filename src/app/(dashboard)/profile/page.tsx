@@ -1,3 +1,3 @@
 export default function ProfilePage() {
-    return <p>soon</p>;
+    return <p>in development...</p>;
 }
