@@ -71,7 +71,7 @@ export default function DashboardLayout({
   const initials = user ? getInitials(user.firstName, user.lastName) : "??";
 
   return (
-    <div className="min-h-screen bg-[#f2f5f7] flex">
+    <div className="min-h-screen bg-[#f2f5f7] flex overflow-x-hidden">
 
       {/* Sidebar desktop */}
 
@@ -144,7 +144,7 @@ export default function DashboardLayout({
       </aside>
 
       {/* content */}
-      <main className="flex-1 lg:ml-[220px] flex flex-col min-h-screen">
+      <main className="flex-1 lg:ml-[220px] flex flex-col min-h-screen min-w-0">
 
         {/* Desktop topbar */}
         <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-[#e4eaf0] bg-white sticky top-0 z-110 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
@@ -169,7 +169,7 @@ export default function DashboardLayout({
           </span>
           <div className="flex items-center gap-2">
             <div
-              className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 w-56 cursor-pointer"
+              className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 flex-1 min-w-0 cursor-pointer"
               onClick={() => router.push("/search")}
             >
               <span className="text-[#8a97a4] text-[12px]">⌕</span>
@@ -182,7 +182,7 @@ export default function DashboardLayout({
         </div>
 
         {/* page content */}
-        <div className="flex-1 pb-16 lg:pb-0">
+        <div className="flex-1 pb-16 lg:pb-0 overflow-x-hidden min-w-0">
           {children}
         </div>
 
