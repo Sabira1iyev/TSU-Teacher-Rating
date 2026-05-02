@@ -9,7 +9,7 @@ interface User {
   faculty: string;
   studyYear: string;
 }
-
+ 
 interface UserContextType {
   user: User | null;
   setUser: (user: User) => void;
