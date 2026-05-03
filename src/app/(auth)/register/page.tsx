@@ -21,6 +21,7 @@ export default function RegisterPage() {
     const { setUser } = useUser();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -28,7 +29,7 @@ export default function RegisterPage() {
         setFormData({ ...formdata, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setSuccess("");
         if (!formdata.firstName || !formdata.lastName) {
             setError("Please enter your full name");
@@ -51,6 +52,29 @@ export default function RegisterPage() {
             return;
         }
         setError("");
+        setLoading(true);
+
+        try {
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formdata),
+            });
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError(data.error || "Something went wrong.");
+                return;
+            }
+            router.push("/verify");
+        }
+        catch (err) {
+            setError("Connection error. Please try again.")
+        }
+        finally {
+            setLoading(false);
+        }
+
 
         setUser({
             firstName: formdata.firstName,
@@ -229,9 +253,15 @@ export default function RegisterPage() {
 
                 <button
                     onClick={handleSubmit}
-                    className="w-full py-4 bg-[#0060a9] rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
-                >
-                    Send verification code →
+                    disabled={loading}
+                    className={`w-full py-4 bg-[#0060a9] rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]
+                        ${loading
+                            ? "bg-primary/50 text-bg cursor-not-allowed"
+                            : "bg-primary text-bg hover:opacity-90"
+                        }`
+                    }                >
+
+                    {loading ? "Creating account..." : "Send verification code →"}
                 </button>
             </div>
         </div>
