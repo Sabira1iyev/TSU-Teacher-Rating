@@ -46,29 +46,4 @@ export interface Review {
   displayDate: string;
   createdAt: string;
 }
- 
-export interface Review{
-    id: string
-    professorId: string
-    courseName: string
-    semester: string
-    overallRating: number
-    criteria: ReviewCriteria
-    comment: string,
-    tags: ReviewTag[]
-    wouldRecommend: boolean
-    displayDate: string
-    createdAt: string
-}
 
-export interface ReviewForm{
-    professorId: string,
-    courseName: string,
-    semester: string,
-    overallRating: number,
-    criteria: ReviewCriteria
-    comment: string,
-    tags: ReviewTag[],
-    wouldRecommend: boolean,
-}
- 

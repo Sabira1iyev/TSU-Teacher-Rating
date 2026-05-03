@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { mockReviews } from "@/data/mockReviews";
 import { useUser } from "@/context/UserContext";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
-import { getInitials } from "@/lib/utils";
+import { formatRating, getInitials } from "@/lib/utils";
 import { getProfessorById } from "@/data/mockTeachers";
 
 
@@ -25,15 +25,15 @@ const MOCK_USER = {
 };
 
 const AVATAR_COLORS = [
-    { bg: "bg-[#2a1e08]", text: "text-amber" },
-    { bg: "bg-blue-dim", text: "text-blue" },
-    { bg: "bg-[#1e1030]", text: "text-[#9d5fe8]" },
-    { bg: "bg-primary-dim", text: "text-primary" },
-    { bg: "bg-amber-dim", text: "text-amber" },
+    { bg: "#2a1e08", text: "#f59e0b" },
+    { bg: "#0c1a2e", text: "#3b82f6" },
+    { bg: "#1e1030", text: "#9d5fe8" },
+    { bg: "#0a1f1a", text: "#0060a9" },
+    { bg: "#2a1e08", text: "#f59e0b" },
 ];
 
 const getAvatarColor = (id: string) => {
-    AVATAR_COLORS[parseInt(id) % AVATAR_COLORS.length];
+    return AVATAR_COLORS[parseInt(id) % AVATAR_COLORS.length];
 }
 
 
@@ -61,10 +61,10 @@ export default function ProfilePage() {
 
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col pt-20">
 
             {/* Desktop topbar */}
-            <div className="hidden lg:flex items-center justify-between px-6 py-3.5 borer-b border-border bg-bg2 sticky top-[57px] z-10">
+            <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-[57px] z-10">
                 <h1 className="font-bold text-[16px] text-text"
                     style={{
                         fontFamily: "Syne, sans-serif"
@@ -72,7 +72,11 @@ export default function ProfilePage() {
                     My Profile
                 </h1>
                 <button
-                    className="px-4 py-2 border border-border2 rounded-lg text-xs text-text2 hover:bg-bg3 transition-colors cursor-pointer"
+                    className="px-4 py-2 border border-border2 rounded-lg text-xs text-text2 font-bold hover:bg-bg3 transition-colors cursor-pointer"
+                    style={{
+                        background: `${fc.primary}`,
+                        color: "white"
+                    }}
                 >
                     Edit Profile
                 </button>
@@ -80,11 +84,16 @@ export default function ProfilePage() {
 
             {/* Mobile topbar */}
             <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-[49px] z-10">
-                <span className="text-sm font-medium text-text">My Profile</span>
-                <button className="text-xs text-primary cursor-pointer">Edit</button>
+                <span className="text-sm font-bold text-text">My Profile</span>
+                <button className="px-4 py-2 border border-border2 rounded-lg text-xs text-primary font-bold cursor-pointer"
+                    style={{
+                        background: `${fc.primary}`,
+                        color: "white"
+                    }}
+                >Edit profile</button>
             </div>
 
-            <div className="flex flex-cold lg:grid lg:grid-cols-[280px_1fr] min-h-screen">
+            <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] min-h-screen">
 
                 {/* Left col */}
                 <div className="lg:border-r border-border p-5 lg:p-6 flex flex-col gap-4">
@@ -126,7 +135,7 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Mini stats */}
-                    <div className="grid grid-cols2 gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                         {[
                             { label: "This semester", value: "4", sub: "reviews written", green: true },
                             { label: "Remaining", value: "3", sub: "this semester" },
@@ -177,23 +186,128 @@ export default function ProfilePage() {
                 <div className="p-5 lg:p-6 flex flex-col gap-5">
 
                     {/* Tabs mobile */}
-                    <div className="flex lg:hidden gap-1 border-b border-border pb-3">
+                    <div className="flex lg:hidden gap-1 pb-3">
                         {(["reviews", "stats"] as const).map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
                                 className={`px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors capitalize ${activeTab === tab
-                                        ? "bg-bg3 text-text font-medium"
-                                        : "text-text3"
+                                    ? "bg-bg3 text-text font-medium"
+                                    : "text-text3"
                                     }`}
                             >
                                 {tab === "reviews" ? "My Reviews" : "Stats"}
                             </button>
                         ))}
                     </div>
+
+                    {/* Stat on mobile */}
+                    <div className={activeTab === "reviews" ? "hidden lg:block" : ""}>
+                        <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
+                            Rating distribution
+                        </p>
+                        <div
+                            className="bg-bg2 border border-border rounded-xl p-4">
+                            <div className="flex flex-col gap-2.5">
+                                {[5, 4, 3, 2, 1].map((star) => {
+                                    const count = userReviews.filter(
+                                        (r) => Math.round(r.overallRating) === star
+                                    ).length;
+                                    const percent = userReviews.length
+                                        ? Math.round((count / userReviews.length) * 100) : 0;
+                                    return (
+                                        <div
+                                            key={star}
+                                            className="flex items-center gap-2 text-[11px]"
+                                        >
+                                            <span className="text-text3 w-11">{star} stars</span>
+                                            <div className="flex-1 h-[4px] bg-bg4 rounded-full overflow-hidden">
+                                                <div
+                                                    className="h-full rounded-full"
+                                                    style={{
+                                                        width: `${percent}%`,
+                                                        background: star >= 3 ? "#0060a9" : star > 1 ? "#f59e0b" : "#ef4444"
+                                                    }}
+                                                />
+                                            </div>
+                                            <span className="text-text2 w-8 text-right">{percent}%</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="h-[0.5px] bg-border my-4" />
+                            <div className="flex justify-around">
+                                <div className="text-center">
+                                    <p className="text-lg font-semibold text-primary">{formatRating(MOCK_USER.averageRatingGiven)}</p>
+                                    <p className="text-[9px] text-text3 mt-3">Avg rating given</p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-lg font-semibold text-text">{userReviews.length}</p>
+                                    <p className="text-[9px] text-text3 mt-1">Total reviews</p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-lg font-semibold text-text">{MOCK_USER.totalLikesReceived}</p>
+                                    <p className="text-[9px] text-text3 mt-1">Likes received</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Review history */}
+                    <div className={activeTab === "stats" ? "hidden lg:block" : ""}>
+                        <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
+                            Review history
+                        </p>
+                        <div className="flex flex-col gap-3">
+                            {userReviews.map((review) => {
+                                const professor = getProfessorById(review.professorId);
+                                if (!professor) return null;
+                                const colors = getAvatarColor(professor.id);
+                                const reviewFc = FACULTY_COLORS[professor.faculty] || DEFAULT_FACULTY_COLOR;
+                                return (
+                                    <div
+                                        key={review.id}
+                                        onClick={() => router.push(`/professor/${professor.id}`)}
+                                        className="bg-bg2 border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-bg3 transition-colors"
+                                    >
+                                        <div
+                                            className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
+                                            style={{ backgroundColor: colors.bg, color: colors.text }}
+                                        >
+                                            {getInitials(professor.firstName, professor.lastName)}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-medium text-text">
+                                                {professor.title} {professor.firstName} {professor.lastName}
+                                            </p>
+                                            <p className="text-xs mt-0.5" style={{ color: reviewFc.primary }}>{review.courseName}</p>
+                                            <p className="text-xs text-text2 mt-1.5 leading-relaxed line-clamp-2">
+                                                {review.comment}
+                                            </p>
+                                            <div className="flex justify-between items-center mt-2">
+                                                <span className="text-[10px] text-text3">{review.displayDate}</span>
+                                                <div className="flex gap-0.5">
+                                                    {[1, 2, 3, 4, 5].map((star) => (
+                                                        <div
+                                                            key={star}
+                                                            className="w-[8px] h-[8px]"
+                                                            style={{
+                                                                clipPath: "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
+                                                                background: star <= review.overallRating ? reviewFc.primary : reviewFc.mid
+                                                            }}
+                                                        ></div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
     );
 }
