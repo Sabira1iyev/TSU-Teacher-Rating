@@ -68,7 +68,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useUser();
-  const initials = user ? getInitials(user.firstName, user.lastName) : "??";
+  const initials = getInitials(user?.firstName || "FirstName", user?.lastName || "LastName");
 
   return (
     <div className="min-h-screen bg-[#f2f5f7] flex overflow-x-hidden">

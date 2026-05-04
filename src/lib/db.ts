@@ -6,8 +6,8 @@ const config: sql.config = {
   database: process.env.DB_NAME,
   server: process.env.DB_SERVER!,
   options: {
-    encrypt: false,
-    trustServerCertificate: true,
+    encrypt: true, // Azure SQL requires encryption
+    trustServerCertificate: false,
   },
 };
 

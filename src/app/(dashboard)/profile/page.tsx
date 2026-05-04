@@ -101,7 +101,7 @@ export default function ProfilePage() {
                     {/* Profile card */}
                     <div className="bg-bg2 border border-border rounded-2xl p-5 text-center">
                         <div className="w-16 h-16 lg:w-[72px] lg:h-[72px] rounded-full bg-blue-dim flex items-center justify-center text-xl lg:text-2xl text-blue font-semibold mt-6 mx-auto mb-3 border-2 border-border2">
-                            {getInitials(MOCK_USER.firstName, MOCK_USER.lastName)}
+                            {getInitials(user?.firstName || MOCK_USER.firstName, user?.lastName || MOCK_USER.lastName)}
                         </div>
                         <h2 className="font-bold text-base lg:text-lg text-text"
                             style={{

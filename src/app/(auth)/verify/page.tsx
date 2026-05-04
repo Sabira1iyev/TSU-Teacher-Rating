@@ -2,13 +2,16 @@
 
 import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
+import { useUser } from "@/context/UserContext"
 
 
 export default function VerifyPage() {
 
     const router = useRouter();
+    const { user } = useUser();
     const [code, setCode] = useState(["", "", "", "", "", ""]);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
 
@@ -44,14 +47,42 @@ export default function VerifyPage() {
         inputs.current[Math.min(pasted.length, 5)]?.focus();
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const fullCode = code.join("");
         if(fullCode.length < 6){
             setError("Please enter the full 6-digit code.");
             return;
         }
+        
+        if (!user?.email) {
+            setError("Email address is missing. Please register again.");
+            return;
+        }
+
         setError("");
-        router.push("/dashboard");
+        setLoading(true);
+
+        try {
+            const res = await fetch("/api/auth/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: user.email, code: fullCode }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError(data.error || "Verification failed.");
+                setLoading(false);
+                return;
+            }
+
+            // Success
+            router.push("/dashboard");
+        } catch (err) {
+            setError("Connection error. Please try again.");
+            setLoading(false);
+        }
     }
 
     const handleResend = () =>{
@@ -110,7 +141,7 @@ export default function VerifyPage() {
                         We sent a 6-digit code to
                     </p>
                     <p className="text-sm text-[#0060a9] font-medium mt-1">
-                        name.surname123@hum.tsu.edu.ge
+                        {user?.email || "your email address"}
                     </p>
                     <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
                 </div>
@@ -145,19 +176,18 @@ export default function VerifyPage() {
                 )}
 
 
-                {/* Submit */}
                 <button
                     onClick={handleSubmit}
-                    disabled={!isComplete}
+                    disabled={!isComplete || loading}
                     className={`
                     w-full py-4 rounded-xl text-sm font-semibold transition-all cursor-pointer
-                    ${isComplete
+                    ${isComplete && !loading
                             ? "bg-[#0060a9] text-white hover:bg-[#004d8a] shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
                             : "bg-[#e4eaf0] text-[#8a97a4] cursor-not-allowed"
                         }
                     `}
                 >
-                    Verify and continue →
+                    {loading ? "Verifying..." : "Verify and continue →"}
                 </button>
 
                 {/* Resend*/}

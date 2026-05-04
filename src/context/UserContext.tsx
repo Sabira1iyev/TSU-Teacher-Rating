@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface User {
   firstName: string;
@@ -12,13 +12,33 @@ interface User {
  
 interface UserContextType {
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUserState] = useState<User | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("teacherrating_user");
+    if (storedUser) {
+      try {
+        setUserState(JSON.parse(storedUser));
+      } catch (e) {
+        console.error("Failed to parse user from localStorage");
+      }
+    }
+  }, []);
+
+  const setUser = (newUser: User | null) => {
+    setUserState(newUser);
+    if (newUser) {
+      localStorage.setItem("teacherrating_user", JSON.stringify(newUser));
+    } else {
+      localStorage.removeItem("teacherrating_user");
+    }
+  };
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
