@@ -2,11 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import { useUser } from "@/context/UserContext";
 
 export default function LoginPage() {
 
     const router = useRouter();
+    const { setUser } = useUser();
 
     const [formData, setFormData] = useState({
         email: "",
@@ -20,21 +21,26 @@ export default function LoginPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        setError("");
         setSuccess("");
 
-        if (!formData.email.endsWith("@hum.tsu.edu.ge") && !formData.email.endsWith("@ens.tsu.edu.ge")) {
-            setError("Please use your TSU email address.");
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            setError(data.error);
             return;
         }
 
-        if (formData.password.length < 8) {
-            setError("Password must be at least 8 characters.");
-            return;
-        }
-
-        setError("");
         setSuccess("Login successful! Redirecting...");
+        
+        setUser(data.user);
 
         setTimeout(() => {
             router.push("/dashboard");

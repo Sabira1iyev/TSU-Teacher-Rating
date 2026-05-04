@@ -37,7 +37,7 @@ export default function VerifyPage() {
     const handlePaste = (e: React.ClipboardEvent) => {
         e.preventDefault();
         const pasted = e.clipboardData.getData("text").slice(0, 6);
-        if(!/^\d*$/.test(pasted))return;
+        if (!/^\d*$/.test(pasted)) return;
 
         const newCode = [...code];
         pasted.split("").forEach((char, i) => {
@@ -49,11 +49,11 @@ export default function VerifyPage() {
 
     const handleSubmit = async () => {
         const fullCode = code.join("");
-        if(fullCode.length < 6){
+        if (fullCode.length < 6) {
             setError("Please enter the full 6-digit code.");
             return;
         }
-        
+
         if (!user?.email) {
             setError("Email address is missing. Please register again.");
             return;
@@ -85,13 +85,13 @@ export default function VerifyPage() {
         }
     }
 
-    const handleResend = () =>{
+    const handleResend = () => {
         setCode(["", "", "", "", "", ""]);
         setError("");
         inputs.current[0]?.focus();
     }
 
-    const isComplete = code.every((d) => d !== ""); 
+    const isComplete = code.every((d) => d !== "");
 
     return (
         <div className="min-h-screen bg-[#f2f5f7] flex flex-col items-center">
