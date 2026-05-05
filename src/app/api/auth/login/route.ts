@@ -30,16 +30,19 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     } else {
+      const nameParts = user.DisplayName ? user.DisplayName.split(" ") : ["", ""];
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
       return NextResponse.json(
         {
           message: "Login successful",
           user: {
-            firstName: user.FirstName,
-            lastName: user.LastName,
+            firstName: firstName,
+            lastName: lastName,
             email: user.Email,
             faculty: user.Faculty,
-            isVerified: user.IsVerified,
-            studyYear: user.StudyYear,
+            studyYear: user.AcademicLevel,
           },
         },
         { status: 200 },
