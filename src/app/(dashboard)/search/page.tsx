@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { mockProfessor } from "@/data/mockTeachers";
 import { FACULTIES, ACADEMIC_TITLES } from "@/lib/constants";
@@ -32,6 +32,15 @@ export default function SearchPage() {
     const [minReviews, setMinReviews] = useState(0);
     const [sortBy, setSortBy] = useState<SortOption>("rating");
     const [showFilters, setShowFilters] = useState(false);
+    const [professors, setProfessors] = useState<Professor[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("/api/professors")
+            .then((res) => res.json())
+            .then((data) => setProfessors(data))
+            .then(() => setLoading(false));
+    }, []);
 
     const toglleTittle = (title: string) => {
         setSelectedTitles((prev) =>
@@ -40,12 +49,12 @@ export default function SearchPage() {
     };
 
     const results = useMemo(() => {
-        let filtered = mockProfessor.filter((p: Professor) => {
+        let filtered = professors.filter((p: Professor) => {
             const fullName = `${p.firstName} ${p.lastName} ${p.title}`.toLowerCase();
             const matchesQuery = query === "" ||
                 fullName.includes(query.toLowerCase()) ||
-                p.department.toLowerCase().includes(query.toLowerCase()) ||
-                p.courses.some((c) => c.toLowerCase().includes(query.toLowerCase()));
+                (p.department && p.department.toLowerCase().includes(query.toLowerCase())) ||
+                (p.courses || []).some((c) => c.toLowerCase().includes(query.toLowerCase()));
 
             const matchesFaculty =
                 selectedFaculty === "All" || p.faculty === selectedFaculty;
@@ -229,7 +238,7 @@ export default function SearchPage() {
                                                     {profesor.faculty.replace("Faculty of ", "")} · {profesor.department}
                                                 </p>
                                                 <div className="flex flex-wrap gap-1.5 mt-2">
-                                                    {profesor.badges.map((badge) => (
+                                                    {(profesor.badges || []).map((badge) => (
                                                         <span
                                                             key={badge}
                                                             className="px-2 py-0.5 bg-primary-dim text-primary text-[9px] rounded-lg"
@@ -237,7 +246,7 @@ export default function SearchPage() {
                                                             {badge}
                                                         </span>
                                                     ))}
-                                                    {profesor.courses.slice(0, 2).map((course) => (
+                                                    {(profesor.courses || []).slice(0, 2).map((course) => (
                                                         <span
                                                             key={course}
                                                             className="px-2 py-0.5 bg-bg4 text-text3 text-[9px] rounded-lg"

@@ -2,7 +2,8 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { mockProfessor, getProfessorById } from "@/data/mockTeachers";
+import { useEffect } from "react";
+// mock data removed
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { REVIEW_TAGS, SEMESTERS, CRITERIS_LABELS, FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
@@ -28,11 +29,12 @@ function RatePageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const professorId = searchParams.get("professorId");
-    const professor = professorId ? getProfessorById(professorId) : null;
+    const [professor, setProfessor] = useState<any>(null);
+    const [allProfessors, setAllProfessors] = useState<any[]>([]);
 
     const [form, setForm] = useState<ReviewForm>({
         professorId: professorId || "",
-        courseName: professor?.courses[0] || "",
+        courseName: "",
         semester: SEMESTERS[0],
         overallRating: 0,
         criteria: {
@@ -42,11 +44,33 @@ function RatePageContent() {
             accessibility: 0,
             examControlLevel: 0,
         },
-
         comment: "",
         tags: [],
         wouldRecommend: true,
     });
+
+    useEffect(() => {
+        if (professorId) {
+            fetch(`/api/professors/${professorId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.message && !data.error) {
+                        setProfessor(data);
+                        setForm(prev => ({ 
+                            ...prev, 
+                            professorId: data.id,
+                            courseName: data.courses && data.courses.length > 0 ? data.courses[0] : "" 
+                        }));
+                    }
+                });
+        } else {
+            fetch("/api/professors")
+                .then(res => res.json())
+                .then(data => {
+                    if(Array.isArray(data)) setAllProfessors(data);
+                });
+        }
+    }, [professorId]);
 
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState("");
@@ -180,7 +204,7 @@ function RatePageContent() {
                                 <div className="flex flex-col gap-2">
                                     <p className="text-xs text-text3 mb-1">Select a professor to rate</p>
                                     <div className="flex flex-col gap-2 h-auto overflow-y-auto">
-                                        {mockProfessor.map((p) => {
+                                        {allProfessors.map((p) => {
                                             const pColor = FACULTY_COLORS[p.faculty] || DEFAULT_FACULTY_COLOR;
                                             return (
                                                 <div
@@ -189,7 +213,7 @@ function RatePageContent() {
                                                         setForm((prev) => ({
                                                             ...prev,
                                                             professorId: p.id,
-                                                            courseName: p.courses[0],
+                                                            courseName: p.courses && p.courses.length > 0 ? p.courses[0] : "",
                                                         }))
                                                         router.push(`/rate?professorId=${p.id}`);
                                                     }}
@@ -233,7 +257,7 @@ function RatePageContent() {
                                     onChange={(e) => setForm((prev) => ({ ...prev, semester: e.target.value }))}
                                     className="w-full bg-bg3 border border-border2 rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
                                 >
-                                    {professor.courses.map((course) => (
+                                    {(professor.courses || []).map((course: string) => (
                                         <option
                                             key={course} value={course}
                                             className="bg-bg3"
@@ -379,6 +403,13 @@ function RatePageContent() {
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Error Message */}
+                            {error && (
+                                <div className="p-3 bg-red-50 text-red-500 text-sm rounded-xl border border-red-100 text-center">
+                                    {error}
+                                </div>
+                            )}
 
                             {/* Submit */}
                             <button

@@ -1,11 +1,12 @@
 "use client"
 
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getProfessorById } from "@/data/mockTeachers";
 import { getReviewsByProfessorId } from "@/data/mockReviews";
 import { getInitials, formatRating, getRatingColor, getRatingBarColor } from "@/lib/utils";
 import { CRITERIS_LABELS, FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
+import { Professor } from "@/types/teacher"
 
 type Tab = "Overview" | "Reviews" | "Courses";
 
@@ -14,8 +15,21 @@ export default function ProfessorProfilePage() {
     const params = useParams();
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<Tab>("Overview");
+    const [professor, setProfessor] = useState<Professor | null>(null)
+    const [loading, setLoading] = useState(true);
 
-    const professor = getProfessorById(params.ID as string);
+    useEffect(() => {
+        fetch(`/api/professors/${params.ID}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (!data.error) {
+                    setProfessor(data)
+                }
+                setLoading(false);
+            })
+    }, [params.ID])
+
+
     const reviews = getReviewsByProfessorId(params.ID as string);
 
     // Get faculty-specific color palette
@@ -23,6 +37,11 @@ export default function ProfessorProfilePage() {
         ? FACULTY_COLORS[professor.faculty] || DEFAULT_FACULTY_COLOR
         : DEFAULT_FACULTY_COLOR;
 
+    if (loading) {
+        return (
+            <div className="p-20 text-center text-lg">Professor informations are loading...</div>
+        )
+    }
 
     if (!professor) {
         return (
@@ -105,7 +124,7 @@ export default function ProfessorProfilePage() {
                                 {getInitials(professor.firstName, professor.lastName)}
                             </div>
                         </div>
- 
+
                         {/* Name & details */}
                         <div className="flex-1 min-w-0">
                             <p className="text-[10px] uppercase tracking-[0.15em] text-text3 mb-1">{professor.title}</p>
@@ -118,7 +137,7 @@ export default function ProfessorProfilePage() {
                                 <span className="text-[11px] text-text3">Tbilisi State University</span>
                             </div>
                             <div className="flex flex-wrap gap-1.5 mt-3">
-                                {professor.courses.map((course) => (
+                                {(professor.courses || []).map((course) => (
                                     <span key={course}
                                         className="px-2.5 py-1 rounded-lg text-[10px] text-text2 font-medium"
                                         style={{
