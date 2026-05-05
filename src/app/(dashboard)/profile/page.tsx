@@ -107,11 +107,11 @@ export default function ProfilePage() {
                             style={{
                                 fontFamily: "Syne, sans-serif"
                             }}>
-                            {MOCK_USER.firstName} {MOCK_USER.lastName}
+                            {user?.firstName || "FirstName"} {user?.lastName || "LastName"}
                         </h2>
-                        <p className="text-xs text-primary mt-1">Tbilisi State University</p>
+                        <p className="text-xs text-primary mt-1">{user?.email || "Email is loading..."}</p>
                         <p className="text-xs text-text3 mt-0.5">
-                            {MOCK_USER.faculty.replace("Faculty of ", "")} · {MOCK_USER.studyYear}rd year
+                            {user?.faculty ? user.faculty.replace("Faculty of ", "") : "Faculty"} · {user?.studyYear}rd year
                         </p>
 
                         <div className="h-[0.5px] bg-border my-4" />
