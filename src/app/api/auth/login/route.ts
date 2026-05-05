@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user = result.recordset[0];
-    const isPasswordTrue = await bcrypt.compare(password, user.passwordHash);
+    const isPasswordTrue = await bcrypt.compare(password, user.PasswordHash);
 
     if (!isPasswordTrue) {
       return NextResponse.json(
