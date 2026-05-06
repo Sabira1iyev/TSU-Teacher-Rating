@@ -66,7 +66,21 @@ export default function RegisterPage() {
                 setError(data.error || "Something went wrong.");
                 return;
             }
-            router.push("/verify");
+            
+            setUser({
+                firstName: formdata.firstName,
+                lastName: formdata.lastName,
+                email: formdata.email,
+                faculty: formdata.faculty,
+                studyYear: formdata.studyYear,
+                userId: data.userId,
+            });
+
+            setSuccess("Registration successful! Redirecting to verification...");
+            
+            setTimeout(() => {
+                router.push("/verify");
+            }, 1500);
         }
         catch (err) {
             setError("Connection error. Please try again.")
@@ -74,22 +88,6 @@ export default function RegisterPage() {
         finally {
             setLoading(false);
         }
-
-
-        setUser({
-            firstName: formdata.firstName,
-            lastName: formdata.lastName,
-            email: formdata.email,
-            faculty: formdata.faculty,
-            studyYear: formdata.studyYear,
-        })
-
-
-        setSuccess("Informations about student are correct.");
-
-        setTimeout(() => {
-            router.push("/verify");
-        }, 1500);
     }
 
     return (
