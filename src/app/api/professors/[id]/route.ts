@@ -58,6 +58,65 @@ export async function GET(
       },
     };
 
+    const reviewResult = await (
+      await db
+    )
+      .request()
+      .input("ProfId", id)
+      .query(
+        `
+      SELECT 
+      r.ReviewId as id,
+      r.ProfessorId as professorId,
+      r.CourseName as courseName,
+      r.Semester as semester,
+      r.OverallRating as overallRating,
+      r.Comment as comment,
+      r.CreatedAt as createdAt,
+      r.TeachingRating as teaching,
+      r.ExamDifficultyRating as examDifficulty,
+      r.HomeWorkRating as homeWork,
+      r.AccessibilityRating as accessibility,
+      r.ExamControlRating as examControlLevel,
+      r.WouldRecommend as wouldRecommend,
+      r.IsAnonymus as isAnonymus,
+      (SELECT STRING_AGG(t.Name, ',' )
+      FROM ReviewTags rt
+      JOIN Tags t ON rt.TagId = t.TagId
+      WHERE rt.ReviewId = r.ReviewId) as tagsString
+      FROM Reviews r
+      WHERE r.ProfessorId = @ProfId
+      ORDER BY r.CreatedAt DESC
+      `,
+      );
+
+    const reviews = reviewResult.recordset.map((r: any) => ({
+      id: r.id,
+      professorId: r.professorId.toString(),
+      courseName: r.courseName || "",
+      semester: r.semester || "",
+      overallRating: r.overallRating || 0,
+      criteria: {
+        teaching: r.teaching || 0,
+        examDifficulty: r.examDifficulty || 0,
+        homeWork: r.homeWork || 0,
+        accessibility: r.accessibility || 0,
+        examControlLevel: r.examControlLevel || 0,
+      },
+      comment: r.comment || "",
+      tags: r.tagsString ? r.tagsString.split(",") : [],
+      wouldRecommend: r.wouldRecommend || false,
+      isAnonymous: r.isAnonymus || true,
+      displayDate: new Date(r.createdAt).toLocaleDateString("en-us", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      createdAt: r.createdAt,
+    }));
+
+    fullProfessor.reviews = reviews;
+
     return NextResponse.json(fullProfessor, { status: 200 });
   } catch (error) {
     console.log(error);
