@@ -8,8 +8,9 @@ interface User {
   email: string;
   faculty: string;
   studyYear: string;
+  userId: number;
 }
- 
+
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;

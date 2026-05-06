@@ -6,12 +6,21 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     console.log("Reviews from FRONTEND", body);
 
+    if (!body.userId) {
+      return NextResponse.json(
+        {
+          message: "You have to be logged in to submit a review",
+        },
+        { status: 401 },
+      );
+    }
+
     const pool = await getDb();
 
     const result = await pool
       .request()
       .input("ProfessorId", body.professorId)
-      .input("UserId", 1)
+      .input("UserId", body.userId)
       .input("CourseName", body.courseName)
       .input("Semester", body.semester)
       .input("TeacherRating", body.criteria.teaching)
@@ -86,28 +95,30 @@ export async function POST(req: NextRequest) {
         }
       }
     }
-    
 
     await pool
-    .request()
-    .input("ProfessorId", body.professorId)
-    .query(
-      `
+      .request()
+      .input("ProfessorId", body.professorId)
+      .query(
+        `
       UPDATE Professors
       SET
       reviewCount = (SELECT COUNT(*) FROM Reviews WHERE ProfessorId = @ProfessorId),
       AverageRating = (SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews
       WHERE ProfessorId = @ProfessorId)
       WHERE ProfessorId = @ProfessorId      
-      `
-    );
+      `,
+      );
 
     return NextResponse.json({ message: "REVIEWS received" }, { status: 200 });
   } catch (error: any) {
     console.log("API ERROR", error);
     return NextResponse.json(
-      { message: error.message || "Something went wrong" },
-      { status: 500 }
+      {
+        message:
+          "An unknown error occurred while saving the review. Please try again later.",
+      },
+      { status: 500 },
     );
   }
 }

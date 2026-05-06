@@ -30,7 +30,9 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     } else {
-      const nameParts = user.DisplayName ? user.DisplayName.split(" ") : ["", ""];
+      const nameParts = user.DisplayName
+        ? user.DisplayName.split(" ")
+        : ["", ""];
       const firstName = nameParts[0] || "";
       const lastName = nameParts.slice(1).join(" ") || "";
 
@@ -43,6 +45,7 @@ export async function POST(req: NextRequest) {
             email: user.Email,
             faculty: user.Faculty,
             studyYear: user.AcademicLevel,
+            userId: user.UserId,
           },
         },
         { status: 200 },

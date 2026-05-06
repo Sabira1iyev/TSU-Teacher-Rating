@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { REVIEW_TAGS, SEMESTERS, CRITERIS_LABELS, FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
-
+import { useUser } from "@/context/UserContext";
 
 import { Key } from "lucide-react";
 
@@ -25,7 +25,7 @@ const STAR_COLOR = {
 
 
 function RatePageContent() {
-
+    const {user} = useUser();
     const router = useRouter();
     const searchParams = useSearchParams();
     const professorId = searchParams.get("professorId");
@@ -102,6 +102,11 @@ function RatePageContent() {
     }
 
     const handleSubmit = async () => {
+        if(!user){
+            setError("Please log in to submit a review.");
+            return;
+        }
+
         if (!form.professorId) {
             setError("Please select a professor.");
             return;
@@ -121,7 +126,9 @@ function RatePageContent() {
             const res = await fetch("/api/reviews", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form)
+                body: JSON.stringify({...form, userId:user?.userId}
+
+                )
             });
 
             if (res.ok) {
