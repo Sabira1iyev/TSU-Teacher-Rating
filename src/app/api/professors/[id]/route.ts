@@ -3,7 +3,7 @@ import { getDb } from "@/lib/db";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const db = getDb();
   try {
@@ -41,21 +41,21 @@ export async function GET(
         { status: 404 },
       );
     }
-    
+
     const p = result.recordset[0];
-    
+
     const fullProfessor = {
-        ...p,
-        courses: [],
-        recommendationRate: 0,
-        trendData: [], 
-        criteria: {
-            teaching: p.overallRating || 0,
-            examDifficulty: p.overallRating || 0,
-            homeWork: p.overallRating || 0,
-            accessibility: p.overallRating || 0,
-            examControlLevel: p.overallRating || 0,
-        }
+      ...p,
+      courses: [],
+      recommendationRate: 0,
+      trendData: [],
+      criteria: {
+        teaching: p.overallRating || 0,
+        examDifficulty: p.overallRating || 0,
+        homeWork: p.overallRating || 0,
+        accessibility: p.overallRating || 0,
+        examControlLevel: p.overallRating || 0,
+      },
     };
 
     return NextResponse.json(fullProfessor, { status: 200 });
