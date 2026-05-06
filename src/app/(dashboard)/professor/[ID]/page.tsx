@@ -2,11 +2,10 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { getProfessorById } from "@/data/mockTeachers";
-import { getReviewsByProfessorId } from "@/data/mockReviews";
 import { getInitials, formatRating, getRatingColor, getRatingBarColor } from "@/lib/utils";
 import { CRITERIS_LABELS, FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { Professor } from "@/types/teacher"
+import { Review } from "@/types/review";
 
 type Tab = "Overview" | "Reviews" | "Courses";
 
@@ -30,7 +29,7 @@ export default function ProfessorProfilePage() {
     }, [params.ID])
 
 
-    const reviews = getReviewsByProfessorId(params.ID as string);
+    const reviews = professor?.reviews || [];
 
     // Get faculty-specific color palette
     const fc = professor

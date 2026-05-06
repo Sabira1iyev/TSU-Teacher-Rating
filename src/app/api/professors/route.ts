@@ -24,7 +24,22 @@ export async function GET() {
         `,
     )
 
-    return NextResponse.json(result.recordset, { status: 200 });   
+    const professors = result.recordset.map(p => ({
+      ...p,
+      courses: [],
+      recommendationRate: 0,
+      trendData: [],
+      badges: [],
+      criteria: {
+          teaching: p.overallRating || 0,
+          examDifficulty: p.overallRating || 0,
+          homeWork: p.overallRating || 0,
+          accessibility: p.overallRating || 0,
+          examControlLevel: p.overallRating || 0,
+      }
+    }));
+
+    return NextResponse.json(professors, { status: 200 });   
   } catch (error) {
     console.log(error);
     return NextResponse.json(

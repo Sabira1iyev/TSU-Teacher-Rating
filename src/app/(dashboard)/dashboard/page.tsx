@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { mockProfessor } from "@/data/mockTeachers"
 import { Professor } from "@/types/teacher"
 import { FACULTIES } from "@/lib/constants"
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils"
@@ -38,11 +37,21 @@ export default function DashBoardPage() {
     const router = useRouter();
     const [selectedFaculty, setSelectedFaculty] = useState<string>("All");
     const [activeTab, setActiveTab] = useState<Tab>("Top rated");
+    const [professors, setProfessors] = useState<Professor[]>([]);
 
+    useEffect(() => {
+        fetch("api/professors")
+            .then((res) => res.json())
+            .then((data) => {
+                if (Array.isArray(data)) {
+                    setProfessors(data);
+                }
+            });
+    }, []);
 
     const filteredProfessors = selectedFaculty === "All"
-        ? mockProfessor
-        : mockProfessor.filter((p) => p.faculty === selectedFaculty);
+        ? professors
+        : professors.filter((p) => p.faculty === selectedFaculty);
 
     const sortedProfessors = [...filteredProfessors].sort((a, b) => {
         if (activeTab === "Top rated") return b.overallRating - a.overallRating;
@@ -83,8 +92,8 @@ export default function DashBoardPage() {
                     {FACULTIES.map((faculty) => {
                         const isActive = selectedFaculty === faculty;
                         const count = faculty === "All"
-                            ? mockProfessor.length
-                            : mockProfessor.filter((p) => p.faculty === faculty).length;
+                            ? professors.length
+                            : professors.filter((p) => p.faculty === faculty).length;
 
                         return (
                             <button
@@ -117,8 +126,8 @@ export default function DashBoardPage() {
                     {FACULTIES.map((faculty) => {
                         const isActive = selectedFaculty === faculty;
                         const count = faculty === "All"
-                            ? mockProfessor.length
-                            : mockProfessor.filter((p) => p.faculty === faculty).length;
+                            ? professors.length
+                            : professors.filter((p) => p.faculty === faculty).length;
                         return (
                             <button
                                 key={faculty}

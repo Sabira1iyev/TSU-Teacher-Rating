@@ -86,13 +86,28 @@ export async function POST(req: NextRequest) {
         }
       }
     }
+    
+
+    await pool
+    .request()
+    .input("ProfessorId", body.professorId)
+    .query(
+      `
+      UPDATE Professors
+      SET
+      reviewCount = (SELECT COUNT(*) FROM Reviews WHERE ProfessorId = @ProfessorId),
+      AverageRating = (SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews
+      WHERE ProfessorId = @ProfessorId)
+      WHERE ProfessorId = @ProfessorId      
+      `
+    );
 
     return NextResponse.json({ message: "REVIEWS received" }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.log("API ERROR", error);
     return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 500 },
+      { message: error.message || "Something went wrong" },
+      { status: 500 }
     );
   }
 }

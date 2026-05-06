@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { mockProfessor } from "@/data/mockTeachers";
 import { FACULTIES, ACADEMIC_TITLES } from "@/lib/constants";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { Professor } from "@/types/teacher";

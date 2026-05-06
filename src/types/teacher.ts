@@ -1,3 +1,5 @@
+import { Review } from "./review";
+
 export type AcademicTitle =
   | "Instructor"
   | "Prof. Dr."
@@ -45,6 +47,7 @@ export interface Professor {
   trendData: TrendData[];
   badges: string[];
   createdAt: string;
+  reviews?: Review[];
 }
 
 export interface ProfessorSummary {

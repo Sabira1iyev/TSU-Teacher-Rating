@@ -56,10 +56,10 @@ function RatePageContent() {
                 .then(data => {
                     if (!data.message && !data.error) {
                         setProfessor(data);
-                        setForm(prev => ({ 
-                            ...prev, 
+                        setForm(prev => ({
+                            ...prev,
                             professorId: data.id,
-                            courseName: data.courses && data.courses.length > 0 ? data.courses[0] : "" 
+                            courseName: data.courses && data.courses.length > 0 ? data.courses[0] : ""
                         }));
                     }
                 });
@@ -67,7 +67,7 @@ function RatePageContent() {
             fetch("/api/professors")
                 .then(res => res.json())
                 .then(data => {
-                    if(Array.isArray(data)) setAllProfessors(data);
+                    if (Array.isArray(data)) setAllProfessors(data);
                 });
         }
     }, [professorId]);
@@ -101,7 +101,7 @@ function RatePageContent() {
         }))
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!form.professorId) {
             setError("Please select a professor.");
             return;
@@ -111,12 +111,27 @@ function RatePageContent() {
             setError("Please give an overall rating.");
             return;
         }
-        if (form.comment.length < 0) {
+        if (form.comment.length < 10) {
             setError("Please write at least 10 characters in your comment.");
             return;
         }
         setError("");
-        setSubmitted(true);
+
+        try {
+            const res = await fetch("/api/reviews", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form)
+            });
+
+            if (res.ok) {
+                setSubmitted(true);
+            } else {
+                setError("A server error occurred while submitting the review.");
+            }
+        } catch (err) {
+            setError("Could not reach the server.");
+        }
     };
 
     const fc = professor
@@ -223,7 +238,7 @@ function RatePageContent() {
                                                         borderColor: pColor.mid
                                                     }}
                                                 >
-                                                    <div 
+                                                    <div
                                                         className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
                                                         style={{ background: pColor.mid, color: pColor.primary }}
                                                     >
