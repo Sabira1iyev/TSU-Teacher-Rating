@@ -1,17 +1,4 @@
-export type ReviewTag =
-  | "Engaging Class"
-  | "Helpfull"
-  | "Hard exams"
-  | "Heavy Homework"
-  | "Inspiring"
-  | "Punctual"
-  | "Clear explanation"
-  | "Flexible"
-  | "Confident"
-  | "Friendly"
-  | "Master"
-  | "Funny"
-  | "Hardest Teacher";
+export type ReviewTag = string;
 
 export interface ReviewCriteria {
   teaching: number;
