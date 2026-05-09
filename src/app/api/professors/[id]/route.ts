@@ -115,6 +115,25 @@ export async function GET(
       createdAt: r.createdAt,
     }));
 
+    const recommendCount = reviews.filter((r) => r.wouldRecommend).length;
+    const totalReviews = reviews.length;
+
+    const breakDown = [5, 4, 3, 2, 1].map((star) => {
+      const count = reviews.filter(
+        (r) => Math.floor(r.overallRating) === star,
+      ).length;
+
+      const percent =
+        totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+
+      return { star, percent };
+    });
+
+    fullProfessor.ratingBreakDown = breakDown;
+
+    fullProfessor.recommendationRate =
+      totalReviews > 0 ? Math.round((recommendCount / totalReviews) * 100) : 0;
+
     fullProfessor.reviews = reviews;
 
     return NextResponse.json(fullProfessor, { status: 200 });

@@ -81,7 +81,7 @@ export default function DashBoardPage() {
     <div className="flex flex-col gap-5 p-5 lg:p-6">
       {/* Greeting - Mobile */}
       <div className="lg:hidden">
-        <p className="text-xs font-semibold text-[#0060a9] mb-1">{fullName}</p>
+        <p className="text-xs font-semibold text-[#0060a9] mb-1">Hello, {fullName}</p>
         <h1
           className="text-xl font-semibold text-[#1a2a3a] leading-tight"
           style={{ fontFamily: "Syne, sans-serif" }}

@@ -206,12 +206,7 @@ function RatePageContent() {
     string,
   ][];
 
-  const ratingBreakDown = professor
-    ? [5, 4, 3, 2, 1].map((star) => ({
-        star,
-        percent: star === 5 ? 80 : star === 4 ? 14 : star === 3 ? 4 : 2,
-      }))
-    : [];
+  const ratingBreakDown = professor?.ratingBreakDown || [];
 
   return (
     <div className="flex flex-col">
@@ -581,31 +576,33 @@ function RatePageContent() {
                 {professor.reviewCount} students rated
               </p>
               <div className="flex flex-col gap-2">
-                {ratingBreakDown.map(({ star, percent }) => (
-                  <div
-                    key={star}
-                    className="flex items-center gap-2 text-[10px]"
-                  >
-                    <span className="text-text3 w-12">{star} stars</span>
-                    <div className="flex-1 h-[3px] bg-bg4 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${percent}`,
-                          background:
-                            star >= 4
-                              ? "#0060a9"
-                              : star >= 2
-                                ? "#d4a017"
-                                : "#dc2626",
-                        }}
-                      />
+                {ratingBreakDown.map(
+                  ({ star, percent }: { star: number; percent: number }) => (
+                    <div
+                      key={star}
+                      className="flex items-center gap-2 text-[10px]"
+                    >
+                      <span className="text-text3 w-12">{star} stars</span>
+                      <div className="flex-1 h-[3px] bg-bg4 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${percent}`,
+                            background:
+                              star >= 4
+                                ? "#0060a9"
+                                : star >= 2
+                                  ? "#d4a017"
+                                  : "#dc2626",
+                          }}
+                        />
+                      </div>
+                      <span className="text text-2 w-7 text-right">
+                        {percent}%
+                      </span>
                     </div>
-                    <span className="text text-2 w-7 text-right">
-                      {percent}%
-                    </span>
-                  </div>
-                ))}
+                  ),
+                )}
               </div>
             </div>
           </div>
