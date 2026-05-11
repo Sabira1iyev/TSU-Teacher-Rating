@@ -3,12 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import { mockReviews } from "@/data/mockReviews";
 import { useUser } from "@/context/UserContext";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { formatRating, getInitials } from "@/lib/utils";
-import { getProfessorById } from "@/data/mockTeachers";
-
 // Profile stats that would come from a backend in the future
 const MOCK_USER = {
   firstName: "FirstName",
@@ -37,11 +34,9 @@ const getAvatarColor = (id: string) => {
 
 export default function ProfilePage() {
   const { user } = useUser();
-  const params = useParams();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"reviews" | "stats">("reviews");
-  const professor = getProfessorById(params.ID as string);
-  const userReviews = mockReviews.slice(0, 5);
+  const [reviewsHistory, setReviewsHistory] = useState<any[]>([]);
   const [stats, setStats] = useState({
     totalReviews: 0,
     averageRatingGiven: 0,
@@ -61,10 +56,15 @@ export default function ProfilePage() {
           console.log("Stats fetch error:", error);
         });
     }
+    fetch(`/api/user/reviews?userId=${user?.userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setReviewsHistory(data.reviews || []);
+      });
   }, [user?.userId]);
 
-  const fc = professor
-    ? FACULTY_COLORS[professor.faculty] || DEFAULT_FACULTY_COLOR
+  const fc = user?.faculty
+    ? FACULTY_COLORS[user.faculty] || DEFAULT_FACULTY_COLOR
     : DEFAULT_FACULTY_COLOR;
 
   const contributions = [
@@ -247,11 +247,11 @@ export default function ProfilePage() {
             <div className="bg-bg2 border border-border rounded-xl p-4">
               <div className="flex flex-col gap-2.5">
                 {[5, 4, 3, 2, 1].map((star) => {
-                  const count = userReviews.filter(
-                    (r) => Math.round(r.overallRating) === star,
+                  const count = reviewsHistory.filter(
+                    (r) => Math.round(r.OverallRating) === star,
                   ).length;
-                  const percent = userReviews.length
-                    ? Math.round((count / userReviews.length) * 100)
+                  const percent = reviewsHistory.length
+                    ? Math.round((count / reviewsHistory.length) * 100)
                     : 0;
                   return (
                     <div
@@ -291,7 +291,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="text-center">
                   <p className="text-lg font-semibold text-text">
-                    {userReviews.length}
+                    {reviewsHistory.length}
                   </p>
                   <p className="text-[9px] text-text3 mt-1">Total reviews</p>
                 </div>
@@ -311,37 +311,38 @@ export default function ProfilePage() {
               Review history
             </p>
             <div className="flex flex-col gap-3">
-              {userReviews.map((review) => {
-                const professor = getProfessorById(review.professorId);
-                if (!professor) return null;
-                const colors = getAvatarColor(professor.id);
+              {reviewsHistory?.map((review) => {
+                const colors = getAvatarColor(review.ProfessorId);
                 const reviewFc =
-                  FACULTY_COLORS[professor.faculty] || DEFAULT_FACULTY_COLOR;
+                  FACULTY_COLORS[review.professorFaculty] ||
+                  DEFAULT_FACULTY_COLOR;
                 return (
                   <div
-                    key={review.id}
-                    onClick={() => router.push(`/professor/${professor.id}`)}
+                    key={review.ReviewId}
+                    onClick={() =>
+                      router.push(`/professor/${review.ProfessorId}`)
+                    }
                     className="bg-bg2 border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-bg3 transition-colors"
                   >
                     <div
                       className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
                       style={{ backgroundColor: colors.bg, color: colors.text }}
                     >
-                      {getInitials(professor.firstName, professor.lastName)}
+                      {getInitials(review.professorFirstName, review.professorLastName)}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text">
-                        {professor.title} {professor.firstName}{" "}
-                        {professor.lastName}
+                        {review.professorTitle} {review.professorFirstName}{" "}
+                        {review.professorLastName}
                       </p>
                       <p
                         className="text-xs mt-0.5"
                         style={{ color: reviewFc.primary }}
                       >
-                        {review.courseName}
+                        {review.CourseName}
                       </p>
                       <p className="text-xs text-text2 mt-1.5 leading-relaxed line-clamp-2">
-                        {review.comment}
+                        {review.Comment}
                       </p>
                       <div className="flex justify-between items-center mt-2">
                         <span className="text-[10px] text-text3">
@@ -356,7 +357,7 @@ export default function ProfilePage() {
                                 clipPath:
                                   "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
                                 background:
-                                  star <= review.overallRating
+                                  star <= review.OverallRating
                                     ? reviewFc.primary
                                     : reviewFc.mid,
                               }}
