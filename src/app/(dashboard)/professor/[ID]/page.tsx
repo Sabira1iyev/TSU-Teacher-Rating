@@ -14,7 +14,6 @@ import {
   DEFAULT_FACULTY_COLOR,
 } from "@/lib/constants";
 import { Professor } from "@/types/teacher";
-import { Review } from "@/types/review";
 
 type Tab = "Overview" | "Reviews" | "Courses";
 
@@ -177,7 +176,7 @@ export default function ProfessorProfilePage() {
               >
                 {professor.firstName} {professor.lastName}
               </h1>
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-2">
                 <span
                   className="text-[11px] font-medium"
                   style={{ color: fc.primary }}
@@ -188,6 +187,31 @@ export default function ProfessorProfilePage() {
                 <span className="text-[11px] text-text3">
                   Tbilisi State University
                 </span>
+                <button
+                  className="flex justify-center items-center px-3 lg:py-1.5 py-2 rounded-lg text-[11px] font-bold text-white transition-all cursor-pointer hover:opacity-90 active:scale-95 w-full
+                  lg:w-auto lg:ml-2"
+                  style={{
+                    backgroundColor: fc.primary,
+                    boxShadow: `0 4px 16px ${fc.mid}60%`,
+                  }}
+                >
+                  <div className="flex justify-center items-center gap-1 text-[11px] text-white">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                    </svg>
+                    Add to Favorites
+                  </div>
+                </button>
               </div>
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {(professor.courses || []).map((course) => (
