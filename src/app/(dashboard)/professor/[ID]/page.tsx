@@ -23,6 +23,7 @@ export default function ProfessorProfilePage() {
   const [activeTab, setActiveTab] = useState<Tab>("Overview");
   const [professor, setProfessor] = useState<Professor | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     fetch(`/api/professors/${params.ID}`)
@@ -188,28 +189,45 @@ export default function ProfessorProfilePage() {
                   Tbilisi State University
                 </span>
                 <button
-                  className="flex justify-center items-center px-3 lg:py-1.5 py-2 rounded-lg text-[11px] font-bold text-white transition-all cursor-pointer hover:opacity-90 active:scale-95 w-full
-                  lg:w-auto lg:ml-2"
+                  onClick={() => setIsFavorite(!isFavorite)}
+                  className={`flex justify-center items-center px-3 lg:py-1.5 py-2 rounded-lg text-[11px] font-bold text-white transition-all cursor-pointer hover:opacity-90 active:scale-95 w-full
+                  lg:w-auto lg:ml-2`}
                   style={{
                     backgroundColor: fc.primary,
                     boxShadow: `0 4px 16px ${fc.mid}60%`,
                   }}
                 >
                   <div className="flex justify-center items-center gap-1 text-[11px] text-white">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                    </svg>
-                    Add to Favorites
+                    {isFavorite ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                      </svg>
+                    )}
+                    {isFavorite ? "Added to Favorites" : "Add to Favorites"}
                   </div>
                 </button>
               </div>
