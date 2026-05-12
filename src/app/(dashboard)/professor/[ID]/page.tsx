@@ -24,6 +24,8 @@ export default function ProfessorProfilePage() {
   const [professor, setProfessor] = useState<Professor | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
+  const [dislike, setDislike] = useState(false);
 
   useEffect(() => {
     fetch(`/api/professors/${params.ID}`)
@@ -649,16 +651,80 @@ export default function ProfessorProfilePage() {
                       </span>
                     ))}
                   </div>
-                  {review.wouldRecommend && (
-                    <p className="text-[10px] text-primary mt-2">
-                      ✓ Would recommend
-                    </p>
-                  )}
-                  {!review.wouldRecommend && (
-                    <p className="text-[10px] text-red-500 mt-2">
-                      ✗ Would not recommend
-                    </p>
-                  )}
+                  <div className="flex items-center justify-between mt-2">
+                    {review.wouldRecommend && (
+                      <p className="text-[10px] text-primary mt-2">
+                        ✓ Would recommend
+                      </p>
+                    )}
+                    {!review.wouldRecommend && (
+                      <p className="text-[10px] text-red-500 mt-2">
+                        ✗ Would not recommend
+                      </p>
+                    )}
+                    <div className="flex items-center bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
+                      <button>
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          cursor="pointer"
+                        >
+                          <path
+                            d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                      <span className="text-[11px] font-medium text-text2 ml-1.5">
+                        2
+                      </span>
+                      <p className="w-[1px] h-3 bg-black mx-2"></p>
+
+                      <button onClick={() => setDislike(true)}>
+                        {dislike ? (
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            cursor="pointer"
+                          >
+                            <path
+                              d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
+                              fill="currentColor"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            cursor="pointer"
+                          >
+                            <path
+                              d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ))
             )}
