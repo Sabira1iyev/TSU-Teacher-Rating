@@ -2,6 +2,8 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Professor } from "@/types/teacher";
+import { useUser } from "@/context/UserContext";
 import {
   getInitials,
   formatRating,
@@ -13,11 +15,11 @@ import {
   FACULTY_COLORS,
   DEFAULT_FACULTY_COLOR,
 } from "@/lib/constants";
-import { Professor } from "@/types/teacher";
 
 type Tab = "Overview" | "Reviews" | "Courses";
 
 export default function ProfessorProfilePage() {
+  const { user } = useUser();
   const params = useParams();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("Overview");
@@ -27,7 +29,8 @@ export default function ProfessorProfilePage() {
   const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
   const [dislike, setDislike] = useState<Record<string, boolean>>({});
 
-  const handleLike = (id: string) => {
+  const handleLike = async (id: string) => {
+    if (!user) return;
     const isLiked = !!likedReviews[id];
     setLikedReviews({
       ...likedReviews,
@@ -36,13 +39,44 @@ export default function ProfessorProfilePage() {
     if (!isLiked) {
       setDislike({ ...dislike, [id]: false });
     }
+    try {
+      await fetch("/api/interact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user?.userId,
+          reviewId: id,
+          interactionType: "LIKE",
+        }),
+      });
+    } catch (error) {
+      console.log("Error while sending like:", error);
+    }
   };
 
-  const handleDislike = (id: string) => {
+  const handleDislike = async(id: string) => {
     const isDisliked = !!dislike[id];
     setDislike({ ...dislike, [id]: !isDisliked });
     if (!isDisliked) {
       setLikedReviews({ ...likedReviews, [id]: false });
+    }
+
+    try {
+      await fetch("/api/interact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user?.userId,
+          reviewId: id,
+          interactionType: "DISLIKE",
+        }),
+      });
+    } catch (error) {
+      console.log("Error while sending dislike", error);
     }
   };
 
