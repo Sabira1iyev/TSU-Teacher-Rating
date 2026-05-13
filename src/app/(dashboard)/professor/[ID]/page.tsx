@@ -25,7 +25,26 @@ export default function ProfessorProfilePage() {
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
-  const [dislike, setDislike] = useState(false);
+  const [dislike, setDislike] = useState<Record<string, boolean>>({});
+
+  const handleLike = (id: string) => {
+    const isLiked = !!likedReviews[id];
+    setLikedReviews({
+      ...likedReviews,
+      [id]: !isLiked,
+    });
+    if (!isLiked) {
+      setDislike({ ...dislike, [id]: false });
+    }
+  };
+
+  const handleDislike = (id: string) => {
+    const isDisliked = !!dislike[id];
+    setDislike({ ...dislike, [id]: !isDisliked });
+    if (!isDisliked) {
+      setLikedReviews({ ...likedReviews, [id]: false });
+    }
+  };
 
   useEffect(() => {
     fetch(`/api/professors/${params.ID}`)
@@ -663,31 +682,54 @@ export default function ProfessorProfilePage() {
                       </p>
                     )}
                     <div className="flex items-center bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
-                      <button>
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                          cursor="pointer"
-                        >
-                          <path
-                            d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                      <button
+                        onClick={() => {
+                          handleLike(review.id);
+                        }}
+                      >
+                        {likedReviews[review.id] ? (
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            cursor="pointer"
+                          >
+                            <path
+                              d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
+                              fill="currentColor"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            cursor="pointer"
+                          >
+                            <path
+                              d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
                       </button>
                       <span className="text-[11px] font-medium text-text2 ml-1.5">
-                        2
+                        {0 + (likedReviews[review.id] ? 1 : 0)}
                       </span>
                       <p className="w-[1px] h-3 bg-black mx-2"></p>
 
-                      <button onClick={() => setDislike(true)}>
-                        {dislike ? (
+                      <button onClick={() => handleDislike(review.id)}>
+                        {dislike[review.id] ? (
                           <svg
                             width="18"
                             height="18"
@@ -723,6 +765,9 @@ export default function ProfessorProfilePage() {
                           </svg>
                         )}
                       </button>
+                      <span className="text-[11px] font-medium text-text2 ml-1.5">
+                        {0 + (dislike[review.id] ? 1 : 0)}
+                      </span>
                     </div>
                   </div>
                 </div>
