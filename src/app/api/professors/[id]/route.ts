@@ -8,6 +8,8 @@ export async function GET(
   const db = getDb();
   try {
     const { id } = await params;
+    const rawUserId = req.nextUrl.searchParams.get("userId");
+    const userId = rawUserId && rawUserId !== "undefined" ? rawUserId : null;
 
     const result = await (
       await db
@@ -63,9 +65,13 @@ export async function GET(
     )
       .request()
       .input("ProfId", id)
+      .input("ViewerId", userId)
       .query(
         `
-      SELECT 
+      SELECT
+      (SELECT COUNT(*) FROM ReviewInteractions WHERE ReviewId = r.ReviewId AND InteractionType = 'LIKE') as likeCount,
+      (SELECT COUNT(*) FROM ReviewInteractions WHERE ReviewId = r.ReviewId AND InteractionType = 'DISLIKE') as dislikeCount,
+      (SELECT InteractionType FROM ReviewInteractions WHERE ReviewId = r.ReviewId AND UserId = @ViewerId) as userInteraction,
       r.ReviewId as id,
       r.ProfessorId as professorId,
       r.CourseName as courseName,
@@ -113,6 +119,9 @@ export async function GET(
         year: "numeric",
       }),
       createdAt: r.createdAt,
+      likeCount: r.likeCount || 0,
+      dislikeCount: r.dislikeCount || 0,
+      userInteraction: r.userInteraction || null,
     }));
 
     const recommendCount = reviews.filter((r) => r.wouldRecommend).length;

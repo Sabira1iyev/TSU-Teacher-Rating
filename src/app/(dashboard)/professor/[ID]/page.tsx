@@ -1,5 +1,4 @@
 "use client";
-
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Professor } from "@/types/teacher";
@@ -36,6 +35,23 @@ export default function ProfessorProfilePage() {
       ...likedReviews,
       [id]: !isLiked,
     });
+    setProfessor((prev) => {
+      if (!prev || !prev.reviews) return prev;
+      return {
+        ...prev,
+        reviews: prev.reviews.map((r) =>
+          r.id.toString() === id
+            ? {
+                ...r,
+                likeCount: isLiked ? r.likeCount - 1 : r.likeCount + 1,
+                dislikeCount:
+                  !isLiked && dislike[id] ? r.dislikeCount - 1 : r.dislikeCount,
+              }
+            : r,
+        ),
+      };
+    });
+
     if (!isLiked) {
       setDislike({ ...dislike, [id]: false });
     }
@@ -56,12 +72,32 @@ export default function ProfessorProfilePage() {
     }
   };
 
-  const handleDislike = async(id: string) => {
+  const handleDislike = async (id: string) => {
     const isDisliked = !!dislike[id];
     setDislike({ ...dislike, [id]: !isDisliked });
     if (!isDisliked) {
       setLikedReviews({ ...likedReviews, [id]: false });
     }
+    setProfessor((prev) => {
+      if (!prev || !prev.reviews) return prev;
+      return {
+        ...prev,
+        reviews: prev.reviews.map((r) =>
+          r.id.toString() === id
+            ? {
+                ...r,
+                dislikeCount: isDisliked
+                  ? r.dislikeCount - 1
+                  : r.dislikeCount + 1,
+                likeCount:
+                  !isDisliked && likedReviews[id]
+                    ? r.likeCount - 1
+                    : r.likeCount,
+              }
+            : r,
+        ),
+      };
+    });
 
     try {
       await fetch("/api/interact", {
@@ -81,15 +117,27 @@ export default function ProfessorProfilePage() {
   };
 
   useEffect(() => {
-    fetch(`/api/professors/${params.ID}`)
+    fetch(`/api/professors/${params.ID}?userId=${user?.userId}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error) {
           setProfessor(data);
+          const initialLikes: Record<string, boolean> = {};
+          const initialDislikes: Record<string, boolean> = {};
+          (data.reviews || []).forEach((rev: any) => {
+            if (rev.userInteraction === "LIKE") {
+              initialLikes[rev.id] = true;
+            }
+            if (rev.userInteraction === "DISLIKE") {
+              initialDislikes[rev.id] = true;
+            }
+          });
+          setLikedReviews(initialLikes);
+          setDislike(initialDislikes);
         }
         setLoading(false);
       });
-  }, [params.ID]);
+  }, [params.ID, user]);
 
   const reviews = professor?.reviews || [];
 
@@ -718,10 +766,10 @@ export default function ProfessorProfilePage() {
                     <div className="flex items-center bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
                       <button
                         onClick={() => {
-                          handleLike(review.id);
+                          handleLike(review.id.toString());
                         }}
                       >
-                        {likedReviews[review.id] ? (
+                        {likedReviews[review.id.toString()] ? (
                           <svg
                             width="18"
                             height="18"
@@ -758,12 +806,14 @@ export default function ProfessorProfilePage() {
                         )}
                       </button>
                       <span className="text-[11px] font-medium text-text2 ml-1.5">
-                        {0 + (likedReviews[review.id] ? 1 : 0)}
+                        {review.likeCount}
                       </span>
                       <p className="w-[1px] h-3 bg-black mx-2"></p>
 
-                      <button onClick={() => handleDislike(review.id)}>
-                        {dislike[review.id] ? (
+                      <button
+                        onClick={() => handleDislike(review.id.toString())}
+                      >
+                        {dislike[review.id.toString()] ? (
                           <svg
                             width="18"
                             height="18"
@@ -800,7 +850,7 @@ export default function ProfessorProfilePage() {
                         )}
                       </button>
                       <span className="text-[11px] font-medium text-text2 ml-1.5">
-                        {0 + (dislike[review.id] ? 1 : 0)}
+                        {review.dislikeCount}
                       </span>
                     </div>
                   </div>
