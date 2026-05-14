@@ -31,7 +31,7 @@ export interface Review {
   wouldRecommend: boolean;
   displayDate: string;
   createdAt: string;
-  likeCount: number;
-  dislikeCount: number;
-  userInteraction: string | null;
+  likeCount?: number;
+  dislikeCount?: number;
+  userInteraction?: string | null;
 }

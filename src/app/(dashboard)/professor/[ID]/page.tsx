@@ -43,9 +43,13 @@ export default function ProfessorProfilePage() {
           r.id.toString() === id
             ? {
                 ...r,
-                likeCount: isLiked ? r.likeCount - 1 : r.likeCount + 1,
+                likeCount: isLiked
+                  ? (r.likeCount || 0) - 1
+                  : (r.likeCount || 0) + 1,
                 dislikeCount:
-                  !isLiked && dislike[id] ? r.dislikeCount - 1 : r.dislikeCount,
+                  !isLiked && dislike[id]
+                    ? (r.dislikeCount || 0) - 1
+                    : r.dislikeCount || 0,
               }
             : r,
         ),
@@ -87,12 +91,12 @@ export default function ProfessorProfilePage() {
             ? {
                 ...r,
                 dislikeCount: isDisliked
-                  ? r.dislikeCount - 1
-                  : r.dislikeCount + 1,
+                  ? (r.dislikeCount || 0) - 1
+                  : (r.dislikeCount || 0) + 1,
                 likeCount:
                   !isDisliked && likedReviews[id]
-                    ? r.likeCount - 1
-                    : r.likeCount,
+                    ? (r.likeCount || 0) - 1
+                    : r.likeCount || 0,
               }
             : r,
         ),
