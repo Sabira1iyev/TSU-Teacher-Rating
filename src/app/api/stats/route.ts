@@ -19,15 +19,19 @@ export async function GET(req: NextRequest) {
     const result = await pool.request().input("userId", userId).query(`
        SELECT  
        COUNT(*) as totalReviews,
-       AVG(CAST(OverallRating as FLOAT)) as averageRatingGiven
+       AVG(CAST(OverallRating as FLOAT)) as averageRatingGiven,
+       (SELECT COUNT(*) FROM ReviewInteractions ri 
+       JOIN Reviews r on ri.ReviewId = r.ReviewId
+       WHERE r.UserId = @userId and ri.InteractionType = 'LIKE') as totalLikesReceived
        FROM Reviews
-       Where UserId = @userId        
+       WHERE UserId = @userId        
         `);
 
     const stats = result?.recordset[0];
 
     return NextResponse.json(
       {
+        totalLikesReceived: stats?.totalLikesReceived || 0,
         totalReviews: stats?.totalReviews || 0,
         averageRatingGiven: stats?.averageRatingGiven
           ? stats?.averageRatingGiven.toFixed(1)
@@ -43,4 +47,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-

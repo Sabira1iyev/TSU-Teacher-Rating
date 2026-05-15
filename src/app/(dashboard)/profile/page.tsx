@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { formatRating, getInitials } from "@/lib/utils";
@@ -40,6 +39,7 @@ export default function ProfilePage() {
   const [stats, setStats] = useState({
     totalReviews: 0,
     averageRatingGiven: 0,
+    totalLikesReceived: 0,
   });
 
   useEffect(() => {
@@ -50,6 +50,7 @@ export default function ProfilePage() {
           setStats({
             totalReviews: data.totalReviews,
             averageRatingGiven: data.averageRatingGiven,
+            totalLikesReceived: data.totalLikesReceived,
           });
         })
         .catch((error) => {
@@ -158,7 +159,7 @@ export default function ProfilePage() {
 
               <div className="text-center">
                 <p className="text-lg font-semibold text-text">
-                  {MOCK_USER.totalLikesReceived}
+                  {stats.totalLikesReceived}
                 </p>
                 <p className="text-[9px] text-text3 mt-0.5">Likes</p>
               </div>
@@ -280,28 +281,7 @@ export default function ProfilePage() {
                   );
                 })}
               </div>
-
               <div className="h-[0.5px] bg-border my-4" />
-              <div className="flex justify-around">
-                <div className="text-center">
-                  <p className="text-lg font-semibold text-primary">
-                    {formatRating(MOCK_USER.averageRatingGiven)}
-                  </p>
-                  <p className="text-[9px] text-text3 mt-3">Avg rating given</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-lg font-semibold text-text">
-                    {reviewsHistory.length}
-                  </p>
-                  <p className="text-[9px] text-text3 mt-1">Total reviews</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-lg font-semibold text-text">
-                    {MOCK_USER.totalLikesReceived}
-                  </p>
-                  <p className="text-[9px] text-text3 mt-1">Likes received</p>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -328,7 +308,10 @@ export default function ProfilePage() {
                       className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
                       style={{ backgroundColor: colors.bg, color: colors.text }}
                     >
-                      {getInitials(review.professorFirstName, review.professorLastName)}
+                      {getInitials(
+                        review.professorFirstName,
+                        review.professorLastName,
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text">
