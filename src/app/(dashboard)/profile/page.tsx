@@ -40,6 +40,7 @@ export default function ProfilePage() {
     totalReviews: 0,
     averageRatingGiven: 0,
     totalLikesReceived: 0,
+    facultyRank: 0,
   });
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function ProfilePage() {
             totalReviews: data.totalReviews,
             averageRatingGiven: data.averageRatingGiven,
             totalLikesReceived: data.totalLikesReceived,
+            facultyRank: data.facultyRank,
           });
         })
         .catch((error) => {
@@ -176,7 +178,11 @@ export default function ProfilePage() {
                 green: true,
               },
               { label: "Remaining", value: "3", sub: "this semester" },
-              { label: "Ranking", value: "#42", sub: "most active" },
+              {
+                label: "Faculty Rank",
+                value: `#${stats.facultyRank}`,
+                sub: "by likes",
+              },
               { label: "Member for", value: "2 yrs", sub: "since 2025" },
             ].map((item) => (
               <div

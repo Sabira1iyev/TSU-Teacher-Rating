@@ -17,17 +17,43 @@ export async function GET(req: NextRequest) {
     const pool = await getDb();
 
     const result = await pool.request().input("userId", userId).query(`
-       SELECT  
+      SELECT  
        COUNT(*) as totalReviews,
        AVG(CAST(OverallRating as FLOAT)) as averageRatingGiven,
        (SELECT COUNT(*) FROM ReviewInteractions ri 
        JOIN Reviews r on ri.ReviewId = r.ReviewId
        WHERE r.UserId = @userId and ri.InteractionType = 'LIKE') as totalLikesReceived
        FROM Reviews
-       WHERE UserId = @userId        
+       WHERE UserId = @userId
         `);
 
+    const rankResult = await pool
+      .request()
+      .input("userId", userId)
+      .query(
+        `
+        WITH FacultyStats AS(
+        SELECT
+              u.UserId,
+              (SELECT COUNT(*) FROM Reviews r
+              WHERE r.UserId = u.UserId) as UserReviews,
+              (SELECT COUNT(*) FROM ReviewInteractions ri
+              JOIN Reviews r ON ri.ReviewId = r.ReviewId
+              WHERE r.UserId = u.UserId AND ri.InteractionType = 'LIKE') as UserLikes
+            FROM Users u
+            WHERE u.Faculty = (SELECT Faculty FROM Users WHERE UserId = @userId)
+              ),
+              RankedUsers AS(
+                SELECT 
+                UserId,
+                RANK() OVER (ORDER BY UserLikes DESC, UserReviews ASC) as FacultyRank
+                FROM FacultyStats)
+                SELECT FacultyRank FROM RankedUsers WHERE UserId = @userId
+        `,
+      );
+
     const stats = result?.recordset[0];
+    const rank = rankResult?.recordset[0];
 
     return NextResponse.json(
       {
@@ -36,6 +62,7 @@ export async function GET(req: NextRequest) {
         averageRatingGiven: stats?.averageRatingGiven
           ? stats?.averageRatingGiven.toFixed(1)
           : 0,
+        facultyRank: rank?.FacultyRank || 0,
       },
       { status: 200 },
     );
