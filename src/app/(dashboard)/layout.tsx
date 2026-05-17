@@ -121,7 +121,10 @@ export default function DashboardLayout({
       <aside className="hidden lg:flex w-[220px] flex-shrink-0 flex-col bg-white border-r border-[#e4eaf0] fixed top-0 left-0 h-full z-10 shadow-[1px_0_8px_rgba(0,40,80,0.04)]">
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 py-5">
-          <div className="w-8 h-8 rounded-[9px] bg-[#0060a9] flex items-center justify-center flex-shrink-0">
+          <div
+            className="w-8 h-8 rounded-[9px] bg-[#0060a9] flex items-center justify-center flex-shrink-0 cursor-pointer"
+            onClick={() => router.push("/dashboard")}
+          >
             <svg
               width="16"
               height="16"
@@ -138,7 +141,8 @@ export default function DashboardLayout({
             </svg>
           </div>
           <span
-            className="font-bold text-[15px] text-[#1a2a3a]"
+            onClick={() => router.push("/dashboard")}
+            className="font-bold text-[15px] text-[#1a2a3a] cursor-pointer"
             style={{
               fontFamily: "Syne, sans-serif",
             }}
@@ -240,7 +244,8 @@ export default function DashboardLayout({
         {/* Mobile topbar */}
         <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-[#e4eaf0] bg-white sticky top-0 z-10 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <span
-            className="font-bold text-[16px] text-[#1a2a3a]"
+            onClick={() => router.push("/dashboard")}
+            className="font-bold text-[16px] text-[#1a2a3a] cursor-pointer"
             style={{
               fontFamily: "Syne, sans-serif",
             }}
