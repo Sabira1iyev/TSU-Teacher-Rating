@@ -35,6 +35,7 @@ export async function GET(req: NextRequest) {
         WITH FacultyStats AS(
         SELECT
               u.UserId,
+              u.CreatedAt,
               (SELECT COUNT(*) FROM Reviews r
               WHERE r.UserId = u.UserId) as UserReviews,
               (SELECT COUNT(*) FROM ReviewInteractions ri
@@ -46,7 +47,13 @@ export async function GET(req: NextRequest) {
               RankedUsers AS(
                 SELECT 
                 UserId,
-                RANK() OVER (ORDER BY UserLikes DESC, UserReviews ASC) as FacultyRank
+                RANK() OVER (
+                ORDER BY 
+                UserLikes DESC,
+                CASE WHEN UserLikes > 0 THEN UserReviews END ASC,
+                CASE WHEN UserLikes = 0 THEN UserReviews END DESC,
+                CreatedAt ASC
+                ) as FacultyRank
                 FROM FacultyStats)
                 SELECT FacultyRank FROM RankedUsers WHERE UserId = @userId
         `,
