@@ -1,10 +1,11 @@
 "use client";
+import { Trophy, Medal, Award, TrendingUp } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
-import { formatRating, getInitials } from "@/lib/utils";
+import { getInitials } from "@/lib/utils";
 // Profile stats that would come from a backend in the future
 const MOCK_USER = {
   firstName: "FirstName",
@@ -29,6 +30,23 @@ const AVATAR_COLORS = [
 
 const getAvatarColor = (id: string) => {
   return AVATAR_COLORS[parseInt(id) % AVATAR_COLORS.length];
+};
+
+const getRankIcon = (rank: number | string) => {
+  const numRank = Number(rank);
+  if (numRank === 1) {
+    return <Trophy className="w-5 h-5 text-amber-400 drop-shadow-md" />;
+  }
+  if (numRank === 2) {
+    return <Medal className="w-5 h-5 text-slate-300 drop-shadow-md" />;
+  }
+  if (numRank === 3) {
+    return <Medal className="w-5 h-5 text-amber-700 drop-shadow-md" />;
+  }
+  if (numRank <= 10) {
+    return <Award className="w-5 h-5 text-blue-500" />;
+  }
+  return <TrendingUp className="w-5 h-5 text-text3" />;
 };
 
 export default function ProfilePage() {
@@ -180,7 +198,12 @@ export default function ProfilePage() {
               { label: "Remaining", value: "3", sub: "this semester" },
               {
                 label: "Faculty Rank",
-                value: `#${stats.facultyRank}`,
+                value: (
+                  <div className="flex items-center gap-2">
+                    {getRankIcon(stats.facultyRank)}
+                    <span>#{stats.facultyRank}</span>
+                  </div>
+                ),
                 sub: "by likes",
               },
               { label: "Member for", value: "2 yrs", sub: "since 2025" },
