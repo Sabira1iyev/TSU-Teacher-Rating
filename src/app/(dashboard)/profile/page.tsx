@@ -140,6 +140,19 @@ const getRankDisplayIcon = (currentRank: string) => {
   }
 };
 
+const getCurrentSemester = () => {
+  const now = new Date();
+  const month = now.getMonth();
+  const year = now.getFullYear();
+
+  if (month >= 8 || month === 0) {
+    const semesterYear = month === 0 ? year - 1 : year;
+    return `Fall ${semesterYear}`;
+  } else {
+    return `Spring ${year}`;
+  }
+};
+
 export default function ProfilePage() {
   const { user } = useUser();
   const router = useRouter();
@@ -276,9 +289,14 @@ export default function ProfilePage() {
           <div className="grid grid-cols-2 gap-2">
             {[
               {
-                label: "This semester",
-                value: "4",
-                sub: "reviews written",
+                label: "Current Semester",
+                value: (
+                  <div className="flex items-center gap-1.5">
+                    <Rainbow className="w-4 h-4 text-primary animate-pulse" />
+                    <span>{getCurrentSemester()}</span>
+                  </div>
+                ),
+                sub: "active period",
                 green: true,
               },
               {
