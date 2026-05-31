@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { getInitials } from "@/lib/utils";
+import { create } from "domain";
 // Profile stats that would come from a backend in the future
 const MOCK_USER = {
   firstName: "FirstName",
@@ -125,6 +126,46 @@ const getRankDetails = (likes: number) => {
     };
   }
 };
+
+const getMemberDuration = (createdAt: string | undefined) => {
+  if (!createdAt) return "1 day";
+
+  const regDate = new Date(createdAt);
+  const now = new Date();
+
+  if (isNaN(regDate.getDate())) return "1day";
+
+  const diffMs = now.getTime() - regDate.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 1) return "1 day";
+
+  if (diffDays < 7) {
+    return `${diffDays} ${diffDays === 1 ? "day" : "days"}`;
+  }
+
+  if (diffDays < 30) {
+    const weeks = Math.floor(diffDays / 7);
+    return `${weeks} ${weeks === 1 ? "week" : "weeks"}`;
+  }
+
+  if (diffDays < 365) {
+    const months = Math.floor(diffDays / 30);
+    return `${months} ${months === 1 ? "month" : "months"}`;
+  }
+
+  const years = Math.floor(diffDays / 365);
+  return `${years} ${years === 1 ? "year" : "years"}`;
+};
+
+const getFormattedRegistrationDate = (createdAt: string | undefined) => {
+  if(!createdAt) return "Since 2026";
+
+  const date = new Date(createdAt);
+  if(isNaN(date.getTime())) return "since 2026";
+
+  return `since ${date.toLocaleDateString("en-US", {month:"short", year:"numeric"})}`
+}
 
 const getRankDisplayIcon = (currentRank: string) => {
   if (currentRank === "Rookie") {
@@ -321,7 +362,9 @@ export default function ProfilePage() {
                 ),
                 sub: "by likes",
               },
-              { label: "Member for", value: "2 yrs", sub: "since 2025" },
+              { label: "Member for", 
+                value: getMemberDuration(user?.createdAt ||  MOCK_USER.createdAt),
+                sub: getFormattedRegistrationDate(user?.createdAt || MOCK_USER.createdAt) },
             ].map((item) => (
               <div
                 key={item.label}

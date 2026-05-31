@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface User {
   firstName: string;
@@ -9,6 +15,7 @@ interface User {
   faculty: string;
   studyYear: string;
   userId: number;
+  createdAt: string;
 }
 
 interface UserContextType {
