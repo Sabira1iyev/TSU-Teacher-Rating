@@ -1,5 +1,13 @@
 "use client";
-import { Trophy, Medal, Award, TrendingUp } from "lucide-react";
+import {
+  Trophy,
+  Medal,
+  Award,
+  TrendingUp,
+  Rainbow,
+  ShieldAlert,
+  Sprout,
+} from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -32,21 +40,104 @@ const getAvatarColor = (id: string) => {
   return AVATAR_COLORS[parseInt(id) % AVATAR_COLORS.length];
 };
 
+const NumberedMedal = ({
+  className,
+  num,
+}: {
+  className?: string;
+  num: number;
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15" />
+    <path d="M11 12 5.12 2" />
+    <path d="m13 12 5.88-10" />
+    <circle cx="12" cy="15" r="5" />
+    <text
+      x="12"
+      y="15.2"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize="8.5"
+      fontWeight="900"
+      fill="currentColor"
+      stroke="none"
+      style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+    >
+      {num}
+    </text>
+  </svg>
+);
+
 const getRankIcon = (rank: number | string) => {
   const numRank = Number(rank);
   if (numRank === 1) {
     return <Trophy className="w-5 h-5 text-amber-400 drop-shadow-md" />;
   }
   if (numRank === 2) {
-    return <Medal className="w-5 h-5 text-slate-300 drop-shadow-md" />;
+    return (
+      <NumberedMedal
+        className="w-5 h-5 text-slate-300 drop-shadow-md"
+        num={2}
+      />
+    );
   }
   if (numRank === 3) {
-    return <Medal className="w-5 h-5 text-amber-700 drop-shadow-md" />;
+    return (
+      <NumberedMedal
+        className="w-5 h-5 text-amber-700 drop-shadow-md"
+        num={3}
+      />
+    );
   }
   if (numRank <= 10) {
     return <Award className="w-5 h-5 text-blue-500" />;
   }
   return <TrendingUp className="w-5 h-5 text-text3" />;
+};
+
+const getRankDetails = (likes: number) => {
+  if (likes < 3) {
+    return {
+      current: "Rookie",
+      next: "Protector",
+      remaining: 3 - likes,
+    };
+  } else if (likes < 7) {
+    return {
+      current: "Protector",
+      next: "Legend",
+      remaining: 7 - likes,
+    };
+  } else {
+    return {
+      current: "Legend",
+      next: null,
+      remaining: 0,
+    };
+  }
+};
+
+const getRankDisplayIcon = (currentRank: string) => {
+  if (currentRank === "Rookie") {
+    return <Sprout className="w-4 h-4 text-amber-400 animate-pulse" />;
+  }
+  if (currentRank === "Protector") {
+    return (
+      <ShieldAlert className="w-4 h-4 text-sky-400 drop-shadow-sm animate-pulse" />
+    );
+  }
+  if (currentRank === "Legend") {
+    return <Trophy className="w-4 h-4 text-yellow-400 animate-pulse" />;
+  }
 };
 
 export default function ProfilePage() {
@@ -84,16 +175,11 @@ export default function ProfilePage() {
       });
   }, [user?.userId]);
 
+  const rankInfo = getRankDetails(stats?.totalLikesReceived);
+
   const fc = user?.faculty
     ? FACULTY_COLORS[user.faculty] || DEFAULT_FACULTY_COLOR
     : DEFAULT_FACULTY_COLOR;
-
-  const contributions = [
-    { label: "Computer Science", count: 14, percent: 78, color: fc.primary },
-    { label: "Mathematics", count: 3, percent: 16, color: fc.primary },
-    { label: "Physics", count: 6, percent: 12, color: fc.primary },
-    { label: "Mathematics", count: 9, percent: 9, color: fc.primary },
-  ];
 
   return (
     <div className="flex flex-col pt-20">
@@ -195,7 +281,18 @@ export default function ProfilePage() {
                 sub: "reviews written",
                 green: true,
               },
-              { label: "Remaining", value: "3", sub: "this semester" },
+              {
+                label: "Title",
+                value: (
+                  <div className="flex items-center gap-1.5">
+                    {getRankDisplayIcon(rankInfo.current)}
+                    <span>{rankInfo.current}</span>
+                  </div>
+                ),
+                sub: rankInfo.next
+                  ? `${rankInfo.remaining} likes to ${rankInfo.next}`
+                  : "You are a Legend!",
+              },
               {
                 label: "Faculty Rank",
                 value: (
