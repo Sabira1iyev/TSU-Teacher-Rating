@@ -13,7 +13,11 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
-import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
+import {
+  FACULTY_COLORS,
+  DEFAULT_FACULTY_COLOR,
+  CRITERIS_LABELS,
+} from "@/lib/constants";
 import { getInitials } from "@/lib/utils";
 
 const MOCK_USER = {
@@ -296,7 +300,12 @@ export default function ProfilePage() {
             <p className="text-xs text-primary mt-1">
               {user?.email || "Email is loading..."}
             </p>
-            <p className="text-xs text-text3 mt-0.5">
+            <p
+              className="text-xs mt-0.5"
+              style={{
+                color: fc.primary,
+              }}
+            >
               {user?.faculty
                 ? user.faculty.replace("Faculty of ", "")
                 : "Faculty"}{" "}
@@ -379,12 +388,18 @@ export default function ProfilePage() {
             ].map((item) => (
               <div
                 key={item.label}
-                className="bg-bg2 border border-border rounded-xl p-3"
+                className="bg-bg2 border rounded-xl p-3"
+                style={{
+                  border: `1px solid ${fc.light}`,
+                  background: `linear-gradient(125deg, ${fc.primary} 5%, transparent 120%)`,
+                }}
               >
-                <p className="text-[9px] text-text3 mb-1">{item.label}</p>
+                <p className="text-[9px] text-white mb-1">{item.label}</p>
                 <p
-                  className={`text-lg font-semibold 
-                                    ${item.green ? "text-primary" : "text-text1"}`}
+                  className={`text-lg font-semibold`}
+                  style={{
+                    color: fc.primary,
+                  }}
                 >
                   {item.value}
                 </p>
