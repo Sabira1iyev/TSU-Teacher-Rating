@@ -15,7 +15,7 @@ interface User {
   faculty: string;
   studyYear: string;
   userId: number;
-  createdAt: string;
+  createdAt?: string;
 }
 
 interface UserContextType {

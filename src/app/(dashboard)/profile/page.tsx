@@ -14,8 +14,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { getInitials } from "@/lib/utils";
-import { create } from "domain";
-// Profile stats that would come from a backend in the future
+
 const MOCK_USER = {
   firstName: "FirstName",
   lastName: "LastName",
