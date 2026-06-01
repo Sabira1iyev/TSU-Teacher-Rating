@@ -7,6 +7,7 @@ import {
   Rainbow,
   ShieldAlert,
   Sprout,
+  Clock,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -80,12 +81,14 @@ const NumberedMedal = ({
 const getRankIcon = (rank: number | string) => {
   const numRank = Number(rank);
   if (numRank === 1) {
-    return <Trophy className="w-5 h-5 text-amber-400 drop-shadow-md" />;
+    return (
+      <Trophy className="w-5 h-5 text-amber-400 drop-shadow-md animate-bounce" />
+    );
   }
   if (numRank === 2) {
     return (
       <NumberedMedal
-        className="w-5 h-5 text-slate-300 drop-shadow-md"
+        className="w-5 h-5 text-slate-300 drop-shadow-md animate-pulse"
         num={2}
       />
     );
@@ -93,7 +96,7 @@ const getRankIcon = (rank: number | string) => {
   if (numRank === 3) {
     return (
       <NumberedMedal
-        className="w-5 h-5 text-amber-700 drop-shadow-md"
+        className="w-5 h-5 text-amber-700 drop-shadow-md animate-pulse"
         num={3}
       />
     );
@@ -158,13 +161,13 @@ const getMemberDuration = (createdAt: string | undefined) => {
 };
 
 const getFormattedRegistrationDate = (createdAt: string | undefined) => {
-  if(!createdAt) return "Since 2026";
+  if (!createdAt) return "Since 2026";
 
   const date = new Date(createdAt);
-  if(isNaN(date.getTime())) return "since 2026";
+  if (isNaN(date.getTime())) return "since 2026";
 
-  return `since ${date.toLocaleDateString("en-US", {month:"short", year:"numeric"})}`
-}
+  return `since ${date.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`;
+};
 
 const getRankDisplayIcon = (currentRank: string) => {
   if (currentRank === "Rookie") {
@@ -361,9 +364,18 @@ export default function ProfilePage() {
                 ),
                 sub: "by likes",
               },
-              { label: "Member for", 
-                value: getMemberDuration(user?.createdAt ||  MOCK_USER.createdAt),
-                sub: getFormattedRegistrationDate(user?.createdAt || MOCK_USER.createdAt) },
+              {
+                label: "Member for",
+                value: (
+                  <div className="flex items-center gap-2">
+                    {getMemberDuration(user?.createdAt || MOCK_USER.createdAt)}
+                    <Clock className="w-4 h-4 text-primary animate-pulse" />
+                  </div>
+                ),
+                sub: getFormattedRegistrationDate(
+                  user?.createdAt || MOCK_USER.createdAt,
+                ),
+              },
             ].map((item) => (
               <div
                 key={item.label}
