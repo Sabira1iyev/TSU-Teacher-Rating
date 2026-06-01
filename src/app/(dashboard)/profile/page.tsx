@@ -368,8 +368,8 @@ export default function ProfilePage() {
                 label: "Member for",
                 value: (
                   <div className="flex items-center gap-2">
-                    {getMemberDuration(user?.createdAt || MOCK_USER.createdAt)}
                     <Clock className="w-4 h-4 text-primary animate-pulse" />
+                    {getMemberDuration(user?.createdAt || MOCK_USER.createdAt)}
                   </div>
                 ),
                 sub: getFormattedRegistrationDate(
