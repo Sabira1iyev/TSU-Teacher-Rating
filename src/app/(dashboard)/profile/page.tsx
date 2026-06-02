@@ -282,8 +282,21 @@ export default function ProfilePage() {
         {/* Left col */}
         <div className="lg:border-r border-border p-5 lg:p-6 flex flex-col gap-4">
           {/* Profile card */}
-          <div className="bg-bg2 border border-border rounded-2xl p-5 text-center">
-            <div className="w-16 h-16 lg:w-[72px] lg:h-[72px] rounded-full bg-blue-dim flex items-center justify-center text-xl lg:text-2xl text-blue font-semibold mt-6 mx-auto mb-3 border-2 border-border2">
+          <div
+            className="bg-bg2 border border-border rounded-2xl p-5 text-center"
+            style={{
+              border: `1px solid ${fc.light}`,
+              background: `linear-gradient(125deg, ${fc.light} 50%, transparent 120%)`,
+            }}
+          >
+            <div
+              className="w-16 h-16 lg:w-[72px] lg:h-[72px] rounded-full flex items-center justify-center text-xl lg:text-2xl font-semibold mt-6 mx-auto mb-3 border-2 border-border2"
+              style={{
+                background: `linear-gradient(135deg, ${fc.light} 50%, #fdf6e3 100%)`,
+                border: `2px solid ${fc.mid}`,
+                color: fc.primary,
+              }}
+            >
               {getInitials(
                 user?.firstName || MOCK_USER.firstName,
                 user?.lastName || MOCK_USER.lastName,
@@ -398,7 +411,7 @@ export default function ProfilePage() {
                 <p
                   className={`text-lg font-semibold`}
                   style={{
-                    color: fc.primary,
+                    color: "white",
                   }}
                 >
                   {item.value}
@@ -408,7 +421,13 @@ export default function ProfilePage() {
           </div>
 
           {/* Account info */}
-          <div className="bg-bg2 border border-border rounded-xl p-4">
+          <div
+            className="bg-bg2 border border-border rounded-xl p-4"
+            style={{
+              border: `1px solid ${fc.light}`,
+              background: `linear-gradient(125deg, ${fc.light} 80%, transparent  100%)`,
+            }}
+          >
             <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
               Account
             </p>
