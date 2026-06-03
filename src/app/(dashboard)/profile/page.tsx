@@ -242,7 +242,7 @@ export default function ProfilePage() {
     : DEFAULT_FACULTY_COLOR;
 
   return (
-    <div className="flex flex-col pt-20">
+    <div className="flex flex-col pt-20 bg-[#f0f2f0]">
       {/* Desktop topbar */}
       <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-[57px] z-10">
         <h1
@@ -419,7 +419,7 @@ export default function ProfilePage() {
                 className="bg-bg2 border rounded-xl p-3"
                 style={{
                   border: `1px solid ${fc.light}`,
-                  background: `linear-gradient(125deg, ${fc.primary} 5%, transparent 120%)`,
+                  background: `linear-gradient(15deg, ${fc.primary} 0%, transparent 100%)`,
                 }}
               >
                 <p className="text-[9px] text-white mb-1">{item.label}</p>
