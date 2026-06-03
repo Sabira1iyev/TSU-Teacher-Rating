@@ -143,6 +143,15 @@ export default function ProfessorProfilePage() {
       });
   }, [params.ID, user]);
 
+  useEffect(() => {
+    fetch(`/api/favorites?userId=${user?.userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const isFav = data.some((f: any) => f.id.toString() === params.ID);
+        setIsFavorite(isFav);
+      });
+  }, [params.ID, user]);
+
   const reviews = professor?.reviews || [];
 
   // Get faculty-specific color palette
@@ -296,7 +305,22 @@ export default function ProfessorProfilePage() {
                   Tbilisi State University
                 </span>
                 <button
-                  onClick={() => setIsFavorite(!isFavorite)}
+                  onClick={async () => {
+                    setIsFavorite(!isFavorite);
+                    try {
+                      await fetch("/api/favorites", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          userId: user?.userId,
+                          professorId: params.ID,
+                        }),
+                      });
+                    } catch (error) {
+                      console.log(error);
+                      setIsFavorite(isFavorite);
+                    }
+                  }}
                   className={`flex justify-center items-center px-3 lg:py-1.5 py-2 rounded-lg text-[11px] font-bold text-white transition-all cursor-pointer hover:opacity-90 active:scale-95 w-full
                   lg:w-auto lg:ml-2`}
                   style={{
