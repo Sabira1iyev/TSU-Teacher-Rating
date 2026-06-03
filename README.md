@@ -1,3 +1,115 @@
+[README (1).md](https://github.com/user-attachments/files/28548128/README.1.md)# TeacherRating 🎓
+
+A professor rating and review platform built for TSU (Tbilisi State University) students.
+
+---
+
+## 📖 About
+
+TeacherRating allows Tbilisi State University students to anonymously review and rate their professors, and read reviews left by other students. The goal is to provide a transparent and reliable resource to help students make better course decisions.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Next.js 14** — with App Router
+- **TypeScript**
+- **Tailwind CSS v4**
+
+### Backend / Database
+- **SQL Server** (SSMS)
+- Database name: `rate_my_teacher`
+
+---
+
+## 🗄️ Database Schema
+
+| Table | Description |
+|---|---|
+| `Faculties` | University faculties |
+| `Departments` | Departments within faculties |
+| `Professors` | Professors (linked to departments via N:M junction table) |
+| `Students` | Students (subtypes: UNDERGRADUATE / MASTER / PHD) |
+| `Reviews` | Student reviews |
+| `ReviewCategories` | Rating categories |
+| `ReviewRatings` | Per-category scores |
+| `ReviewInteractions` | Upvotes / downvotes on reviews |
+| `ReviewTags` | Review-to-tag relations |
+| `Tags` | Tags |
+| `ProfessorTags` | Professor-to-tag relations |
+| `UserVerifications` | Student verification |
+
+---
+
+## 📁 Project Structure
+
+```
+teacher-rating/
+├── app/
+│   ├── (auth)/
+│   ├── (main)/
+│   └── layout.tsx
+├── components/
+├── lib/
+│   ├── types/
+│   │   ├── professor.ts
+│   │   ├── review.ts
+│   │   └── user.ts
+│   ├── utils/
+│   ├── constants/
+│   └── mock-data/
+├── public/
+└── README.md
+```
+
+---
+
+## 🚀 Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+App runs at `http://localhost:3000`.
+
+---
+
+## ✨ Features
+
+- 🔍 Search by professor or department
+- ⭐ Multi-category rating system
+- 💬 Anonymous reviews
+- 👍 Review voting (upvote / downvote)
+- 🏷️ Tag system
+- 🎓 Filter by student type (Undergraduate / Master / PhD)
+- 📱 Responsive design
+
+---
+
+## 📌 Notes
+
+- Currently scoped to a **single university** (TSU).
+- All code and variable naming follows **English** conventions.
+- Uses **"Review"** terminology instead of "Comment."
+
+---
+
+## 👨‍💻 Developer
+
+Sabir — Computer Science, Tbilisi State University
+
+
+
+
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
