@@ -6,6 +6,11 @@ import { Professor } from "@/types/teacher";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { Key } from "lucide-react";
 import { useUser } from "@/context/UserContext";
+import {
+  CRITERIS_LABELS,
+  FACULTY_COLORS,
+  DEFAULT_FACULTY_COLOR,
+} from "@/lib/constants";
 
 const AVATAR_COLORS = [
   { bg: "bg-[#2a1e08]", text: "text-amber" },
@@ -86,7 +91,9 @@ export default function FavoritesPage() {
       {/* content */}
       <div className="mt-10 p-5 lg:p-6">
         {loading ? (
-          <div className="text-center py-20 text-text3">Loading favorites...</div>
+          <div className="text-center py-20 text-text3">
+            Loading favorites...
+          </div>
         ) : favorites.length === 0 ? (
           /* empty state */
           <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
@@ -116,6 +123,8 @@ export default function FavoritesPage() {
             <div className="hidden lg:grid grid-cols-3 gap-3">
               {favorites.map((professor) => {
                 const colors = getAvatarColor(professor.id);
+                const fc =
+                  FACULTY_COLORS[professor.faculty] || DEFAULT_FACULTY_COLOR;
                 return (
                   <div
                     key={professor.id}
@@ -145,8 +154,15 @@ export default function FavoritesPage() {
                       {professor.lastName}
                     </p>
                     <p className="text-xs text-text2 mt-1">
+                      {" "}
                       {professor.department} ·{" "}
-                      {professor.faculty.replace("Faculty of", "")}
+                      <span
+                        style={{
+                          color: fc.primary,
+                        }}
+                      >
+                        {professor.faculty.replace("Faculty of", "")}
+                      </span>
                     </p>
 
                     {/* Score */}
@@ -192,6 +208,8 @@ export default function FavoritesPage() {
             <div className="flex lg:hidden flex-col gap-2">
               {favorites.map((professor) => {
                 const colors = getAvatarColor(professor.id);
+                const fc =
+                  FACULTY_COLORS[professor.faculty] || DEFAULT_FACULTY_COLOR;
                 return (
                   <div
                     key={professor.id}
@@ -212,7 +230,13 @@ export default function FavoritesPage() {
                         {professor.department}
                       </p>
                       <p className="text-[10px] text-text3 mt-0.5">
-                        {professor.faculty.replace("Faculty of", "")}
+                        <span
+                          style={{
+                            color: fc.primary,
+                          }}
+                        >
+                          {professor.faculty.replace("Faculty of", "")}
+                        </span>
                       </p>
                     </div>
                     <div className="text-right flex-shrink-0 mr-6">
