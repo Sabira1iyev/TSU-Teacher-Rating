@@ -328,21 +328,36 @@ export default function ProfilePage() {
             <div className="h-[0.5px] bg-border my-4" />
             <div className="flex justify-around">
               <div className="text-center">
-                <p className="text-lg font-semibold text-primary">
+                <p
+                  className="text-lg font-semibold"
+                  style={{
+                    color: fc.primary,
+                  }}
+                >
                   {stats.totalReviews}
                 </p>
                 <p className="text-[9px] text-text3 mt-0.5">Reviews</p>
               </div>
 
               <div className="text-center">
-                <p className="text-lg font-semibold text-text">
+                <p
+                  className="text-lg font-semibold"
+                  style={{
+                    color: fc.primary,
+                  }}
+                >
                   {stats.averageRatingGiven}
                 </p>
                 <p className="text-[9px] text-text3 mt-0.5">Avg given</p>
               </div>
 
               <div className="text-center">
-                <p className="text-lg font-semibold text-text">
+                <p
+                  className="text-lg font-semibold text-text"
+                  style={{
+                    color: fc.primary,
+                  }}
+                >
                   {stats.totalLikesReceived}
                 </p>
                 <p className="text-[9px] text-text3 mt-0.5">Likes</p>
@@ -444,7 +459,12 @@ export default function ProfilePage() {
                   }`}
                 >
                   <span className="text-text3">{item.label}</span>
-                  <span className="text-text truncate ml-4 text-right max-w-[160px]">
+                  <span
+                    className="text-text truncate ml-4 text-right max-w-[160px]"
+                    style={
+                      item.label === "Faculty" ? { color: fc.primary } : {}
+                    }
+                  >
                     {item.value}
                   </span>
                 </div>
