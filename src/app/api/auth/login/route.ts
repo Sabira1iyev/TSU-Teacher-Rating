@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     const user = result.recordset[0];
     const isPasswordTrue = await bcrypt.compare(password, user.PasswordHash);
-
+    console.log(user);
     if (!isPasswordTrue) {
       return NextResponse.json(
         { error: "Password is incorrect." },

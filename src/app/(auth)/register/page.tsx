@@ -66,7 +66,7 @@ export default function RegisterPage() {
                 setError(data.error || "Something went wrong.");
                 return;
             }
-            
+
             setUser({
                 firstName: formdata.firstName,
                 lastName: formdata.lastName,
@@ -74,10 +74,11 @@ export default function RegisterPage() {
                 faculty: formdata.faculty,
                 studyYear: formdata.studyYear,
                 userId: data.userId,
+                createdAt: data.createdAt,
             });
 
             setSuccess("Registration successful! Redirecting to verification...");
-            
+
             setTimeout(() => {
                 router.push("/verify");
             }, 1500);
