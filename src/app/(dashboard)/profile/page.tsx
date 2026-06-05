@@ -13,10 +13,10 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import EditProfileModal from "./components/EditProfileModal";
 import {
   FACULTY_COLORS,
   DEFAULT_FACULTY_COLOR,
-  CRITERIS_LABELS,
 } from "@/lib/constants";
 import { getInitials } from "@/lib/utils";
 
@@ -205,6 +205,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"reviews" | "stats">("reviews");
   const [reviewsHistory, setReviewsHistory] = useState<any[]>([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [stats, setStats] = useState({
     totalReviews: 0,
     averageRatingGiven: 0,
@@ -259,6 +260,7 @@ export default function ProfilePage() {
             background: `${fc.primary}`,
             color: "white",
           }}
+          onClick={() => setIsEditModalOpen(true)}
         >
           Edit Profile
         </button>
@@ -481,8 +483,8 @@ export default function ProfilePage() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors capitalize ${activeTab === tab
-                    ? "bg-bg3 text-text font-medium"
-                    : "text-text3"
+                  ? "bg-bg3 text-text font-medium"
+                  : "text-text3"
                   }`}
               >
                 {tab === "reviews" ? "My Reviews" : "Stats"}
@@ -606,6 +608,13 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+    
+    {/* edit profile modal */}
+
+    {isEditModalOpen&&(
+      <EditProfileModal onClose = {() => setIsEditModalOpen(false)}/>
+    )}
+    
     </div>
   );
 }
