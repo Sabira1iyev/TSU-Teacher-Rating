@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       .input("Faculty", faculty)
       .input("IsVerified", 0)
       .input("VerificationCode", verificationCode)
-      .input("VerificationExpiry", expiryDate) 
+      .input("VerificationExpiry", expiryDate)
       .query(
         `INSERT INTO Users(
         Email, PasswordHash, DisplayName, AcademicLevel, Faculty, IsVerified, CreatedAt, VerificationCode, VerificationExpiry)
@@ -97,7 +97,11 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { message: "Registration successful", userId },
+      {
+        message: "Registration successful",
+        userId,
+        createdAt: new Date().toISOString(),
+      },
       { status: 201 },
     );
   } catch (error) {
