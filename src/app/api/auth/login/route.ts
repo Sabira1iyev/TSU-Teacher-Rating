@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
             faculty: user.Faculty,
             studyYear: user.AcademicLevel,
             userId: user.UserId,
+            createdAt: user.CreatedAt,
           },
         },
         { status: 200 },
