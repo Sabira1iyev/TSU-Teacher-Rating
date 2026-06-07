@@ -221,7 +221,7 @@ export default function DashboardLayout({
       {/* content */}
       <main className="flex-1 lg:ml-[220px] flex flex-col min-h-screen min-w-0">
         {/* Desktop topbar */}
-        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-[#e4eaf0] bg-white sticky top-0 z-110 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-[#e4eaf0] bg-white sticky top-0 z-90 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <h1
             className="font-bold text-[16px] text-[#1a2a3a]"
             style={{

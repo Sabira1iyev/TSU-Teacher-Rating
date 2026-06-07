@@ -14,10 +14,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import EditProfileModal from "./components/EditProfileModal";
-import {
-  FACULTY_COLORS,
-  DEFAULT_FACULTY_COLOR,
-} from "@/lib/constants";
+import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { getInitials } from "@/lib/utils";
 
 const MOCK_USER = {
@@ -275,6 +272,7 @@ export default function ProfilePage() {
             background: `${fc.primary}`,
             color: "white",
           }}
+          onClick={() => setIsEditModalOpen(true)}
         >
           Edit profile
         </button>
@@ -456,8 +454,9 @@ export default function ProfilePage() {
               ].map((item, i, arr) => (
                 <div
                   key={item.label}
-                  className={`flex justify-between py-2 text-[11px] ${i < arr.length - 1 ? "border-b border-border" : ""
-                    }`}
+                  className={`flex justify-between py-2 text-[11px] ${
+                    i < arr.length - 1 ? "border-b border-border" : ""
+                  }`}
                 >
                   <span className="text-text3">{item.label}</span>
                   <span
@@ -482,10 +481,11 @@ export default function ProfilePage() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors capitalize ${activeTab === tab
-                  ? "bg-bg3 text-text font-medium"
-                  : "text-text3"
-                  }`}
+                className={`px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors capitalize ${
+                  activeTab === tab
+                    ? "bg-bg3 text-text font-medium"
+                    : "text-text3"
+                }`}
               >
                 {tab === "reviews" ? "My Reviews" : "Stats"}
               </button>
@@ -608,13 +608,12 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    
-    {/* edit profile modal */}
 
-    {isEditModalOpen&&(
-      <EditProfileModal onClose = {() => setIsEditModalOpen(false)}/>
-    )}
-    
+      {/* edit profile modal */}
+
+      {isEditModalOpen && (
+        <EditProfileModal onClose={() => setIsEditModalOpen(false)} />
+      )}
     </div>
   );
 }
