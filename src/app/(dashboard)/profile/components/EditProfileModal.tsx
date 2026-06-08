@@ -2,6 +2,7 @@ import React, { useState, useEffect, use } from "react";
 import { FACULTIES } from "@/lib/constants";
 import { useUser } from "@/context/UserContext";
 import "./style.css";
+import ChangePasswordModal from "./ChangePasswordModal";
 interface EditProfileModalProps {
   onClose: () => void;
 }
@@ -14,7 +15,6 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
   });
 
   const { user, setUser } = useUser();
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -24,6 +24,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const handleSave = () => {
     setError("");
@@ -69,7 +70,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
           faculty: formdata.faculty,
           studyYear: formdata.studyYear,
         });
-        
+
         setSuccess("Profile updated successfully!");
         setTimeout(() => {
           onClose();
@@ -199,6 +200,13 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
               </select>
             </div>
 
+            <button
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-primary/20"
+              onClick={() => setIsPasswordModalOpen(true)}
+            >
+              Change Password
+            </button>
+
             {error && (
               <p className="text-xs text-[#dc2626] font-medium">{error}</p>
             )}
@@ -221,6 +229,11 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
           </>
         )}
       </div>
+      
+      {isPasswordModalOpen && (
+        <ChangePasswordModal onClose={() => setIsPasswordModalOpen(false)} />
+      )}
+      
     </div>
   );
 }
