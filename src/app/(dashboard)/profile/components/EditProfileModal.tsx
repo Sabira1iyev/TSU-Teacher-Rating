@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { FACULTIES } from "@/lib/constants";
 import { useUser } from "@/context/UserContext";
 import "./style.css";
@@ -12,6 +12,8 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
     faculty: "",
     studyYear: "",
   });
+
+  const { user, setUser } = useUser();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -45,12 +47,34 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
 
   const confirmAndSave = async () => {
     try {
-       fetch("", {
+      const res = await fetch("/api/edit", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formdata,
+          userId: user?.userId,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Updating went wrong");
+        return;
+      } else if (user) {
+        setUser({
+          ...user,
+          firstName: formdata.firstName,
+          lastName: formdata.lastName,
+          faculty: formdata.faculty,
+          studyYear: formdata.studyYear,
+        });
         
-       })
-
-
+        setSuccess("Profile updated successfully!");
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+      }
     } catch (error) {
       console.log(error);
       setError("Something went wrong. Please try again.");
