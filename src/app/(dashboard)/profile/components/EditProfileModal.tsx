@@ -135,6 +135,8 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
                 </label>
                 <input
                   name="firstName"
+                  type="text"
+                  autoComplete="off"
                   value={formdata.firstName}
                   onChange={handleChange}
                   placeholder="First Name"
@@ -149,6 +151,8 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
                 <input
                   name="lastName"
                   value={formdata.lastName}
+                  type="text"
+                  autoComplete="off"
                   onChange={handleChange}
                   placeholder="Last Name"
                   className="w-full bg-bg3 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-text3 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
@@ -229,11 +233,10 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
           </>
         )}
       </div>
-      
+
       {isPasswordModalOpen && (
         <ChangePasswordModal onClose={() => setIsPasswordModalOpen(false)} />
       )}
-      
     </div>
   );
 }
