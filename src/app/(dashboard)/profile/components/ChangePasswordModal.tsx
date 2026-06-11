@@ -46,7 +46,29 @@ export default function ChangePasswordModa({
 
   const confirmAndSave = async () => {
     try {
-    } catch (error) {}
+      const res = await fetch("/api/password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user?.userId,
+          password: formData.password,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setSuccess(data.message || "Something went wrong!");
+        return;
+      } else {
+        setSuccess("Password changed successfully!");
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+      }
+    } catch (error) {
+      console.log(error);
+      setError("Connection error. Please try again.");
+    }
   };
 
   return (

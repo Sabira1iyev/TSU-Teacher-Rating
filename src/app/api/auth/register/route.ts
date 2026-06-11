@@ -8,9 +8,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { firstName, lastName, email, password, faculty, studyYear } = body;
 
-    {
-      /* validation */
-    }
     if (!email || !password || !faculty || !firstName || !lastName) {
       return NextResponse.json(
         { error: "All fields are required." },
@@ -68,7 +65,7 @@ export async function POST(req: NextRequest) {
 
     // Send verification email
     const transporter = nodemailer.createTransport({
-      service: "gmail", // Adjust if using another service
+      service: "gmail", 
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
