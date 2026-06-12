@@ -3,6 +3,7 @@ import { FACULTIES } from "@/lib/constants";
 import { useUser } from "@/context/UserContext";
 import "./style.css";
 import ChangePasswordModal from "./ChangePasswordModal";
+import DeleteAccountModal from "./DeleteAccountModal";
 interface EditProfileModalProps {
   onClose: () => void;
 }
@@ -25,6 +26,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
   const [success, setSuccess] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleSave = () => {
     setError("");
@@ -211,6 +213,13 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
               Change Password
             </button>
 
+            <button
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-red-500/70 hover:bg-red-500/60 text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-primary/20"
+              onClick={() => setIsDeleteModalOpen(true)}
+            >
+              Delete account
+            </button>
+
             {error && (
               <p className="text-xs text-[#dc2626] font-medium">{error}</p>
             )}
@@ -236,6 +245,10 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
 
       {isPasswordModalOpen && (
         <ChangePasswordModal onClose={() => setIsPasswordModalOpen(false)} />
+      )}
+
+      {isDeleteModalOpen && (
+        <DeleteAccountModal onClose={() => setIsDeleteModalOpen(false)} />
       )}
     </div>
   );

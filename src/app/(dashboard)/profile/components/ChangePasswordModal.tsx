@@ -18,7 +18,7 @@ export default function ChangePasswordModa({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const { user, setUser } = useUser();
+  const { user } = useUser();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
