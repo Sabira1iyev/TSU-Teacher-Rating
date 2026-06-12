@@ -19,12 +19,12 @@ export async function DELETE(req: NextRequest) {
     const db = await getDb();
 
     await db.request().input("userId", userId).query(`
-        DELETE FROM Favorites 
-        WHERE UserId = @userId
-        DELETE FROM Reviews
-        WHERE UserId = @userId
-        DELETE FROM Users
-        WHERE UserId = @userId
+        DELETE FROM ReviewTags WHERE ReviewId IN (SELECT ReviewId FROM Reviews WHERE UserId = @userId);
+        DELETE FROM ReviewInteractions WHERE ReviewId IN (SELECT ReviewId FROM Reviews WHERE UserId = @userId);
+        DELETE FROM ReviewInteractions WHERE UserId = @userId;
+        DELETE FROM Favorites WHERE UserId = @userId;
+        DELETE FROM Reviews WHERE UserId = @userId;
+        DELETE FROM Users WHERE UserId = @userId;
         `);
 
     return NextResponse.json(
