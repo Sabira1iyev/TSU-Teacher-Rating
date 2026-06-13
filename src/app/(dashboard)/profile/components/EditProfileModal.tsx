@@ -214,7 +214,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
             </button>
 
             <button
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-red-500/70 hover:bg-red-500/60 text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-primary/20"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-red-500 hover:bg-red-500/60 text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-red-500/20"
               onClick={() => setIsDeleteModalOpen(true)}
             >
               Delete account
