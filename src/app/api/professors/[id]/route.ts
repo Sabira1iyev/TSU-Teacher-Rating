@@ -46,11 +46,49 @@ export async function GET(
 
     const p = result.recordset[0];
 
+    const trenddResult = await (await db).request().input("ProfId", id).query(`
+      SELECT
+      FORMAT(CreatedAt, 'MMM', 'en-US') as month,
+      AVG(CAST(OverallRating as FLOAT)) as rating,
+      COUNT(*) as reviewCount
+      FROM Reviews
+      WHERE ProfessorId = @ProfId
+      AND CreatedAt >= DATEADD(MONTH, -6, GETDATE())
+      GROUP BY FORMAT(CreatedAt, 'MMM', 'en-US'), MONTH(CreatedAt)
+      ORDER BY MONTH(CreatedAt)
+      `);
+
+    const months = [];
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push(d.toLocaleString("en-US", { month: "short" }));
+    }
+
+    const finalTrendData = months.map((monthName) => {
+      const existingData = trenddResult.recordset.find(
+        (row) => row.month === monthName,
+      );
+      if (existingData) {
+        return {
+          month: monthName,
+          rating: existingData.rating,
+          reviewCount: existingData.reviewCount,
+        };
+      } else {
+        return {
+          month: monthName,
+          rating: 0,
+          reviewCount: 0,
+        };
+      }
+    });
+
     const fullProfessor = {
       ...p,
       courses: [],
       recommendationRate: 0,
-      trendData: [],
+      trendData: finalTrendData,
       criteria: {
         teaching: p.overallRating || 0,
         examDifficulty: p.overallRating || 0,

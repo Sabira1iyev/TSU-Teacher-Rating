@@ -585,11 +585,11 @@ export default function ProfessorProfilePage() {
                 <div className="flex items-end gap-1.5 h-16">
                   {professor.trendData.map((t, i) => {
                     const isLast = i === professor.trendData.length - 1;
-                    const height = `${((t.rating - 3) / 2) * 100}`;
+                    const height = `${((t.rating - 3) / 2) * 100}%`;
                     return (
                       <div
                         key={t.month}
-                        className="flex flex-col items-center gap-1 flex-1"
+                        className="flex flex-col items-center justify-end gap-1 flex-1 h-full"
                       >
                         <div
                           className="w-full rounded-t-sm"
