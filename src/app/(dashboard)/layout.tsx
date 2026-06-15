@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { getInitials } from "@/lib/utils";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
+import LogoutModal from "./LogoutModal";
 
 const navItems = [
   {
@@ -108,6 +109,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [isLogOutOpen, setIsLogOutOpen] = useState(false);
   const { user } = useUser();
   const initials = getInitials(
     user?.firstName || "FirstName",
@@ -198,7 +200,7 @@ export default function DashboardLayout({
         </nav>
 
         {/* User */}
-        <div className="px-3 py-4 border-t border-[#e4eaf0]">
+        <div className="flex flex-col itemsc-center px-3 py-4 border-t border-[#e4eaf0]">
           <Link
             href="/profile"
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-[#f8fafc] transition-all group"
@@ -215,6 +217,27 @@ export default function DashboardLayout({
               </span>
             </div>
           </Link>
+          <button
+            className="flex items-center w-full gap-2 px-4 py-2 border-none rounded-lg text-xs text-primary bg-[#fef2f2] hover:bg-[#fee2e2]  font-bold cursor-pointer"
+            onClick={() => setIsLogOutOpen(true)}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="#dc2626"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+              <path d="M9 12h12l-3 -3" />
+              <path d="M18 15l3 -3" />
+            </svg>
+            <p className="text-[#dc2626]">Log Out</p>
+          </button>
         </div>
       </aside>
 
@@ -240,7 +263,6 @@ export default function DashboardLayout({
             </span>
           </div>
         </div>
-
         {/* Mobile topbar */}
         <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-[#e4eaf0] bg-white sticky top-0 z-10 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <span
@@ -262,19 +284,38 @@ export default function DashboardLayout({
                 Search professor or course...
               </span>
             </div>
-            <div className="w-8 h-8 rounded-full bg-[#e8f1fa] flex items-center justify-center text-[10px] text-[#0060a9] font-medium cursor-pointer">
-              {initials}
+            <div className="lg:hidden flex items-center justify-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-[#e8f1fa] flex items-center justify-center text-[10px] text-[#0060a9] font-medium cursor-pointer">
+                {initials}
+              </div>
+              <button
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#fef2f2] hover:bg-[#fee2e2] transition-colors border-none cursor-pointer"
+                onClick={() => setIsLogOutOpen(true)}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="#dc2626"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                  <path d="M9 12h12l-3 -3" />
+                  <path d="M18 15l3 -3" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
-
         {/* page content */}
         <div className="flex-1 pb-16 lg:pb-0 overflow-x-hidden min-w-0">
           {children}
         </div>
-
         {/* Bottom nav mobile */}
-
         <nav className="flex lg:hidden border-t border-[#e4eaf0] bg-white fixed bottom-0 left-0 right-0 z-50 shadow-[0_-1px_4px_rgba(0,40,80,0.04)]">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
@@ -302,6 +343,10 @@ export default function DashboardLayout({
             );
           })}
         </nav>
+        <LogoutModal
+          isOpen={isLogOutOpen}
+          onClose={() => setIsLogOutOpen(false)}
+        />
       </main>
     </div>
   );

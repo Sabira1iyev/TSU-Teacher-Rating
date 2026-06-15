@@ -240,9 +240,9 @@ export default function ProfilePage() {
     : DEFAULT_FACULTY_COLOR;
 
   return (
-    <div className="flex flex-col pt-20 bg-[#f0f2f0]">
+    <div className="flex flex-col pt-10 bg-[#f0f2f0]">
       {/* Desktop topbar */}
-      <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-[57px] z-10">
+      <div className="hidden lg:flex items-center justify-between px-6 py-3.5 mt-[10px] border-b border-border bg-bg2 sticky z-10">
         <h1
           className="font-bold text-[16px] text-text"
           style={{

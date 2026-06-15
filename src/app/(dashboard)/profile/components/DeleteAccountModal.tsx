@@ -14,9 +14,6 @@ export default function DeleteAccountModal({
   const { user, setUser } = useUser();
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    userId: user?.userId,
-  });
   const handleDelete = async () => {
     setError("");
     setSuccess("");
