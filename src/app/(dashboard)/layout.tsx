@@ -254,7 +254,7 @@ export default function DashboardLayout({
             Dashboard
           </h1>
           <div
-            className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 w-56 cursor-pointer hover:border-[#0060a9] transition-colors"
+            className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 cursor-pointer hover:border-[#0060a9] transition-colors"
             onClick={() => router.push("/search")}
           >
             <span className="text-[#8a97a4] text-sm">⌕</span>
@@ -276,12 +276,12 @@ export default function DashboardLayout({
           </span>
           <div className="flex items-center gap-2">
             <div
-              className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 flex-1 min-w-0 cursor-pointer"
+              className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 w-full max-w-[140px] sm:max-w-[200px] cursor-pointer"
               onClick={() => router.push("/search")}
             >
               <span className="text-[#8a97a4] text-[12px]">⌕</span>
               <span className="text-[#8a97a4] text-[12px]">
-                Search professor or course...
+                Search...
               </span>
             </div>
             <div className="lg:hidden flex items-center justify-center gap-2">
