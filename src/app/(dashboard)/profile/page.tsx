@@ -434,7 +434,17 @@ export default function ProfilePage() {
               </div>
             ))}
           </div>
-
+          {user?.isAdmin && (
+            <button
+              className="px-4 py-3 border border-border2 rounded-lg text-lg text-primary font-bold cursor-pointer"
+              style={{
+                background: `${fc.primary}`,
+                color: "white",
+              }}
+            >
+              Admin Panel
+            </button>
+          )}
           {/* Account info */}
           <div
             className="bg-bg2 border border-border rounded-xl p-4"

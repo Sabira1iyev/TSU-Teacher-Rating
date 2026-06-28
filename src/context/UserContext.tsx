@@ -16,6 +16,7 @@ interface User {
   studyYear: string;
   userId: number;
   createdAt?: string;
+  isAdmin: boolean;
 }
 
 interface UserContextType {
