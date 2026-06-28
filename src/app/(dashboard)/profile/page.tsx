@@ -278,7 +278,7 @@ export default function ProfilePage() {
         </button>
       </div>
 
-      <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] min-h-screen">
+      <div className="flex flex-col lg:grid lg:grid-cols-[450px_1fr] min-h-screen">
         {/* Left col */}
         <div className="lg:border-r border-border p-5 lg:p-6 flex flex-col gap-4">
           {/* Profile card */}
@@ -436,11 +436,12 @@ export default function ProfilePage() {
           </div>
           {user?.isAdmin && (
             <button
-              className="px-4 py-3 border border-border2 rounded-lg text-lg text-primary font-bold cursor-pointer"
+              className="px-4 py-3 border border-border2 rounded-full text-lg text-primary font-bold cursor-pointer"
               style={{
                 background: `${fc.primary}`,
                 color: "white",
               }}
+              onClick={() => router.push("/adminPanel")}
             >
               Admin Panel
             </button>
