@@ -79,6 +79,7 @@ export default function RegisterPage() {
         studyYear: formdata.studyYear,
         userId: data.userId,
         createdAt: data.createdAt,
+        isAdmin: false,
       });
 
       setSuccess("Registration successful! Redirecting to verification...");
