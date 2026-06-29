@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { UserPlus, BarChart, ShieldAlert, ArrowLeft } from "lucide-react";
+import AddProfessorForm from "./components/AddProfessorForm";
+import AnalyticsPage from "./components/AnalyticsPage";
+import AdminRole from "./components/AdminRole";
 
 type AdminTap = "menu" | "addProfessor" | "analytics" | "usersManagment";
 
@@ -75,6 +78,9 @@ export default function AdminPanelPage() {
           ))}
         </div>
       )}
+      {activeTab === "addProfessor" && <AddProfessorForm />}
+      {activeTab === "analytics" && <AnalyticsPage />}
+      {activeTab === "usersManagment" && <AdminRole />}
     </div>
   );
 }
