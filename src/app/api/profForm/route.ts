@@ -9,38 +9,60 @@ export async function POST(req: NextRequest) {
 
     const db = await getDb();
 
+    const checkResult = await db
+      .request()
+      .input("faculty", faculty)
+      .input("department", department)
+      .query(
+        `
+        DECLARE @facId INT;
+        SELECT @facId = FacultyId FROM Faculties WHERE Name = @faculty;
+
+        DECLARE @deptId INT;
+        SELECT @deptId = DepartmentId FROM Departments WHERE Name = @department AND FacultyId = @facId;
+
+        IF @deptId IS NULL
+        BEGIN
+            INSERT INTO Departments (Name, FacultyId)
+            VALUES(@department, @facId);
+            SET @deptId = SCOPE_IDENTITY();
+            END
+        
+        SELECT @facId AS facId, @deptId AS deptId;
+        `,
+      );
+
+    const facId = checkResult.recordset[0]?.facId;
+    const deptId = checkResult.recordset[0]?.deptId;
+
+    if (!facId) {
+      return NextResponse.json(
+        { error: "The selected faculty could not be found in the database!" },
+        { status: 400 },
+      );
+    }
+
+
     const result = await db
       .request()
       .input("firstName", firstName)
       .input("lastName", lastName)
       .input("email", email)
-      .input("faculty", faculty)
-      .input("department", department)
       .input("title", title)
+      .input("deptId", deptId)
       .query(
         `
-        DECLARE @facId INT;
-        select @facId = FacultyId from Faculties WHERE Name = @faculty;
-
-        DECLARE @deptId int;
-        select @deptId = DepartmentId from Departments WHERE Name = @department AND facultyId = @facId;
-        
         INSERT INTO Professors (
           FirstName, LastName, Email, Title, DepartmentId
-        )VALUES(
-        @firstName, @lastName, @email, @title, @deptId);
+        ) VALUES (
+          @firstName, @lastName, @email, @title, @deptId
+        );
 
         SELECT SCOPE_IDENTITY() AS ProfessorId;
         `,
       );
-    const professorId = result.recordset[0].ProfessorId;
 
-    if (!professorId) {
-      return NextResponse.json(
-        { message: "Professor's Faculty couldn't be found!" },
-        { status: 500 },
-      );
-    }
+    const professorId = result.recordset[0]?.ProfessorId;
 
     for (const course of courses) {
       await db

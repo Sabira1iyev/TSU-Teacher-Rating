@@ -67,6 +67,15 @@ export default function AddProfessorForm() {
       });
       if (res.ok) {
         setSuccess("Professor added successfully!");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          faculty: "",
+          department: "",
+          title: "",
+          courses: [],
+        });
       } else {
         const data = await res.json();
         setError(data.error || "Something went wrong!");
