@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
       .request()
       .input("faculty", faculty)
       .input("department", department)
+      .input("email", email)
       .query(
         `
         DECLARE @facId INT;
@@ -26,14 +27,25 @@ export async function POST(req: NextRequest) {
             INSERT INTO Departments (Name, FacultyId)
             VALUES(@department, @facId);
             SET @deptId = SCOPE_IDENTITY();
-            END
+        END
         
-        SELECT @facId AS facId, @deptId AS deptId;
+        DECLARE @existingProfId INT;
+        SELECT @existingProfId = ProfessorId FROM Professors WHERE Email = @email;
+
+        SELECT @facId AS facId, @deptId AS deptId, @existingProfId AS existingProfId;
         `,
       );
 
     const facId = checkResult.recordset[0]?.facId;
     const deptId = checkResult.recordset[0]?.deptId;
+    const existingProfId = checkResult.recordset[0]?.existingProfId;
+
+    if (existingProfId) {
+      return NextResponse.json(
+        { error: "A professor with this email is already registered!" },
+        { status: 409 },
+      );
+    }
 
     if (!facId) {
       return NextResponse.json(
@@ -41,7 +53,6 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-
 
     const result = await db
       .request()

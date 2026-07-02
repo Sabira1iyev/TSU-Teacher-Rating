@@ -238,7 +238,7 @@ export default function AddProfessorForm() {
               value={courseInputValue}
               onChange={(e) => setCourseInputValue(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === " " || e.key === "Enter") {
+                if (e.key === "Enter") {
                   e.preventDefault();
                   if (courseInputValue.trim() !== "") {
                     setFormData((prev) => ({
