@@ -15,6 +15,7 @@ import {
   FACULTY_COLORS,
   DEFAULT_FACULTY_COLOR,
 } from "@/lib/constants";
+import DeleteProfessorModal from "./DeleteProfessorModal";
 
 type Tab = "Overview" | "Reviews" | "Courses";
 
@@ -26,7 +27,7 @@ export default function ProfessorProfilePage() {
   const [professor, setProfessor] = useState<Professor | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
   const [dislike, setDislike] = useState<Record<string, boolean>>({});
 
@@ -372,24 +373,7 @@ export default function ProfessorProfilePage() {
                   {user?.isAdmin && (
                     <div className="flex w-full lg:w-auto items-center justify-center">
                       <button
-                        onClick={async () => {
-                          setIsDeleted(!isDeleted);
-                          try {
-                            await fetch(`/api/professors/${params.ID}`, {
-                              method: "DELETE",
-                              headers: {
-                                "Content-Type": "application/json",
-                              },
-                              body: JSON.stringify({
-                                id: params?.ID,
-                                userId: user?.userId,
-                              }),
-                            });
-                            router.push("/dashboard");
-                          } catch (err) {
-                            console.log(err);
-                          }
-                        }}
+                        onClick={() => setShowDeleteModal(true)}
                         className={`flex justify-center items-center px-3 lg:py-1.5 py-2 rounded-lg text-[11px] font-bold text-white transition-all cursor-pointer hover:opacity-90 active:scale-95 w-full
                   lg:w-auto lg:ml-2`}
                         style={{
@@ -398,40 +382,24 @@ export default function ProfessorProfilePage() {
                         }}
                       >
                         <div className="flex justify-center items-center gap-1 text-[11px] text-white">
-                          {isDeleted ? (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="15"
-                              height="15"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="#ffffffff"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          ) : (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="15"
-                              height="15"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="#ffffffff"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path d="M4 7l16 0" />
-                              <path d="M10 11l0 6" />
-                              <path d="M14 11l0 6" />
-                              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                            </svg>
-                          )}
-                          {isDeleted ? "Deleted Professor" : "Delete Professor"}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#ffffff"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M4 7l16 0" />
+                            <path d="M10 11l0 6" />
+                            <path d="M14 11l0 6" />
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                          </svg>
+                          Delete Professor
                         </div>
                       </button>
                     </div>
@@ -998,6 +966,20 @@ export default function ProfessorProfilePage() {
           Rate this professor →
         </button>
       </div>
+
+      {showDeleteModal && (
+        <DeleteProfessorModal
+          professorName={`${professor.firstName} ${professor.lastName}`}
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={async () => {
+            await fetch(`/api/professors/${params.ID}`, {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+            });
+            router.push("/dashboard");
+          }}
+        />
+      )}
     </div>
   );
 }
