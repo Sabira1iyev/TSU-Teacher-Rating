@@ -3,6 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Professor } from "@/types/teacher";
 import { useUser } from "@/context/UserContext";
+
 import {
   getInitials,
   formatRating,
@@ -25,6 +26,7 @@ export default function ProfessorProfilePage() {
   const [professor, setProfessor] = useState<Professor | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
   const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
   const [dislike, setDislike] = useState<Record<string, boolean>>({});
 
@@ -304,64 +306,141 @@ export default function ProfessorProfilePage() {
                 <span className="text-[11px] text-text3">
                   Tbilisi State University
                 </span>
-                <button
-                  onClick={async () => {
-                    setIsFavorite(!isFavorite);
-                    try {
-                      await fetch("/api/favorites", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          userId: user?.userId,
-                          professorId: params.ID,
-                        }),
-                      });
-                    } catch (error) {
-                      console.log(error);
-                      setIsFavorite(isFavorite);
-                    }
-                  }}
-                  className={`flex justify-center items-center px-3 lg:py-1.5 py-2 rounded-lg text-[11px] font-bold text-white transition-all cursor-pointer hover:opacity-90 active:scale-95 w-full
+
+                {/* favorite & delete buttons */}
+
+                {/* add professor to favorites button */}
+                <div className="flex flex-col w-full items-center justify-center gap-2">
+                  <button
+                    onClick={async () => {
+                      setIsFavorite(!isFavorite);
+                      try {
+                        await fetch("/api/favorites", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            userId: user?.userId,
+                            professorId: params.ID,
+                          }),
+                        });
+                      } catch (error) {
+                        console.log(error);
+                        setIsFavorite(isFavorite);
+                      }
+                    }}
+                    className={`flex justify-center items-center px-3 lg:py-1.5 py-2 rounded-lg text-[11px] font-bold text-white transition-all cursor-pointer hover:opacity-90 active:scale-95 w-full
                   lg:w-auto lg:ml-2`}
-                  style={{
-                    backgroundColor: fc.primary,
-                    boxShadow: `0 4px 16px ${fc.mid}60%`,
-                  }}
-                >
-                  <div className="flex justify-center items-center gap-1 text-[11px] text-white">
-                    {isFavorite ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                    style={{
+                      backgroundColor: fc.primary,
+                      boxShadow: `0 4px 16px ${fc.mid}60%`,
+                    }}
+                  >
+                    <div className="flex justify-center items-center gap-1 text-[11px] text-white">
+                      {isFavorite ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                        </svg>
+                      )}
+                      {isFavorite ? "Added to Favorites" : "Add to Favorites"}
+                    </div>
+                  </button>
+
+                  {/* delete professor button */}
+
+                  {user?.isAdmin && (
+                    <div className="flex flex-col w-full items-center justify-center">
+                      <button
+                        onClick={async () => {
+                          setIsDeleted(!isDeleted);
+                          try {
+                            await fetch(`/api/professors/${params.ID}`, {
+                              method: "DELETE",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({
+                                id: params?.ID,
+                                userId: user?.userId,
+                              }),
+                            });
+                            router.push("/dashboard");
+                          } catch (err) {
+                            console.log(err);
+                          }
+                        }}
+                        className={`flex justify-center items-center px-3 lg:py-1.5 py-2 rounded-lg text-[11px] font-bold text-white transition-all cursor-pointer hover:opacity-90 active:scale-95 w-full
+                  lg:w-auto lg:ml-2`}
+                        style={{
+                          backgroundColor: "#ef4444",
+                          boxShadow: `0 4px 16px ${fc.mid}60%`,
+                        }}
                       >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                      </svg>
-                    )}
-                    {isFavorite ? "Added to Favorites" : "Add to Favorites"}
-                  </div>
-                </button>
+                        <div className="flex justify-center items-center gap-1 text-[11px] text-white">
+                          {isDeleted ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="15"
+                              height="15"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="#ffffffff"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="15"
+                              height="15"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="#ffffffff"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M4 7l16 0" />
+                              <path d="M10 11l0 6" />
+                              <path d="M14 11l0 6" />
+                              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                            </svg>
+                          )}
+                          {isDeleted ? "Deleted Professor" : "Delete Professor"}
+                        </div>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
+
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {(professor.courses || []).map((course) => (
                   <span

@@ -64,10 +64,13 @@ export default function DashBoardPage() {
     return b.overallRating - a.overallRating;
   });
 
-  const avgRating = filteredProfessors.length
-    ? filteredProfessors.reduce((sum, p) => sum + p.overallRating, 0) /
-      filteredProfessors.length
+  const ratedProfessors = filteredProfessors.filter((p) => p.reviewCount > 0);
+
+  const avgRating = ratedProfessors.length
+    ? ratedProfessors.reduce((sum, p) => sum + p.overallRating, 0) /
+      ratedProfessors.length
     : 0;
+
   const totalReviews = filteredProfessors.reduce(
     (sum, p) => sum + p.reviewCount,
     0,
@@ -81,7 +84,9 @@ export default function DashBoardPage() {
     <div className="flex flex-col gap-5 p-5 lg:p-6">
       {/* Greeting - Mobile */}
       <div className="lg:hidden">
-        <p className="text-xs font-semibold text-[#0060a9] mb-1">Hello, {fullName}</p>
+        <p className="text-xs font-semibold text-[#0060a9] mb-1">
+          Hello, {fullName}
+        </p>
         <h1
           className="text-xl font-semibold text-[#1a2a3a] leading-tight"
           style={{ fontFamily: "Syne, sans-serif" }}

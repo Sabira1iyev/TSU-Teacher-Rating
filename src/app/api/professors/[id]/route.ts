@@ -194,3 +194,45 @@ export async function GET(
     );
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{
+      id: string;
+    }>;
+  },
+) {
+  try {
+    const { id } = await params;
+    const db = getDb();
+
+    await (
+      await db
+    )
+      .request()
+      .input("Id", id)
+      .query(
+        `
+      DELETE FROM ReviewTags WHERE ReviewId IN (SELECT ReviewId FROM Reviews WHERE ProfessorId = @Id);
+      DELETE FROM ReviewInteractions WHERE ReviewId IN (SELECT ReviewId FROM Reviews WHERE ProfessorID = @Id);
+      DELETE FROM Favorites WHERE ProfessorId = @Id;
+      DELETE FROM Reviews WHERE ProfessorId = @Id;
+      DELETE FROM Professors WHERE ProfessorId = @Id;
+      `,
+      );
+
+    return NextResponse.json(
+      { message: "Professor has been deleted!" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.log("Professor deletion error: ", error);
+    return NextResponse.json(
+      { message: "Internal server error." },
+      { status: 500 },
+    );
+  }
+}
