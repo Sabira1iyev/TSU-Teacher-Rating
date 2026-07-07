@@ -295,7 +295,7 @@ export default function ProfessorProfilePage() {
               >
                 {professor.firstName} {professor.lastName}
               </h1>
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-2">
+              <div className="flex flex-wrap w-full lg:flex-row items-center gap-x-2 gap-y-1.5 mt-2">
                 <span
                   className="text-[11px] font-medium"
                   style={{ color: fc.primary }}
@@ -308,9 +308,7 @@ export default function ProfessorProfilePage() {
                 </span>
 
                 {/* favorite & delete buttons */}
-
-                {/* add professor to favorites button */}
-                <div className="flex flex-col w-full items-center justify-center gap-2">
+                <div className="flex flex-col lg:flex-row w-full lg:w-auto items-center justify-center gap-2 mt-2 lg:mt-0 lg:ml-2">
                   <button
                     onClick={async () => {
                       setIsFavorite(!isFavorite);
@@ -372,7 +370,7 @@ export default function ProfessorProfilePage() {
                   {/* delete professor button */}
 
                   {user?.isAdmin && (
-                    <div className="flex flex-col w-full items-center justify-center">
+                    <div className="flex w-full lg:w-auto items-center justify-center">
                       <button
                         onClick={async () => {
                           setIsDeleted(!isDeleted);
