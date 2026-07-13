@@ -315,7 +315,7 @@ function RatePageContent() {
                 <select
                   value={form.courseName}
                   onChange={(e) =>
-                    setForm((prev) => ({ ...prev, semester: e.target.value }))
+                    setForm((prev) => ({ ...prev, courseName: e.target.value }))
                   }
                   className="w-full bg-bg3 border border-border2 rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
                 >

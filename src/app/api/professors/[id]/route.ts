@@ -84,9 +84,19 @@ export async function GET(
       }
     });
 
+    const fullCourses = await (
+      await db
+    )
+      .request()
+      .input("ProfId", id)
+      .query(
+        `
+        SELECT CourseName FROM Courses WHERE ProfessorId = @ProfId `,
+      );
+
     const fullProfessor = {
       ...p,
-      courses: [],
+      courses: fullCourses.recordset.map((c: any) => c.CourseName) || [],
       recommendationRate: 0,
       trendData: finalTrendData,
       criteria: {
