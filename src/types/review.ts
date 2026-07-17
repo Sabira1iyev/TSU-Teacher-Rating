@@ -22,6 +22,7 @@ export interface ReviewForm {
 export interface Review {
   id: string;
   professorId: string;
+  userId: number; 
   courseName: string;
   semester: string;
   overallRating: number;

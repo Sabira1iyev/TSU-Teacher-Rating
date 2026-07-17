@@ -780,7 +780,7 @@ export default function ProfessorProfilePage() {
           <div className="flex flex-col gap-3 max-w-2xl">
             {reviews.length === 0 ? (
               <div className="text-center py-10 text-sm text-text3">
-                No reviews ye for this professor.
+                No reviews yet for this professor.
               </div>
             ) : (
               reviews.map((review) => (
@@ -805,10 +805,26 @@ export default function ProfessorProfilePage() {
                         />
                       ))}
                     </div>
-                    <span className="text-[10px] text-text3">
-                      {review.displayDate}
-                      
-                    </span>
+                    <div className="flex flex-row justify-center items-center">
+                      <span className="text-[10px] text-text3">
+                        {review.displayDate}
+                      </span>
+                      {(user?.userId === review.userId || user?.isAdmin) && (
+                        <button className="text-text3 hover:text-white transition-colors cursor-pointer">
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="12" cy="5" r="2" fill="currentColor" />
+                            <circle cx="12" cy="12" r="2" fill="currentColor" />
+                            <circle cx="12" cy="19" r="2" fill="currentColor" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <p className="text-[11px] text-primary mb-2">
                     {review.courseName}
