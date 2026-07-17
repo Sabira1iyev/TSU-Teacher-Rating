@@ -222,7 +222,6 @@ export async function DELETE(
     await (
       await db
     )
-      .request()
       .input("Id", id)
       .query(
         `
