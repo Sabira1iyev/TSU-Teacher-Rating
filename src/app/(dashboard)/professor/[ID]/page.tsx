@@ -807,6 +807,7 @@ export default function ProfessorProfilePage() {
                     </div>
                     <span className="text-[10px] text-text3">
                       {review.displayDate}
+                      
                     </span>
                   </div>
                   <p className="text-[11px] text-primary mb-2">
