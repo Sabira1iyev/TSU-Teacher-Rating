@@ -121,6 +121,7 @@ export async function GET(
       (SELECT COUNT(*) FROM ReviewInteractions WHERE ReviewId = r.ReviewId AND InteractionType = 'DISLIKE') as dislikeCount,
       (SELECT InteractionType FROM ReviewInteractions WHERE ReviewId = r.ReviewId AND UserId = @ViewerId) as userInteraction,
       r.ReviewId as id,
+      r.UserId as userId,
       r.ProfessorId as professorId,
       r.CourseName as courseName,
       r.Semester as semester,
@@ -146,6 +147,7 @@ export async function GET(
 
     const reviews = reviewResult.recordset.map((r: any) => ({
       id: r.id,
+      userId: r.userId,
       professorId: r.professorId.toString(),
       courseName: r.courseName || "",
       semester: r.semester || "",
