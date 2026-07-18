@@ -805,7 +805,7 @@ export default function ProfessorProfilePage() {
                         />
                       ))}
                     </div>
-                    <div className="flex flex-row justify-center items-center">
+                    <div className="flex flex-row justify-center items-center gap-2">
                       <span className="text-[10px] text-text3">
                         {review.displayDate}
                       </span>
@@ -853,95 +853,117 @@ export default function ProfessorProfilePage() {
                         ✗ Would not recommend
                       </p>
                     )}
-                    <div className="flex items-center bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
-                      <button
-                        onClick={() => {
-                          handleLike(review.id.toString());
-                        }}
-                      >
-                        {likedReviews[review.id.toString()] ? (
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            cursor="pointer"
-                          >
-                            <path
-                              d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
-                              fill="currentColor"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        ) : (
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            cursor="pointer"
-                          >
-                            <path
-                              d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        )}
-                      </button>
-                      <span className="text-[11px] font-medium text-text2 ml-1.5">
-                        {review.likeCount}
-                      </span>
-                      <p className="w-[1px] h-3 bg-black mx-2"></p>
+                    <div className="flex flex-row justify-center items-center gap-2">
+                      <div className="flex items-center bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
+                        <button
+                          onClick={() => {
+                            handleLike(review.id.toString());
+                          }}
+                        >
+                          {likedReviews[review.id.toString()] ? (
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                              cursor="pointer"
+                            >
+                              <path
+                                d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                              cursor="pointer"
+                            >
+                              <path
+                                d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          )}
+                        </button>
+                        <span className="text-[11px] font-medium text-text2 ml-1.5">
+                          {review.likeCount}
+                        </span>
+                        <p className="w-[1px] h-3 bg-black mx-2"></p>
 
-                      <button
-                        onClick={() => handleDislike(review.id.toString())}
-                      >
-                        {dislike[review.id.toString()] ? (
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            cursor="pointer"
-                          >
-                            <path
-                              d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
-                              fill="currentColor"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        ) : (
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            cursor="pointer"
-                          >
-                            <path
-                              d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        )}
+                        <button
+                          onClick={() => handleDislike(review.id.toString())}
+                        >
+                          {dislike[review.id.toString()] ? (
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                              cursor="pointer"
+                            >
+                              <path
+                                d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                              cursor="pointer"
+                            >
+                              <path
+                                d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          )}
+                        </button>
+                        <span className="text-[11px] font-medium text-text2 ml-1.5">
+                          {review.dislikeCount}
+                        </span>
+                      </div>
+                      {(user?.userId !== review.userId || !user?.isAdmin) && (
+                      <button className="flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6 21V4C6 3.44772 6.44772 3 7 3H17.5858C18.4767 3 18.9229 4.07714 18.2929 4.70711L15 8L18.2929 11.2929C18.9229 11.8229 18.4767 13 17.5858 13H7"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span className="text-xs text-primary">Report</span>
                       </button>
-                      <span className="text-[11px] font-medium text-text2 ml-1.5">
-                        {review.dislikeCount}
-                      </span>
+                      )}
                     </div>
                   </div>
                 </div>
