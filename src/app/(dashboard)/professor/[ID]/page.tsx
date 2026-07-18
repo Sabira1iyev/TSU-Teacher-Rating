@@ -3,6 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Professor } from "@/types/teacher";
 import { useUser } from "@/context/UserContext";
+import EditReviewModal from "./EditReviewModal";
 
 import {
   getInitials,
@@ -810,19 +811,7 @@ export default function ProfessorProfilePage() {
                         {review.displayDate}
                       </span>
                       {(user?.userId === review.userId || user?.isAdmin) && (
-                        <button className="text-text3 hover:text-white transition-colors cursor-pointer">
-                          <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <circle cx="12" cy="5" r="2" fill="currentColor" />
-                            <circle cx="12" cy="12" r="2" fill="currentColor" />
-                            <circle cx="12" cy="19" r="2" fill="currentColor" />
-                          </svg>
-                        </button>
+                          <EditReviewModal reviewId = {review.id} isAdmin = {user?.isAdmin}/>
                       )}
                     </div>
                   </div>
@@ -945,24 +934,24 @@ export default function ProfessorProfilePage() {
                         </span>
                       </div>
                       {(user?.userId !== review.userId || !user?.isAdmin) && (
-                      <button className="flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M6 21V4C6 3.44772 6.44772 3 7 3H17.5858C18.4767 3 18.9229 4.07714 18.2929 4.70711L15 8L18.2929 11.2929C18.9229 11.8229 18.4767 13 17.5858 13H7"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                        <span className="text-xs text-primary">Report</span>
-                      </button>
+                        <button className="flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M6 21V4C6 3.44772 6.44772 3 7 3H17.5858C18.4767 3 18.9229 4.07714 18.2929 4.70711L15 8L18.2929 11.2929C18.9229 11.8229 18.4767 13 17.5858 13H7"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          <span className="text-xs text-primary">Report</span>
+                        </button>
                       )}
                     </div>
                   </div>
