@@ -811,7 +811,11 @@ export default function ProfessorProfilePage() {
                         {review.displayDate}
                       </span>
                       {(user?.userId === review.userId || user?.isAdmin) && (
-                          <EditReviewModal reviewId = {review.id} isAdmin = {user?.isAdmin}/>
+                        <EditReviewModal
+                          reviewId={review.id}
+                          isAdmin={user?.isAdmin}
+                          isOwner={user?.userId === review.userId}
+                        />
                       )}
                     </div>
                   </div>
@@ -933,7 +937,7 @@ export default function ProfessorProfilePage() {
                           {review.dislikeCount}
                         </span>
                       </div>
-                      {(user?.userId !== review.userId || !user?.isAdmin) && (
+                      {(user?.userId !== review.userId && !user?.isAdmin) && (
                         <button className="flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
                           <svg
                             width="18"

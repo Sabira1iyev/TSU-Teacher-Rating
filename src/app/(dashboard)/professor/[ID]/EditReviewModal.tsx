@@ -5,9 +5,11 @@ import { useUser } from "@/context/UserContext";
 export default function EditReviewModal({
   reviewId,
   isAdmin,
+  isOwner,
 }: {
   reviewId: string;
   isAdmin: boolean;
+  isOwner: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,11 +35,13 @@ export default function EditReviewModal({
       </button>
 
       {isOpen && (
-        <div className="animate-modal flex flex-col absolute right-0 w-32  rounded shadow-lg z-10 gap-1">
-          <button className="w-full text-center px-4 py-2 bg-green-600 text-sm hover:bg-green-300 border-none rounded-full cursor-pointer">
-            Edit review
-          </button>
-          <button className="w-full text-center font-bold px-4 py-2 bg-red-400  text-sm hover:bg-red-300 border-none rounded-full cursor-pointer">
+        <div className="animate-modal flex flex-col absolute right-0 w-32 z-10 gap-1">
+          {isOwner && (
+            <button className="w-full text-center text-white font-semibold px-4 py-2 bg-green-600 text-sm hover:bg-green-300 border-none rounded-full cursor-pointer">
+              Edit review
+            </button>
+          )}
+          <button className="w-full text-center text-white font-semibold px-4 py-2 bg-red-400  text-sm hover:bg-red-300 border-none rounded-full cursor-pointer">
             Remove
           </button>
         </div>
