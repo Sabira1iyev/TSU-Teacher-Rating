@@ -815,6 +815,7 @@ export default function ProfessorProfilePage() {
                           reviewId={review.id}
                           isAdmin={user?.isAdmin}
                           isOwner={user?.userId === review.userId}
+                          professorId={professor.id}
                         />
                       )}
                     </div>

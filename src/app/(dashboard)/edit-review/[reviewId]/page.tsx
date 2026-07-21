@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import { useEffect } from "react";
 // mock data removed
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
@@ -13,17 +13,6 @@ import {
 } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
 import { useUser } from "@/context/UserContext";
-
-import { Key } from "lucide-react";
-
-const STAR_COLOR = {
-  teaching: "#0060a9",
-  examDifficulty: "#d4a017",
-  homeWork: "#d4a017",
-  accessibility: "#0060a9",
-
-  examControlLevel: "#d4a017",
-} as const;
 
 function RatePageContent() {
   const { user } = useUser();
@@ -51,6 +40,9 @@ function RatePageContent() {
     wouldRecommend: true,
   });
 
+  const params = useParams();
+  const reviewId = params.reviewId;
+
   useEffect(() => {
     if (professorId) {
       fetch(`/api/professors/${professorId}`)
@@ -58,12 +50,30 @@ function RatePageContent() {
         .then((data) => {
           if (!data.message && !data.error) {
             setProfessor(data);
-            setForm((prev) => ({
-              ...prev,
-              professorId: data.id,
-              courseName:
-                data.courses && data.courses.length > 0 ? data.courses[0] : "",
-            }));
+            const myOldReview = data.reviews.find(
+              (r: any) => r.id.toString() === reviewId,
+            );
+            if (myOldReview) {
+              setForm({
+                professorId: data.id,
+                courseName: myOldReview.courseName,
+                semester: myOldReview.semester,
+                overallRating: myOldReview.overallRating,
+                criteria: myOldReview.criteria,
+                comment: myOldReview.comment,
+                tags: myOldReview.tags,
+                wouldRecommend: myOldReview.wouldRecommend,
+              });
+            } else {
+              setForm((prev) => ({
+                ...prev,
+                professorId: data.id,
+                courseName:
+                  data.courses && data.courses.length > 0
+                    ? data.courses[0]
+                    : "",
+              }));
+            }
           }
         });
     } else {
@@ -138,8 +148,8 @@ function RatePageContent() {
     setError("");
 
     try {
-      const res = await fetch("/api/reviews", {
-        method: "POST",
+      const res = await fetch(`/api/reviews?reviewId=${reviewId}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, userId: user?.userId }),
       });
@@ -520,7 +530,7 @@ function RatePageContent() {
                   boxShadow: `${fc.shadow}`,
                 }}
               >
-                Submit review →
+                Save changes →
               </button>
             </>
           )}

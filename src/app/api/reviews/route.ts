@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
+import { stat } from "fs";
+import { Tags } from "lucide-react";
 
 export async function POST(req: NextRequest) {
   try {
@@ -119,6 +121,122 @@ export async function POST(req: NextRequest) {
           "An unknown error occurred while saving the review. Please try again later.",
       },
       { status: 500 },
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const reviewId = req.nextUrl.searchParams.get("reviewId");
+    const body = await req.json();
+
+    if (!reviewId || !body.userId) {
+      NextResponse.json(
+        {
+          message: "Missing information",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+    const pool = await getDb();
+
+    await pool
+      .request()
+      .input("ReviewId", reviewId)
+      .input("CourseName", body.courseName)
+      .input("Semester", body.semester)
+      .input("TeacherRating", body.criteria.teaching)
+      .input("ExamDifficultyRating", body.criteria.examDifficulty)
+      .input("HomeWorkRating", body.criteria.homeWork)
+      .input("AccessibilityRating", body.criteria.accessibility)
+      .input("ExamControlRating", body.criteria.examControlLevel)
+      .input("WouldRecommend", body.wouldRecommend ? 1 : 0)
+      .input("OverallRating", body.overallRating)
+      .input("Comment", body.comment)
+      .query(
+        `
+      UPDATE Reviews
+      SET 
+      CourseName = @CourseName,
+      Semester = @Semester,
+      TeachingRating = @TeacherRating,
+      ExamDifficultyRating = @ExamDifficultyRating,
+      HomeWorkRating = @HomeWorkRating,
+      AccessibilityRating = @AccessibilityRating,
+      ExamControlRating = @ExamControlRating,
+      WouldRecommend = @WouldRecommend,
+      OverallRating = @OverallRating,
+      Comment = @Comment
+      WHERE ReviewId = @ReviewId
+      `,
+      );
+
+    await pool
+      .request()
+      .input("ReviewId", reviewId)
+      .query(
+        `
+      DELETE FROM ReviewTags
+      WHERE ReviewId = @ReviewId
+      `,
+      );
+    if (body.tags && body.tags.length > 0) {
+      for (const tagName of body.tags) {
+        const tagResult = await pool
+          .request()
+          .input("TagName", tagName)
+          .query("SELECT TagId FROM Tags WHERE Name = @TagName");
+
+        if (tagResult.recordset.length > 0) {
+          const tagId = tagResult.recordset[0].TagId;
+          await pool
+            .request()
+            .input("ReviewId", reviewId)
+            .input("TagId", tagId)
+            .query(
+              `
+            INSERT INTO ReviewTags(ReviewId, TagId)
+            VALUES(
+              @ReviewId,
+              @TagId)
+            `,
+            );
+        }
+      }
+    }
+
+    await pool
+      .request()
+      .input("ProfessorId", body.professorId)
+      .query(
+        `
+     UPDATE Professors
+     SET
+     AverageRating = (
+     SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews WHERE ProfessorId = @ProfessorId)
+     WHERE ProfessorId = @ProfessorId;
+      `,
+      );
+
+    return NextResponse.json(
+      {
+        message: "Review updated successfully!",
+      },
+      {
+        status: 200,
+      },
+    );
+  } catch (err: any) {
+    console.log("PUT api error", err);
+    return NextResponse.json(
+      {
+        message: "An error occurred while updating the review.",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }
