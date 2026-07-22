@@ -240,3 +240,60 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const reviewId = req.nextUrl.searchParams.get("reviewId");
+    const body = await req.json();
+
+    if (!reviewId || !body.professorId) {
+      return NextResponse.json(
+        {
+          message: "Missing information!",
+        },
+        { status: 400 },
+      );
+    }
+
+    const pool = await getDb();
+
+    await pool
+      .request()
+      .input("ReviewId", reviewId)
+      .input("ProfessorId", body.professorId)
+      .query(
+        `
+      DELETE FROM ReviewTags
+      WHERE ReviewId= @ReviewId;
+      
+      DELETE FROM Reviews
+      WHERE ReviewId= @ReviewId;
+
+      UPDATE Professors
+      SET 
+      reviewCount = (SELECT COUNT(*) FROM Reviews WHERE ProfessorId = @ProfessorId),
+      AverageRating = (SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews WHERE ProfessorID = @ProfessorId)
+      WHERE ProfessorId = @ProfessorId;
+      `,
+      );
+
+    return NextResponse.json(
+      {
+        message: "Review deleted successfully!",
+      },
+      {
+        status: 200,
+      },
+    );
+  } catch (error) {
+    console.log("Review Delete api error", error);
+    return NextResponse.json(
+      {
+        message: "An error occurred while deleting the review.",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+}

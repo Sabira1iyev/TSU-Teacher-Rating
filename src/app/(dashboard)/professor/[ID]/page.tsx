@@ -927,9 +927,9 @@ export default function ProfessorProfilePage() {
                                 d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                             </svg>
                           )}
@@ -950,9 +950,9 @@ export default function ProfessorProfilePage() {
                             <path
                               d="M6 21V4C6 3.44772 6.44772 3 7 3H17.5858C18.4767 3 18.9229 4.07714 18.2929 4.70711L15 8L18.2929 11.2929C18.9229 11.8229 18.4767 13 17.5858 13H7"
                               stroke="currentColor"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             />
                           </svg>
                           <span className="text-xs text-primary">Report</span>

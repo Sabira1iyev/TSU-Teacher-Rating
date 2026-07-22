@@ -3,6 +3,7 @@ import "./style.css";
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
+import DeleteReviewModal from "./DeleteReviewModal";
 export default function EditReviewModal({
   reviewId,
   professorId,
@@ -17,8 +18,11 @@ export default function EditReviewModal({
   const [isOpen, setIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
+  const [isDeleteReviewOpen, setIsDeleteReviewOpen] = useState(false);
 
   const user = useUser();
+
+ 
 
   return (
     <div className="relative">
@@ -53,11 +57,16 @@ export default function EditReviewModal({
               Edit review
             </button>
           )}
-          <button className="w-full text-center text-white font-semibold px-4 py-2 bg-red-400  text-sm hover:bg-red-300 border-none rounded-full cursor-pointer">
+          <button className="w-full text-center text-white font-semibold px-4 py-2 bg-red-400  text-sm hover:bg-red-300 border-none rounded-full cursor-pointer"
+          onClick={() => setIsDeleteReviewOpen(true)}
+          >
             Remove
           </button>
         </div>
       )}
+       {isDeleteReviewOpen && (
+        <DeleteReviewModal onClose={() => setIsDeleteReviewOpen(false)} reviewId={reviewId} professorId = {professorId}/>
+      )} 
     </div>
   );
 }

@@ -6,6 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatRating(rating: number): string {
+  if (rating == null) return "0.0";
   return rating.toFixed(1);
 }
 
