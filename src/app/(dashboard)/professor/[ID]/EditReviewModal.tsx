@@ -1,7 +1,6 @@
 "use client";
 import "./style.css";
 import { useState } from "react";
-import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import DeleteReviewModal from "./DeleteReviewModal";
 export default function EditReviewModal({
@@ -16,11 +15,9 @@ export default function EditReviewModal({
   isOwner: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
   const [isDeleteReviewOpen, setIsDeleteReviewOpen] = useState(false);
 
-  const user = useUser();
 
  
 

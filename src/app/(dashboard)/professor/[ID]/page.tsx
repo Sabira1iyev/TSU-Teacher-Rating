@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Professor } from "@/types/teacher";
 import { useUser } from "@/context/UserContext";
 import EditReviewModal from "./EditReviewModal";
+import ReportModal from "./ReportModal";
 
 import {
   getInitials,
@@ -31,7 +32,8 @@ export default function ProfessorProfilePage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
   const [dislike, setDislike] = useState<Record<string, boolean>>({});
-
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [reportedReviewId, setReportedReviewId] = useState("");
   const handleLike = async (id: string) => {
     if (!user) return;
     const isLiked = !!likedReviews[id];
@@ -938,8 +940,13 @@ export default function ProfessorProfilePage() {
                           {review.dislikeCount}
                         </span>
                       </div>
-                      {(user?.userId !== review.userId && !user?.isAdmin) && (
-                        <button className="flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
+                      {user?.userId !== review.userId && !user?.isAdmin && (
+                        <button
+                          className="flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors cursor-pointer"
+                          onClick={() => {setIsReportModalOpen(true)
+                            setReportedReviewId(review.id)
+                          }}
+                        >
                           <svg
                             width="18"
                             height="18"
@@ -1012,6 +1019,11 @@ export default function ProfessorProfilePage() {
             router.push("/dashboard");
           }}
         />
+      )}
+
+      {isReportModalOpen && (
+        <ReportModal onClose={() => setIsReportModalOpen(false)}
+          reviewId={reportedReviewId}/>
       )}
     </div>
   );

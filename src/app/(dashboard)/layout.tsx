@@ -6,6 +6,7 @@ import { getInitials } from "@/lib/utils";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import LogoutModal from "./LogoutModal";
+import NotificationDropDown from "@/components/NotificationDropdown";
 
 const navItems = [
   {
@@ -110,6 +111,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [isLogOutOpen, setIsLogOutOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const { user } = useUser();
   const initials = getInitials(
     user?.firstName || "FirstName",
@@ -244,7 +246,7 @@ export default function DashboardLayout({
       {/* content */}
       <main className="flex-1 lg:ml-[220px] flex flex-col min-h-screen min-w-0">
         {/* Desktop topbar */}
-        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-[#e4eaf0] bg-white sticky top-0 z-90 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-[#e4eaf0] bg-white sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <h1
             className="font-bold text-[16px] text-[#1a2a3a]"
             style={{
@@ -264,7 +266,7 @@ export default function DashboardLayout({
           </div>
         </div>
         {/* Mobile topbar */}
-        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-[#e4eaf0] bg-white sticky top-0 z-10 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-[#e4eaf0] bg-white sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <span
             onClick={() => router.push("/dashboard")}
             className="font-bold text-[16px] text-[#1a2a3a] cursor-pointer"
@@ -275,15 +277,48 @@ export default function DashboardLayout({
             Teacher <span className="text-[#0060a9]">Rating</span>
           </span>
           <div className="flex items-center gap-2">
-            <div
-              className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 w-full max-w-[140px] sm:max-w-[200px] cursor-pointer"
-              onClick={() => router.push("/search")}
-            >
-              <span className="text-[#8a97a4] text-[12px]">⌕</span>
-              <span className="text-[#8a97a4] text-[12px]">
-                Search...
-              </span>
-            </div>
+            {user?.isAdmin ? (
+              <button className="cursor-pointer transition-transform hover:scale-105 relative"
+              onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  stroke="#0060a9"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 4C8.5 4 6 6.5 6 10V13.5L4 16H20L18 13.5V10C18 6.5 15.5 4 12 4Z"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M9.5 16C9.5 17.5 10.5 18.5 12 18.5C13.5 18.5 14.5 17.5 14.5 16"
+                    stroke="#0060a9"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+
+        {isNotificationOpen && (
+          <NotificationDropDown 
+          onClose = {() => setIsNotificationOpen(false)}/>
+        )}
+
+              </button>
+            ) : (
+              <div
+                className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 w-full max-w-[140px] sm:max-w-[200px] cursor-pointer"
+                onClick={() => router.push("/search")}
+              >
+                <span className="text-[#8a97a4] text-[12px]">⌕</span>
+                <span className="text-[#8a97a4] text-[12px]">Search...</span>
+              </div>
+            )}
+
             <div className="lg:hidden flex items-center justify-center gap-2">
               <div className="w-8 h-8 rounded-full bg-[#e8f1fa] flex items-center justify-center text-[10px] text-[#0060a9] font-medium cursor-pointer">
                 {initials}
