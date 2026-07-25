@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import styles from "./style.css";
 
 interface NotificationDropdownProp {
   onClose: () => void;
@@ -21,8 +22,25 @@ export default function NotificationDropDown({
     fetchReporst();
   }, []);
 
+  const handleDismiss = async (reportId: string) => {
+    try {
+      const res = await fetch("/api/report", {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          reportId: reportId,
+        }),
+      });
+      if(res.ok){
+        setReports((prevReports) => prevReports.filter((report:any) => report.ReportId !== reportId))
+      }
+    } catch (error: any) {}
+  };
+
   return (
-    <div className="fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-white border border-[#e4eaf0] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-[200] overflow-hidden">
+    <div className="animate-modal fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-white border border-[#e4eaf0] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-[200] overflow-hidden">
       {/* HEADER */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[#e4eaf0]">
         <span className="font-semibold text-[15px] text-[#1a2a3a]">
@@ -97,7 +115,7 @@ export default function NotificationDropDown({
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-0.5 pr-2">
+                <div className="flex-1 min-w-0 flex flex-col gap-0.5 pr-2">
                   <p className="gap-1 text-[14px] text-[#1a2a3a] leading-snug">
                     <span className="font-bold">Review Flagged</span>
                     <span className="text-[#8a97a4]">•</span>
@@ -109,14 +127,21 @@ export default function NotificationDropDown({
                   <p className="text-[13px] text-[#64748b] italic line-clamp-1 border-l-2 border-[#d8dfe6] pl-2 mt-0.5">
                     "{report.ReviewComment}"
                   </p>
-
-                  <p className="text-[12px] text-[#8a97a4] mt-1">
-                    {new Date(report.CreatedAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </p>
+                  <div className="flex justify-between items-center w-full mt-2">
+                    <p className="text-[12px] text-[#8a97a4]">
+                      {new Date(report.CreatedAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </p>
+                    <button
+                      className="text-[11px] font-semibold text-[#64748b] hover:text-[#dc2626] hover:bg-[#fef2f2] px-2 py-0.5 rounded-md transition-all cursor-pointer"
+                      onClick={() => handleDismiss(report.ReportId)}
+                    >
+                      Dismiss
+                    </button>
+                  </div>
                 </div>
               </div>
             );

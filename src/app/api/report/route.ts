@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
 
     const pool = await getDb();
 
-    // Check if user already reported this review
     const checkReport = await pool
       .request()
       .input("reviewId", reviewId)
@@ -135,6 +134,50 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         error: "internal server error",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { reportId } = await req.json();
+
+    if (!reportId) {
+      return NextResponse.json(
+        {
+          error: "Something went wrong, please try again later",
+          message: "Something went wrong, please try again later",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const pool = await getDb();
+
+    await pool.request().input("reportId", reportId)
+    .query(
+      `
+      DELETE FROM Reports
+      WHERE ReportId = @reportId
+      `,
+    );
+    return NextResponse.json(
+      {
+        message: "Report has been dismissed!",
+      },
+      {
+        status: 200,
+      },
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      {
+        error: "Internal server error",
       },
       { status: 500 },
     );
