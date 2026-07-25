@@ -22,7 +22,7 @@ export default function NotificationDropDown({
   }, []);
 
   return (
-    <div className="absolute top-12 right-0 w-[320px] sm:w-[400px] bg-white border border-[#e4eaf0] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-50 overflow-hidden">
+    <div className="fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-white border border-[#e4eaf0] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-[200] overflow-hidden">
       {/* HEADER */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[#e4eaf0]">
         <span className="font-semibold text-[15px] text-[#1a2a3a]">
