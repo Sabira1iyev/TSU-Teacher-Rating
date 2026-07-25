@@ -98,7 +98,7 @@ export default function NotificationDropDown({
                 </div>
 
                 <div className="flex flex-col gap-0.5 pr-2">
-                  <p className="flex flex-row items-center justify-center  gap-1 text-[14px] text-[#1a2a3a] leading-snug">
+                  <p className="gap-1 text-[14px] text-[#1a2a3a] leading-snug">
                     <span className="font-bold">Review Flagged</span>
                     <span className="text-[#8a97a4]">•</span>
                     <span className="inline-block bg-red-100 text-red-500 px-2 py-0.5 rounded-md text-[12px] mt-1">
