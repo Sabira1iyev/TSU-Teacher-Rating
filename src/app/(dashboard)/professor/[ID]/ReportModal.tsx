@@ -46,7 +46,7 @@ export default function ReportModal({ onClose, reviewId }: ReportModalProps) {
           onClose();
         }, 1500);
       } else {
-        setError(data.error || "Something went wrong");
+        setError(data.error || data.message || "Something went wrong");
         return;
       }
     } catch (error) {
