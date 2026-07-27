@@ -1,5 +1,5 @@
 "use client";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Professor } from "@/types/teacher";
 import { useUser } from "@/context/UserContext";
@@ -25,6 +25,7 @@ export default function ProfessorProfilePage() {
   const { user } = useUser();
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<Tab>("Overview");
   const [professor, setProfessor] = useState<Professor | null>(null);
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,16 @@ export default function ProfessorProfilePage() {
   const [dislike, setDislike] = useState<Record<string, boolean>>({});
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [reportedReviewId, setReportedReviewId] = useState("");
+
+
+ useEffect(() => {
+  if(searchParams.get("tab")){
+    setActiveTab(searchParams.get("tab") as Tab)
+  }
+ }, [searchParams])
+
+
+
   const handleLike = async (id: string) => {
     if (!user) return;
     const isLiked = !!likedReviews[id];
@@ -130,7 +141,7 @@ export default function ProfessorProfilePage() {
     fetch(`/api/professors/${params.ID}?userId=${user?.userId}`)
       .then((res) => res.json())
       .then((data) => {
-        if (!data.error) {
+        if (!data.error && !data.message) {
           setProfessor(data);
           const initialLikes: Record<string, boolean> = {};
           const initialDislikes: Record<string, boolean> = {};
@@ -943,8 +954,9 @@ export default function ProfessorProfilePage() {
                       {user?.userId !== review.userId && !user?.isAdmin && (
                         <button
                           className="flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors cursor-pointer"
-                          onClick={() => {setIsReportModalOpen(true)
-                            setReportedReviewId(review.id)
+                          onClick={() => {
+                            setIsReportModalOpen(true);
+                            setReportedReviewId(review.id);
                           }}
                         >
                           <svg
@@ -1022,8 +1034,10 @@ export default function ProfessorProfilePage() {
       )}
 
       {isReportModalOpen && (
-        <ReportModal onClose={() => setIsReportModalOpen(false)}
-          reviewId={reportedReviewId}/>
+        <ReportModal
+          onClose={() => setIsReportModalOpen(false)}
+          reviewId={reportedReviewId}
+        />
       )}
     </div>
   );

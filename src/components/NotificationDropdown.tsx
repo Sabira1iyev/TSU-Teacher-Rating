@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./style.css";
-
+import { useRouter } from "next/navigation";
 interface NotificationDropdownProp {
   onClose: () => void;
 }
@@ -9,6 +9,7 @@ export default function NotificationDropDown({
   onClose,
 }: NotificationDropdownProp) {
   const [reports, setReports] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchReporst = async () => {
@@ -33,8 +34,10 @@ export default function NotificationDropDown({
           reportId: reportId,
         }),
       });
-      if(res.ok){
-        setReports((prevReports) => prevReports.filter((report:any) => report.ReportId !== reportId))
+      if (res.ok) {
+        setReports((prevReports) =>
+          prevReports.filter((report: any) => report.ReportId !== reportId),
+        );
       }
     } catch (error: any) {}
   };
@@ -115,7 +118,10 @@ export default function NotificationDropDown({
                   </div>
                 </div>
 
-                <div className="flex-1 min-w-0 flex flex-col gap-0.5 pr-2">
+                <div className="flex-1 min-w-0 flex flex-col gap-0.5 pr-2"
+                onClick={() => router.push(`/professor/${report.ProfessorId}?tab=Reviews`)}
+                
+                >
                   <p className="gap-1 text-[14px] text-[#1a2a3a] leading-snug">
                     <span className="font-bold">Review Flagged</span>
                     <span className="text-[#8a97a4]">•</span>
@@ -137,7 +143,12 @@ export default function NotificationDropDown({
                     </p>
                     <button
                       className="text-[11px] font-semibold text-[#64748b] hover:text-[#dc2626] hover:bg-[#fef2f2] px-2 py-0.5 rounded-md transition-all cursor-pointer"
-                      onClick={() => handleDismiss(report.ReportId)}
+                      onClick={(e:React.MouseEvent) =>{ 
+                        e.stopPropagation()
+                        handleDismiss(report.ReportId)
+                      
+                      }}
+                        
                     >
                       Dismiss
                     </button>
