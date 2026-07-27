@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
+import { query } from "mssql";
 export async function POST(req: NextRequest) {
   try {
     const { reviewId, reason, userId } = await req.json();
@@ -116,6 +117,7 @@ export async function GET(req: NextRequest) {
         r.UserId,
         r.Reason,
         r.CreatedAt,
+        r.IsRead,
         rev.Comment as ReviewComment,
         rev.ProfessorId
         FROM Reports r
@@ -158,13 +160,15 @@ export async function DELETE(req: NextRequest) {
 
     const pool = await getDb();
 
-    await pool.request().input("reportId", reportId)
-    .query(
-      `
+    await pool
+      .request()
+      .input("reportId", reportId)
+      .query(
+        `
       DELETE FROM Reports
       WHERE ReportId = @reportId
       `,
-    );
+      );
     return NextResponse.json(
       {
         message: "Report has been dismissed!",
@@ -180,6 +184,75 @@ export async function DELETE(req: NextRequest) {
         error: "Internal server error",
       },
       { status: 500 },
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const reportId = searchParams.get("reportId");
+    const isRead = searchParams.get("isRead");
+    const markAll = searchParams.get("markAll");
+
+    const pool = await getDb();
+
+    if (markAll === "true") {
+      await pool.request().query(
+        `
+        UPDATE Reports
+        SET IsRead = 1
+        `,
+      );
+      return NextResponse.json(
+        {
+          message: "All marked as read!",
+        },
+        {
+          status: 200,
+        },
+      );
+    } else if (reportId && isRead) {
+      await pool
+        .request()
+        .input("reportId", reportId)
+        .input("isRead", isRead === "true" ? 1 : 0)
+        .query(
+          `
+      UPDATE Reports 
+      SET IsRead = @isRead
+      WHERE ReportId = @reportId 
+            
+      `,
+        );
+      return NextResponse.json(
+        {
+          message: "Report marked as read!",
+        },
+        {
+          status: 200,
+        },
+      );
+    } else {
+      return NextResponse.json(
+        {
+          message: "Something went wrong, please try again later!",
+          error: "Something went wrong, please try again later!",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+  } catch (error) {
+    console.log("Report PUT error:", error);
+    return NextResponse.json(
+      {
+        error: "Internal server error!",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }

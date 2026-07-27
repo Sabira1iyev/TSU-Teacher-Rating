@@ -3,25 +3,16 @@ import styles from "./style.css";
 import { useRouter } from "next/navigation";
 interface NotificationDropdownProp {
   onClose: () => void;
+  reports: any[];
+  setReports: any;
 }
 
 export default function NotificationDropDown({
   onClose,
+  reports,
+  setReports,
 }: NotificationDropdownProp) {
-  const [reports, setReports] = useState<any[]>([]);
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchReporst = async () => {
-      const res = await fetch("/api/report");
-      const data = await res.json();
-
-      if (res.ok) {
-        setReports(data.reports);
-      }
-    };
-    fetchReporst();
-  }, []);
 
   const handleDismiss = async (reportId: string) => {
     try {
@@ -35,7 +26,7 @@ export default function NotificationDropDown({
         }),
       });
       if (res.ok) {
-        setReports((prevReports) =>
+        setReports((prevReports: any) =>
           prevReports.filter((report: any) => report.ReportId !== reportId),
         );
       }
@@ -49,7 +40,17 @@ export default function NotificationDropDown({
         <span className="font-semibold text-[15px] text-[#1a2a3a]">
           Notifications
         </span>
-        <button className="flex items-center gap-1 text-[#0060a9] hover:text-[#004a82] text-[13px] font-medium transition-colors">
+        <button
+          className="flex items-center gap-1 text-[#0060a9] hover:text-[#004a82] text-[13px] font-medium transition-colors cursor-pointer"
+          onClick={async () => {
+            fetch("/api/report?markAll=true", {
+              method: "PUT",
+            });
+            setReports((prev: any[]) =>
+              prev.map((r) => ({ ...r, IsRead: true })),
+            );
+          }}
+        >
           <svg
             width="16"
             height="16"
@@ -82,14 +83,14 @@ export default function NotificationDropDown({
             You're all caught up!
           </div>
         ) : (
-          reports.map((report, index) => {
+          reports.map((report) => {
             return (
               <div
                 key={report.ReportId}
                 className="flex items-start gap-4 p-4 border-b border-[#f0f4f8] hover:bg-[#f8fafb] transition-colors cursor-pointer last:border-0"
               >
                 <div className="relative shrink-0">
-                  {index === 0 && (
+                  {!report.IsRead && (
                     <div className="absolute -top-1 -left-1 w-2.5 h-2.5 bg-[#2563eb] rounded-full border-2 border-white z-10" />
                   )}
                   <div className="w-10 h-10 rounded-lg bg-[#f0f5fa] border border-[#e4eaf0] flex items-center justify-center text-[#64748b]">
@@ -118,9 +119,29 @@ export default function NotificationDropDown({
                   </div>
                 </div>
 
-                <div className="flex-1 min-w-0 flex flex-col gap-0.5 pr-2"
-                onClick={() => router.push(`/professor/${report.ProfessorId}?tab=Reviews`)}
-                
+                <div
+                  className="flex-1 min-w-0 flex flex-col gap-0.5 pr-2"
+                  onClick={() => {
+                    router.push(`/professor/${report.ProfessorId}?tab=Reviews`);
+                    fetch(
+                      "/api/report?reportId=" +
+                        report.ReportId +
+                        "&isRead=true",
+                      {
+                        method: "PUT",
+                      },
+                    );
+                    setReports((prev: any[]) =>
+                      prev.map((r) =>
+                        r.ReportId === report.ReportId
+                          ? {
+                              ...r,
+                              IsRead: true,
+                            }
+                          : r,
+                      ),
+                    );
+                  }}
                 >
                   <p className="gap-1 text-[14px] text-[#1a2a3a] leading-snug">
                     <span className="font-bold">Review Flagged</span>
@@ -143,12 +164,10 @@ export default function NotificationDropDown({
                     </p>
                     <button
                       className="text-[11px] font-semibold text-[#64748b] hover:text-[#dc2626] hover:bg-[#fef2f2] px-2 py-0.5 rounded-md transition-all cursor-pointer"
-                      onClick={(e:React.MouseEvent) =>{ 
-                        e.stopPropagation()
-                        handleDismiss(report.ReportId)
-                      
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        handleDismiss(report.ReportId);
                       }}
-                        
                     >
                       Dismiss
                     </button>

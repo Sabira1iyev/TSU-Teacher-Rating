@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { getInitials } from "@/lib/utils";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import LogoutModal from "./LogoutModal";
 import NotificationDropDown from "@/components/NotificationDropdown";
-
 const navItems = [
   {
     label: "Dashboard",
@@ -117,6 +116,23 @@ export default function DashboardLayout({
     user?.firstName || "FirstName",
     user?.lastName || "LastName",
   );
+
+  const [reports, setReports] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchReporst = async () => {
+      const res = await fetch("/api/report");
+      const data = await res.json();
+
+      if (user?.isAdmin) {
+        setReports(data.reports);
+      }
+    };
+    fetchReporst();
+  }, [user]);
+
+  const unreadCount = reports.filter((r) => !r.IsRead).length;
+
 
   return (
     <div className="min-h-screen bg-[#f2f5f7] flex overflow-x-hidden">
@@ -255,32 +271,11 @@ export default function DashboardLayout({
           >
             Dashboard
           </h1>
-          <div
-            className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 cursor-pointer hover:border-[#0060a9] transition-colors"
-            onClick={() => router.push("/search")}
-          >
-            <span className="text-[#8a97a4] text-sm">⌕</span>
-            <span className="text-[12px] text-[#8a97a4]">
-              Search professor or course...
-            </span>
-          </div>
-        </div>
-        {/* Mobile topbar */}
-        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-[#e4eaf0] bg-white sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
-          <span
-            onClick={() => router.push("/dashboard")}
-            className="font-bold text-[16px] text-[#1a2a3a] cursor-pointer"
-            style={{
-              fontFamily: "Syne, sans-serif",
-            }}
-          >
-            Teacher <span className="text-[#0060a9]">Rating</span>
-          </span>
-          <div className="flex items-center gap-2">
-            {user?.isAdmin ? (
-              <div className="relative">
+          <div className="flex gap-2 items-center justify-center">
+            {user?.isAdmin && (
+              <div className="relative flex items-center">
                 <button
-                  className="cursor-pointer transition-transform hover:scale-105"
+                  className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
                   onClick={() => setIsNotificationOpen(!isNotificationOpen)}
                 >
                   <svg
@@ -306,8 +301,84 @@ export default function DashboardLayout({
                   </svg>
                 </button>
 
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white pointer-events-none">
+                    {unreadCount}
+                  </span>
+                )}
+
                 {isNotificationOpen && (
                   <NotificationDropDown
+                    reports={reports}
+                    setReports={setReports}
+                    onClose={() => setIsNotificationOpen(false)}
+                  />
+                )}
+              </div>
+            )}
+
+            <div
+              className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 cursor-pointer hover:border-[#0060a9] transition-colors"
+              onClick={() => router.push("/search")}
+            >
+              <span className="text-[#8a97a4] text-sm">⌕</span>
+              <span className="text-[12px] text-[#8a97a4]">
+                Search professor or course...
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* Mobile topbar */}
+        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-[#e4eaf0] bg-white sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+          <span
+            onClick={() => router.push("/dashboard")}
+            className="font-bold text-[16px] text-[#1a2a3a] cursor-pointer"
+            style={{
+              fontFamily: "Syne, sans-serif",
+            }}
+          >
+            Teacher <span className="text-[#0060a9]">Rating</span>
+          </span>
+          <div className="flex items-center gap-2">
+            {user?.isAdmin ? (
+              <div className="relative flex items-center">
+                <button
+                  className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
+                  onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    stroke="#0060a9"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4C8.5 4 6 6.5 6 10V13.5L4 16H20L18 13.5V10C18 6.5 15.5 4 12 4Z"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M9.5 16C9.5 17.5 10.5 18.5 12 18.5C13.5 18.5 14.5 17.5 14.5 16"
+                      stroke="#0060a9"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white pointer-events-none">
+                    {unreadCount}
+                  </span>
+                )}
+
+                {isNotificationOpen && (
+                  <NotificationDropDown
+                    reports={reports}
+                    setReports={setReports}
                     onClose={() => setIsNotificationOpen(false)}
                   />
                 )}
