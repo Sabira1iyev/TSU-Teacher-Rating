@@ -1,6 +1,6 @@
 "use client";
 import "./style.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import DeleteReviewModal from "./DeleteReviewModal";
 export default function EditReviewModal({
@@ -15,14 +15,24 @@ export default function EditReviewModal({
   isOwner: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isDeleteReviewOpen, setIsDeleteReviewOpen] = useState(false);
 
-
- 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="text-text3 hover:text-white transition-colors cursor-pointer"
@@ -54,16 +64,21 @@ export default function EditReviewModal({
               Edit review
             </button>
           )}
-          <button className="w-full text-center text-white font-semibold px-4 py-2 bg-red-400  text-sm hover:bg-red-300 border-none rounded-full cursor-pointer"
-          onClick={() => setIsDeleteReviewOpen(true)}
+          <button
+            className="w-full text-center text-white font-semibold px-4 py-2 bg-red-400  text-sm hover:bg-red-300 border-none rounded-full cursor-pointer"
+            onClick={() => setIsDeleteReviewOpen(true)}
           >
             Remove
           </button>
         </div>
       )}
-       {isDeleteReviewOpen && (
-        <DeleteReviewModal onClose={() => setIsDeleteReviewOpen(false)} reviewId={reviewId} professorId = {professorId}/>
-      )} 
+      {isDeleteReviewOpen && (
+        <DeleteReviewModal
+          onClose={() => setIsDeleteReviewOpen(false)}
+          reviewId={reviewId}
+          professorId={professorId}
+        />
+      )}
     </div>
   );
 }
