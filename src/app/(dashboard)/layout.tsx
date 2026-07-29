@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { getInitials } from "@/lib/utils";
 import Link from "next/link";
@@ -112,10 +112,26 @@ export default function DashboardLayout({
   const [isLogOutOpen, setIsLogOutOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const { user } = useUser();
+  const notificationRef = useRef<HTMLDivElement>(null);
   const initials = getInitials(
     user?.firstName || "FirstName",
     user?.lastName || "LastName",
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
+        setIsNotificationOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isNotificationOpen]);
 
   const [reports, setReports] = useState<any[]>([]);
 
@@ -132,7 +148,6 @@ export default function DashboardLayout({
   }, [user]);
 
   const unreadCount = reports.filter((r) => !r.IsRead).length;
-
 
   return (
     <div className="min-h-screen bg-[#f2f5f7] flex overflow-x-hidden">
@@ -273,7 +288,7 @@ export default function DashboardLayout({
           </h1>
           <div className="flex gap-2 items-center justify-center">
             {user?.isAdmin && (
-              <div className="relative flex items-center">
+              <div className="relative flex items-center" ref={notificationRef}>
                 <button
                   className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
                   onClick={() => setIsNotificationOpen(!isNotificationOpen)}
@@ -341,7 +356,7 @@ export default function DashboardLayout({
           </span>
           <div className="flex items-center gap-2">
             {user?.isAdmin ? (
-              <div className="relative flex items-center">
+              <div className="relative flex items-center" ref={notificationRef}>
                 <button
                   className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
                   onClick={() => setIsNotificationOpen(!isNotificationOpen)}
