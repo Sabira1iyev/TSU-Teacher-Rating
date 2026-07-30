@@ -1,6 +1,5 @@
-import "./style.css";
 import { useUser } from "@/context/UserContext";
-import { ReactElement, useState } from "react";
+import {useState } from "react";
 
 interface ChangeProfileModalAppsProps {
   onClose: () => void;

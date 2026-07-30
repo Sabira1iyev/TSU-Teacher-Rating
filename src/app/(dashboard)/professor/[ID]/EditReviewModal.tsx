@@ -1,12 +1,10 @@
 "use client";
-import "./style.css";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import DeleteReviewModal from "./DeleteReviewModal";
 export default function EditReviewModal({
   reviewId,
   professorId,
-  isAdmin,
   isOwner,
 }: {
   reviewId: string;

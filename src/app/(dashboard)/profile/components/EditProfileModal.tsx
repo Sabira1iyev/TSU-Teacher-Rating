@@ -1,7 +1,6 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState} from "react";
 import { FACULTIES } from "@/lib/constants";
 import { useUser } from "@/context/UserContext";
-import "./style.css";
 import ChangePasswordModal from "./ChangePasswordModal";
 import DeleteAccountModal from "./DeleteAccountModal";
 interface EditProfileModalProps {

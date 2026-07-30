@@ -1,7 +1,6 @@
 "use client";
 import {
   Trophy,
-  Medal,
   Award,
   TrendingUp,
   Rainbow,

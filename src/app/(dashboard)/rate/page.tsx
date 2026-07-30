@@ -241,7 +241,10 @@ function RatePageContent() {
                   </p>
                 </div>
                 <button
-                  onClick={() => router.push("/rate")}
+                  onClick={() => {
+                    setProfessor(null);
+                    router.push("/rate");
+                  }}
                   className="text-xs text-text3 hover:text-text2 cursor-pointer"
                 >
                   Change
