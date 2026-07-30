@@ -63,7 +63,7 @@ export default function DashBoardPage() {
     if (activeTab === "Top rated") return b.overallRating - a.overallRating;
     if (activeTab === "Most reviewed") return b.reviewCount - a.reviewCount;
     return b.overallRating - a.overallRating;
-  });
+  }).slice(0, 10);
 
   const ratedProfessors = filteredProfessors.filter((p) => p.reviewCount > 0);
 
