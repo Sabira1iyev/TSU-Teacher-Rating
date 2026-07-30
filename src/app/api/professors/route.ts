@@ -23,7 +23,7 @@ export async function GET() {
         LEFT JOIN Faculties f ON d.FacultyId = f.FacultyId
         `,
     )
-
+ 
     const professors = result.recordset.map(p => ({
       ...p,
       courses: [],

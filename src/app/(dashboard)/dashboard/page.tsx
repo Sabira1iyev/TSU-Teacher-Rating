@@ -41,6 +41,7 @@ export default function DashBoardPage() {
   const [activeTab, setActiveTab] = useState<Tab>("Top rated");
   const [professors, setProfessors] = useState<Professor[]>([]);
   const { user } = useUser();
+  const [stats, setStats] = useState<any>(null);
 
   const fullName = user?.firstName + " " + user?.lastName || "Unknown";
   useEffect(() => {
@@ -79,6 +80,12 @@ export default function DashBoardPage() {
   const getAvatarColor = (id: string) => {
     return AVATAR_COLORS[String(parseInt(id) % 6)] || AVATAR_COLORS["0"];
   };
+
+  useEffect(() => {
+    fetch("/api/dashboard-stats")
+      .then((res) => res.json())
+      .then((data) => setStats(data));
+  }, []);
 
   return (
     <div className="flex flex-col gap-5 p-5 lg:p-6">
@@ -205,7 +212,10 @@ export default function DashBoardPage() {
             {formatRating(avgRating)}
           </p>
           <p className="text-[9px] text-[#8a97a4] mt-1">
-            <span className="text-[#0060a9] mr-[2px]">↑ 0.3</span> this semester
+            <span className="text-[#0060a9] mr-[2px]">
+              ↑ {stats?.semesterGrowth || 0}
+            </span>{" "}
+            this semester
           </p>
         </div>
         <div className="bg-white border border-[#e4eaf0] rounded-xl p-3 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
@@ -214,7 +224,11 @@ export default function DashBoardPage() {
             {totalReviews.toLocaleString()}
           </p>
           <p className="text-[9px] text-[#8a97a4] mt-1">
-            <span className="text-[#0060a9] mr-[2px]">+18%</span>this month
+            <span className="text-[#0060a9] mr-[2px]">
+              {stats?.monthGrowth > 0 ? "+" : ""}
+              {stats?.monthGrowth || 0}
+            </span>
+            this month
           </p>
         </div>
       </div>
