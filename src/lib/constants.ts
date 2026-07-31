@@ -43,12 +43,22 @@ export const CRITERIS_LABELS = {
   examControlLevel: "Exam Control Level",
 };
 
-export const SEMESTERS = [
-  "2024-2025 Spring",
-  "2024-2025 Fall",
-  "2025-2026 Spring",
-  "2025-2026 Fall",
-];
+const getDynamicSemesters = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+
+  const currentAcademicyear = month >= 9 ? year : year - 1;
+
+  return [
+    `${currentAcademicyear}-${currentAcademicyear + 1} Fall`,
+    `${currentAcademicyear}-${currentAcademicyear + 1} Spring`,
+    `${currentAcademicyear - 1}-${currentAcademicyear} Fall`,
+    `${currentAcademicyear - 1}-${currentAcademicyear} Spring`,
+  ];
+};
+
+export const SEMESTERS = getDynamicSemesters();
 
 export const UNIVERSITY_NAME = "Tbilisi State University";
 export const UNIVERSITY_EMAIL_DOMAIN = "@hum.tsu.edu.ge";
