@@ -99,13 +99,6 @@ export async function GET(
       courses: fullCourses.recordset.map((c: any) => c.CourseName) || [],
       recommendationRate: 0,
       trendData: finalTrendData,
-      criteria: {
-        teaching: p.overallRating || 0,
-        examDifficulty: p.overallRating || 0,
-        homeWork: p.overallRating || 0,
-        accessibility: p.overallRating || 0,
-        examControlLevel: p.overallRating || 0,
-      },
     };
 
     const reviewResult = await (
@@ -194,6 +187,29 @@ export async function GET(
       totalReviews > 0 ? Math.round((recommendCount / totalReviews) * 100) : 0;
 
     fullProfessor.reviews = reviews;
+
+    fullProfessor.criteria = {
+      teaching: totalReviews
+        ? reviews.reduce((sum, r) => sum + r.criteria.teaching, 0) /
+          totalReviews
+        : 0,
+      examDifficulty: totalReviews
+        ? reviews.reduce((sum, r) => sum + r.criteria.examDifficulty, 0) /
+          totalReviews
+        : 0,
+      homeWork: totalReviews
+        ? reviews.reduce((sum, r) => sum + r.criteria.homeWork, 0) /
+          totalReviews
+        : 0,
+      accessibility: totalReviews
+        ? reviews.reduce((sum, r) => sum + r.criteria.accessibility, 0) /
+          totalReviews
+        : 0,
+      examControlLevel: totalReviews
+        ? reviews.reduce((sum, r) => sum + r.criteria.examControlLevel, 0) /
+          totalReviews
+        : 0,
+    };
 
     return NextResponse.json(fullProfessor, { status: 200 });
   } catch (error) {
