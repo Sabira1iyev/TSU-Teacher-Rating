@@ -5,6 +5,7 @@ import { Professor } from "@/types/teacher";
 import { useUser } from "@/context/UserContext";
 import EditReviewModal from "./EditReviewModal";
 import ReportModal from "./ReportModal";
+import ReviewsFilter from "./ReviewsFilter";
 
 import {
   getInitials,
@@ -35,15 +36,14 @@ export default function ProfessorProfilePage() {
   const [dislike, setDislike] = useState<Record<string, boolean>>({});
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [reportedReviewId, setReportedReviewId] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filterType, setFilterType] = useState("newest");
 
-
- useEffect(() => {
-  if(searchParams.get("tab")){
-    setActiveTab(searchParams.get("tab") as Tab)
-  }
- }, [searchParams])
-
-
+  useEffect(() => {
+    if (searchParams.get("tab")) {
+      setActiveTab(searchParams.get("tab") as Tab);
+    }
+  }, [searchParams]);
 
   const handleLike = async (id: string) => {
     if (!user) return;
@@ -576,24 +576,98 @@ export default function ProfessorProfilePage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-border">
-        {(["Overview", "Reviews", "Courses"] as Tab[]).map((tab) => (
-          <button
-            onClick={() => setActiveTab(tab)}
-            className={`px-5 py-3 text-xs cursor-pointer border-b-2 transition-colors ${
-              activeTab === tab
-                ? "font-medium"
-                : "text-text3 border-transparent hover:text-text2"
-            }`}
-            style={
-              activeTab === tab
-                ? { color: fc.primary, borderColor: fc.primary }
-                : {}
-            }
-          >
-            {tab}
-          </button>
-        ))}
+      <div className="flex flex-row justify-between items-center px-5 lg:px-6">
+        <div className="flex border-b border-border">
+          {(["Overview", "Reviews", "Courses"] as Tab[]).map((tab) => (
+            <button
+              onClick={() => setActiveTab(tab)}
+              className={`px-3 py-3 text-xs cursor-pointer border-b-2 transition-colors ${
+                activeTab === tab
+                  ? "font-medium"
+                  : "text-text3 border-transparent hover:text-text2"
+              }`}
+              style={
+                activeTab === tab
+                  ? { color: fc.primary, borderColor: fc.primary }
+                  : {}
+              }
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+        {activeTab === "Reviews" && (
+          <div className="relative">
+            <button
+              className="cursor-pointer w-9 h-9 rounded-full text-[#0060a9] flex items-center justify-center hover:bg-[#d0e3f5] transition-colors"
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line
+                  x1="4"
+                  y1="6"
+                  x2="20"
+                  y2="6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="4"
+                  y1="12"
+                  x2="20"
+                  y2="12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="4"
+                  y1="18"
+                  x2="20"
+                  y2="18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <circle
+                  cx="8"
+                  cy="6"
+                  r="2.5"
+                  fill="white"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <circle
+                  cx="16"
+                  cy="12"
+                  r="2.5"
+                  fill="white"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <circle
+                  cx="10"
+                  cy="18"
+                  r="2.5"
+                  fill="white"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+            {isFilterOpen && <ReviewsFilter 
+            setFilterType={setFilterType}
+            onClose={() => setIsFilterOpen(false)}
+            />}
+          </div>
+        )}
       </div>
 
       {/* Content */}
