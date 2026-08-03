@@ -184,6 +184,23 @@ export default function ProfessorProfilePage() {
     );
   }
 
+  let displayReviews = [...(professor?.reviews || [])];
+
+  if (filterType === "five_stars") {
+    displayReviews = displayReviews.filter(
+      (r: any) => Math.floor(r.overallRating) === 5,
+    );
+  } else if (filterType === "most_liked") {
+    displayReviews.sort(
+      (a: any, b: any) => (b.likeCount || 0) - (a.likeCount || 0),
+    );
+  } else {
+    displayReviews.sort(
+      (a: any, b: any) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+  }
+
   if (!professor) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
@@ -662,10 +679,12 @@ export default function ProfessorProfilePage() {
                 />
               </svg>
             </button>
-            {isFilterOpen && <ReviewsFilter 
-            setFilterType={setFilterType}
-            onClose={() => setIsFilterOpen(false)}
-            />}
+            {isFilterOpen && (
+              <ReviewsFilter
+                setFilterType={setFilterType}
+                onClose={() => setIsFilterOpen(false)}
+              />
+            )}
           </div>
         )}
       </div>
@@ -866,12 +885,12 @@ export default function ProfessorProfilePage() {
         {/* Reviews tab */}
         {activeTab === "Reviews" && (
           <div className="flex flex-col gap-3 max-w-2xl">
-            {reviews.length === 0 ? (
+            {displayReviews.length === 0 ? (
               <div className="text-center py-10 text-sm text-text3">
                 No reviews yet for this professor.
               </div>
             ) : (
-              reviews.map((review) => (
+              displayReviews.map((review) => (
                 <div
                   key={review.id}
                   className="bg-bg2 border-border rounded-xl p-4"
