@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { FACULTIES } from "@/lib/constants";
 import { useUser } from "@/context/UserContext";
 import ChangePasswordModal from "./ChangePasswordModal";
@@ -7,14 +7,14 @@ interface EditProfileModalProps {
   onClose: () => void;
 }
 export default function EditProfileModal({ onClose }: EditProfileModalProps) {
+  const { user, setUser } = useUser();
   const [formdata, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    faculty: "",
-    studyYear: "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    faculty: user?.faculty || "",
+    studyYear: user?.studyYear || "",
   });
 
-  const { user, setUser } = useUser();
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
