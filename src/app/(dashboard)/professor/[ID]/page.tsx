@@ -1,6 +1,6 @@
 "use client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Professor } from "@/types/teacher";
 import { useUser } from "@/context/UserContext";
 import EditReviewModal from "./EditReviewModal";
@@ -38,6 +38,22 @@ export default function ProfessorProfilePage() {
   const [reportedReviewId, setReportedReviewId] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterType, setFilterType] = useState("newest");
+  const revireFilterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        revireFilterRef.current &&
+        !revireFilterRef.current.contains(event.target as Node)
+      ) {
+        setIsFilterOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isFilterOpen]);
 
   useEffect(() => {
     if (searchParams.get("tab")) {
@@ -614,7 +630,7 @@ export default function ProfessorProfilePage() {
           ))}
         </div>
         {activeTab === "Reviews" && (
-          <div className="relative">
+          <div className="relative" ref={revireFilterRef}>
             <button
               className="cursor-pointer w-9 h-9 rounded-full text-[#0060a9] flex items-center justify-center hover:bg-[#d0e3f5] transition-colors"
               onClick={() => setIsFilterOpen(!isFilterOpen)}

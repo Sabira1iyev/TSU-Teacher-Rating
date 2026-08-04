@@ -1,8 +1,9 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function ReviewsFilter({ setFilterType, onClose }: any) {
+  
+
   return (
     <div className="animate-modal flex flex-col absolute right-0 top-11 bg-white border border-border rounded-xl shadow-[0_4px_20px_rgba(0,40,80,0.08)] w-40 z-50 overflow-hidden py-1">
       <button
