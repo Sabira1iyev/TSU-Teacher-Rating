@@ -1,5 +1,5 @@
 import { useUser } from "@/context/UserContext";
-import {useState } from "react";
+import { useState } from "react";
 
 interface ChangeProfileModalAppsProps {
   onClose: () => void;
@@ -11,11 +11,13 @@ export default function ChangePasswordModa({
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
+    oldPassword: "",
   });
 
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
 
   const { user } = useUser();
 
@@ -51,6 +53,7 @@ export default function ChangePasswordModa({
         body: JSON.stringify({
           userId: user?.userId,
           password: formData.password,
+          oldPassword: formData.oldPassword,
         }),
       });
 
@@ -145,6 +148,24 @@ export default function ChangePasswordModa({
                 onChange={handleChange}
                 autoComplete="new-password"
                 placeholder="Min. 8 characters"
+                className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="password"
+                className="text-xs font-medium text-[#5a6a7a]"
+              >
+                Old Password
+              </label>
+              <input
+                name="oldPassword"
+                type="password"
+                value={formData.oldPassword}
+                onChange={handleChange}
+                autoComplete="old-password"
+                placeholder="Enter your old password"
                 className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>

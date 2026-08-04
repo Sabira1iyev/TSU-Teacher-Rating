@@ -4,11 +4,11 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, password } = await req.json();
+    const { userId, password, oldPassword } = await req.json();
 
     const db = await getDb();
 
-        if (!userId || !password) {
+    if (!userId || !password) {
       return NextResponse.json(
         {
           message: "All fields are required!",
@@ -22,6 +22,40 @@ export async function POST(req: NextRequest) {
           message: "Password must be 8 characters",
         },
         { status: 400 },
+      );
+    }
+
+    if (!oldPassword) {
+      return NextResponse.json(
+        {
+          message: "Old password is required",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const dbPassword = await db
+      .request()
+      .input("UserId", userId)
+      .query(
+        `
+      SELECT PasswordHash FROM Users Where UserId = @UserId
+      `,
+      );
+    const actualHash = dbPassword.recordset[0].PasswordHash;
+
+    const isOldPasswordCorrect = await bcrypt.compare(oldPassword, actualHash);
+
+    if (!isOldPasswordCorrect) {
+      return NextResponse.json(
+        {
+          message: "Incorrect old password!",
+        },
+        {
+          status: 400,
+        },
       );
     }
 

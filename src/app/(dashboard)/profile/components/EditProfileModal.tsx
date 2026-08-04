@@ -100,7 +100,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
         </div>
 
         {showConfirm ? (
-          <div className="flex flex-col items-center text-center gap-4 py-4">
+          <div className="animate-backdrop flex flex-col items-center text-center gap-4 py-4">
             <h3 className="text-lg font-bold text-text">Are you sure?</h3>
             <p className="text-sm text-text2">
               Do you really want to save these changes?
