@@ -42,6 +42,11 @@ export default function ChangePasswordModa({
       setError("Password must be at least 8 characters long.");
       return;
     }
+
+    if (!formData.oldPassword) {
+      setError("Please enter your old password");
+      return;
+    }
     setShowConfirm(true);
   };
 
@@ -59,7 +64,7 @@ export default function ChangePasswordModa({
 
       const data = await res.json();
       if (!res.ok) {
-        setSuccess(data.message || "Something went wrong!");
+        setError(data.message || "Something went wrong!");
         return;
       } else {
         setSuccess("Password changed successfully!");
