@@ -122,7 +122,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
             </div>
 
             {success && (
-              <p className="text-xs text-[#16a34a] font-medium mt-2">
+              <p className="text-xs text-green font-medium mt-2">
                 {success}
               </p>
             )}
@@ -141,7 +141,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
                   value={formdata.firstName}
                   onChange={handleChange}
                   placeholder="First Name"
-                  className="w-full bg-bg3 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-text3 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
+                  className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-text3 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
                 />
               </div>
 
@@ -156,20 +156,20 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
                   autoComplete="off"
                   onChange={handleChange}
                   placeholder="Last Name"
-                  className="w-full bg-bg3 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-text3 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
+                  className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-text3 outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
                 />
               </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[#5a6a7a]">
+              <label className="text-xs font-medium text-text2">
                 Faculty
               </label>
               <select
                 name="faculty"
                 value={formdata.faculty}
                 onChange={handleChange}
-                className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
+                className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
               >
                 <option value="" disabled>
                   Select your faculty...
@@ -183,14 +183,14 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[#5a6a7a]">
+              <label className="text-xs font-medium text-text2">
                 Study Year
               </label>
               <select
                 name="studyYear"
                 value={formdata.studyYear}
                 onChange={handleChange}
-                className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
+                className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
               >
                 <option value="" disabled>
                   Select your study year...
@@ -220,7 +220,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
             </button>
 
             {error && (
-              <p className="text-xs text-[#dc2626] font-medium">{error}</p>
+              <p className="text-xs text-red font-medium">{error}</p>
             )}
 
             {/* Action Buttons */}

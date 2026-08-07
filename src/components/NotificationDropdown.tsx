@@ -34,14 +34,14 @@ export default function NotificationDropDown({
   };
 
   return (
-    <div className="animate-modal fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-white border border-[#e4eaf0] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-[200] overflow-hidden">
+    <div className="animate-modal fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-bg2 border border-border rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-[200] overflow-hidden">
       {/* HEADER */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#e4eaf0]">
-        <span className="font-semibold text-[15px] text-[#1a2a3a]">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+        <span className="font-semibold text-[15px] text-text">
           Notifications
         </span>
         <button
-          className="flex items-center gap-1 text-[#0060a9] hover:text-[#004a82] text-[13px] font-medium transition-colors cursor-pointer"
+          className="flex items-center gap-1 text-primary hover:text-[#004a82] text-[13px] font-medium transition-colors cursor-pointer"
           onClick={async () => {
             fetch("/api/report?markAll=true", {
               method: "PUT",
@@ -79,7 +79,7 @@ export default function NotificationDropDown({
 
       <div className="max-h-[380px] overflow-y-auto custom-scrollbar">
         {reports.length === 0 ? (
-          <div className="p-8 text-center text-sm text-[#8a97a4]">
+          <div className="p-8 text-center text-sm text-text3">
             You're all caught up!
           </div>
         ) : (
@@ -87,13 +87,13 @@ export default function NotificationDropDown({
             return (
               <div
                 key={report.ReportId}
-                className="flex items-start gap-4 p-4 border-b border-[#f0f4f8] hover:bg-[#f8fafb] transition-colors cursor-pointer last:border-0"
+                className="flex items-start gap-4 p-4 border-b border-[#f0f4f8] hover:bg-bg transition-colors cursor-pointer last:border-0"
               >
                 <div className="relative shrink-0">
                   {!report.IsRead && (
                     <div className="absolute -top-1 -left-1 w-2.5 h-2.5 bg-[#2563eb] rounded-full border-2 border-white z-10" />
                   )}
-                  <div className="w-10 h-10 rounded-lg bg-[#f0f5fa] border border-[#e4eaf0] flex items-center justify-center text-[#64748b]">
+                  <div className="w-10 h-10 rounded-lg bg-[#f0f5fa] border border-border flex items-center justify-center text-[#64748b]">
                     <svg
                       width="18"
                       height="18"
@@ -143,19 +143,19 @@ export default function NotificationDropDown({
                     );
                   }}
                 >
-                  <p className="gap-1 text-[14px] text-[#1a2a3a] leading-snug">
+                  <p className="gap-1 text-[14px] text-text leading-snug">
                     <span className="font-bold">Review Flagged</span>
-                    <span className="text-[#8a97a4]">•</span>
+                    <span className="text-text3">•</span>
                     <span className="inline-block bg-red-100 text-red-500 px-2 py-0.5 rounded-md text-[12px] mt-1">
                       {report.Reason}
                     </span>
                   </p>
 
-                  <p className="text-[13px] text-[#64748b] italic line-clamp-1 border-l-2 border-[#d8dfe6] pl-2 mt-0.5">
+                  <p className="text-[13px] text-[#64748b] italic line-clamp-1 border-l-2 border-border2 pl-2 mt-0.5">
                     "{report.ReviewComment}"
                   </p>
                   <div className="flex justify-between items-center w-full mt-2">
-                    <p className="text-[12px] text-[#8a97a4]">
+                    <p className="text-[12px] text-text3">
                       {new Date(report.CreatedAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -163,7 +163,7 @@ export default function NotificationDropDown({
                       })}
                     </p>
                     <button
-                      className="text-[11px] font-semibold text-[#64748b] hover:text-[#dc2626] hover:bg-[#fef2f2] px-2 py-0.5 rounded-md transition-all cursor-pointer"
+                      className="text-[11px] font-semibold text-[#64748b] hover:text-red hover:bg-bg3 px-2 py-0.5 rounded-md transition-all cursor-pointer"
                       onClick={(e: React.MouseEvent) => {
                         e.stopPropagation();
                         handleDismiss(report.ReportId);

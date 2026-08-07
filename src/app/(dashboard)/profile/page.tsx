@@ -239,7 +239,7 @@ export default function ProfilePage() {
     : DEFAULT_FACULTY_COLOR;
 
   return (
-    <div className="flex flex-col pt-10 bg-[#f0f2f0]">
+    <div className="flex flex-col pt-10 bg-bg">
       {/* Desktop topbar */}
       <div className="hidden lg:flex items-center justify-between px-6 py-3.5 mt-[10px] border-b border-border bg-bg2 sticky z-10">
         <h1
@@ -251,7 +251,7 @@ export default function ProfilePage() {
           My Profile
         </h1>
         <button
-          className="px-4 py-2 border border-border2 rounded-lg text-xs text-text2 font-bold hover:bg-bg3 transition-colors cursor-pointer"
+          className="px-4 py-2 border border-border rounded-lg text-xs text-text2 font-bold hover:bg-bg3 transition-colors cursor-pointer"
           style={{
             background: `${fc.primary}`,
             color: "white",
@@ -266,7 +266,7 @@ export default function ProfilePage() {
       <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-[49px] z-10">
         <span className="text-sm font-bold text-text">My Profile</span>
         <button
-          className="px-4 py-2 border border-border2 rounded-lg text-xs text-primary font-bold cursor-pointer"
+          className="px-4 py-2 border border-border rounded-lg text-xs text-primary font-bold cursor-pointer"
           style={{
             background: `${fc.primary}`,
             color: "white",
@@ -291,7 +291,7 @@ export default function ProfilePage() {
             <div
               className="w-16 h-16 lg:w-[72px] lg:h-[72px] rounded-full flex items-center justify-center text-xl lg:text-2xl font-semibold mt-6 mx-auto mb-3 border-2 border-border2"
               style={{
-                background: `linear-gradient(135deg, ${fc.light} 50%, #fdf6e3 100%)`,
+                background: `linear-gradient(180deg, ${fc.light} 35%, #fdf6e3 300%)`,
                 border: `2px solid ${fc.mid}`,
                 color: fc.primary,
               }}
@@ -435,7 +435,7 @@ export default function ProfilePage() {
           </div>
           {user?.isAdmin && (
             <button
-              className="px-4 py-3 border border-border2 rounded-full text-lg text-primary font-bold cursor-pointer"
+              className="px-4 py-3 border border-border rounded-full text-lg text-primary font-bold cursor-pointer"
               style={{
                 background: `${fc.primary}`,
                 color: "white",
@@ -493,7 +493,7 @@ export default function ProfilePage() {
                 onClick={() => setActiveTab(tab)}
                 className={`px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors capitalize ${
                   activeTab === tab
-                    ? "bg-bg3 text-text font-medium"
+                    ? "bg-bg2 text-text font-medium"
                     : "text-text3"
                 }`}
               >
@@ -564,7 +564,7 @@ export default function ProfilePage() {
                     onClick={() =>
                       router.push(`/professor/${review.ProfessorId}`)
                     }
-                    className="bg-bg2 border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-bg3 transition-colors"
+                    className="bg-bg2 border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-bg transition-colors"
                   >
                     <div
                       className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"

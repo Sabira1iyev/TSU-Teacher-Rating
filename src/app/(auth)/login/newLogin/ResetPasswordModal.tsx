@@ -149,7 +149,7 @@ export default function ResetPasswordModal({
             <div className="flex flex-col gap-1.5">
               <label
                 htmlFor="email"
-                className="text-xs font-medium text-[#5a6a7a]"
+                className="text-xs font-medium text-text2"
               >
                 Email
               </label>
@@ -160,12 +160,12 @@ export default function ResetPasswordModal({
                 onChange={handleChange}
                 autoComplete="new-password"
                 placeholder="TSU Student Email"
-                className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+                className="w-full bg-bg2 border border-border2 rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>
 
             {error && (
-              <p className="text-xs text-[#dc2626] font-medium">{error}</p>
+              <p className="text-xs text-red font-medium">{error}</p>
             )}
             {success && (
               <p className="text-xs text-[#26dc26] font-medium">{success}</p>
@@ -192,10 +192,10 @@ export default function ResetPasswordModal({
           <>
             <div className="flex flex-col items-center">
               {/* Main card */}
-              <div className="w-full max-w-md bg-white rounded-3xl shadow-[0_4px_32px_rgba(0,60,120,0.08)] mx-5 mb-10 px-7 py-8 flex flex-col gap-6">
+              <div className="w-full max-w-md bg-bg2 rounded-3xl shadow-[0_4px_32px_rgba(0,60,120,0.08)] mx-5 mb-10 px-7 py-8 flex flex-col gap-6">
                 {/* Step Indicators */}
                 <div className="flex items-center justify-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[#e8f1fa] flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-primary-dim flex items-center justify-center">
                     <svg
                       width="12"
                       height="12"
@@ -208,18 +208,18 @@ export default function ResetPasswordModal({
                     </svg>
                   </div>
                   <div className="w-8 h-[1px] bg-[#d8dfe6]" />
-                  <div className="w-6 h-6 rounded-full bg-[#0060a9] flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
                     <span className="text-xs font-bold text-white">2</span>
                   </div>
                   <div className="w-8 h-[1px] bg-[#d8dfe6]" />
                   <div className="w-6 h-6 rounded-full bg-[#e4eaf0] flex items-center justify-center">
-                    <span className="text-xs text-[#8a97a4]">3</span>
+                    <span className="text-xs text-text3">3</span>
                   </div>
                 </div>
 
                 {/* Icon */}
                 <div className="flex justify-center">
-                  <div className="w-16 h-16 rounded-full bg-[#e8f1fa] flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-primary-dim flex items-center justify-center">
                     <svg
                       width="28"
                       height="28"
@@ -238,13 +238,13 @@ export default function ResetPasswordModal({
 
                 {/* Title */}
                 <div className="text-center">
-                  <h1 className="text-2xl font-bold text-[#1a2a3a]">
+                  <h1 className="text-2xl font-bold text-text">
                     Verify your email
                   </h1>
-                  <p className="text-sm text-[#5a6a7a] mt-2">
+                  <p className="text-sm text-text2 mt-2">
                     We sent a 6-digit code to
                   </p>
-                  <p className="text-sm text-[#0060a9] font-medium mt-1">
+                  <p className="text-sm text-primary font-medium mt-1">
                     {user?.email || "your email address"}
                   </p>
                   <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
@@ -266,11 +266,11 @@ export default function ResetPasswordModal({
                       }
                       onKeyDown={(e) => handleKeyDown(i, e)}
                       onPaste={handlePaste}
-                      className={`w-12 h-14 text-center text-xl font-semibold rounded-xl border outline-none transition-all duration-200 bg-[#f8fafb] text-[#1a2a3a]
+                      className={`w-12 h-14 text-center text-xl font-semibold rounded-xl border outline-none transition-all duration-200 bg-bg text-text2
                                 ${
                                   digit
-                                    ? "border-[#0060a9] bg-[#e8f1fa]"
-                                    : "border-[#d8dfe6] focus:border-[#0060a9]"
+                                    ? "border-[#0060a9] bg-primary-dim"
+                                    : "border-border2 focus:border-[#0060a9]"
                                 }
                             `}
                     />
@@ -280,7 +280,7 @@ export default function ResetPasswordModal({
                 {/* Error */}
                 {error && (
                   <div className="bg-[#fef2f2] border border-[#fecaca] rounded-xl px-4 py-3">
-                    <p className="text-xs text-[#dc2626] text-center font-medium">
+                    <p className="text-xs text-red text-center font-medium">
                       {error}
                     </p>
                   </div>
@@ -293,8 +293,8 @@ export default function ResetPasswordModal({
                  w-full py-4 rounded-xl text-sm font-semibold transition-all cursor-pointer
                  ${
                    isComplete && !loading
-                     ? "bg-[#0060a9] text-white hover:bg-[#004d8a] shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
-                     : "bg-[#e4eaf0] text-[#8a97a4] cursor-not-allowed"
+                     ? "bg-primary text-white hover:bg-[#004d8a] shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
+                     : "bg-[#e4eaf0] text-text3 cursor-not-allowed"
                  }
                  `}
                 >
@@ -303,16 +303,16 @@ export default function ResetPasswordModal({
 
                 {/* Resend*/}
                 <div className="text-center">
-                  <p className="text-xs text-[#8a97a4]">
+                  <p className="text-xs text-text3">
                     Didn't receive the code?{" "}
                     <span
                       // onClick={handleResend}
-                      className="text-[#0060a9] cursor-pointer hover:underline transition-colors font-medium"
+                      className="text-primary cursor-pointer hover:underline transition-colors font-medium"
                     >
                       Resend code
                     </span>
                   </p>
-                  <p className="text-xs text-[#8a97a4] mt-2">
+                  <p className="text-xs text-text3 mt-2">
                     Check your spam folder · Code valid for 10 minutes
                   </p>
                 </div>

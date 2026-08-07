@@ -88,15 +88,15 @@ export default function AddProfessorForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f2f5f7] flex flex-col items-center">
+    <div className="min-h-screen bg-bg flex flex-col items-center">
       {/* Header */}
 
       {/* Main card */}
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-[0_4px_32px_rgba(0,60,120,0.08)] mx-5 mb-10 px-7 py-8 flex flex-col gap-6">
+      <div className="w-full max-w-md bg-bg2 rounded-3xl shadow-[0_4px_32px_rgba(0,60,120,0.08)] mx-5 mb-10 px-7 py-8 flex flex-col gap-6">
         {/* Title */}
         <div>
-          <h1 className="text-2xl font-bold text-[#1a2a3a]">Add Professor</h1>
-          <p className="text-sm text-[#5a6a7a] mt-1.5">
+          <h1 className="text-2xl font-bold text-text">Add Professor</h1>
+          <p className="text-sm text-text2 mt-1.5">
             Enter professor's information to add them to the site
           </p>
           <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mt-3" />
@@ -107,7 +107,7 @@ export default function AddProfessorForm() {
           {/* First name and last name */}
           <div className="flex gap-3">
             <div className="flex-1 flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[#5a6a7a]">
+              <label className="text-xs font-medium text-text2">
                 First Name
               </label>
               <input
@@ -115,13 +115,13 @@ export default function AddProfessorForm() {
                 value={formdata.firstName}
                 onChange={handleChange}
                 placeholder="First Name"
-                className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+                className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>
             <div className="flex-1 flex flex-col gap-1.5">
               <label
                 htmlFor="lastName"
-                className="text-xs font-medium text-[#5a6a7a]"
+                className="text-xs font-medium text-text2"
               >
                 Last Name
               </label>
@@ -130,7 +130,7 @@ export default function AddProfessorForm() {
                 value={formdata.lastName}
                 onChange={handleChange}
                 placeholder="Last Name"
-                className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+                className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>
           </div>
@@ -139,7 +139,7 @@ export default function AddProfessorForm() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="email"
-              className="text-xs font-medium text-[#5a6a7a]"
+              className="text-xs font-medium text-text2"
             >
               Email
             </label>
@@ -148,16 +148,16 @@ export default function AddProfessorForm() {
               value={formdata.email}
               onChange={handleChange}
               placeholder="name.surname@tsu.ge"
-              className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+              className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
             />
-            <p className="text-xs text-[#8a97a4] px-1">
+            <p className="text-xs text-text3 px-1">
               Enter professor's email adress
             </p>
           </div>
 
           {/* Faculty */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[#5a6a7a]">
+            <label className="text-xs font-medium text-text2">
               Faculty
             </label>
 
@@ -165,7 +165,7 @@ export default function AddProfessorForm() {
               name="faculty"
               value={formdata.faculty}
               onChange={handleChange}
-              className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
+              className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
             >
               <option value="" disabled>
                 Select professor's faculty...
@@ -177,7 +177,7 @@ export default function AddProfessorForm() {
               ))}
             </select>
 
-            <p className="text-xs text-[#0060a9] pt-0.5 font-medium">
+            <p className="text-xs text-primary pt-0.5 font-medium">
               Select the faculty where the instructor serves.
             </p>
           </div>
@@ -185,7 +185,7 @@ export default function AddProfessorForm() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="department"
-              className="text-xs font-medium text-[#5a6a7a]"
+              className="text-xs font-medium text-text2"
             >
               Department
             </label>
@@ -194,21 +194,21 @@ export default function AddProfessorForm() {
               value={formdata.department}
               onChange={handleChange}
               placeholder="e.g. Mathematics, Psychology..."
-              className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+              className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
             />
-            <p className="text-xs text-[#8a97a4] px-1">
+            <p className="text-xs text-text3 px-1">
               Enter professor's department
             </p>
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[#5a6a7a]">Title</label>
+            <label className="text-xs font-medium text-text2">Title</label>
 
             <select
               name="title"
               value={formdata.title}
               onChange={handleChange}
-              className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
+              className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
             >
               <option value="" disabled>
                 Select professor's title...
@@ -220,7 +220,7 @@ export default function AddProfessorForm() {
               ))}
             </select>
 
-            <p className="text-xs text-[#0060a9] pt-0.5 font-medium">
+            <p className="text-xs text-primary pt-0.5 font-medium">
               Select the instructor's official academic title.
             </p>
           </div>
@@ -229,7 +229,7 @@ export default function AddProfessorForm() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="courses"
-              className="text-xs font-medium text-[#5a6a7a]"
+              className="text-xs font-medium text-text2"
             >
               Courses
             </label>
@@ -250,13 +250,13 @@ export default function AddProfessorForm() {
                 }
               }}
               placeholder="Analysis, History, Economic, Law..."
-              className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+              className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
             />
             <div className="flex flex-wrap gap-2">
               {formdata.courses.map((courseItem, index) => (
                 <div
                   key={index}
-                  className="bg-[#e6f0f9] text-[#0060a9] px-3 py-1.5 rounded-lg text-sm flex items-center gap-2"
+                  className="bg-[#e6f0f9] text-primary px-3 py-1.5 rounded-lg text-sm flex items-center gap-2"
                 >
                   <span>{courseItem}</span>
 
@@ -270,14 +270,14 @@ export default function AddProfessorForm() {
                         courses: prev.courses.filter((_, i) => i !== index),
                       }));
                     }}
-                    className="text-[#0060a9] hover:text-red-500 font-bold cursor-pointer"
+                    className="text-primary hover:text-red-500 font-bold cursor-pointer"
                   >
                     ✕
                   </button>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-[#8a97a4] px-1">
+            <p className="text-xs text-text3 px-1">
               Enter all the courses the professos teaches
             </p>
           </div>
@@ -286,21 +286,21 @@ export default function AddProfessorForm() {
         {/* Error */}
         {error && (
           <div className="bg-[#fef2f2] border border-[#fecaca] rounded-xl px-4 py-3">
-            <p className="text-xs text-[#dc2626] font-medium">{error}</p>
+            <p className="text-xs text-red font-medium">{error}</p>
           </div>
         )}
 
         {/* Success */}
         {success && (
           <div className="bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl px-4 py-3">
-            <p className="text-xs text-[#16a34a] font-medium">{success}</p>
+            <p className="text-xs text-green font-medium">{success}</p>
           </div>
         )}
 
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className={`w-full py-4 bg-[#0060a9] rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]
+          className={`w-full py-4 bg-primary rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]
                             ${
                               loading
                                 ? "bg-primary/50 text-bg cursor-not-allowed"

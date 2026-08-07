@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import LogoutModal from "./LogoutModal";
 import NotificationDropDown from "@/components/NotificationDropdown";
+import ThemeToggle from "@/components/ThemeToggle";
 const navItems = [
   {
     label: "Dashboard",
@@ -150,14 +151,14 @@ export default function DashboardLayout({
   const unreadCount = reports.filter((r) => !r.IsRead).length;
 
   return (
-    <div className="min-h-screen bg-[#f2f5f7] flex overflow-x-hidden">
+    <div className="min-h-screen bg-bg flex overflow-x-hidden">
       {/* Sidebar desktop */}
 
-      <aside className="hidden lg:flex w-[220px] flex-shrink-0 flex-col bg-white border-r border-[#e4eaf0] fixed top-0 left-0 h-full z-10 shadow-[1px_0_8px_rgba(0,40,80,0.04)]">
+      <aside className="hidden lg:flex w-[220px] flex-shrink-0 flex-col bg-bg2 border-r border-border fixed top-0 left-0 h-full z-10 shadow-[1px_0_8px_rgba(0,40,80,0.04)]">
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 py-5">
           <div
-            className="w-8 h-8 rounded-[9px] bg-[#0060a9] flex items-center justify-center flex-shrink-0 cursor-pointer"
+            className="w-8 h-8 rounded-[9px] bg-primary flex items-center justify-center flex-shrink-0 cursor-pointer"
             onClick={() => router.push("/dashboard")}
           >
             <svg
@@ -177,19 +178,19 @@ export default function DashboardLayout({
           </div>
           <span
             onClick={() => router.push("/dashboard")}
-            className="font-bold text-[15px] text-[#1a2a3a] cursor-pointer"
+            className="font-bold text-[15px] text-text cursor-pointer"
             style={{
               fontFamily: "Syne, sans-serif",
             }}
           >
-            Teacher <span className="text-[#0060a9]">Rating</span>
+            Teacher <span className="text-primary">Rating</span>
           </span>
         </div>
 
         {/* Nav */}
 
         <nav className="flex flex-col gap-1 flex-1 px-3 py-3">
-          <p className="text-[9px] text-[#8a97a4] uppercase tracking-widest px-2 py-2">
+          <p className="text-[9px] text-text3 uppercase tracking-widest px-2 py-2">
             Explore
           </p>
           {navItems.map((item) => {
@@ -200,8 +201,8 @@ export default function DashboardLayout({
                 href={item.href}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${
                   isActive
-                    ? "bg-[#e8f1fa] text-[#0060a9] font-medium rounded-lg"
-                    : "text-[#5a6a7a] hover:bg-[#f0f4f7] rounded-lg"
+                    ? "bg-primary-dim text-primary font-medium rounded-lg"
+                    : "text-text2 hover:bg-bg3 rounded-lg"
                 }`}
               >
                 {item.icon}
@@ -210,7 +211,7 @@ export default function DashboardLayout({
             );
           })}
 
-          <p className="text-[9px] text-[#8a97a4] uppercase tracking-widest px-2 py-2 mt-2">
+          <p className="text-[9px] text-text3 uppercase tracking-widest px-2 py-2 mt-2">
             Actions
           </p>
           {navItems.slice(2).map((item) => {
@@ -221,8 +222,8 @@ export default function DashboardLayout({
                 href={item.href}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${
                   isActive
-                    ? "bg-[#e8f1fa] text-[#0060a9] font-medium rounded-lg"
-                    : "text-[#5a6a7a] hover:bg-[#f0f4f7] rounded-lg"
+                    ? "bg-primary-dim text-primary font-medium rounded-lg"
+                    : "text-text2 hover:bg-bg3 rounded-lg"
                 } `}
               >
                 {item.icon}
@@ -233,19 +234,19 @@ export default function DashboardLayout({
         </nav>
 
         {/* User */}
-        <div className="flex flex-col itemsc-center px-3 py-4 border-t border-[#e4eaf0]">
+        <div className="flex flex-col itemsc-center px-3 py-4 border-t border-border">
           <Link
             href="/profile"
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-[#f8fafc] transition-all group"
           >
-            <div className="w-10 h-10 rounded-full bg-[#e8f1fa] flex items-center justify-center text-[11px] text-[#0060a9] font-bold flex-shrink-0 transition-transform group-hover:scale-105 shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-primary-dim flex items-center justify-center text-[11px] text-primary font-bold flex-shrink-0 transition-transform group-hover:scale-105 shadow-sm">
               {initials}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-[13px] font-bold text-[#1a2a3a] truncate leading-tight group-hover:text-[#0060a9] transition-colors">
+              <span className="text-[13px] font-bold text-text truncate leading-tight group-hover:text-primary transition-colors">
                 {user?.firstName} {user?.lastName}
               </span>
-              <span className="text-[10px] text-[#8a97a4] truncate leading-tight mt-0.5 font-medium">
+              <span className="text-[10px] text-text3 truncate leading-tight mt-0.5 font-medium">
                 {user?.faculty || "Student Account"}
               </span>
             </div>
@@ -269,7 +270,7 @@ export default function DashboardLayout({
               <path d="M9 12h12l-3 -3" />
               <path d="M18 15l3 -3" />
             </svg>
-            <p className="text-[#dc2626]">Log Out</p>
+            <p className="text-red">Log Out</p>
           </button>
         </div>
       </aside>
@@ -277,9 +278,9 @@ export default function DashboardLayout({
       {/* content */}
       <main className="flex-1 lg:ml-[220px] flex flex-col min-h-screen min-w-0">
         {/* Desktop topbar */}
-        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-[#e4eaf0] bg-white sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <h1
-            className="font-bold text-[16px] text-[#1a2a3a]"
+            className="font-bold text-[16px] text-text"
             style={{
               fontFamily: "Syne, sans-serif",
             }}
@@ -287,6 +288,7 @@ export default function DashboardLayout({
             Dashboard
           </h1>
           <div className="flex gap-2 items-center justify-center">
+            <ThemeToggle />
             {user?.isAdmin && (
               <div className="relative flex items-center" ref={notificationRef}>
                 <button
@@ -333,28 +335,29 @@ export default function DashboardLayout({
             )}
 
             <div
-              className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 cursor-pointer hover:border-[#0060a9] transition-colors"
+              className="flex items-center gap-3 bg-bg2 border border-border rounded-[9px] px-3 py-2 cursor-pointer hover:border-[#0060a9] transition-colors"
               onClick={() => router.push("/search")}
             >
-              <span className="text-[#8a97a4] text-sm">⌕</span>
-              <span className="text-[12px] text-[#8a97a4]">
+              <span className="text-text3 text-sm">⌕</span>
+              <span className="text-[12px] text-text3">
                 Search professor or course...
               </span>
             </div>
           </div>
         </div>
         {/* Mobile topbar */}
-        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-[#e4eaf0] bg-white sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <span
             onClick={() => router.push("/dashboard")}
-            className="font-bold text-[16px] text-[#1a2a3a] cursor-pointer"
+            className="font-bold text-[16px] text-text cursor-pointer"
             style={{
               fontFamily: "Syne, sans-serif",
             }}
           >
-            Teacher <span className="text-[#0060a9]">Rating</span>
+            Teacher <span className="text-primary">Rating</span>
           </span>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             {user?.isAdmin ? (
               <div className="relative flex items-center" ref={notificationRef}>
                 <button
@@ -400,16 +403,16 @@ export default function DashboardLayout({
               </div>
             ) : (
               <div
-                className="flex items-center gap-3 bg-[#f8fafb] border border-[#d8dfe6] rounded-[9px] px-3 py-2 w-full max-w-[140px] sm:max-w-[200px] cursor-pointer"
+                className="flex items-center gap-3 bg-bg2 border border-border rounded-[9px] px-3 py-2 w-full max-w-[140px] sm:max-w-[200px] cursor-pointer"
                 onClick={() => router.push("/search")}
               >
-                <span className="text-[#8a97a4] text-[12px]">⌕</span>
-                <span className="text-[#8a97a4] text-[12px]">Search...</span>
+                <span className="text-text3 text-[12px]">⌕</span>
+                <span className="text-text3 text-[12px]">Search...</span>
               </div>
             )}
 
             <div className="lg:hidden flex items-center justify-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-[#e8f1fa] flex items-center justify-center text-[10px] text-[#0060a9] font-medium cursor-pointer">
+              <div className="w-8 h-8 rounded-full bg-primary-dim flex items-center justify-center text-[10px] text-primary font-medium cursor-pointer">
                 {initials}
               </div>
               <button
@@ -440,7 +443,7 @@ export default function DashboardLayout({
           {children}
         </div>
         {/* Bottom nav mobile */}
-        <nav className="flex lg:hidden border-t border-[#e4eaf0] bg-white fixed bottom-0 left-0 right-0 z-50 shadow-[0_-1px_4px_rgba(0,40,80,0.04)]">
+        <nav className="flex lg:hidden border-t border-border bg-bg2 fixed bottom-0 left-0 right-0 z-50 shadow-[0_-1px_4px_rgba(0,40,80,0.04)]">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -449,16 +452,14 @@ export default function DashboardLayout({
                 href={item.href}
                 className="flex-1 flex flex-col items-center gap-1 py-2 pb-5"
               >
-                <span
-                  className={isActive ? "text-[#0060a9]" : "text-[#8a97a4]"}
-                >
+                <span className={isActive ? "text-primary" : "text-text3"}>
                   {item.icon}
                 </span>
                 <span
                   className={`text-[9px] ${
                     isActive
-                      ? "text-[#0060a9] text-[8px] font-semibold"
-                      : "text-[#8a97a4] text-[10px] font-semibold"
+                      ? "text-primary text-[8px] font-semibold"
+                      : "text-text3 text-[10px] font-semibold"
                   }`}
                 >
                   {item.label}

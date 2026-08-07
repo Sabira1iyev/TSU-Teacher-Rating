@@ -86,7 +86,7 @@ function RatePageContent() {
   }, [professorId]);
 
   useEffect(() => {
-    fetch("api/tags")
+    fetch("/api/tags")
       .then((res) => res.json())
       .then((data: { Name: string }[]) => {
         const tagNames = data.map((t) => t.Name);
@@ -174,7 +174,7 @@ function RatePageContent() {
   if (submitted) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-6">
-        <div className="w-16 h-16 rounded-full bg-[#e8f1fa] flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full bg-primary-dim flex items-center justify-center">
           <svg
             width="28"
             height="28"
@@ -189,19 +189,19 @@ function RatePageContent() {
           </svg>
         </div>
         <h2
-          className="text-xl font-bold text-[#1a2a3a] text-center"
+          className="text-xl font-bold text-text text-center"
           style={{ fontFamily: "Syne, sans-serif" }}
         >
           Review Submitted!
         </h2>
-        <p className="text-sm text-[#5a6a7a] text-center max-w-sm">
+        <p className="text-sm text-text2 text-center max-w-sm">
           Your anonymous review has been submitted successfull. Thank you for
           helping other students!
         </p>
         <div className="flex gap-3 mt-2">
           <button
             onClick={() => router.push(`/professor/${form.professorId}`)}
-            className="px-5 py-2.5 bg-[#0060a9] rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
+            className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
           >
             Dashboard
           </button>
@@ -234,12 +234,12 @@ function RatePageContent() {
         <div className="p-5 lg:p-6 lg:border-r border-border flex flex-col gap-6">
           {/* Professor selector */}
           <div>
-            <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
+            <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
               Professor
             </p>
             {professor ? (
-              <div className="flex items-center gap-3 bg-[#f8fafb] border border-[#e4eaf0] rounded-xl p-3">
-                <div className="w-11 h-11 rounded-full bg-[#fdf6e3] flex items-center justify-center text-sm text-[#b8860b] font-semibold flex-shrink-0">
+              <div className="flex items-center gap-3 bg-bg2 border border-border rounded-xl p-3">
+                <div className="w-11 h-11 rounded-full bg-amber-dim flex items-center justify-center text-sm text-amber font-semibold flex-shrink-0">
                   {getInitials(professor.firstName, professor.lastName)}
                 </div>
                 <div className="flex-1">
@@ -250,12 +250,6 @@ function RatePageContent() {
                     {professor.faculty}
                   </p>
                 </div>
-                <button
-                  onClick={() => router.push("/rate")}
-                  className="text-xs text-text3 hover:text-text2 cursor-pointer"
-                >
-                  Change
-                </button>
               </div>
             ) : (
               <div className="flex flex-col gap-2">
@@ -326,10 +320,10 @@ function RatePageContent() {
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, courseName: e.target.value }))
                   }
-                  className="w-full bg-bg3 border border-border2 rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
+                  className="w-full bg-bg2 border border-border2 rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
                 >
                   {(professor.courses || []).map((course: string) => (
-                    <option key={course} value={course} className="bg-bg3">
+                    <option key={course} value={course}>
                       {course}
                     </option>
                   ))}
@@ -346,7 +340,7 @@ function RatePageContent() {
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, semester: e.target.value }))
                   }
-                  className="w-full bg-bg3 border border-border2 rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
+                  className="w-full bg-bg2 border border-border2 rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
                 >
                   {SEMESTERS.map((s) => (
                     <option key={s} value={s}>
@@ -429,10 +423,10 @@ function RatePageContent() {
 
               {/* Comment */}
               <div>
-                <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
+                <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
                   Comment (anonymous)
                 </p>
-                <div className="bg-bg3 border-border2 rounded-xl p-3 focus-within:border-primary transition-colors">
+                <div className="bg-bg2 border-border2 rounded-xl p-3 focus-within:border-primary transition-colors">
                   <textarea
                     value={form.comment}
                     onChange={(e) =>
@@ -461,7 +455,7 @@ function RatePageContent() {
                       onClick={() => handleTagToggle(tag)}
                       className={`px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all border ${
                         !form.tags.includes(tag)
-                          ? "bg-bg3 border-border2 text-text2 hover:border-border"
+                          ? "bg-bg2 border-border text-text2 hover:border-border"
                           : ""
                       }`}
                       style={
@@ -492,8 +486,8 @@ function RatePageContent() {
                     }
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${
                       form.wouldRecommend
-                        ? "bg-primary-dim border-primary-mid text-primary"
-                        : "border-border2 text-text2 hover:bg-bg3"
+                        ? "bg-primary-dim border-border text-primary"
+                        : "border-border text-text2 hover:bg-bg2"
                     }`}
                   >
                     ✓ Yes, I would recommend
@@ -539,10 +533,10 @@ function RatePageContent() {
         {/* Sidebar - Desktop */}
         <div className="hidden lg:flex flex-col gap-5 p-6">
           {/* Privacy */}
-          <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
+          <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
             Privacy & rules
           </p>
-          <div className="bg-bg3 rounded-xl p-4">
+          <div className="bg-bg2 rounded-xl p-4">
             <p className="text-xs text-text2 mb-3 leading-relaxed">
               <span className="inline-block w-2 h-2 rounded-full bg-primary mr-1.5"></span>
               Your review is completely anonymous. Your name or student ID will
@@ -569,10 +563,10 @@ function RatePageContent() {
         {/* Current Rating */}
         {professor && (
           <div>
-            <p className="text-[10px] text-text3 uppercase tracking-widest mb-3 ml-5">
+            <p className="text-[10px] text-text2 uppercase tracking-widest mb-3 ml-5">
               Current rating
             </p>
-            <div className="bg-bg3 rounded-xl p-4">
+            <div className="bg-bg2 rounded-xl p-4">
               <p
                 className={`text-4xl font-bold text-center mb-1`}
                 style={{

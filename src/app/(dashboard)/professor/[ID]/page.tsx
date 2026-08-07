@@ -222,19 +222,19 @@ export default function ProfessorProfilePage() {
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <p className="text-4xl">🎓</p>
         <h2
-          className="text-xl font-bold text-[#1a2a3a]"
+          className="text-xl font-bold text-text"
           style={{
             fontFamily: "Syne, sans-serif",
           }}
         >
           Professor not found
         </h2>
-        <p className="text-sm text-[#8a97a4]">
+        <p className="text-sm text-text3">
           This professor does not exist or has been removed
         </p>
         <button
           onClick={() => router.push("/dashboard")}
-          className="px-5 py-2.5 bg-[#0060a9] rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
+          className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
         >
           ← Back to Dashboard
         </button>
@@ -270,7 +270,7 @@ export default function ProfessorProfilePage() {
       >
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-sm text-[#5a6a7a] hover:text-[#1a2a3a] transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-sm text-text2 hover:text-text transition-colors cursor-pointer"
         >
           ← Back
         </button>
@@ -323,7 +323,7 @@ export default function ProfessorProfilePage() {
               <div
                 className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-xl lg:text-2xl font-bold flex-shrink-0"
                 style={{
-                  background: `linear-gradient(135deg, ${fc.light} 0%, #fdf6e3 100%)`,
+                  background: `linear-gradient(135deg, ${fc.light} 60%, #fdf6e3 400%)`,
                   border: `2px solid ${fc.mid}`,
                   color: fc.primary,
                 }}
@@ -632,7 +632,7 @@ export default function ProfessorProfilePage() {
         {activeTab === "Reviews" && (
           <div className="relative" ref={revireFilterRef}>
             <button
-              className="cursor-pointer w-9 h-9 rounded-full text-[#0060a9] flex items-center justify-center hover:bg-[#d0e3f5] transition-colors"
+              className="cursor-pointer w-9 h-9 rounded-full text-primary flex items-center justify-center hover:bg-[#d0e3f5] transition-colors"
               onClick={() => setIsFilterOpen(!isFilterOpen)}
             >
               <svg
@@ -782,7 +782,7 @@ export default function ProfessorProfilePage() {
                 </p>
                 <div className="flex flex-col gap-3">
                   {reviews.slice(0, 2).map((review) => (
-                    <div key={review.id} className="bg-bg3 rounded-xl p-4">
+                    <div key={review.id} className="bg-bg2 rounded-xl p-4">
                       <div className="flex justify-between items-center mb-1.5">
                         <div className="flex gap-0.5">
                           {[1, 2, 3, 4, 5].map((star) => (
@@ -970,7 +970,7 @@ export default function ProfessorProfilePage() {
                       </p>
                     )}
                     <div className="flex flex-row justify-center items-center gap-2">
-                      <div className="flex items-center bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors">
+                      <div className="flex items-center bg-bg hover:bg-gray-700 rounded-full px-3 py-1 transition-colors">
                         <button
                           onClick={() => {
                             handleLike(review.id.toString());
@@ -1062,7 +1062,7 @@ export default function ProfessorProfilePage() {
                       </div>
                       {user?.userId !== review.userId && !user?.isAdmin && (
                         <button
-                          className="flex justify-center items-center gap-1 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 transition-colors cursor-pointer"
+                          className="flex justify-center items-center gap-1 bg-bg hover:bg-gray-700 rounded-full px-3 py-1 transition-colors cursor-pointer"
                           onClick={() => {
                             setIsReportModalOpen(true);
                             setReportedReviewId(review.id);
@@ -1115,7 +1115,7 @@ export default function ProfessorProfilePage() {
       </div>
 
       {/* Mobile rate button */}
-      <div className="lg:hidden bottom-[57px] left-0 right-0 px-4 py-3 bg-[#f2f5f7] z-10">
+      <div className="lg:hidden bottom-[57px] left-0 right-0 px-4 py-3 bg-bg z-10">
         <button
           onClick={() => router.push(`/rate?professorId=${professor.id}`)}
           className="w-full py-3.5 rounded-xl text-sm font-semibold text-white transition-colors cursor-pointer"

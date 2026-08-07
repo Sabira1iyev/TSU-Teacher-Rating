@@ -68,11 +68,11 @@ export default function DeleteAccountModal({
           </div>
 
           {success && (
-            <p className="text-xs text-[#16a34a] font-medium mt-2">{success}</p>
+            <p className="text-xs text-green font-medium mt-2">{success}</p>
           )}
 
           {error && (
-            <p className="text-xs text-[#dc2626] font-medium">{error}</p>
+            <p className="text-xs text-red font-medium">{error}</p>
           )}
         </div>
       </div>

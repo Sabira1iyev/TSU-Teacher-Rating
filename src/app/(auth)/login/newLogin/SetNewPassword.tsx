@@ -75,7 +75,7 @@ export default function SetNewPassword({
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="password"
-              className="text-xs font-medium text-[#5a6a7a]"
+              className="text-xs font-medium text-text2"
             >
               New Password
             </label>
@@ -86,14 +86,14 @@ export default function SetNewPassword({
               onChange={handleChange}
               autoComplete="new-password"
               placeholder="Min. 8 characters"
-              className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+              className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="password"
-              className="text-xs font-medium text-[#5a6a7a]"
+              className="text-xs font-medium text-text2"
             >
               Confirm Password
             </label>
@@ -104,12 +104,12 @@ export default function SetNewPassword({
               onChange={handleChange}
               autoComplete="new-password"
               placeholder="Min. 8 characters"
-              className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
+              className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
             />
           </div>
 
           {error && (
-            <p className="text-xs text-[#dc2626] font-medium">{error}</p>
+            <p className="text-xs text-red font-medium">{error}</p>
           )}
 
           <div className="flex justify-end gap-3 mt-4">

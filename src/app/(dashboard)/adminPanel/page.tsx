@@ -15,8 +15,8 @@ export default function AdminPanelPage() {
       id: "addProfessor",
       title: "Add Professor",
       description: "Add new professor to the site",
-      icon: <UserPlus className="w-8 h-9 text-[#0060a9]" />,
-      bg: "bg-[#e8f1fa]",
+      icon: <UserPlus className="w-8 h-9 text-primary" />,
+      bg: "bg-primary-dim",
     },
     {
       id: "analytics",
@@ -39,17 +39,17 @@ export default function AdminPanelPage() {
       <div className="flex items-center gap-4 mb-8">
         {activeTab !== "menu" && (
           <button
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-[#e4eaf0] hover:bg[#f8fafb] transition-colors cursor-pointer"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-bg2 border border-border hover:bg[#f8fafb] transition-colors cursor-pointer"
             onClick={() => setActiveTab("menu")}
           >
-            <ArrowLeft className="w-5 h-5 text-[#5a6a7a]" />
+            <ArrowLeft className="w-5 h-5 text-text2" />
           </button>
         )}
         <div className="flex flex-col w-full items-center">
-          <h1 className="text-2xl font-bold text-[#1a2a3a]">
+          <h1 className="text-2xl font-bold text-text">
             Admin Control Center
           </h1>
-          <p className="text-sm text-[#8a97a4]">
+          <p className="text-sm text-text3">
             Manage the system, view analytics, edit roles.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function AdminPanelPage() {
             <div
               key={item.id}
               onClick={() => setActiveTab(item.id as AdminTap)}
-              className="bg-white border border-[#e4eaf0] rounded-2xl p-6 cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-200 group"
+              className="bg-bg2 border border-border rounded-2xl p-6 cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-200 group"
             >
               <div
                 className={`
@@ -68,7 +68,7 @@ export default function AdminPanelPage() {
               >
                 {item.icon}
               </div>
-              <h3 className="text-lg font-bold text-[#1a2a3a] mb-2">
+              <h3 className="text-lg font-bold text-text mb-2">
                 {item.title}
               </h3>
               <p className="text-sm text=[#8a97a4] leading-relaxed">

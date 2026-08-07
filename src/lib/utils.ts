@@ -24,9 +24,9 @@ export function getInitials(firstName: string, lastName: string): string {
 }
 
 export function getRatingColor(rating: number): string {
-  if (rating >= 4.0) return "text-[#0060a9]";
-  if (rating >= 2.5) return "text-[#b8860b]";
-  return "text-[#dc2626]";
+  if (rating >= 4.0) return "text-primary";
+  if (rating >= 2.5) return "text-amber";
+  return "text-red";
 }
 
 export function getRatingBarColor(rating: number): string {

@@ -82,11 +82,11 @@ export default function SearchPage() {
 
 
     const AVATAR_COLORS = [
-        { bg: "bg-[#fdf6e3]", text: "text-[#b8860b]" },
-        { bg: "bg-[#e8f1fa]", text: "text-[#0060a9]" },
-        { bg: "bg-[#f3eefa]", text: "text-[#6f42c1]" },
-        { bg: "bg-[#e8f1fa]", text: "text-[#0060a9]" },
-        { bg: "bg-[#fdf6e3]", text: "text-[#b8860b]" },
+        { bg: "bg-amber-dim", text: "text-amber" },
+        { bg: "bg-primary-dim", text: "text-primary" },
+        { bg: "bg-[#f3eefa]", text: "text-purple" },
+        { bg: "bg-primary-dim", text: "text-primary" },
+        { bg: "bg-amber-dim", text: "text-amber" },
     ];
 
     const getAvatarColor = (id: string) => {
@@ -100,7 +100,7 @@ export default function SearchPage() {
             <div className="sticky top-[48px] lg:top-[57px] z-20 bg-bg2">
                 {/* Search bar */}
                 <div className="px-5 lg:px-6 py-4 border-b border-border">
-                    <div className="flex items-center gap-3 bg-bg3 border border-border2 rounded-xl px-4 py-3 focus-within:border-primary transition">
+                    <div className="flex items-center gap-3 bg-bg2 border border-border rounded-xl px-4 py-3 focus-within:border-primary transition">
                         <input
                             type="text"
                             value={query}
@@ -126,7 +126,7 @@ export default function SearchPage() {
                             onClick={() => setSelectedFaculty(faculty)}
                             className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer transition-all border ${selectedFaculty === faculty
                                 ? "bg-primary-dim border-primary-mid text-primary"
-                                : "border-border2 text-text2 hover:border-border"
+                                : "border-border text-text2 hover:border-border"
                                 }`}
                         >
                             {faculty === "All" ?
@@ -137,7 +137,7 @@ export default function SearchPage() {
                     <div className="w-[0.5px] h-4 bg-border2 flex-shrink-0 mx-1" />
                     <button
                         onClick={() => setSortBy(sortBy === "rating" ? "reviews" : "rating")}
-                        className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer border border-border2 text-text2 hover:border-border whitespace-nowrap"
+                        className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer border border-border text-text2 hover:border-border whitespace-nowrap"
                     >
                         Sort: {sortBy === "rating" ? "Rating ↓" : "Reviews ↓"}
                     </button>
@@ -146,7 +146,7 @@ export default function SearchPage() {
                         className={`flex lg:hidden flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all 
                         ${showFilters ?
                                 "bg-primary-dim border-primary-mid text-primary"
-                                : "border-border2 text-text2 hover:border-border"
+                                : "border-border text-text2 hover:border-border"
                             }`}
                     >
                         Filters
@@ -222,7 +222,7 @@ export default function SearchPage() {
                                         <div
                                             key={profesor.id}
                                             onClick={() => router.push(`/professor/${profesor.id}`)}
-                                            className="flex items-center gap-3 lg:gap-4 px-5 lg:px-6 py-4 border-b border-border cursor-pointer hover:bg-bg3 transition-colors"
+                                            className="flex items-center bg-bg2 gap-3 lg:gap-4 px-5 lg:px-6 py-4 border-b border-border cursor-pointer hover:bg-bg transition-colors"
                                         >
                                             <div className=
                                                 {`w-11 h-11 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 ${colors.bg} ${colors.text}`}

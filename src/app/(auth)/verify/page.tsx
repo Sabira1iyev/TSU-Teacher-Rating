@@ -94,39 +94,39 @@ export default function VerifyPage() {
     const isComplete = code.every((d) => d !== "");
 
     return (
-        <div className="min-h-screen bg-[#f2f5f7] flex flex-col items-center">
+        <div className="min-h-screen bg-bg flex flex-col items-center">
 
             {/* Header */}
             <div className="w-full max-w-md flex items-center px-5 pt-8 pb-4">
                 <button
                     onClick={() => router.back()}
-                    className="text-sm text-[#6b7c8d] hover:text-[#0060a9] transition-colors cursor-pointer font-medium"
+                    className="text-sm text-[#6b7c8d] hover:text-primary transition-colors cursor-pointer font-medium"
                 >← Back</button>
             </div>
 
             {/* Main card */}
-            <div className="w-full max-w-md bg-white rounded-3xl shadow-[0_4px_32px_rgba(0,60,120,0.08)] mx-5 mb-10 px-7 py-8 flex flex-col gap-6">
+            <div className="w-full max-w-md bg-bg2 rounded-3xl shadow-[0_4px_32px_rgba(0,60,120,0.08)] mx-5 mb-10 px-7 py-8 flex flex-col gap-6">
 
                 {/* Step Indicators */}
                 <div className="flex items-center justify-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-[#e8f1fa] flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-primary-dim flex items-center justify-center">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0060a9" strokeWidth="2.5">
                             <polyline points="20 6 9 17 4 12" />
                         </svg>
                     </div>
                     <div className="w-8 h-[1px] bg-[#d8dfe6]" />
-                    <div className="w-6 h-6 rounded-full bg-[#0060a9] flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
                         <span className="text-xs font-bold text-white">2</span>
                     </div>
                     <div className="w-8 h-[1px] bg-[#d8dfe6]" />
                     <div className="w-6 h-6 rounded-full bg-[#e4eaf0] flex items-center justify-center">
-                        <span className="text-xs text-[#8a97a4]">3</span>
+                        <span className="text-xs text-text3">3</span>
                     </div>
                 </div>
 
                 {/* Icon */}
                 <div className="flex justify-center">
-                    <div className="w-16 h-16 rounded-full bg-[#e8f1fa] flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-primary-dim flex items-center justify-center">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0060a9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                             <polyline points="22,6 12,13 2,6" />
@@ -136,11 +136,11 @@ export default function VerifyPage() {
 
                 {/* Title */}
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-[#1a2a3a]">Verify your email</h1>
-                    <p className="text-sm text-[#5a6a7a] mt-2">
+                    <h1 className="text-2xl font-bold text-text">Verify your email</h1>
+                    <p className="text-sm text-text2 mt-2">
                         We sent a 6-digit code to
                     </p>
-                    <p className="text-sm text-[#0060a9] font-medium mt-1">
+                    <p className="text-sm text-primary font-medium mt-1">
                         {user?.email || "your email address"}
                     </p>
                     <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
@@ -158,10 +158,10 @@ export default function VerifyPage() {
                             onChange={(e) => handleChange(i, e.target.value)}
                             onKeyDown={(e) => handleKeyDown(i, e)}
                             onPaste={handlePaste}
-                            className={`w-12 h-14 text-center text-xl font-semibold rounded-xl border outline-none transition-all duration-200 bg-[#f8fafb] text-[#1a2a3a]
+                            className={`w-12 h-14 text-center text-xl font-semibold rounded-xl border outline-none transition-all duration-200 bg-bg3 text-text2
                                 ${digit
-                                    ? "border-[#0060a9] bg-[#e8f1fa]"
-                                    : "border-[#d8dfe6] focus:border-[#0060a9]"
+                                    ? "border-[#0060a9] bg-primary-dim"
+                                    : "border-border2 focus:border-[#0060a9]"
                                 }
                             `}
                         />
@@ -171,7 +171,7 @@ export default function VerifyPage() {
                 {/* Error */}
                 {error && (
                     <div className="bg-[#fef2f2] border border-[#fecaca] rounded-xl px-4 py-3">
-                        <p className="text-xs text-[#dc2626] text-center font-medium">{error}</p>
+                        <p className="text-xs text-red text-center font-medium">{error}</p>
                     </div>
                 )}
 
@@ -182,8 +182,8 @@ export default function VerifyPage() {
                     className={`
                     w-full py-4 rounded-xl text-sm font-semibold transition-all cursor-pointer
                     ${isComplete && !loading
-                            ? "bg-[#0060a9] text-white hover:bg-[#004d8a] shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
-                            : "bg-[#e4eaf0] text-[#8a97a4] cursor-not-allowed"
+                            ? "bg-primary text-white hover:bg-[#004d8a] shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
+                            : "bg-[#e4eaf0] text-text3 cursor-not-allowed"
                         }
                     `}
                 >
@@ -192,15 +192,15 @@ export default function VerifyPage() {
 
                 {/* Resend*/}
                 <div className="text-center">
-                    <p className="text-xs text-[#8a97a4]">
+                    <p className="text-xs text-text3">
                         Didn't receive the code? {" "}
                         <span
                             onClick={handleResend}
-                            className="text-[#0060a9] cursor-pointer hover:underline transition-colors font-medium">
+                            className="text-primary cursor-pointer hover:underline transition-colors font-medium">
                             Resend code
                         </span>
                     </p>
-                    <p className="text-xs text-[#8a97a4] mt-2">
+                    <p className="text-xs text-text3 mt-2">
                         Check your spam folder · Code valid for 10 minutes
                     </p>
                 </div>

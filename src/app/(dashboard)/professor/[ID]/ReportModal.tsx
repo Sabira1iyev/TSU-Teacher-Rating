@@ -65,13 +65,13 @@ export default function ReportModal({ onClose, reviewId }: ReportModalProps) {
             Please select why you are reporting this comment
           </p>
           <div className="flex flex-col w-full gap-2">
-            <label className="text-xs font-medium text-[#5a6a7a] self-start">
+            <label className="text-xs font-medium text-text2 self-start">
               Reason
             </label>
             <select
               name=""
               id=""
-              className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
+              className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
             >
@@ -90,7 +90,7 @@ export default function ReportModal({ onClose, reviewId }: ReportModalProps) {
                 id=""
                 value={otherReason}
                 onChange={(e) => setOtherReason(e.target.value)}
-                className="border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer resize-none"
+                className="border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer resize-none"
                 placeholder="Enter a reason..."
                 rows={8}
               />
@@ -112,11 +112,11 @@ export default function ReportModal({ onClose, reviewId }: ReportModalProps) {
           </div>
 
           {success && (
-            <p className="text-xs text-[#16a34a] font-medium mt-2">{success}</p>
+            <p className="text-xs text-green font-medium mt-2">{success}</p>
           )}
 
           {error && (
-            <p className="text-xs text-[#dc2626] font-medium">{error}</p>
+            <p className="text-xs text-red font-medium">{error}</p>
           )}
         </div>
       </div>
