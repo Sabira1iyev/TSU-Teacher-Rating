@@ -1,5 +1,6 @@
 import { useUser } from "@/context/UserContext";
 import { useState } from "react";
+import ResetPasswordModal from "@/app/(auth)/login/newLogin/ResetPasswordModal";
 
 interface ChangeProfileModalAppsProps {
   onClose: () => void;
@@ -18,6 +19,8 @@ export default function ChangePasswordModa({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [oldPassword, setOldPassword] = useState("");
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
+    useState(false);
 
   const { user } = useUser();
 
@@ -173,6 +176,12 @@ export default function ChangePasswordModa({
                 placeholder="Enter your old password"
                 className="w-full bg-[#f8fafb] border border-[#d8dfe6] rounded-xl px-4 py-3 text-sm text-[#1a2a3a] placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
+              <span
+                className="text-xs text-[#0060a9] cursor-pointer hover:underline transition-colors font-medium"
+                onClick={() => setIsResetPasswordModalOpen(true)}
+              >
+                Forgot password?
+              </span>
             </div>
 
             {error && (
@@ -196,6 +205,12 @@ export default function ChangePasswordModa({
           </>
         )}
       </div>
+
+      {isResetPasswordModalOpen && (
+        <ResetPasswordModal
+          onClose={() => setIsResetPasswordModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

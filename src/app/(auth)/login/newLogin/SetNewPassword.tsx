@@ -1,6 +1,5 @@
 "use client";
-import { use, useState } from "react";
-
+import { useState } from "react";
 export default function SetNewPassword({
   email,
   onClose,
@@ -22,6 +21,41 @@ export default function SetNewPassword({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSavePassword = async () => {
+    setError("");
+    if (formData.newPassword !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if (formData.newPassword.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+    try {
+      const response = await fetch("/api/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          newPassword: formData.newPassword,
+        }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setSuccess(data.message);
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      console.log("Password reset error:", error);
+      setError("Something went wrong, please try again")
+    }
   };
 
   return (
@@ -87,9 +121,9 @@ export default function SetNewPassword({
             </button>
             <button
               className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-primary/20"
-              //   onClick={changePassword}
+              onClick={handleSavePassword}
             >
-              Change
+              Save password
             </button>
           </div>
         </>
