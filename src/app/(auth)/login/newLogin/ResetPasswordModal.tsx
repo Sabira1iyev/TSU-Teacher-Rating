@@ -117,6 +117,10 @@ export default function ResetPasswordModal({
     }
   };
 
+  if (step === 3) {
+    return <SetNewPassword onClose={onClose} email={formData.email} />;
+  }
+
   return (
     <div className="animate-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="animate-modal bg-bg2 border border-border w-[90%] max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col gap-5">
@@ -315,9 +319,6 @@ export default function ResetPasswordModal({
               </div>
             </div>
           </>
-        )}
-        {step === 3 && (
-          <SetNewPassword onClose={onClose} email={formData.email} />
         )}
       </div>
     </div>
