@@ -24,16 +24,20 @@
   --color-border2: #d8dfe6;
 }
 
-.dark{
-  --color-bg: #121212;
-  --color-bg2: #1e1e1e;
-  --color-text: #f0f0f0;
-  --color-border: #333333;
-}
-
-
-
 @layer base {
+  .dark {
+    --color-bg: #0f1115;
+    --color-bg2: #161b22;
+    --color-bg3: #21262d;
+    --color-bg4: #30363d;
+    --color-text: #e6edf3;
+    --color-text2: #8b949e;
+    --color-text3: #6e7681;
+    --color-border: #30363d;
+    --color-border2: #21262d;
+    --color-primary-dim: #1f2a3a;
+  }
+
   * {
     box-sizing: border-box;
     margin: 0;
