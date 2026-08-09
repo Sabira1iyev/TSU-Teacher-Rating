@@ -6,6 +6,7 @@ import { Professor } from "@/types/teacher";
 import { FACULTIES } from "@/lib/constants";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { useUser } from "@/context/UserContext";
+import { useLocale, useTranslations } from "next-intl";
 
 const TABS = [
   "Top rated",
@@ -42,10 +43,13 @@ export default function DashBoardPage() {
   const [professors, setProfessors] = useState<Professor[]>([]);
   const { user } = useUser();
   const [stats, setStats] = useState<any>(null);
+  const tFac = useTranslations("Faculties");
+  const tDash = useTranslations("Common");
+  const tTabs = useTranslations("Tabs");
 
   const fullName = user?.firstName + " " + user?.lastName || "Unknown";
   useEffect(() => {
-    fetch("api/professors")
+    fetch("/api/professors")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -94,20 +98,20 @@ export default function DashBoardPage() {
       {/* Greeting - Mobile */}
       <div className="lg:hidden">
         <p className="text-xs font-semibold text-primary mb-1">
-          Hello, {fullName}
+          {tDash("greeting")} {fullName}
         </p>
         <h1
           className="text-xl font-semibold text-text leading-tight"
           style={{ fontFamily: "Syne, sans-serif" }}
         >
-          Which faculty <br /> are you looking for?
+          {tDash("question1")} <br /> {tDash("question2")}
         </h1>
       </div>
 
       {/* Faculty Grid */}
       <div>
         <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-          Select Faculty
+          {tDash("select")}
         </p>
 
         {/* Desktop Grid */}
@@ -158,7 +162,7 @@ export default function DashBoardPage() {
           {FACULTIES.map((faculty) => {
             const isActive = selectedFaculty === faculty;
             const count =
-              faculty === "All"
+              faculty === tFac("All")
                 ? professors.length
                 : professors.filter((p) => p.faculty === faculty).length;
             return (
@@ -180,14 +184,14 @@ export default function DashBoardPage() {
                     isActive ? "text-primary" : "text-text"
                   }`}
                 >
-                  {faculty}
+                  {tFac(faculty)}
                 </div>
                 <div
                   className={`text-[12px] mt-1 ${
                     isActive ? "text-[#5a8bbf]" : "text-text3"
                   }`}
                 >
-                  {count} profs
+                  {count} {tDash("prof")}
                 </div>
               </button>
             );
@@ -198,39 +202,39 @@ export default function DashBoardPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         <div className="bg-bg2 border border-border rounded-xl p-3 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
-          <p className="text-[9px] text-text3 mb-1.5">Professors</p>
+          <p className="text-[9px] text-text2 mb-1.5">{tDash("profs")}</p>
           <p className="text-xl font-semibold text-primary">
             {filteredProfessors.length}
           </p>
-          <p className="text-[9px] text-text3 mt-1 truncate">
+          <p className="text-[9px] text-text2 mt-1 truncate">
             {selectedFaculty === "All"
-              ? "All faculties"
-              : selectedFaculty.replace("Faculty of ", "")}
+              ? tFac("All") + " " + tDash("fac")
+              : tFac(selectedFaculty).replace("Faculty of ", "")}
           </p>
         </div>
         <div className="bg-bg2 border border-border rounded-xl p-3 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
-          <p className="text-[9px] text-text3 mb-1.5">Average Rating</p>
+          <p className="text-[9px] text-text2 mb-1.5">{tDash("avgRate")}</p>
           <p className="text-xl font-semibold text-text">
             {formatRating(avgRating)}
           </p>
-          <p className="text-[9px] text-text3 mt-1">
+          <p className="text-[9px] text-text2 mt-1">
             <span className="text-primary mr-[2px]">
               ↑ {stats?.semesterGrowth || 0}
             </span>{" "}
-            this semester
+            {tDash("thisSem")}
           </p>
         </div>
         <div className="bg-bg2 border border-border rounded-xl p-3 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
-          <p className="text-[9px] text-text3 mb-1.5">Total reviews</p>
+          <p className="text-[9px] text-text2 mb-1.5">{tDash("totReviews")}</p>
           <p className="text-xl font-semibold text-text">
             {totalReviews.toLocaleString()}
           </p>
-          <p className="text-[9px] text-text3 mt-1">
+          <p className="text-[9px] text-text2 mt-1">
             <span className="text-primary mr-[2px]">
               {stats?.monthGrowth > 0 ? "+" : ""}
               {stats?.monthGrowth || 0}
             </span>
-            this month
+            {tDash("thisMonth")}
           </p>
         </div>
       </div>
@@ -251,7 +255,7 @@ export default function DashBoardPage() {
                                     : "text-text hover:text-text hover:bg-bg2"
                                 }`}
               >
-                {tab}
+                {tTabs(tab)}
               </button>
             ))}
           </div>

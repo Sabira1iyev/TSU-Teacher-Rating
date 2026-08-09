@@ -2,12 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { getInitials } from "@/lib/utils";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import LogoutModal from "./LogoutModal";
 import NotificationDropDown from "@/components/NotificationDropdown";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 const navItems = [
   {
     label: "Dashboard",
@@ -108,6 +110,11 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const t = useTranslations("Sidebar");
+  const tIndex = useTranslations("Index");
+  const tFac = useTranslations("Faculties");
+  const locale = useLocale();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const [isLogOutOpen, setIsLogOutOpen] = useState(false);
@@ -183,7 +190,7 @@ export default function DashboardLayout({
               fontFamily: "Syne, sans-serif",
             }}
           >
-            Teacher <span className="text-primary">Rating</span>
+            {tIndex("title1")} <span className="text-primary">{tIndex("title2")}</span>
           </span>
         </div>
 
@@ -191,14 +198,14 @@ export default function DashboardLayout({
 
         <nav className="flex flex-col gap-1 flex-1 px-3 py-3">
           <p className="text-[9px] text-text3 uppercase tracking-widest px-2 py-2">
-            Explore
+            {t("Explorer")}
           </p>
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
+          {navItems.slice(0, 2).map((item) => {
+            const isActive = pathname === `/${locale}${item.href}`;
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={`/${locale}${item.href}`}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${
                   isActive
                     ? "bg-primary-dim text-primary font-medium rounded-lg"
@@ -206,20 +213,20 @@ export default function DashboardLayout({
                 }`}
               >
                 {item.icon}
-                {item.label}
+                {t(item.label)}
               </Link>
             );
           })}
 
           <p className="text-[9px] text-text3 uppercase tracking-widest px-2 py-2 mt-2">
-            Actions
+            {t("Actions")}
           </p>
           {navItems.slice(2).map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === `/${locale}${item.href}`;
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={`/${locale}${item.href}`}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${
                   isActive
                     ? "bg-primary-dim text-primary font-medium rounded-lg"
@@ -227,7 +234,7 @@ export default function DashboardLayout({
                 } `}
               >
                 {item.icon}
-                {item.label}
+                {t(item.label)}
               </Link>
             );
           })}
@@ -236,7 +243,7 @@ export default function DashboardLayout({
         {/* User */}
         <div className="flex flex-col itemsc-center px-3 py-4 border-t border-border">
           <Link
-            href="/profile"
+            href={`/${locale}/profile`}
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-[#f8fafc] transition-all group"
           >
             <div className="w-10 h-10 rounded-full bg-primary-dim flex items-center justify-center text-[11px] text-primary font-bold flex-shrink-0 transition-transform group-hover:scale-105 shadow-sm">
@@ -247,7 +254,7 @@ export default function DashboardLayout({
                 {user?.firstName} {user?.lastName}
               </span>
               <span className="text-[10px] text-text3 truncate leading-tight mt-0.5 font-medium">
-                {user?.faculty || "Student Account"}
+                {user?.faculty ? tFac(user.faculty) : t("Student Account")}
               </span>
             </div>
           </Link>
@@ -270,7 +277,7 @@ export default function DashboardLayout({
               <path d="M9 12h12l-3 -3" />
               <path d="M18 15l3 -3" />
             </svg>
-            <p className="text-red">Log Out</p>
+            <p className="text-red">{t("logout")}</p>
           </button>
         </div>
       </aside>
@@ -285,9 +292,10 @@ export default function DashboardLayout({
               fontFamily: "Syne, sans-serif",
             }}
           >
-            Dashboard
+            {t("Dashboard")}
           </h1>
           <div className="flex gap-2 items-center justify-center">
+            <LanguageSwitcher />
             <ThemeToggle />
             {user?.isAdmin && (
               <div className="relative flex items-center" ref={notificationRef}>
@@ -340,7 +348,7 @@ export default function DashboardLayout({
             >
               <span className="text-text3 text-sm">⌕</span>
               <span className="text-[12px] text-text3">
-                Search professor or course...
+                {t("searchD")}
               </span>
             </div>
           </div>
@@ -354,9 +362,10 @@ export default function DashboardLayout({
               fontFamily: "Syne, sans-serif",
             }}
           >
-            Teacher <span className="text-primary">Rating</span>
+             {tIndex("title1")} <span className="text-primary">{tIndex("title2")}</span>
           </span>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
             {user?.isAdmin ? (
               <div className="relative flex items-center" ref={notificationRef}>
@@ -407,7 +416,7 @@ export default function DashboardLayout({
                 onClick={() => router.push("/search")}
               >
                 <span className="text-text3 text-[12px]">⌕</span>
-                <span className="text-text3 text-[12px]">Search...</span>
+                <span className="text-text3 text-[12px]">{t("searchM")}</span>
               </div>
             )}
 
@@ -462,7 +471,7 @@ export default function DashboardLayout({
                       : "text-text3 text-[10px] font-semibold"
                   }`}
                 >
-                  {item.label}
+                  {t(item.label)}
                 </span>
               </Link>
             );

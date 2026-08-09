@@ -66,7 +66,8 @@ export default function OnBoardingPage() {
         if (!isLast) {
             setCurrent((prev) => prev + 1);
         } else {
-            router.push("/register");
+            const currentLocale = document.documentElement.lang || "en";
+            router.push(`/${currentLocale}/register`);
         }
     };
 
@@ -75,7 +76,8 @@ export default function OnBoardingPage() {
     };
 
     const handleSkip = () => {
-        router.push("/login");
+        const currentLocale = document.documentElement.lang || "en";
+        router.push(`/${currentLocale}/login`);
     };
 
     const slide = slides[current];

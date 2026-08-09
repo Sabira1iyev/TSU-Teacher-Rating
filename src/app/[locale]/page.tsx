@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function SplashScreen() {
-
   const router = useRouter();
   const [progress, setProgress] = useState(0);
-
+  const t = useTranslations("Index");
 
   useEffect(() => {
-
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -22,7 +21,8 @@ export default function SplashScreen() {
     }, 50);
 
     const timer = setTimeout(() => {
-      router.push("/onboarding");
+      const currentLocale = document.documentElement.lang || "en";
+      router.push(`/${currentLocale}/onboarding`);
     }, 2500);
 
     return () => {
@@ -33,15 +33,10 @@ export default function SplashScreen() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-bg relative overflow-hidden">
-
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] 
-      rounded-full bg-primary/8 
-      blur-[80px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/8 blur-[80px] pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center gap-6">
-
         <div className="w-16 h-16 rounded-2xl bg-primary-dim border border-[#c8ddf0] flex items-center justify-center">
-
           <svg
             width="32"
             height="32"
@@ -58,27 +53,25 @@ export default function SplashScreen() {
           </svg>
         </div>
 
-        <div className="text-center">
+        <div className="text-center mt-6 z-10">
           <h1 className="font-bold text-4xl text-text tracking-tight">
-            Teacher <span className="text-primary">Rating</span>
+            {t("title")}
           </h1>
           <p className="text-text3 text-sm mt-2 tracking-wide">
-            Tbilisi State University
+            Student-driven course insights
           </p>
-          <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
         </div>
 
         <div className="flex flex-col items-center gap-2 mt-6">
           <div className="w-28 h-[3px] bg-[#d8dfe6] rounded-full overflow-hidden">
-            <div className="h-full bg-primary rounded-full"
+            <div
+              className="h-full bg-primary rounded-full"
               style={{
                 animation: "loadingBar 2.5s ease-in-out forwards",
               }}
             />
           </div>
-          <p className="text-text3 text-xs animate-pulse">
-            Loading...
-          </p>
+          <p className="text-text3 text-xs animate-pulse">Loading...</p>
         </div>
       </div>
 
@@ -86,6 +79,5 @@ export default function SplashScreen() {
         Only for verified TSU students.
       </p>
     </div>
-
   );
 }

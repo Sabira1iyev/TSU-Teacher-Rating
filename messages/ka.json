@@ -1,0 +1,72 @@
+{
+  "Index": {
+    "title1": "მასწავლებლის",
+    "title2": "რეიტინგი"
+  },
+  "Sidebar": {
+    "Explorer": "გამოიკვლიე",
+    "Dashboard": "მთავარი პანელი",
+    "Search": "ძიება",
+    "Rate": "შეფასება",
+    "Student": "სტუდენტი",
+    "Profile": "პროფილი",
+    "logout": "გასვლა",
+    "Favorites": "რჩეული",
+    "Actions": "ქმედებები",
+    "Settings": "პარამეტრები",
+    "searchD": "მოძებნეთ პროფესორი ან კურსი...",
+    "searchM": "მოძებნეთ..."
+  },
+
+  "Faculties": {
+    "All": "ყველა",
+    "Faculty of Social and Political Sciences": "სოციალურ და პოლიტიკურ მეცნიერებათა ფაკულტეტი",
+    "Faculty of Exact and Natural Sciences": "ზუსტ და საბუნებისმეტყველო მეცნიერებათა ფაკულტეტი",
+    "Faculty of Psychology and Educational Sciences": "ფსიქოლოგიისა და განათლების მეცნიერებათა ფაკულტეტი",
+    "Faculty of Economics and Business": "ეკონომიკისა და ბიზნესის ფაკულტეტი",
+    "Faculty of Humanities": "ჰუმანიტარულ მეცნიერებათა ფაკულტეტი",
+    "Faculty of Medicine": "მედიცინის ფაკულტეტი",
+    "Faculty of Law": "იურიდიული ფაკულტეტი"
+  },
+
+  "Common": {
+    "greeting": "გამარჯობათ,",
+    "question1": "რომელ ფაკულტეტს ",
+    "question2": "ეძებ?",
+    "select": "აირჩიე ფაკულტეტი",
+    "profs": "პროფესორები",
+    "prof": "პროფესორი",
+    "avgRate": "საშუალო შეფასება",
+    "totReviews": "მიმოხილვების რაოდენობა",
+    "thisSem": "ამ სემესტრში",
+    "thisMonth": "ამ თვეში",
+    "fac": "ფაკულტეტები",
+    "searchBar": "მოძებნე პროფესორი, კურსი ან ფაკულტეტი...",
+    "sortRating": "რეიტინგი ↓",
+    "sortReviews": "მიმოხილვები ↓",
+    "searchFilter": "ფილტრები",
+    "acTitle": "აკადემიური წოდება",
+    "searchMinRating": "მინიმალური რეიტინგი"
+  },
+    "Tabs":{
+    "Top rated": "ტოპი",
+    "Most reviewed": "მეტი მიმოხილვა",
+    "Trending": "პოპულარული",
+    "Best Teacher": "საუკეთესო მასწავლებელი"
+    },
+
+    "Titles": {
+    "Instructor": "ლექტორი",
+    "Prof Dr" : "პროფ. დოქტ.",
+    "Associate Professor": "ასოცირებული პროფესორი",
+    "Dr": "დოქტ.",
+    "Res Asst": "კვლევითი ასისტენტი",
+    "Assistant Professor": "ასისტენტ-პროფესორი",
+    "Professor": "პროფესორი"
+  },
+
+    "noResult":{
+    "searchTitle": "შედეგები ვერ მოიძებნა",
+    "searchDesc": "სცადე სხვა სახელი, კურსი ან ფაკულტეტი"
+  }
+} 

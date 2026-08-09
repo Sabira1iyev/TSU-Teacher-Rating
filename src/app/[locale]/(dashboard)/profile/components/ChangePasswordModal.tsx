@@ -1,6 +1,6 @@
 import { useUser } from "@/context/UserContext";
 import { useState } from "react";
-import ResetPasswordModal from "@/app/(auth)/login/newLogin/ResetPasswordModal";
+import ResetPasswordModal from "@/app/[locale]/(auth)/login/newLogin/ResetPasswordModal";
 
 interface ChangeProfileModalAppsProps {
   onClose: () => void;
@@ -117,9 +117,7 @@ export default function ChangePasswordModa({
             </div>
 
             {success && (
-              <p className="text-xs text-green font-medium mt-2">
-                {success}
-              </p>
+              <p className="text-xs text-green font-medium mt-2">{success}</p>
             )}
           </div>
         ) : (
@@ -184,9 +182,7 @@ export default function ChangePasswordModa({
               </span>
             </div>
 
-            {error && (
-              <p className="text-xs text-red font-medium">{error}</p>
-            )}
+            {error && <p className="text-xs text-red font-medium">{error}</p>}
 
             <div className="flex justify-end gap-3 mt-4">
               <button

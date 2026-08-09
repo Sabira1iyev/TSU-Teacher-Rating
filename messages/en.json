@@ -1,0 +1,71 @@
+{
+  "Index": {
+    "title1": "Teacher",
+    "title2": "Rating"
+  },
+  "Sidebar": {
+    "Explorer": "Explorer",
+    "Dashboard": "Dashboard",
+    "Search": "Search",
+    "Rate": "Rate",
+    "Student": "Student",
+    "Profile": "Profile",
+    "logout": "Log out",
+    "Favorites": "Favorites",
+    "Actions": "Actions",
+    "Settings": "Settings",
+    "searchD": "Search professor or course...",
+    "searchM": "Search..."
+  },
+
+  "Faculties":{
+  "All": "All",
+  "Faculty of Social and Political Sciences": "Faculty of Social and Political Sciences",
+  "Faculty of Exact and Natural Sciences": "Faculty of Exact and Natural Sciences",
+  "Faculty of Psychology and Educational Sciences": "Faculty of Psychology and Educational Sciences",
+  "Faculty of Economics and Business": "Faculty of Economics and Business",
+  "Faculty of Humanities": "Faculty of Humanities",
+  "Faculty of Medicine": "Faculty of Medicine",
+  "Faculty of Law": "Faculty of Law" 
+  },
+  "Common":{
+    "greeting": "Hello,",
+    "question1": "Which faculty ",
+    "question2": "are you looking for?",
+    "select": "Select Faculty",
+    "profs": "Professors",
+    "prof": "professor",
+    "avgRate": "Average rating",
+    "totReviews": "Total Reviews",
+    "thisSem": "this semester",
+    "thisMonth": "this month",
+    "fac": "faculties",
+    "searchBar": "Search Professor, course or department...",
+    "sortRating": "Rating ↓",
+    "sortReviews": "Reviews ↓",
+    "searchFilter": "Filters",
+    "acTitle": "Academic Title",
+    "searchMinRating": "Minimum Rating"
+  },
+  "Tabs": {
+    "Top rated": "Top rated",
+    "Most reviewed": "Most reviewed",
+    "Trending": "Trending",
+    "Best Teacher": "Best Teacher"
+  },
+
+  "Titles": {
+    "Instructor": "Instructor",
+    "Prof Dr" : "Prof. Dr",
+    "Associate Professor": "Associate Professor",
+    "Dr": "Dr.",
+    "Res Asst": "Res. Asst.",
+    "Assistant Professor": "Assistant Professor",
+    "Professor": "Professor"
+  },
+
+  "noResult":{
+    "searchTitle": "No results found",
+    "searchDesc": "Try a different name, course or department"
+  }
+}

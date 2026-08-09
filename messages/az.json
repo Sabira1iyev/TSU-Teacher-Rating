@@ -1,0 +1,72 @@
+{
+  "Index": {
+    "title1": "Müəllim",
+    "title2": "Reytinqi"
+  },
+  "Sidebar": {
+    "Explorer": "Kəşf et",
+    "Dashboard": "İdarə Paneli",
+    "Search": "Axtarış",
+    "Rate": "Qiymətləndir",
+    "Student": "Tələbə",
+    "Profile": "Profil",
+    "logout": "Çıxış",
+    "Favorites": "Seçilmişlər",
+    "Actions": "Fəaliyyətlər",
+    "Settings": "Ayarlar",
+    "searchD": "Professor və ya kurs axtar..",
+    "searchM": "Axtar..."
+  },
+
+  "Faculties": {
+    "All": "Bütün",
+    "Faculty of Social and Political Sciences": "Sosial və Siyasi Elmlər Fakültəsi",
+    "Faculty of Exact and Natural Sciences": "Dəqiq və Təbiət Elmləri Fakültəsi",
+    "Faculty of Psychology and Educational Sciences": "Psixologiya və Təhsil Elmləri Fakültəsi",
+    "Faculty of Economics and Business": "İqtisadiyyat və Biznes Fakültəsi",
+    "Faculty of Humanities": "Humanitar Elmlər Fakültəsi",
+    "Faculty of Medicine": "Tibb Fakültəsi",
+    "Faculty of Law": "Hüquq Fakültəsi"
+  },
+
+  "Common": {
+    "greeting": "Salam,",
+    "question1": "Hansı fakültəni ",
+    "question2": "axtarırsız?",
+    "select": "Fakültə seç",
+    "profs": "Professorlar",
+    "prof": "professor",
+    "avgRate": "Ortalama reyting",
+    "totReviews": "Ümumi rəylər",
+    "thisSem": "bu semestr",
+    "thisMonth": "bu ay",
+    "fac": "Fakültələr",
+    "searchBar": "Professor, kurs və ya şöbə axtar...",
+    "sortRating": "Reytinq ↓",
+    "sortReviews": "Rəylər ↓",
+    "searchFilter": "Filtrlər",
+    "acTitle": "Akademik ünvan",
+    "searchMinRating": "Minimum qiymət"
+    
+  },
+  "Tabs": {
+    "Top rated": "Ən yüksək reytinqli",
+    "Most reviewed": "Ən çox rəy alan",
+    "Trending": "Trend",
+    "Best Teacher": "Ən yaxşı müəllim"
+  },
+
+    "Titles": {
+    "Instructor": "Təlimçi",
+    "Prof Dr" : "Prof. Dr",
+    "Associate Professor": "Dosent",
+    "Dr": "Dr.",
+    "Res Asst": "Elmi işçi",
+    "Assistant Professor": "Köməkçi professor",
+    "Professor": "Professor"
+  },
+    "noResult":{
+    "searchTitle": "Heç bir nəticə tapılmadı",
+    "searchDesc": "Başqa ad, kurs və ya şöbə sınayın"
+  }
+}
