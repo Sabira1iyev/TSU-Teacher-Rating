@@ -190,7 +190,8 @@ export default function DashboardLayout({
               fontFamily: "Syne, sans-serif",
             }}
           >
-            {tIndex("title1")} <span className="text-primary">{tIndex("title2")}</span>
+            {tIndex("title1")}{" "}
+            <span className="text-primary">{tIndex("title2")}</span>
           </span>
         </div>
 
@@ -347,9 +348,7 @@ export default function DashboardLayout({
               onClick={() => router.push("/search")}
             >
               <span className="text-text3 text-sm">⌕</span>
-              <span className="text-[12px] text-text3">
-                {t("searchD")}
-              </span>
+              <span className="text-[12px] text-text3">{t("searchD")}</span>
             </div>
           </div>
         </div>
@@ -362,7 +361,8 @@ export default function DashboardLayout({
               fontFamily: "Syne, sans-serif",
             }}
           >
-             {tIndex("title1")} <span className="text-primary">{tIndex("title2")}</span>
+            {tIndex("title1")}{" "}
+            <span className="text-primary">{tIndex("title2")}</span>
           </span>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
@@ -458,7 +458,7 @@ export default function DashboardLayout({
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={"/" + locale + item.href}
                 className="flex-1 flex flex-col items-center gap-1 py-2 pb-5"
               >
                 <span className={isActive ? "text-primary" : "text-text3"}>
