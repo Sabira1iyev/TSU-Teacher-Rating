@@ -46,6 +46,8 @@ export default function DashBoardPage() {
   const tFac = useTranslations("Faculties");
   const tDash = useTranslations("Common");
   const tTabs = useTranslations("Tabs");
+  const tTitles = useTranslations("Titles");
+  const tNoResult = useTranslations("noResult");
 
   const fullName = user?.firstName + " " + user?.lastName || "Unknown";
   useEffect(() => {
@@ -162,7 +164,7 @@ export default function DashBoardPage() {
           {FACULTIES.map((faculty) => {
             const isActive = selectedFaculty === faculty;
             const count =
-              faculty === tFac("All")
+              faculty === "All"
                 ? professors.length
                 : professors.filter((p) => p.faculty === faculty).length;
             return (
@@ -280,7 +282,7 @@ export default function DashBoardPage() {
 
           {sortedProfessors.length === 0 ? (
             <div className="px-4 py-8 text-center text-sm text-text3">
-              No professors found in {selectedFaculty} yet.
+              {tNoResult("dashDesc", { faculty: tFac(selectedFaculty) })}
             </div>
           ) : (
             sortedProfessors.map((professor, index) => {
@@ -354,7 +356,7 @@ export default function DashBoardPage() {
         <div className="flex lg:hidden flex-col gap-2">
           {sortedProfessors.length === 0 ? (
             <div className="py-8 text-center text-sm text-text3">
-              No professors found in {selectedFaculty} yet.
+              {tNoResult("dashDesc", { faculty: tFac(selectedFaculty) })}
             </div>
           ) : (
             sortedProfessors.map((professor, index) => {
@@ -375,7 +377,7 @@ export default function DashBoardPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[12px] font-medium text-text truncate">
-                      {professor.title} {professor.firstName}{" "}
+                      {tTitles(professor.title)} {professor.firstName}{" "}
                       {professor.lastName}
                     </p>
                     <p className="text-[10px] text-text3 mt-0.5">

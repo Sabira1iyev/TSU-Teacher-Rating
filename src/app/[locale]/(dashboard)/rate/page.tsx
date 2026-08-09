@@ -13,7 +13,7 @@ import {
 } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
 import { useUser } from "@/context/UserContext";
-
+import { useTranslations } from "next-intl";
 
 const STAR_COLOR = {
   teaching: "#0060a9",
@@ -32,6 +32,8 @@ function RatePageContent() {
   const [professor, setProfessor] = useState<any>(null);
   const [allProfessors, setAllProfessors] = useState<any[]>([]);
   const [tags, setTags] = useState<string[]>([]);
+  const tDash = useTranslations("Common");
+  const tTitles = useTranslations("Titles");
 
   const [form, setForm] = useState<ReviewForm>({
     professorId: professorId || "",
@@ -224,7 +226,7 @@ function RatePageContent() {
           {/* Professor selector */}
           <div>
             <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-              Professor
+              {tTitles("Professor")}
             </p>
             {professor ? (
               <div className="flex items-center gap-3 bg-bg2 border border-border rounded-xl p-3">
@@ -251,9 +253,7 @@ function RatePageContent() {
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                <p className="text-xs text-text3 mb-1">
-                  Select a professor to rate
-                </p>
+                <p className="text-xs text-text3 mb-1">{tDash("selectProf")}</p>
                 <div className="flex flex-col gap-2 h-auto overflow-y-auto">
                   {allProfessors.map((p) => {
                     const pColor =
@@ -289,7 +289,7 @@ function RatePageContent() {
                         </div>
                         <div>
                           <p className="text-sm font-medium text-text">
-                            {p.title} {p.firstName} {p.lastName}
+                            {tTitles(p.title)} {p.firstName} {p.lastName}
                           </p>
                           <p className="text-xs text-text3">{p.department}</p>
                         </div>

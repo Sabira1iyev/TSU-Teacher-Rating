@@ -18,17 +18,17 @@
     "searchM": "Search..."
   },
 
-  "Faculties":{
-  "All": "All",
-  "Faculty of Social and Political Sciences": "Faculty of Social and Political Sciences",
-  "Faculty of Exact and Natural Sciences": "Faculty of Exact and Natural Sciences",
-  "Faculty of Psychology and Educational Sciences": "Faculty of Psychology and Educational Sciences",
-  "Faculty of Economics and Business": "Faculty of Economics and Business",
-  "Faculty of Humanities": "Faculty of Humanities",
-  "Faculty of Medicine": "Faculty of Medicine",
-  "Faculty of Law": "Faculty of Law" 
+  "Faculties": {
+    "All": "All",
+    "Faculty of Social and Political Sciences": "Faculty of Social and Political Sciences",
+    "Faculty of Exact and Natural Sciences": "Faculty of Exact and Natural Sciences",
+    "Faculty of Psychology and Educational Sciences": "Faculty of Psychology and Educational Sciences",
+    "Faculty of Economics and Business": "Faculty of Economics and Business",
+    "Faculty of Humanities": "Faculty of Humanities",
+    "Faculty of Medicine": "Faculty of Medicine",
+    "Faculty of Law": "Faculty of Law"
   },
-  "Common":{
+  "Common": {
     "greeting": "Hello,",
     "question1": "Which faculty ",
     "question2": "are you looking for?",
@@ -45,7 +45,10 @@
     "sortReviews": "Reviews ↓",
     "searchFilter": "Filters",
     "acTitle": "Academic Title",
-    "searchMinRating": "Minimum Rating"
+    "searchMinRating": "Minimum Rating",
+    "sort": "Sort",
+    "reviews": "reviews",
+    "selectProf": "Select a professor to rate"
   },
   "Tabs": {
     "Top rated": "Top rated",
@@ -56,7 +59,7 @@
 
   "Titles": {
     "Instructor": "Instructor",
-    "Prof Dr" : "Prof. Dr",
+    "Prof Dr": "Prof. Dr",
     "Associate Professor": "Associate Professor",
     "Dr": "Dr.",
     "Res Asst": "Res. Asst.",
@@ -64,8 +67,9 @@
     "Professor": "Professor"
   },
 
-  "noResult":{
+  "noResult": {
     "searchTitle": "No results found",
-    "searchDesc": "Try a different name, course or department"
+    "searchDesc": "Try a different name, course or department",
+    "dashDesc": "No professors found in {faculty} yet."
   }
 }

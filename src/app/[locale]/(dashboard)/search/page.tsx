@@ -37,7 +37,7 @@ export default function SearchPage() {
   const tFac = useTranslations("Faculties");
   const tDash = useTranslations("Common");
   const tTitles = useTranslations("Titles");
-  const tNoResult = useTranslations("noResult")
+  const tNoResult = useTranslations("noResult");
 
   useEffect(() => {
     fetch("/api/professors")
@@ -150,7 +150,7 @@ export default function SearchPage() {
             }
             className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer border border-border text-text2 hover:border-border whitespace-nowrap"
           >
-            Sort:{" "}
+            {tDash("sort")}:{" "}
             {sortBy === "rating" ? tDash("sortRating") : tDash("sortReviews")}
           </button>
           <button
@@ -184,7 +184,7 @@ export default function SearchPage() {
                         : "border-border2 text-text2"
                     }`}
                   >
-                    {tTitles(title.replace(/\./g, ''))}
+                    {tTitles(title.replace(/\./g, ""))}
                   </button>
                 ))}
               </div>
@@ -228,10 +228,10 @@ export default function SearchPage() {
           {results.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
               <p className="text-4xl">🔍</p>
-              <p className="text-sm font-medium text-text">{tNoResult("searchTitle")}</p>
-              <p className="text-xs text-text3">
-                {tNoResult("searchDesc")}
+              <p className="text-sm font-medium text-text">
+                {tNoResult("searchTitle")}
               </p>
+              <p className="text-xs text-text3">{tNoResult("searchDesc")}</p>
             </div>
           ) : (
             <div className="flex flex-col">
@@ -250,8 +250,8 @@ export default function SearchPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text">
-                        {tTitles(profesor.title.replace(/\./g, ''))} {profesor.firstName}{" "}
-                        {profesor.lastName}
+                        {tTitles(profesor.title.replace(/\./g, ""))}{" "}
+                        {profesor.firstName} {profesor.lastName}
                       </p>
                       <p className="text-xs text-text2 mt-0.5">
                         {tFac(profesor.faculty).replace("Faculty of ", "")} ·{" "}
@@ -300,7 +300,7 @@ export default function SearchPage() {
                         ))}
                       </div>
                       <p className="text-[10px] text-text3 mt-1">
-                        {profesor.reviewCount} reviews
+                        {profesor.reviewCount} {tDash("reviews")}
                       </p>
                     </div>
                   </div>
@@ -316,10 +316,11 @@ export default function SearchPage() {
             {tDash("searchFilter")}
           </p>
 
-
           {/* Min rating */}
           <div className="mt-8">
-            <p className="text-xs text-text2 mb-2">{tDash("searchMinRating")}</p>
+            <p className="text-xs text-text2 mb-2">
+              {tDash("searchMinRating")}
+            </p>
             <div className="flex flex-col gap-1.5">
               {[0, 1, 2, 3, 4, 4.5].map((rating) => (
                 <button
@@ -366,7 +367,7 @@ export default function SearchPage() {
                     )}
                   </div>
                   <span className="text-[11px] text-text2">
-                    {tTitles(title.replace(/\./g, ''))}
+                    {tTitles(title.replace(/\./g, ""))}
                   </span>
                 </label>
               ))}

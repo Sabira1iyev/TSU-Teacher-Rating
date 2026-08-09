@@ -46,8 +46,10 @@
     "sortReviews": "Rəylər ↓",
     "searchFilter": "Filtrlər",
     "acTitle": "Akademik ünvan",
-    "searchMinRating": "Minimum qiymət"
-    
+    "searchMinRating": "Minimum qiymət",
+    "sort": "Sırala",
+    "reviews": "rəy",
+    "selectProf": "Qiymətləndirmək üçün professor seçin"
   },
   "Tabs": {
     "Top rated": "Ən yüksək reytinqli",
@@ -56,17 +58,18 @@
     "Best Teacher": "Ən yaxşı müəllim"
   },
 
-    "Titles": {
+  "Titles": {
     "Instructor": "Təlimçi",
-    "Prof Dr" : "Prof. Dr",
+    "Prof Dr": "Prof. Dr",
     "Associate Professor": "Dosent",
     "Dr": "Dr.",
     "Res Asst": "Elmi işçi",
     "Assistant Professor": "Köməkçi professor",
     "Professor": "Professor"
   },
-    "noResult":{
+  "noResult": {
     "searchTitle": "Heç bir nəticə tapılmadı",
-    "searchDesc": "Başqa ad, kurs və ya şöbə sınayın"
+    "searchDesc": "Başqa ad, kurs və ya şöbə sınayın",
+    "dashDesc": "{faculty}-də hələ heç bir professor tapılmadı"
   }
 }

@@ -46,18 +46,21 @@
     "sortReviews": "მიმოხილვები ↓",
     "searchFilter": "ფილტრები",
     "acTitle": "აკადემიური წოდება",
-    "searchMinRating": "მინიმალური რეიტინგი"
+    "searchMinRating": "მინიმალური რეიტინგი",
+    "sort": "დალაგება",
+    "reviews": "მიმოხილვა",
+    "selectProf": "აირჩიეთ პროფესორი შესაფასებლად"
   },
-    "Tabs":{
+  "Tabs": {
     "Top rated": "ტოპი",
     "Most reviewed": "მეტი მიმოხილვა",
     "Trending": "პოპულარული",
     "Best Teacher": "საუკეთესო მასწავლებელი"
-    },
+  },
 
-    "Titles": {
+  "Titles": {
     "Instructor": "ლექტორი",
-    "Prof Dr" : "პროფ. დოქტ.",
+    "Prof Dr": "პროფ. დოქტ.",
     "Associate Professor": "ასოცირებული პროფესორი",
     "Dr": "დოქტ.",
     "Res Asst": "კვლევითი ასისტენტი",
@@ -65,8 +68,9 @@
     "Professor": "პროფესორი"
   },
 
-    "noResult":{
+  "noResult": {
     "searchTitle": "შედეგები ვერ მოიძებნა",
-    "searchDesc": "სცადე სხვა სახელი, კურსი ან ფაკულტეტი"
+    "searchDesc": "სცადე სხვა სახელი, კურსი ან ფაკულტეტი",
+    "dashDesc": "პროფესორები ვერ მოიძებნა {faculty}ში"
   }
-} 
+}
