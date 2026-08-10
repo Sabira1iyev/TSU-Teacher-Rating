@@ -411,13 +411,7 @@ export default function DashboardLayout({
                 )}
               </div>
             ) : (
-              <div
-                className="flex items-center gap-3 bg-bg2 border border-border rounded-[9px] px-3 py-2 w-full max-w-[140px] sm:max-w-[200px] cursor-pointer"
-                onClick={() => router.push("/search")}
-              >
-                <span className="text-text3 text-[12px]">⌕</span>
-                <span className="text-text3 text-[12px]">{t("searchM")}</span>
-              </div>
+              <></>
             )}
 
             <div className="lg:hidden flex items-center justify-center gap-2">

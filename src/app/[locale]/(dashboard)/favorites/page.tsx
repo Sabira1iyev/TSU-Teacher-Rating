@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Professor } from "@/types/teacher";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
-import { Key } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useUser } from "@/context/UserContext";
 import {
   CRITERIS_LABELS,
@@ -27,6 +27,11 @@ const getAvatarColor = (id: string) => {
 export default function FavoritesPage() {
   const router = useRouter();
   const { user } = useUser();
+  const tSidebar = useTranslations("Sidebar");
+  const tNoResult = useTranslations("noResult");
+  const tCommon = useTranslations("Common");
+  const tFac = useTranslations("Faculties");
+  const tTitles = useTranslations("Titles");
 
   const [favorites, setFavorites] = useState<Professor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -75,24 +80,29 @@ export default function FavoritesPage() {
             fontFamily: "Syne, sans-serif",
           }}
         >
-          Favorites
+          {tSidebar("Favorites")}
         </h1>
         <p className="text-xs text-text3">
-          {favorites.length} professor{favorites.length !== 1 ? "s" : ""} saved
+          {favorites.length} {tCommon("favProf")}
+          {favorites.length !== 1 ? "s" : ""} {tCommon("saved")}
         </p>
       </div>
 
       {/* mobile topbar */}
       <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-[49px] z-10">
-        <span className="text-sm font-medium text-text">Favorites</span>
-        <span className="text-xs text-text3">{favorites.length} saved</span>
+        <span className="text-sm font-medium text-text">
+          {tSidebar("Favorites")}
+        </span>
+        <span className="text-xs text-text3">
+          {favorites.length} {tCommon("saved")}
+        </span>
       </div>
 
       {/* content */}
       <div className="mt-10 p-5 lg:p-6">
         {loading ? (
           <div className="text-center py-20 text-text3">
-            Loading favorites...
+            {tNoResult("loadingFav")}
           </div>
         ) : favorites.length === 0 ? (
           /* empty state */
@@ -104,17 +114,16 @@ export default function FavoritesPage() {
                 fontFamily: "Syne, sans-serif",
               }}
             >
-              No favorites yet
+              {tNoResult("favTitle")}
             </h2>
             <p className="text-sm text-text3 max-w-xs leading-relaxed">
-              Save professors you like by clicking add favorite on their
-              profile. Find them here anytime.
+              {tNoResult("favDesc")}
             </p>
             <button
               onClick={() => router.push("/dashboard")}
               className="px-6 py-2.5 bg-primary rounded-xl text-sm font-semibold text-bg hover:opacity-90 transition-opacity cursor-pointer mt-2"
             >
-              Explore professors →
+              {tNoResult("favExploreBtn")}
             </button>
           </div>
         ) : (
@@ -150,7 +159,7 @@ export default function FavoritesPage() {
 
                     {/* info */}
                     <p className="text-sm font-medium text-text leading-snug">
-                      {professor.title} {professor.firstName}{" "}
+                      {tTitles(professor.title)} {professor.firstName}{" "}
                       {professor.lastName}
                     </p>
                     <p className="text-xs text-text2 mt-1">
@@ -161,7 +170,7 @@ export default function FavoritesPage() {
                           color: fc.primary,
                         }}
                       >
-                        {professor.faculty.replace("Faculty of", "")}
+                        {tFac(professor.faculty)}
                       </span>
                     </p>
 
@@ -191,7 +200,7 @@ export default function FavoritesPage() {
                     {/* Meta */}
                     <div className="flex items-center justify-between mt-3">
                       <span className="text-[10px] text-text3">
-                        {professor.reviewCount} reviews
+                        {professor.reviewCount} {tCommon("reviews")}
                       </span>
                       {professor.badges && professor.badges.length > 0 && (
                         <span className="text-[9px] px-2 py-0.5 bg-primary-dim text-primary rounded-full">
@@ -223,7 +232,7 @@ export default function FavoritesPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text truncate">
-                        {professor.title} {professor.firstName}{" "}
+                        {tTitles(professor.title)} {professor.firstName}{" "}
                         {professor.lastName}
                       </p>
                       <p className="text-[10px] text-text2 mt-0.5">
@@ -235,7 +244,7 @@ export default function FavoritesPage() {
                             color: fc.primary,
                           }}
                         >
-                          {professor.faculty.replace("Faculty of", "")}
+                          {tFac(professor.faculty)}
                         </span>
                       </p>
                     </div>
@@ -246,7 +255,7 @@ export default function FavoritesPage() {
                         {formatRating(professor.overallRating)}
                       </p>
                       <p className="text-[10px] text-text3 mt-0.5">
-                        {professor.reviewCount} reviews
+                        {professor.reviewCount} {tCommon("reviews")}
                       </p>
                     </div>
 

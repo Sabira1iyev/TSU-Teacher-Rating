@@ -49,7 +49,14 @@
     "searchMinRating": "Minimum qiymət",
     "sort": "Sırala",
     "reviews": "rəy",
-    "selectProf": "Qiymətləndirmək üçün professor seçin"
+    "selectProf": "Qiymətləndirmək üçün professor seçin",
+    "saved": "yadda saxlanılıb",
+    "favProf": "professor",
+    "reviewss": "rəylər",
+    "profStatus": "status",
+    "allRatings": "Bütün reytinqlər",
+    "stars": "ulduz",
+    "minReviews": "Min. rəylər"
   },
   "Tabs": {
     "Top rated": "Ən yüksək reytinqli",
@@ -70,6 +77,21 @@
   "noResult": {
     "searchTitle": "Heç bir nəticə tapılmadı",
     "searchDesc": "Başqa ad, kurs və ya şöbə sınayın",
-    "dashDesc": "{faculty}-də hələ heç bir professor tapılmadı"
+    "dashDesc": "{faculty}-də hələ heç bir professor tapılmadı",
+    "favTitle": "Hələ heç bir seçilmiş yoxdur",
+    "favDesc": "Bəyəndiyiniz professorları profillərindəki “Seçilmişlərə əlavə et” düyməsinə klikləyərək yadda saxlayın. Onları istənilən vaxt burada tapa bilərsiniz.",
+    "favExploreBtn": "Professorları kəşf edin →",
+    "loadingFav": "Seçilmişlər yüklənir..."
+  },
+  "Rules": {
+    "privacyTitle": "Məxfilik & qaydalar",
+    "privacyDesc": "Rəyiniz tamamilə anonimdir. Adınız və ya tələbə ID-niz heç vaxt göstərilməyəcək.",
+    "rule1": "Yalnız dərslərini keçdiyiniz professorları qiymətləndirin",
+    "rule2": "Hər semestr hər professor üçün yalnız bir rəy yazıla bilər",
+    "rule3": "Şəxsi təhqirlər silinəcək",
+    "rule4": "Reytinqləri manipulyasiya etmək hesabın dayandırılması ilə nəticələnir"
+  },
+    "Buttons":{
+    "back": "Geri"
   }
 }

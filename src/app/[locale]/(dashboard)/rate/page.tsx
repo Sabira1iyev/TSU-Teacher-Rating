@@ -34,6 +34,8 @@ function RatePageContent() {
   const [tags, setTags] = useState<string[]>([]);
   const tDash = useTranslations("Common");
   const tTitles = useTranslations("Titles");
+  const rules = useTranslations("Rules");
+  const buttons = useTranslations("Buttons");
 
   const [form, setForm] = useState<ReviewForm>({
     professorId: professorId || "",
@@ -216,7 +218,7 @@ function RatePageContent() {
           onClick={() => router.back()}
           className="text-sm text-text2 hover:text-text transition-colors cursor-pointer"
         >
-          ← Back
+          ← {buttons("back")}
         </button>
       </div>
 
@@ -532,20 +534,19 @@ function RatePageContent() {
         <div className="hidden lg:flex flex-col gap-5 p-6">
           {/* Privacy */}
           <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
-            Privacy & rules
+            {rules("privacyTitle")}
           </p>
           <div className="bg-bg2 rounded-xl p-4">
             <p className="text-xs text-text2 mb-3 leading-relaxed">
               <span className="inline-block w-2 h-2 rounded-full bg-primary mr-1.5"></span>
-              Your review is completely anonymous. Your name or student ID will
-              never be shown.
+              {rules("privacyDesc")}
             </p>
             <div className="flex flex-col">
               {[
-                "Only rate professors whose courses you have taken",
-                "One review per professor per semester",
-                "Personal attacks will be removed",
-                "Rating manipulation results in account suspension",
+                rules("rule1"),
+                rules("rule2"),
+                rules("rule3"),
+                rules("rule4"),
               ].map((rule) => (
                 <div key={rule} className="flex items-start gap-2">
                   <div className="w-1 h-1 rounded-full bg-text3 flex-shrink-0 mt-1.5" />

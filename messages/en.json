@@ -44,11 +44,19 @@
     "sortRating": "Rating ↓",
     "sortReviews": "Reviews ↓",
     "searchFilter": "Filters",
-    "acTitle": "Academic Title",
+    "acTitle": "Academic title",
     "searchMinRating": "Minimum Rating",
     "sort": "Sort",
     "reviews": "reviews",
-    "selectProf": "Select a professor to rate"
+    "selectProf": "Select a professor to rate",
+    "saved": "saved",
+    "favProf": "professors",
+    "rating": "rating",
+    "reviewss": "reviews",
+    "profStatus": "status",
+    "allRatings": "All ratings",
+    "stars": "stars",
+    "minReviews": "Min. reviews"
   },
   "Tabs": {
     "Top rated": "Top rated",
@@ -70,6 +78,23 @@
   "noResult": {
     "searchTitle": "No results found",
     "searchDesc": "Try a different name, course or department",
-    "dashDesc": "No professors found in {faculty} yet."
+    "dashDesc": "No professors found in {faculty} yet.",
+    "favTitle": "No favorites yet",
+    "favDesc": "Save professors you like by clicking add favorite on their profile. Find them here anytime.",
+    "favExploreBtn": "Explore Professors →",
+    "loadingFav": "loading favorites"
+  },
+  
+  "Rules": {
+    "privacyTitle": "Privacy & rules",
+    "privacyDesc": "Your review is completely anonymous. Your name or student ID will never be shown.",
+    "rule1": "Only rate professors whose courses you have taken",
+    "rule2": "One review per professor per semester",
+    "rule3": "Personal attacks will be removed",
+    "rule4": "Rating manipulation results in account suspension"
+  },
+
+  "Buttons":{
+    "back": "Back"
   }
 }

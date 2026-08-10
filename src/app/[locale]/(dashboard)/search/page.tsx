@@ -332,7 +332,7 @@ export default function SearchPage() {
                       : "text-text2 hover:bg-bg3"
                   }`}
                 >
-                  {rating === 0 ? "All ratings" : `${rating}+ stars`}
+                  {rating === 0 ? tDash("allRatings") : `${rating}+ ${tDash("stars")}`}
                 </button>
               ))}
             </div>
@@ -375,7 +375,7 @@ export default function SearchPage() {
           </div>
 
           {/* Min reviews */}
-          <div>
+          <div className="mt-5">
             <p className="text-xs text-text2 mb-2">{tDash("minReviews")}</p>
             <div className="flex flex-col gap-1.5">
               {MIN_REVIEW_OPTIONS.map((opt) => (
@@ -388,7 +388,7 @@ export default function SearchPage() {
                       : "text-text2 hover:bg-bg3"
                   }`}
                 >
-                  {opt.label}
+                  {opt.label === "All" ? tFac("All") : `${opt.value}+ ${tDash("reviews")}`}
                 </button>
               ))}
             </div>

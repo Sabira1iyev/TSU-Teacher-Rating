@@ -48,6 +48,7 @@ export default function DashBoardPage() {
   const tTabs = useTranslations("Tabs");
   const tTitles = useTranslations("Titles");
   const tNoResult = useTranslations("noResult");
+  const tIndex = useTranslations("Index");
 
   const fullName = user?.firstName + " " + user?.lastName || "Unknown";
   useEffect(() => {
@@ -144,7 +145,7 @@ export default function DashBoardPage() {
                     isActive ? "text-primary" : "text-text"
                   }`}
                 >
-                  {faculty}
+                  {tFac(faculty)}
                 </div>
 
                 <div
@@ -263,14 +264,20 @@ export default function DashBoardPage() {
           </div>
 
           <span className="text-[10px] text-text3 hidden lg:block">
-            {sortedProfessors.length} professors
+            {sortedProfessors.length} {tDash("favProf")}
           </span>
         </div>
 
         {/* Desktop: Table list */}
         <div className="hidden lg:block bg-bg2 border border-border rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <div className="grid grid-cols-[40px_2.5fr_1fr_1fr_1fr] gap-2 px-4 py-2.5 border-b border-border bg-bg2">
-            {["#", "Professor", "Rating", "Reviews", "Status"].map((h, i) => (
+            {[
+              "#",
+              tDash("profs"),
+              tIndex("title2"),
+              tDash("reviewss"),
+              tDash("profStatus"),
+            ].map((h, i) => (
               <span
                 key={h}
                 className={`text-[9px] text-text3 uppercase tracking-wider ${i === 4 ? "text-right" : ""}`}
@@ -302,7 +309,7 @@ export default function DashBoardPage() {
                     </div>
                     <div>
                       <p className="text-[12px] font-medium text-text">
-                        {professor.title} {professor.firstName}{" "}
+                        {tTitles(professor.title)} {professor.firstName}{" "}
                         {professor.lastName}
                       </p>
                       <p className="text-[10px] text-text3">
@@ -335,7 +342,7 @@ export default function DashBoardPage() {
                   </div>
 
                   <p className="text-[10px] text-text3">
-                    {professor.reviewCount} reviews
+                    {professor.reviewCount} {tDash("reviews")}
                   </p>
                   <div className="text-right">
                     {professor.badges[0] ? (
@@ -391,7 +398,7 @@ export default function DashBoardPage() {
                       {formatRating(professor.overallRating)}
                     </p>
                     <p className="text-[9px] text-text3 mt-0.5">
-                      {professor.reviewCount} reviews
+                      {professor.reviewCount} {tDash("reviews")}
                     </p>
                   </div>
                 </div>
