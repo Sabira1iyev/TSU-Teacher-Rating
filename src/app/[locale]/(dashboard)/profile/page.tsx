@@ -7,6 +7,7 @@ import {
   ShieldAlert,
   Sprout,
   Clock,
+  Star,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ import { useUser } from "@/context/UserContext";
 import EditProfileModal from "./components/EditProfileModal";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { getInitials } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const MOCK_USER = {
   firstName: "FirstName",
@@ -129,35 +131,35 @@ const getRankDetails = (likes: number) => {
   }
 };
 
-const getMemberDuration = (createdAt: string | undefined) => {
-  if (!createdAt) return "1 day";
+const getMemberDuration = (createdAt: string | undefined, tLabel: any) => {
+  if (!createdAt) return `1 ${tLabel("day")}`;
 
   const regDate = new Date(createdAt);
   const now = new Date();
 
-  if (isNaN(regDate.getDate())) return "1day";
+  if (isNaN(regDate.getDate())) return `1 ${tLabel("day")}`;
 
   const diffMs = now.getTime() - regDate.getTime();
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  if (diffDays < 1) return "1 day";
+  if (diffDays < 1) return `1 ${tLabel("day")}`;
 
   if (diffDays < 7) {
-    return `${diffDays} ${diffDays === 1 ? "day" : "days"}`;
+    return `${diffDays} ${diffDays === 1 ? tLabel("day") : tLabel("days")}`;
   }
 
   if (diffDays < 30) {
     const weeks = Math.floor(diffDays / 7);
-    return `${weeks} ${weeks === 1 ? "week" : "weeks"}`;
+    return `${weeks} ${weeks === 1 ? tLabel("week") : tLabel("weeks")}`;
   }
 
   if (diffDays < 365) {
     const months = Math.floor(diffDays / 30);
-    return `${months} ${months === 1 ? "month" : "months"}`;
+    return `${months} ${months === 1 ? tLabel("month") : tLabel("months")}`;
   }
 
   const years = Math.floor(diffDays / 365);
-  return `${years} ${years === 1 ? "year" : "years"}`;
+  return `${years} ${years === 1 ? tLabel("year") : tLabel("years")}`;
 };
 
 const getFormattedRegistrationDate = (createdAt: string | undefined) => {
@@ -183,16 +185,16 @@ const getRankDisplayIcon = (currentRank: string) => {
   }
 };
 
-const getCurrentSemester = () => {
+const getCurrentSemester = (springStr: string, fallStr: string) => {
   const now = new Date();
   const month = now.getMonth();
   const year = now.getFullYear();
 
   if (month >= 8 || month === 0) {
     const semesterYear = month === 0 ? year - 1 : year;
-    return `Fall ${semesterYear}`;
+    return `${fallStr} ${semesterYear}`;
   } else {
-    return `Spring ${year}`;
+    return `${springStr} ${year}`;
   }
 };
 
@@ -208,6 +210,13 @@ export default function ProfilePage() {
     totalLikesReceived: 0,
     facultyRank: 0,
   });
+  const tCommon = useTranslations("Common");
+  const tFac = useTranslations("Faculties");
+  const Btn = useTranslations("Buttons");
+  const Year = useTranslations("Year");
+  const Label = useTranslations("Label");
+  const tRank = useTranslations("Rank");
+  const Tabs = useTranslations("Tabs");
 
   useEffect(() => {
     if (user?.userId) {
@@ -248,7 +257,7 @@ export default function ProfilePage() {
             fontFamily: "Syne, sans-serif",
           }}
         >
-          My Profile
+          {tCommon("myProfile")}
         </h1>
         <button
           className="px-4 py-2 border border-border rounded-lg text-xs text-text2 font-bold hover:bg-bg3 transition-colors cursor-pointer"
@@ -258,13 +267,15 @@ export default function ProfilePage() {
           }}
           onClick={() => setIsEditModalOpen(true)}
         >
-          Edit Profile
+          {Btn("editProfile")}
         </button>
       </div>
 
       {/* Mobile topbar */}
       <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-[49px] z-10">
-        <span className="text-sm font-bold text-text">My Profile</span>
+        <span className="text-sm font-bold text-text">
+          {tCommon("myProfile")}
+        </span>
         <button
           className="px-4 py-2 border border-border rounded-lg text-xs text-primary font-bold cursor-pointer"
           style={{
@@ -273,7 +284,7 @@ export default function ProfilePage() {
           }}
           onClick={() => setIsEditModalOpen(true)}
         >
-          Edit profile
+          {Btn("editProfile")}
         </button>
       </div>
 
@@ -318,10 +329,8 @@ export default function ProfilePage() {
                 color: fc.primary,
               }}
             >
-              {user?.faculty
-                ? user.faculty.replace("Faculty of ", "")
-                : "Faculty"}{" "}
-              · {user?.studyYear}rd year
+              {user?.faculty ? tFac(user.faculty) : "Faculty"} •{" "}
+              {Year(String(user?.studyYear))}
             </p>
 
             <div className="h-[0.5px] bg-border my-4" />
@@ -335,7 +344,9 @@ export default function ProfilePage() {
                 >
                   {stats.totalReviews}
                 </p>
-                <p className="text-[9px] text-text3 mt-0.5">Reviews</p>
+                <p className="text-[9px] text-text2 mt-0.5">
+                  {tCommon("reviewss")}
+                </p>
               </div>
 
               <div className="text-center">
@@ -347,7 +358,9 @@ export default function ProfilePage() {
                 >
                   {stats.averageRatingGiven}
                 </p>
-                <p className="text-[9px] text-text3 mt-0.5">Avg given</p>
+                <p className="text-[9px] text-text2 mt-0.5">
+                  {tCommon("avgGiven")}
+                </p>
               </div>
 
               <div className="text-center">
@@ -359,7 +372,9 @@ export default function ProfilePage() {
                 >
                   {stats.totalLikesReceived}
                 </p>
-                <p className="text-[9px] text-text3 mt-0.5">Likes</p>
+                <p className="text-[9px] text-text2 mt-0.5">
+                  {tCommon("likes")}
+                </p>
               </div>
             </div>
           </div>
@@ -368,30 +383,35 @@ export default function ProfilePage() {
           <div className="grid grid-cols-2 gap-2">
             {[
               {
-                label: "Current Semester",
+                label: Label("currentSem"),
                 value: (
                   <div className="flex items-center gap-1.5">
                     <Rainbow className="w-4 h-4 text-primary animate-pulse" />
-                    <span>{getCurrentSemester()}</span>
+                    <span>
+                      {getCurrentSemester(Label("spring"), Label("fall"))}
+                    </span>
                   </div>
                 ),
                 sub: "active period",
                 green: true,
               },
               {
-                label: "Title",
+                label: Label("title"),
                 value: (
                   <div className="flex items-center gap-1.5">
                     {getRankDisplayIcon(rankInfo.current)}
-                    <span>{rankInfo.current}</span>
+                    <span>{tRank(rankInfo.current)}</span>
                   </div>
                 ),
                 sub: rankInfo.next
-                  ? `${rankInfo.remaining} likes to ${rankInfo.next}`
-                  : "You are a Legend!",
+                  ? tRank("likesTo", {
+                      likes: rankInfo.remaining,
+                      nextRank: tRank(rankInfo.next),
+                    })
+                  : tRank("maxRank"),
               },
               {
-                label: "Faculty Rank",
+                label: Label("facRank"),
                 value: (
                   <div className="flex items-center gap-2">
                     {getRankIcon(stats.facultyRank)}
@@ -401,11 +421,14 @@ export default function ProfilePage() {
                 sub: "by likes",
               },
               {
-                label: "Member for",
+                label: Label("memberFor"),
                 value: (
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-primary animate-pulse" />
-                    {getMemberDuration(user?.createdAt || MOCK_USER.createdAt)}
+                    {getMemberDuration(
+                      user?.createdAt || MOCK_USER.createdAt,
+                      Label,
+                    )}
                   </div>
                 ),
                 sub: getFormattedRegistrationDate(
@@ -442,7 +465,7 @@ export default function ProfilePage() {
               }}
               onClick={() => router.push("/adminPanel")}
             >
-              Admin Panel
+              {Btn("adminPanel")}
             </button>
           )}
           {/* Account info */}
@@ -454,13 +477,16 @@ export default function ProfilePage() {
             }}
           >
             <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-              Account
+              {tCommon("account")}
             </p>
             <div className="flex flex-col">
               {[
-                { label: "Email", value: user?.email },
-                { label: "Faculty", value: user?.faculty },
-                { label: "Year", value: `${user?.studyYear}rd year` },
+                { label: Label("email"), value: user?.email },
+                {
+                  label: tCommon("faculty"),
+                  value: user?.faculty ? tFac(user.faculty) : user?.faculty,
+                },
+                { label: Year("year"), value: Year(String(user?.studyYear)) },
               ].map((item, i, arr) => (
                 <div
                   key={item.label}
@@ -497,7 +523,7 @@ export default function ProfilePage() {
                     : "text-text3"
                 }`}
               >
-                {tab === "reviews" ? "My Reviews" : "Stats"}
+                {tab === "reviews" ? Tabs("myReviews") : Tabs("stats")}
               </button>
             ))}
           </div>
@@ -505,7 +531,7 @@ export default function ProfilePage() {
           {/* Stat on mobile */}
           <div className={activeTab === "reviews" ? "hidden lg:block" : ""}>
             <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-              Rating distribution
+              {tCommon("ratDist")}
             </p>
             <div className="bg-bg2 border border-border rounded-xl p-4">
               <div className="flex flex-col gap-2.5">
@@ -521,7 +547,10 @@ export default function ProfilePage() {
                       key={star}
                       className="flex items-center gap-2 text-[11px]"
                     >
-                      <span className="text-text3 w-11">{star} stars</span>
+                      <div className="flex items-center gap-1 w-8 flex-shrink-0">
+                        <span className="text-text3">{star}</span>
+                        <Star className="w-[11px] h-[11px] fill-amber-400 text-amber-400" />
+                      </div>
                       <div className="flex-1 h-[4px] bg-bg4 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
@@ -550,7 +579,7 @@ export default function ProfilePage() {
           {/* Review history */}
           <div className={activeTab === "stats" ? "hidden lg:block" : ""}>
             <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-              Review history
+              {tCommon("reviewHistory")}
             </p>
             <div className="flex flex-col gap-3">
               {reviewsHistory?.map((review) => {

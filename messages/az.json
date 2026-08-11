@@ -35,6 +35,7 @@
     "question2": "axtarırsız?",
     "select": "Fakültə seç",
     "profs": "Professorlar",
+    "myProfile": "Profilim",
     "prof": "professor",
     "avgRate": "Ortalama reyting",
     "totReviews": "Ümumi rəylər",
@@ -52,17 +53,25 @@
     "selectProf": "Qiymətləndirmək üçün professor seçin",
     "saved": "yadda saxlanılıb",
     "favProf": "professor",
-    "reviewss": "rəylər",
+    "reviewss": "Rəylər",
     "profStatus": "status",
     "allRatings": "Bütün reytinqlər",
     "stars": "ulduz",
-    "minReviews": "Min. rəylər"
+    "minReviews": "Min. rəylər",
+    "avgGiven": "Verdiyi ort. reytinq",
+    "likes": "Bəyənmələr",
+    "account": "Hesab",
+    "faculty": "Fakültə",
+    "reviewHistory": "Rəy tarixçəsi",
+    "ratDist": "Reytinq bölgüsü"
   },
   "Tabs": {
     "Top rated": "Ən yüksək reytinqli",
     "Most reviewed": "Ən çox rəy alan",
     "Trending": "Trend",
-    "Best Teacher": "Ən yaxşı müəllim"
+    "Best Teacher": "Ən yaxşı müəllim",
+    "myReviews": "Rəylərim",
+    "stats": "Statistika"
   },
 
   "Titles": {
@@ -91,7 +100,43 @@
     "rule3": "Şəxsi təhqirlər silinəcək",
     "rule4": "Reytinqləri manipulyasiya etmək hesabın dayandırılması ilə nəticələnir"
   },
-    "Buttons":{
-    "back": "Geri"
+  "Buttons": {
+    "back": "Geri",
+    "editProfile": "Redaktə et",
+    "adminPanel": "Admin Paneli"
+  },
+  "Year": {
+    "year": "Kurs",
+    "1": "1-ci il",
+    "2": "2-ci il",
+    "3": "3-cü il",
+    "4": "4-cü il",
+    "5": "5-ci il",
+    "5+": "5+ il",
+    "graduate": "Məzun"
+  },
+  "Label": {
+    "currentSem": "Cari semestr",
+    "title": "Ünvan",
+    "facRank": "Fakültə reytinqi",
+    "memberFor": "Üzvlük müddəti",
+    "spring": "Yaz semestri",
+    "fall": "Payız semestri",
+    "day": "gün",
+    "days": "gün",
+    "week": "həftə",
+    "weeks": "həftə",
+    "month": "ay",
+    "months": "ay",
+    "year": "il",
+    "years": "il",
+    "email": "Email"
+  },
+  "Rank": {
+    "Rookie": "Yeni başlayan",
+    "Protector": "Mentor",
+    "Legend": "Əfsanə",
+    "likesTo": "{nextRank} olmaq üçün {likes} bəyənmə",
+    "maxRank": "Sən bir Əfsanəsən!"
   }
 }

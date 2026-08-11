@@ -35,6 +35,7 @@
     "select": "Select Faculty",
     "profs": "Professors",
     "prof": "professor",
+    "myProfile": "My Profile",
     "avgRate": "Average rating",
     "totReviews": "Total Reviews",
     "thisSem": "this semester",
@@ -47,7 +48,7 @@
     "acTitle": "Academic title",
     "searchMinRating": "Minimum Rating",
     "sort": "Sort",
-    "reviews": "reviews",
+    "reviews": "Reviews",
     "selectProf": "Select a professor to rate",
     "saved": "saved",
     "favProf": "professors",
@@ -56,13 +57,21 @@
     "profStatus": "status",
     "allRatings": "All ratings",
     "stars": "stars",
-    "minReviews": "Min. reviews"
+    "minReviews": "Min. reviews",
+    "avgGiven": "Avg. Given",
+    "likes": "Likes",
+    "account": "Account",
+    "faculty": "Faculty",
+    "reviewHistory": "Review History",
+    "ratDist": "Rating Distribution"
   },
   "Tabs": {
     "Top rated": "Top rated",
     "Most reviewed": "Most reviewed",
     "Trending": "Trending",
-    "Best Teacher": "Best Teacher"
+    "Best Teacher": "Best Teacher",
+    "myReviews": "My Reviews",
+    "stats": "Stats"
   },
 
   "Titles": {
@@ -84,7 +93,7 @@
     "favExploreBtn": "Explore Professors →",
     "loadingFav": "loading favorites"
   },
-  
+
   "Rules": {
     "privacyTitle": "Privacy & rules",
     "privacyDesc": "Your review is completely anonymous. Your name or student ID will never be shown.",
@@ -94,7 +103,43 @@
     "rule4": "Rating manipulation results in account suspension"
   },
 
-  "Buttons":{
-    "back": "Back"
+  "Buttons": {
+    "back": "Back",
+    "editProfile": "Edit Profile",
+    "adminPanel": "Admin Panel"
+  },
+  "Year": {
+    "year": "Year",
+    "1": "1st year",
+    "2": "2nd year",
+    "3": "3rd year",
+    "4": "4th year",
+    "5": "5th year",
+    "5+": "5+ year",
+    "graduate": "Graduate"
+  },
+  "Label": {
+    "currentSem": "Current Semester",
+    "title": "Title",
+    "facRank": "Faculty Rank",
+    "memberFor": "Member For",
+    "spring": "Spring",
+    "fall": "Fall",
+    "day": "day",
+    "days": "days",
+    "week": "week",
+    "weeks": "weeks",
+    "month": "month",
+    "months": "months",
+    "year": "year",
+    "years": "years",
+    "email": "Email"
+  },
+  "Rank": {
+    "Rookie": "Rookie",
+    "Protector": "Protector",
+    "Legend": "Legend",
+    "likesTo": "{likes} likes to {nextRank}",
+    "maxRank": "You are a Legend!"
   }
 }
