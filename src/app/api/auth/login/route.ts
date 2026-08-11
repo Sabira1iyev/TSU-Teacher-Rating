@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { sessionOptions, SessionData } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +18,7 @@ export async function POST(req: NextRequest) {
     if (result.recordset.length === 0) {
       return NextResponse.json(
         {
-          error: "No account is registered with this email.",
+          message: "No account is registered with this email.",
         },
         { status: 404 },
       );
@@ -23,10 +26,9 @@ export async function POST(req: NextRequest) {
 
     const user = result.recordset[0];
     const isPasswordTrue = await bcrypt.compare(password, user.PasswordHash);
-    console.log(user);
     if (!isPasswordTrue) {
       return NextResponse.json(
-        { error: "Password is incorrect." },
+        { message: "Password is incorrect." },
         { status: 401 },
       );
     } else {
@@ -36,24 +38,49 @@ export async function POST(req: NextRequest) {
       const firstName = nameParts[0] || "";
       const lastName = nameParts.slice(1).join(" ") || "";
 
-      return NextResponse.json(
-        {
-          message: "Login successful",
-          user: {
-            firstName: firstName,
-            lastName: lastName,
-            email: user.Email,
-            faculty: user.Faculty,
-            studyYear: user.AcademicLevel,
-            userId: user.UserId,
-            createdAt: user.CreatedAt,
-            isAdmin: user.isAdmin,
+      const isVerifiedTrue = user.isVerified ? true : false;
+
+      if (!isVerifiedTrue) {
+        return NextResponse.json(
+          {
+            message:
+              "You are not verified yet! Enter your personal code for verification.",
           },
-        },
-        { status: 200 },
-      );
+          { status: 401 },
+        );
+      } else {
+        const session = await getIronSession<SessionData>(
+          await cookies(),
+          sessionOptions,
+        );
+
+        session.userId = user.UserId;
+        session.isAdmin = user.isAdmin;
+        session.isLoggedIn = true;
+        await session.save();
+
+        return NextResponse.json(
+          {
+            message: "Login successful",
+            user: {
+              firstName: firstName,
+              lastName: lastName,
+              email: user.Email,
+              faculty: user.Faculty,
+              studyYear: user.AcademicLevel,
+              userId: user.UserId,
+              createdAt: user.CreatedAt,
+              isAdmin: user.isAdmin,
+            },
+          },
+          { status: 200 },
+        );
+      }
     }
   } catch (error) {
-    return NextResponse.json({ error: "Internal server error", status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }
