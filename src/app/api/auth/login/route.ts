@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
+import { DBUser } from "@/types/user";
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = result.recordset[0];
+    const user: DBUser = result.recordset[0];
     const isPasswordTrue = await bcrypt.compare(password, user.PasswordHash);
     if (!isPasswordTrue) {
       return NextResponse.json(
@@ -38,7 +39,7 @@ export async function POST(req: NextRequest) {
       const firstName = nameParts[0] || "";
       const lastName = nameParts.slice(1).join(" ") || "";
 
-      const isVerifiedTrue = user.isVerified ? true : false;
+      const isVerifiedTrue = user.IsVerified ? true : false;
 
       if (!isVerifiedTrue) {
         return NextResponse.json(
@@ -55,7 +56,7 @@ export async function POST(req: NextRequest) {
         );
 
         session.userId = user.UserId;
-        session.isAdmin = user.isAdmin;
+        session.isAdmin = user.IsAdmin;
         session.isLoggedIn = true;
         await session.save();
 
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
               studyYear: user.AcademicLevel,
               userId: user.UserId,
               createdAt: user.CreatedAt,
-              isAdmin: user.isAdmin,
+              isAdmin: user.IsAdmin,
             },
           },
           { status: 200 },
@@ -78,8 +79,9 @@ export async function POST(req: NextRequest) {
       }
     }
   } catch (error) {
+    console.error("Login error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { message: "Internal server error" },
       { status: 500 },
     );
   }

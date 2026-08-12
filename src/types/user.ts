@@ -14,3 +14,15 @@ export interface User {
   createdAt: string;
   isAdmin: boolean;
 }
+
+export interface DBUser {
+  UserId: number;
+  Email: string;
+  PasswordHash: string;
+  DisplayName: string;
+  IsVerified: boolean;
+  Faculty: string;
+  AcademicLevel: string;
+  CreatedAt: string;
+  IsAdmin: boolean;
+}
