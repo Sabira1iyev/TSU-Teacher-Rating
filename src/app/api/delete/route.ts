@@ -1,22 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { sessionOptions, SessionData } from "@/lib/session";
 import { getDb } from "@/lib/db";
 
 export async function DELETE(req: NextRequest) {
   try {
-    const { userId } = await req.json();
-
-    if (!userId) {
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    if (!session.userId) {
       return NextResponse.json(
         {
-          message: "Something went wrong, please try again",
+          message: "You must be logged in to perform this action",
         },
         {
-          status: 400,
+          status: 401,
         },
       );
     }
 
     const db = await getDb();
+    const userId = session.userId;
 
     const profIdResult = await db.request().input("userId", userId).query(`
       SELECT ProfessorId FROM Reviews WHERE UserId = @userId`);
