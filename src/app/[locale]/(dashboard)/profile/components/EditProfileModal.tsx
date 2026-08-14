@@ -61,7 +61,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Updating went wrong");
+        setError(data.message || "Updating went wrong");
         return;
       } else if (user) {
         setUser({
@@ -72,7 +72,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
           studyYear: formdata.studyYear,
         });
 
-        setSuccess("Profile updated successfully!");
+        setSuccess(data.message);
         setTimeout(() => {
           onClose();
         }, 1500);

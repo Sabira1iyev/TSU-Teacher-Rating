@@ -1,14 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { sessionOptions, SessionData } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   try {
-    const { firstName, lastName, userId, faculty, studyYear } =
-      await req.json();
+    const { firstName, lastName, faculty, studyYear } = await req.json();
 
     const db = await getDb();
     const displayName = firstName + " " + lastName;
 
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const userId = session.userId;
+
+    if (!session.userId) {
+      return NextResponse.json(
+        {
+          message: "You must be logged in to perform this action",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
     await db
       .request()
       .input("DisplayName", displayName)
@@ -37,7 +55,7 @@ export async function POST(req: NextRequest) {
     console.error("Profile update error:", error);
     return NextResponse.json(
       {
-        error: "Something went wrong",
+        message: "Something went wrong",
       },
       { status: 500 },
     );

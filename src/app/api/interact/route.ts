@@ -1,11 +1,29 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { sessionOptions, SessionData } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   try {
     const db = await getDb();
-    const { userId, reviewId, interactionType } = await req.json();
+    const { reviewId, interactionType } = await req.json();
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const userId = session.userId;
 
+    if (!session.userId) {
+      return NextResponse.json(
+        {
+          message: "You must be logged in to perform this action!",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
     const result = await db
       .request()
       .input("UserId", userId)
