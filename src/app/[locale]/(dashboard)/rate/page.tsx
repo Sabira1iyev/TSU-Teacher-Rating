@@ -79,7 +79,7 @@ function RatePageContent() {
   }, [professorId]);
 
   useEffect(() => {
-    fetch("api/tags")
+    fetch("/api/tags")
       .then((res) => res.json())
       .then((data: { Name: string }[]) => {
         const tagNames = data.map((t) => t.Name);

@@ -1,11 +1,31 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { sessionOptions, SessionData } from "@/lib/session";
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId");
+    // const { searchParams } = new URL(req.url);
+    // const userId = searchParams.get("userId");
     const db = await getDb();
+
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    if (!session.userId) {
+      return NextResponse.json(
+        {
+          message: "You must be logged in to perform this action!",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+    const userId = session.userId;
+
     const result = await db
       .request()
       .input("UserId", userId)
@@ -44,7 +64,22 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const db = await getDb();
-    const { userId, professorId } = await req.json();
+    const { professorId } = await req.json();
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    if (!session.userId) {
+      return NextResponse.json(
+        {
+          message: "You must be logged in to perform this acion",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+    const userId = session.userId;
     const existingFavorite = await db
       .request()
       .input("UserId", userId)

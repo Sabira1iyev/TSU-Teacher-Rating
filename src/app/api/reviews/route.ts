@@ -2,13 +2,20 @@ import { NextResponse, NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
 import { stat } from "fs";
 import { Tags } from "lucide-react";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { sessionOptions, SessionData } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log("Reviews from FRONTEND", body);
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const userId = session.userId;
 
-    if (!body.userId) {
+    if (!session.userId) {
       return NextResponse.json(
         {
           message: "You have to be logged in to submit a review",
@@ -22,7 +29,7 @@ export async function POST(req: NextRequest) {
     const result = await pool
       .request()
       .input("ProfessorId", body.professorId)
-      .input("UserId", body.userId)
+      .input("UserId", userId)
       .input("CourseName", body.courseName)
       .input("Semester", body.semester)
       .input("TeacherRating", body.criteria.teaching)
@@ -129,9 +136,14 @@ export async function PUT(req: NextRequest) {
   try {
     const reviewId = req.nextUrl.searchParams.get("reviewId");
     const body = await req.json();
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const userId = session.userId;
 
-    if (!reviewId || !body.userId) {
-      NextResponse.json(
+    if (!reviewId || !session.userId) {
+      return NextResponse.json(
         {
           message: "Missing information",
         },
@@ -144,6 +156,7 @@ export async function PUT(req: NextRequest) {
 
     await pool
       .request()
+      .input("UserId", userId)
       .input("ReviewId", reviewId)
       .input("CourseName", body.courseName)
       .input("Semester", body.semester)
@@ -170,6 +183,7 @@ export async function PUT(req: NextRequest) {
       OverallRating = @OverallRating,
       Comment = @Comment
       WHERE ReviewId = @ReviewId
+      AND UserId = @UserId
       `,
       );
 
@@ -245,6 +259,11 @@ export async function DELETE(req: NextRequest) {
   try {
     const reviewId = req.nextUrl.searchParams.get("reviewId");
     const body = await req.json();
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const userId = session.userId;
 
     if (!reviewId || !body.professorId) {
       return NextResponse.json(
@@ -260,20 +279,21 @@ export async function DELETE(req: NextRequest) {
     await pool
       .request()
       .input("ReviewId", reviewId)
+      .input("UserId", userId)
       .input("ProfessorId", body.professorId)
       .query(
         `
       DELETE FROM ReviewTags
-      WHERE ReviewId= @ReviewId;
+      WHERE ReviewId= @ReviewId AND UserId = @UserId;
       
       DELETE FROM Reviews
-      WHERE ReviewId= @ReviewId;
+      WHERE ReviewId= @ReviewId AND UserId = @UserId;
 
       UPDATE Professors
       SET 
       reviewCount = (SELECT COUNT(*) FROM Reviews WHERE ProfessorId = @ProfessorId),
       AverageRating = (SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews WHERE ProfessorID = @ProfessorId)
-      WHERE ProfessorId = @ProfessorId;
+      WHERE ProfessorId = @ProfessorId AND UserId=@UserId;
       `,
       );
 
