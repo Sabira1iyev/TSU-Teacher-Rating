@@ -1,21 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { sessionOptions, SessionData } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { firstName, lastName, email, faculty, department, title, courses } =
-      body;
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    if (!session.isAdmin) {
+      return NextResponse.json(
+        {
+          message: "You are not authorized to perform this action",
+        },
+        {
+          status: 401,
+        },
+      );
+    } else {
+      const body = await req.json();
+      const {
+        firstName,
+        lastName,
+        email,
+        faculty,
+        department,
+        title,
+        courses,
+      } = body;
 
-    const db = await getDb();
+      const db = await getDb();
 
-    const checkResult = await db
-      .request()
-      .input("faculty", faculty)
-      .input("department", department)
-      .input("email", email)
-      .query(
-        `
+      const checkResult = await db
+        .request()
+        .input("faculty", faculty)
+        .input("department", department)
+        .input("email", email)
+        .query(
+          `
         DECLARE @facId INT;
         SELECT @facId = FacultyId FROM Faculties WHERE Name = @faculty;
 
@@ -34,35 +58,37 @@ export async function POST(req: NextRequest) {
 
         SELECT @facId AS facId, @deptId AS deptId, @existingProfId AS existingProfId;
         `,
-      );
+        );
 
-    const facId = checkResult.recordset[0]?.facId;
-    const deptId = checkResult.recordset[0]?.deptId;
-    const existingProfId = checkResult.recordset[0]?.existingProfId;
+      const facId = checkResult.recordset[0]?.facId;
+      const deptId = checkResult.recordset[0]?.deptId;
+      const existingProfId = checkResult.recordset[0]?.existingProfId;
 
-    if (existingProfId) {
-      return NextResponse.json(
-        { error: "A professor with this email is already registered!" },
-        { status: 409 },
-      );
-    }
+      if (existingProfId) {
+        return NextResponse.json(
+          { message: "A professor with this email is already registered!" },
+          { status: 409 },
+        );
+      }
 
-    if (!facId) {
-      return NextResponse.json(
-        { error: "The selected faculty could not be found in the database!" },
-        { status: 400 },
-      );
-    }
+      if (!facId) {
+        return NextResponse.json(
+          {
+            message: "The selected faculty could not be found in the database!",
+          },
+          { status: 400 },
+        );
+      }
 
-    const result = await db
-      .request()
-      .input("firstName", firstName)
-      .input("lastName", lastName)
-      .input("email", email)
-      .input("title", title)
-      .input("deptId", deptId)
-      .query(
-        `
+      const result = await db
+        .request()
+        .input("firstName", firstName)
+        .input("lastName", lastName)
+        .input("email", email)
+        .input("title", title)
+        .input("deptId", deptId)
+        .query(
+          `
         INSERT INTO Professors (
           FirstName, LastName, Email, Title, DepartmentId
         ) VALUES (
@@ -71,17 +97,17 @@ export async function POST(req: NextRequest) {
 
         SELECT SCOPE_IDENTITY() AS ProfessorId;
         `,
-      );
+        );
 
-    const professorId = result.recordset[0]?.ProfessorId;
+      const professorId = result.recordset[0]?.ProfessorId;
 
-    for (const course of courses) {
-      await db
-        .request()
-        .input("professorId", professorId)
-        .input("courseName", course)
-        .query(
-          `
+      for (const course of courses) {
+        await db
+          .request()
+          .input("professorId", professorId)
+          .input("courseName", course)
+          .query(
+            `
         INSERT INTO Courses(
           ProfessorId, 
           CourseName)
@@ -90,14 +116,15 @@ export async function POST(req: NextRequest) {
           @courseName
           )
         `,
-        );
+          );
+      }
+      return NextResponse.json(
+        {
+          message: "Data inserted successfully!",
+        },
+        { status: 201 },
+      );
     }
-    return NextResponse.json(
-      {
-        message: "Data inserted successfully!",
-      },
-      { status: 201 },
-    );
   } catch (error) {
     console.log("Prof form error:", error);
     return NextResponse.json(

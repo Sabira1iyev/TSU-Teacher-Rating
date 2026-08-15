@@ -78,7 +78,7 @@ export default function AddProfessorForm() {
         });
       } else {
         const data = await res.json();
-        setError(data.error || "Something went wrong!");
+        setError(data.message || "Something went wrong!");
       }
     } catch (err) {
       setError("Something went wrong!");

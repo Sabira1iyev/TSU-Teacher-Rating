@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
         );
 
         session.userId = user.UserId;
-        session.isAdmin = user.IsAdmin;
+        session.isAdmin = user.isAdmin;
         session.isLoggedIn = true;
         await session.save();
 
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
               studyYear: user.AcademicLevel,
               userId: user.UserId,
               createdAt: user.CreatedAt,
-              isAdmin: user.IsAdmin,
+              isAdmin: user.isAdmin,
             },
           },
           { status: 200 },

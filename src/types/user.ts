@@ -24,5 +24,5 @@ export interface DBUser {
   Faculty: string;
   AcademicLevel: string;
   CreatedAt: string;
-  IsAdmin: boolean;
+  isAdmin: boolean;
 }
