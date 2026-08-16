@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
-import { query } from "mssql";
+import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
+import { sessionOptions, SessionData } from "@/lib/session";
+
 export async function POST(req: NextRequest) {
   try {
-    const { reviewId, reason, userId } = await req.json();
+    const { reviewId, reason } = await req.json();
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const userId = session.userId;
 
     if (!reviewId || !reason || !userId) {
       return NextResponse.json(
@@ -102,15 +110,39 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const reviewId = searchParams.get("reviewId");
-    const userId = searchParams.get("userId");
     const pool = await getDb();
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    if (!session.userId) {
+      return NextResponse.json(
+        {
+          message: "You are not authorized to perform this action!",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+    const userId = session.userId;
 
-    const result = await pool
-      .request()
-      .input("reviewId", reviewId)
-      .input("userId", userId)
-      .query(
-        `
+    if (!session.isAdmin) {
+      return NextResponse.json(
+        {
+          message: "You are not admin to perform this action",
+        },
+        {
+          status: 403,
+        },
+      );
+    } else {
+      const result = await pool
+        .request()
+        .input("reviewId", reviewId)
+        .input("userId", userId)
+        .query(
+          `
         SELECT
         r.ReportId,
         r.ReviewId,
@@ -124,13 +156,14 @@ export async function GET(req: NextRequest) {
         JOIN Reviews rev ON r.ReviewId = rev.ReviewId
         ORDER BY r.CreatedAt DESC
         `,
+        );
+      return NextResponse.json(
+        {
+          reports: result.recordset,
+        },
+        { status: 200 },
       );
-    return NextResponse.json(
-      {
-        reports: result.recordset,
-      },
-      { status: 200 },
-    );
+    }
   } catch (err) {
     console.log(err);
     return NextResponse.json(
@@ -145,6 +178,21 @@ export async function GET(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   try {
     const { reportId } = await req.json();
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+
+    if (!session.isAdmin) {
+      return NextResponse.json(
+        {
+          message: "You are not admin to perform this action!",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
 
     if (!reportId) {
       return NextResponse.json(
@@ -194,6 +242,21 @@ export async function PUT(req: NextRequest) {
     const reportId = searchParams.get("reportId");
     const isRead = searchParams.get("isRead");
     const markAll = searchParams.get("markAll");
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+
+    if (!session.isAdmin) {
+      return NextResponse.json(
+        {
+          message: "You are not admin to perform this action!",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
 
     const pool = await getDb();
 
