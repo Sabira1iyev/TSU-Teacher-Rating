@@ -1,7 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
-import { stat } from "fs";
-import { Tags } from "lucide-react";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
@@ -14,6 +12,7 @@ export async function POST(req: NextRequest) {
       sessionOptions,
     );
     const userId = session.userId;
+    const professorId = session.professorId;
 
     if (!session.userId) {
       return NextResponse.json(
@@ -23,12 +22,13 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
+    
 
     const pool = await getDb();
 
     const result = await pool
       .request()
-      .input("ProfessorId", body.professorId)
+      .input("ProfessorId", professorId)
       .input("UserId", userId)
       .input("CourseName", body.courseName)
       .input("Semester", body.semester)
@@ -154,6 +154,27 @@ export async function PUT(req: NextRequest) {
     }
     const pool = await getDb();
 
+    const ownerCheck = await pool
+      .request()
+      .input("ReviewId", reviewId)
+      .input("UserId", userId)
+      .query(
+        `
+      SELECT * FROM Reviews
+      WHERE ReviewId = @ReviewId AND UserId = @UserId;
+      `,
+      );
+    if (ownerCheck.recordset.length === 0) {
+      return NextResponse.json(
+        {
+          message: "Not authorized!",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
+
     await pool
       .request()
       .input("UserId", userId)
@@ -183,7 +204,6 @@ export async function PUT(req: NextRequest) {
       OverallRating = @OverallRating,
       Comment = @Comment
       WHERE ReviewId = @ReviewId
-      AND UserId = @UserId
       `,
       );
 
@@ -276,6 +296,28 @@ export async function DELETE(req: NextRequest) {
 
     const pool = await getDb();
 
+    const ownerCheck = await pool
+      .request()
+      .input("ReviewId", reviewId)
+      .input("UserId", userId)
+      .query(
+        `
+      SELECT ReviewId FROM Reviews
+      WHERE ReviewId = @ReviewId AND UserId = @UserId
+      `,
+      );
+
+    if (ownerCheck.recordset.length === 0) {
+      return NextResponse.json(
+        {
+          message: "Not found or not authorized",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
+
     await pool
       .request()
       .input("ReviewId", reviewId)
@@ -284,16 +326,16 @@ export async function DELETE(req: NextRequest) {
       .query(
         `
       DELETE FROM ReviewTags
-      WHERE ReviewId= @ReviewId AND UserId = @UserId;
+      WHERE ReviewId= @ReviewId;
       
       DELETE FROM Reviews
-      WHERE ReviewId= @ReviewId AND UserId = @UserId;
+      WHERE ReviewId= @ReviewId;
 
       UPDATE Professors
       SET 
       reviewCount = (SELECT COUNT(*) FROM Reviews WHERE ProfessorId = @ProfessorId),
       AverageRating = (SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews WHERE ProfessorID = @ProfessorId)
-      WHERE ProfessorId = @ProfessorId AND UserId=@UserId;
+      WHERE ProfessorId = @ProfessorId;
       `,
       );
 
