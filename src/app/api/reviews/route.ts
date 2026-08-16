@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
       sessionOptions,
     );
     const userId = session.userId;
-    const professorId = session.professorId;
 
     if (!session.userId) {
       return NextResponse.json(
@@ -28,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     const result = await pool
       .request()
-      .input("ProfessorId", professorId)
+      .input("ProfessorId", body.professorId)
       .input("UserId", userId)
       .input("CourseName", body.courseName)
       .input("Semester", body.semester)

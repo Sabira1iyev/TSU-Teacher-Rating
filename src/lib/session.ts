@@ -4,7 +4,6 @@ export interface SessionData {
   userId?: number;
   isAdmin: boolean;
   isLoggedIn: boolean;
-  professorId?: number | null;
 }
 
 export const sessionOptions: SessionOptions = {
