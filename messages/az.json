@@ -4,6 +4,7 @@
     "title2": "Reytinqi"
   },
   "Sidebar": {
+    "tsu": "Tbilisi Dövlət Universiteti",
     "Explorer": "Kəşf et",
     "Dashboard": "İdarə Paneli",
     "Search": "Axtarış",
@@ -66,8 +67,8 @@
     "ratDist": "Reytinq bölgüsü"
   },
   "Tabs": {
-    "Top rated": "Ən yüksək reytinqli",
-    "Most reviewed": "Ən çox rəy alan",
+    "Top rated": "Yüksək reytinqli",
+    "Most reviewed": "Ən çox rəy",
     "Trending": "Trend",
     "Best Teacher": "Ən yaxşı müəllim",
     "myReviews": "Rəylərim",
@@ -90,7 +91,11 @@
     "favTitle": "Hələ heç bir seçilmiş yoxdur",
     "favDesc": "Bəyəndiyiniz professorları profillərindəki “Seçilmişlərə əlavə et” düyməsinə klikləyərək yadda saxlayın. Onları istənilən vaxt burada tapa bilərsiniz.",
     "favExploreBtn": "Professorları kəşf edin →",
-    "loadingFav": "Seçilmişlər yüklənir..."
+    "loadingFav": "Seçilmişlər yüklənir...",
+    "profTitle": "Professor tapılmadı",
+    "profDesc": "Bu professor mövcud deyil və ya silinib",
+    "profLoading": "Professor məlumatları yüklənir...",
+    "noReviews": "Professorun hələ heç bir rəyi yoxdur"
   },
   "Rules": {
     "privacyTitle": "Məxfilik & qaydalar",
@@ -103,7 +108,12 @@
   "Buttons": {
     "back": "Geri",
     "editProfile": "Redaktə et",
-    "adminPanel": "Admin Paneli"
+    "adminPanel": "Admin Paneli",
+    "backToDash": "← İdarə panelinə qayıt",
+    "rateThisProf": "Professoru qiymətləndir →",
+    "addProfessor": "Seçilmişlərə əlavə et",
+    "addedProfessor": "Əlavə edildi",
+    "deleteProfessor": "Professoru sil"
   },
   "Year": {
     "year": "Kurs",
@@ -138,5 +148,23 @@
     "Legend": "Əfsanə",
     "likesTo": "{nextRank} olmaq üçün {likes} bəyənmə",
     "maxRank": "Sən bir Əfsanəsən!"
+  },
+  "ProfId": {
+    "overallRating": "Ümumi reytinq",
+    "wouldRecommend": "Tövsiyə olunur",
+    "ofStudents": "tələbə tövsiyə edir",
+    "overview": "Ümumi baxış",
+    "reviews": "Rəylər",
+    "courses": "Kurslar",
+    "criteriaRatings": "Meyarlar üzrə reytinqlər",
+    "teachQuality": "Tədris keyfiyyəti",
+    "examDifficulty": "İmtahan çətinliyi",
+    "homeWork": "Ev tapşırığı yükü",
+    "accessibility": "Əlçatanlıq",
+    "examControl": "İmtahan nəzarəti səviyyəsi",
+    "monthRating": "AYLIQ REYTİNQ TRENDİ",
+    "latReviews": "Son rəylər",
+    "ratingBreakdown": "Reytinq bölgüsü",
+    "quickInfo": "Qısa məlumat"
   }
 }

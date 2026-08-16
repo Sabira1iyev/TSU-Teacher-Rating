@@ -4,6 +4,7 @@
     "title2": "Rating"
   },
   "Sidebar": {
+    "tsu": "Tbilisi State University",
     "Explorer": "Explorer",
     "Dashboard": "Dashboard",
     "Search": "Search",
@@ -91,7 +92,11 @@
     "favTitle": "No favorites yet",
     "favDesc": "Save professors you like by clicking add favorite on their profile. Find them here anytime.",
     "favExploreBtn": "Explore Professors →",
-    "loadingFav": "loading favorites"
+    "loadingFav": "loading favorites",
+    "profTitle": "Professor not found",
+    "profDesc": "This professor does not exist or has been removed",
+    "profLoading": "Professor informations are loading...",
+    "noReviews": "No reviews yet for this professor"
   },
 
   "Rules": {
@@ -106,7 +111,12 @@
   "Buttons": {
     "back": "Back",
     "editProfile": "Edit Profile",
-    "adminPanel": "Admin Panel"
+    "adminPanel": "Admin Panel",
+    "backToDash": "← Back to Dashboard",
+    "rateThisProf": "Rate this professor →",
+    "addProfessor": "Add to Favorites",
+    "addedProfessor": "Added to Favorites",
+    "deleteProfessor": "Delete Professor"
   },
   "Year": {
     "year": "Year",
@@ -141,5 +151,24 @@
     "Legend": "Legend",
     "likesTo": "{likes} likes to {nextRank}",
     "maxRank": "You are a Legend!"
+  },
+
+  "ProfId": {
+    "overallRating": "Overall Rating",
+    "wouldRecommend": "Would Recommend",
+    "ofStudents": "of students recommend",
+    "overview": "Overview",
+    "reviews": "Reviews",
+    "courses": "Courses",
+    "criteriaRatings": "Criteria Ratings",
+    "teachQuality": "Teaching Quality",
+    "examDifficulty": "Exam Difficulty",
+    "homeWork": "Homework Load",
+    "accessibility": "Accessibility",
+    "examControl": "Exam Control Level",
+    "monthRating": "MONTHLY RATING TREND",
+    "latReviews": "Latest Reviews",
+    "ratingBreakdown": "Rating Breakdown",
+    "quickInfo": "Quick Info"
   }
 }

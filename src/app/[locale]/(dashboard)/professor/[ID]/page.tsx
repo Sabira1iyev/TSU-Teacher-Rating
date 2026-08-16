@@ -6,6 +6,7 @@ import { useUser } from "@/context/UserContext";
 import EditReviewModal from "./EditReviewModal";
 import ReportModal from "./ReportModal";
 import ReviewsFilter from "./ReviewsFilter";
+import { useTranslations } from "next-intl";
 
 import {
   getInitials,
@@ -39,6 +40,13 @@ export default function ProfessorProfilePage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterType, setFilterType] = useState("newest");
   const revireFilterRef = useRef<HTMLDivElement>(null);
+  const tButton = useTranslations("Buttons");
+  const tCommon = useTranslations("Common");
+  const tTitle = useTranslations("Titles");
+  const tFaculties = useTranslations("Faculties");
+  const tNoResult = useTranslations("noResult");
+  const tSideBar = useTranslations("Sidebar");
+  const tProfId = useTranslations("ProfId");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -194,9 +202,7 @@ export default function ProfessorProfilePage() {
 
   if (loading) {
     return (
-      <div className="p-20 text-center text-lg">
-        Professor informations are loading...
-      </div>
+      <div className="p-20 text-center text-lg">{tNoResult("profLoading")}</div>
     );
   }
 
@@ -227,11 +233,9 @@ export default function ProfessorProfilePage() {
             fontFamily: "Syne, sans-serif",
           }}
         >
-          Professor not found
+          {tNoResult("profTitle")}
         </h2>
-        <p className="text-sm text-text3">
-          This professor does not exist or has been removed
-        </p>
+        <p className="text-sm text-text3">{tNoResult("profDesc")}</p>
         <button
           onClick={() => router.push("/dashboard")}
           className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
@@ -272,7 +276,7 @@ export default function ProfessorProfilePage() {
           onClick={() => router.back()}
           className="flex items-center gap-2 text-sm text-text2 hover:text-text transition-colors cursor-pointer"
         >
-          ← Back
+          {tButton("back")}
         </button>
 
         <button
@@ -283,7 +287,7 @@ export default function ProfessorProfilePage() {
             boxShadow: `0 2px 8px ${fc.mid}`,
           }}
         >
-          Rate this professor →
+          {tButton("rateThisProf")}
         </button>
       </div>
 
@@ -335,7 +339,7 @@ export default function ProfessorProfilePage() {
             {/* Name & details */}
             <div className="flex-1 min-w-0">
               <p className="text-[10px] uppercase tracking-[0.15em] text-text3 mb-1">
-                {professor.title}
+                {tTitle(professor.title)}
               </p>
               <h1
                 className="text-xl lg:text-[28px] font-bold text-text leading-tight tracking-tight"
@@ -348,11 +352,11 @@ export default function ProfessorProfilePage() {
                   className="text-[11px] font-medium"
                   style={{ color: fc.primary }}
                 >
-                  {professor.faculty}
+                  {tFaculties(professor.faculty)}
                 </span>
                 <span className="w-1 h-1 rounded-full bg-text3" />
                 <span className="text-[11px] text-text3">
-                  Tbilisi State University
+                  {tSideBar("tsu")}
                 </span>
 
                 {/* favorite & delete buttons */}
@@ -411,7 +415,9 @@ export default function ProfessorProfilePage() {
                           <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
                         </svg>
                       )}
-                      {isFavorite ? "Added to Favorites" : "Add to Favorites"}
+                      {isFavorite
+                        ? tButton("addedProfessor")
+                        : tButton("addProfessor")}
                     </div>
                   </button>
 
@@ -446,7 +452,7 @@ export default function ProfessorProfilePage() {
                             <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
                             <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                           </svg>
-                          Delete Professor
+                          {tButton("deleteProfessor")}
                         </div>
                       </button>
                     </div>
@@ -485,7 +491,7 @@ export default function ProfessorProfilePage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[10px] uppercase tracking-widest text-text3 mb-1.5">
-                    Overall Rating
+                    {tProfId("overallRating")}
                   </p>
                   <div className="flex items-baseline gap-1.5">
                     <span
@@ -534,7 +540,7 @@ export default function ProfessorProfilePage() {
               </div>
               <div className="flex items-center gap-1 mt-2">
                 <span className="text-[10px] text-text3">
-                  {professor.reviewCount} reviews
+                  {professor.reviewCount} {tCommon("reviews")}
                 </span>
               </div>
             </div>
@@ -550,7 +556,7 @@ export default function ProfessorProfilePage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[10px] uppercase tracking-widest text-text3 mb-1.5">
-                    Would Recommend
+                    {tProfId("wouldRecommend")}
                   </p>
                   <div className="flex items-baseline gap-1">
                     <span
@@ -600,7 +606,7 @@ export default function ProfessorProfilePage() {
                   ✓
                 </span>
                 <span className="text-[10px] text-text3">
-                  of students recommend
+                  {tProfId("ofStudents")}
                 </span>
               </div>
             </div>
@@ -611,7 +617,13 @@ export default function ProfessorProfilePage() {
       {/* Tabs */}
       <div className="flex flex-row justify-between items-center px-5 lg:px-6">
         <div className="flex border-b border-border">
-          {(["Overview", "Reviews", "Courses"] as Tab[]).map((tab) => (
+          {(
+            [
+              tProfId("overview"),
+              tProfId("reviews"),
+              tProfId("courses"),
+            ] as Tab[]
+          ).map((tab) => (
             <button
               onClick={() => setActiveTab(tab)}
               className={`px-3 py-3 text-xs cursor-pointer border-b-2 transition-colors ${
@@ -715,7 +727,7 @@ export default function ProfessorProfilePage() {
               {/* Left */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Criteria Ratings
+                  {tProfId("criteriaRatings")}
                 </p>
                 <div className="flex flex-col gap-3">
                   {criteriaEntries.map(([key, label]) => {
@@ -748,7 +760,7 @@ export default function ProfessorProfilePage() {
               {/* Trend */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Monthly rating trend
+                  {tProfId("monthRating")}
                 </p>
                 <div className="flex items-end gap-1.5 h-16">
                   {professor.trendData.map((t, i) => {
@@ -778,7 +790,7 @@ export default function ProfessorProfilePage() {
               {/* latest reviews */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Latest Reviews
+                  {tProfId("latReviews")}
                 </p>
                 <div className="flex flex-col gap-3">
                   {reviews.slice(0, 2).map((review) => (
@@ -839,7 +851,7 @@ export default function ProfessorProfilePage() {
               {/* Rating Breakdown */}
               <div>
                 <p className="text-[10px] text-text3 uppercase trancking-widest mb-3 ">
-                  Rating breakdown
+                  {tProfId("ratingBreakdown")}
                 </p>
                 <div className="flex flex-col gap-2">
                   {ratingBreakDown.map(({ star, percent }) => (
@@ -872,7 +884,7 @@ export default function ProfessorProfilePage() {
 
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Quick info
+                  {tProfId("quickInfo")}
                 </p>
                 <div className="flex flex-col">
                   {[
@@ -903,7 +915,7 @@ export default function ProfessorProfilePage() {
           <div className="flex flex-col gap-3 max-w-2xl">
             {displayReviews.length === 0 ? (
               <div className="text-center py-10 text-sm text-text3">
-                No reviews yet for this professor.
+                {tNoResult("noReviews")}
               </div>
             ) : (
               displayReviews.map((review) => (
