@@ -161,14 +161,32 @@
     "reviews": "Reviews",
     "courses": "Courses",
     "criteriaRatings": "Criteria Ratings",
-    "teachQuality": "Teaching Quality",
+    "teaching": "Teaching Quality",
     "examDifficulty": "Exam Difficulty",
     "homeWork": "Homework Load",
     "accessibility": "Accessibility",
-    "examControl": "Exam Control Level",
+    "examControlLevel": "Exam Control Level",
     "monthRating": "MONTHLY RATING TREND",
     "latReviews": "Latest Reviews",
     "ratingBreakdown": "Rating Breakdown",
-    "quickInfo": "Quick Info"
+    "quickInfo": "Quick Info",
+    "title": "Title",
+    "department": "Department",
+    "faculty": "Faculty",
+    "totReviews": "Total reviews"
+  },
+  "Months": {
+    "Jan": "Jan",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Apr": "Apr",
+    "May": "May",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Aug": "Aug",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dec": "Dec"
   }
 }

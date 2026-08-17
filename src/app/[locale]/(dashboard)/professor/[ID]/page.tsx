@@ -47,6 +47,7 @@ export default function ProfessorProfilePage() {
   const tNoResult = useTranslations("noResult");
   const tSideBar = useTranslations("Sidebar");
   const tProfId = useTranslations("ProfId");
+  const tTrend = useTranslations("Months");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -735,7 +736,7 @@ export default function ProfessorProfilePage() {
                     return (
                       <div key={key} className="flex items-center gap-3">
                         <span className="text-[11px] text-text2 w-32 flex-shrink-0">
-                          {label}
+                          {tProfId(key)}
                         </span>
                         <div className="flex-1 h-[5px] bg-bg4 rounded-full overflow-hidden">
                           <div
@@ -780,7 +781,9 @@ export default function ProfessorProfilePage() {
                             minHeight: "6px",
                           }}
                         />
-                        <span className="text-[9px] text-text3">{t.month}</span>
+                        <span className="text-[9px] text-text3">
+                          {tTrend(t.month)}
+                        </span>
                       </div>
                     );
                   })}
@@ -859,7 +862,25 @@ export default function ProfessorProfilePage() {
                       key={star}
                       className="flex items-center gap-2 text-[11px]"
                     >
-                      <span className="text-text3 w-10">{star} stars</span>
+                      <span className="text-text3 w-6 flex items-center gap-1">
+                        {star}
+
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-star w-[11px] h-[11px] fill-amber-400 text-amber-400"
+                          aria-hidden="true"
+                        >
+                          <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                        </svg>
+                      </span>
                       <div className="flex-1 h-[4px] bg-bg4 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
@@ -888,13 +909,19 @@ export default function ProfessorProfilePage() {
                 </p>
                 <div className="flex flex-col">
                   {[
-                    { label: "Title", value: professor.title },
-                    { label: "Department", value: professor.department },
+                    { label: tProfId("title"), value: tTitle(professor.title) },
                     {
-                      label: "Faculty",
-                      value: professor.faculty.replace("Faculty of", ""),
+                      label: tProfId("department"),
+                      value: professor.department,
                     },
-                    { label: "Total reviews", value: professor.reviewCount },
+                    {
+                      label: tProfId("faculty"),
+                      value: tFaculties(professor.faculty),
+                    },
+                    {
+                      label: tProfId("totReviews"),
+                      value: professor.reviewCount,
+                    },
                   ].map((item, i, arr) => (
                     <div
                       key={item.label}
@@ -1136,7 +1163,7 @@ export default function ProfessorProfilePage() {
             boxShadow: `0 2px 12px ${fc.mid}`,
           }}
         >
-          Rate this professor →
+          {tButton("rateThisProf")}
         </button>
       </div>
 
