@@ -116,7 +116,11 @@
     "rateThisProf": "Rate this professor →",
     "addProfessor": "Add to Favorites",
     "addedProfessor": "Added to Favorites",
-    "deleteProfessor": "Delete Professor"
+    "deleteProfessor": "Delete Professor",
+    "change": "Change",
+    "yesRecommend": "✓ Yes, I would recommend",
+    "noRecommend": "✗ No",
+    "submitReview": "Submit review →"
   },
   "Year": {
     "year": "Year",
@@ -188,5 +192,35 @@
     "Oct": "Oct",
     "Nov": "Nov",
     "Dec": "Dec"
+  },
+  "rateProf": {
+    "course": "Course",
+    "semester": "semester",
+    "detCriteria": "Detailed Criteria",
+    "comment": "Comment(Anonymous)",
+    "commentPlaceHolder": "Share your experience - exam style, lecture quality, tips for future students...",
+    "addTag": "Add tags",
+    "wouldProf": "Would you recommend this professor?",
+    "currentRating": "Current rating",
+    "studentRating": "students rated",
+    "loading": "Loading..."
+  },
+  "Tags": {
+    "Amazing Lectures": "Amazing Lectures",
+    "Caring": "Caring",
+    "Clear Grading": "Clear Grading",
+    "Engaging": "Engaging",
+    "Fair": "Fair",
+    "Gives Good Feedback": "Gives Good Feedback",
+    "Hard Exams": "Hard Exams",
+    "Heavy Coursework": "Heavy Coursework",
+    "Helpful": "Helpful",
+    "Lecture Heavy": "Lecture Heavy",
+    "Monoton": "Monoton",
+    "Participation Matters": "Participation Matters",
+    "Recommended": "Recommended",
+    "Respectful": "Respectful",
+    "Tough Grader": "Tough Grader",
+    "Unclear Expectations":"Unclear Expectations"
   }
 }

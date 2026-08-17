@@ -116,7 +116,11 @@
     "rateThisProf": "შეაფასე პროფესორი →",
     "addProfessor": "ფავორიტებში დამატება",
     "addedProfessor": "ფავორიტებში დამატებულია",
-    "deleteProfessor": "პროფესორის წაშლა"
+    "deleteProfessor": "პროფესორის წაშლა",
+    "change": "შეცვლა",
+    "yesRecommend": "✓ დიახ, ვურჩევდი",
+    "noRecommend": "✗ არა",
+    "submitReview": "შეფასების გაგზავნა →"
   },
   "Year": {
     "year": "კურსი",
@@ -187,5 +191,35 @@
     "Oct": "ოქტ",
     "Nov": "ნოე",
     "Dec": "დეკ"
+  },
+  "rateProf": {
+    "course": "კურსი",
+    "semester": "სემესტრი",
+    "detCriteria": "დეტალური კრიტერიუმები",
+    "comment": "კომენტარი (ანონიმური)",
+    "commentPlaceHolder": "გააზიარე შენი გამოცდილება — გამოცდის სტილი, ლექციის ხარისხი, რჩევები მომავალი სტუდენტებისთვის...",
+    "addTag": "თეგების დამატება",
+    "wouldProf": "ურჩევდი ამ პროფესორს?",
+    "currentRating": "მიმდინარე შეფასება",
+    "studentRating": "სტუდენტმა შეაფასა",
+    "loading": "იტვირთება..."
+  },
+  "Tags": {
+    "Amazing Lectures": "შესანიშნავი ლექციები",
+    "Caring": "ზრუნავს სტუდენტებზე",
+    "Clear Grading": "გასაგები შეფასება",
+    "Engaging": "ჩამთრევი",
+    "Fair": "სამართლიანი",
+    "Gives Good Feedback": "კარგ უკუკავშირს იძლევა",
+    "Hard Exams": "რთული გამოცდები",
+    "Heavy Coursework": "ბევრი სასწავლო სამუშაო",
+    "Helpful": "დამხმარე",
+    "Lecture Heavy": "ბევრი ლექცია",
+    "Monoton": "მონოტონური",
+    "Participation Matters": "აქტივობა მნიშვნელოვანია",
+    "Recommended": "რეკომენდებული",
+    "Respectful": "პატივისცემით სავსე",
+    "Tough Grader": "მკაცრი შემფასებელი",
+    "Unclear Expectations": "გაურკვეველი მოთხოვნები"
   }
 }

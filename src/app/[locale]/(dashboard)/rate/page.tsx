@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import { useEffect } from "react";
 // mock data removed
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
@@ -27,6 +27,7 @@ const STAR_COLOR = {
 function RatePageContent() {
   const { user } = useUser();
   const router = useRouter();
+  const params = useParams();
   const searchParams = useSearchParams();
   const professorId = searchParams.get("professorId");
   const [professor, setProfessor] = useState<any>(null);
@@ -36,6 +37,9 @@ function RatePageContent() {
   const tTitles = useTranslations("Titles");
   const rules = useTranslations("Rules");
   const buttons = useTranslations("Buttons");
+  const rateProf = useTranslations("rateProf");
+  const profId = useTranslations("ProfId");
+  const profTags = useTranslations("Tags");
 
   const [form, setForm] = useState<ReviewForm>({
     professorId: professorId || "",
@@ -193,7 +197,11 @@ function RatePageContent() {
         </p>
         <div className="flex gap-3 mt-2">
           <button
-            onClick={() => router.push(`/professor/${form.professorId}`)}
+            onClick={() =>
+              router.push(
+                `/${params.locale as string}/professor/${form.professorId}`,
+              )
+            }
             className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
           >
             Dashboard
@@ -246,11 +254,11 @@ function RatePageContent() {
                 <button
                   onClick={() => {
                     setProfessor(null);
-                    router.push("/rate");
+                    router.push(`/${params.locale as string}/rate`);
                   }}
                   className="text-xs text-text3 hover:text-text2 cursor-pointer"
                 >
-                  Change
+                  {buttons("change")}
                 </button>
               </div>
             ) : (
@@ -272,7 +280,9 @@ function RatePageContent() {
                                 ? p.courses[0]
                                 : "",
                           }));
-                          router.push(`/rate?professorId=${p.id}`);
+                          router.push(
+                            `/${params.locale as string}/rate?professorId=${p.id}`,
+                          );
                         }}
                         className="flex items-center gap-3 border border-border rounded-xl p-3 cursor-pointer transition-colors"
                         style={{
@@ -313,7 +323,7 @@ function RatePageContent() {
               {/* Course */}
               <div>
                 <p className="text-[10px] text-text2 uppercase trancking-widest mb-3">
-                  Course
+                  {rateProf("course")}
                 </p>
                 <select
                   value={form.courseName}
@@ -333,7 +343,7 @@ function RatePageContent() {
               {/* Semester */}
               <div>
                 <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
-                  Semester
+                  {rateProf("semester")}
                 </p>
                 <select
                   value={form.semester}
@@ -353,7 +363,7 @@ function RatePageContent() {
               {/* Overall rating */}
               <div>
                 <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
-                  Overall rating
+                  {profId("overallRating")}
                 </p>
                 <div className="flex gap-2 justify-center py-2">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -384,13 +394,13 @@ function RatePageContent() {
               {/* Criteria */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Detailed criteria
+                  {rateProf("detCriteria")}
                 </p>
                 <div className="flex flex-col gap-3">
                   {criteriaEntries.map(([key, label]) => (
                     <div key={key} className="flex items-center gap-3">
                       <span className="text-xs text-text2 w-32 flex-shrink-0">
-                        {label}
+                        {profId(key)}
                       </span>
                       <div className="flex gap-1.5">
                         {[1, 2, 3, 4, 5].map((star) => (
@@ -424,7 +434,7 @@ function RatePageContent() {
               {/* Comment */}
               <div>
                 <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
-                  Comment (anonymous)
+                  {rateProf("comment")}
                 </p>
                 <div className="bg-bg2 border-border2 rounded-xl p-3 focus-within:border-primary transition-colors">
                   <textarea
@@ -432,7 +442,7 @@ function RatePageContent() {
                     onChange={(e) =>
                       setForm((prev) => ({ ...prev, comment: e.target.value }))
                     }
-                    placeholder="Share your experience - exam style, lecture quality, tips for future students..."
+                    placeholder={rateProf("commentPlaceHolder")}
                     maxLength={500}
                     rows={4}
                     className="w-full bg-transparent text-sm text-text placeholder:text-text3 outline-none resize-none"
@@ -446,7 +456,7 @@ function RatePageContent() {
               {/* Tags */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Add Tags
+                  {rateProf("addTag")}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
@@ -468,7 +478,7 @@ function RatePageContent() {
                           : {}
                       }
                     >
-                      {tag}
+                      {profTags(tag)}
                     </button>
                   ))}
                 </div>
@@ -477,7 +487,7 @@ function RatePageContent() {
               {/* Would Recommend */}
               <div>
                 <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
-                  Would you recommend this professor ?
+                  {rateProf("wouldProf")}
                 </p>
                 <div className="flex gap-2">
                   <button
@@ -490,7 +500,7 @@ function RatePageContent() {
                         : "border-border text-text2 hover:bg-bg2"
                     }`}
                   >
-                    ✓ Yes, I would recommend
+                    {buttons("yesRecommend")}
                   </button>
 
                   <button
@@ -503,7 +513,7 @@ function RatePageContent() {
                         : "border-border text-text2 hover:bg-bg2"
                     }`}
                   >
-                    ✗ No
+                    {buttons("noRecommend")}
                   </button>
                 </div>
               </div>
@@ -524,7 +534,7 @@ function RatePageContent() {
                   boxShadow: `${fc.shadow}`,
                 }}
               >
-                Submit review →
+                {buttons("submitReview")}
               </button>
             </>
           )}
@@ -563,7 +573,7 @@ function RatePageContent() {
         {professor && (
           <div>
             <p className="text-[10px] text-text2 uppercase tracking-widest mb-3 ml-5">
-              Current rating
+              {rateProf("currentRating")}
             </p>
             <div className="bg-bg2 rounded-xl p-4">
               <p
@@ -575,7 +585,7 @@ function RatePageContent() {
                 {formatRating(professor.overallRating)}
               </p>
               <p className="text-[11px] text-text3 text-center mb-4">
-                {professor.reviewCount} students rated
+                {professor.reviewCount} {rateProf("studentRating")}
               </p>
               <div className="flex flex-col gap-2">
                 {ratingBreakDown.map(
@@ -584,7 +594,25 @@ function RatePageContent() {
                       key={star}
                       className="flex items-center gap-2 text-[10px]"
                     >
-                      <span className="text-text3 w-12">{star} stars</span>
+                      <span className="text-text3 w-6 flex items-center gap-1">
+                        {star}
+
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-star w-[11px] h-[11px] fill-amber-400 text-amber-400"
+                          aria-hidden="true"
+                        >
+                          <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                        </svg>
+                      </span>
                       <div className="flex-1 h-[3px] bg-bg4 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
@@ -615,11 +643,12 @@ function RatePageContent() {
 }
 
 export default function RatePage() {
+  const rateProf = useTranslations("rateProf");
   return (
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[60vh] text-text3">
-          Loading...
+          {rateProf("loading")}
         </div>
       }
     >

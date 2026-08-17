@@ -113,7 +113,11 @@
     "rateThisProf": "Professoru qiymətləndir →",
     "addProfessor": "Seçilmişlərə əlavə et",
     "addedProfessor": "Əlavə edildi",
-    "deleteProfessor": "Professoru sil"
+    "deleteProfessor": "Professoru sil",
+    "change": "Dəyiş",
+    "yesRecommend": "✓ Bəli, tövsiyə edərdim",
+    "noRecommend": "✗ Xeyr",
+    "submitReview": "Rəyi göndər →"
   },
   "Year": {
     "year": "Kurs",
@@ -184,5 +188,35 @@
     "Oct": "Okt",
     "Nov": "Nov",
     "Dec": "Dek"
+  },
+  "rateProf": {
+    "course": "Kurs",
+    "semester": "semestr",
+    "detCriteria": "Ətraflı meyarlar",
+    "comment": "Şərh (Anonim)",
+    "commentPlaceHolder": "Təcrübənizi paylaşın – imtahan tərzi, dərsin keyfiyyəti, gələcək tələbələr üçün məsləhətlər...",
+    "addTag": "Teqlər əlavə et",
+    "wouldProf": "Bu professoru tövsiyə edərdiniz?",
+    "currentRating": "Cari reytinq",
+    "studentRating": "tələbə qiymətləndirib",
+    "loading": "Yüklənir..."
+  },
+  "Tags": {
+    "Amazing Lectures": "Əla mühazirələr",
+    "Caring": "Qayğıkeş",
+    "Clear Grading": "Aydın qiymətləndirmə",
+    "Engaging": "Maraqlı",
+    "Fair": "Ədalətli",
+    "Gives Good Feedback": "Yaxşı rəy verir",
+    "Hard Exams": "Çətin imtahanlar",
+    "Heavy Coursework": "Çoxlu kurs işi",
+    "Helpful": "Faydalı",
+    "Lecture Heavy": "Mühazirə ağırlıqlı",
+    "Monoton": "Monoton",
+    "Participation Matters": "İştirak önəmlidir",
+    "Recommended": "Tövsiyə olunur",
+    "Respectful": "Hörmətcil",
+    "Tough Grader": "Sərt qiymətləndirir",
+    "Unclear Expectations": "Gözləntilər aydın deyil"
   }
 }

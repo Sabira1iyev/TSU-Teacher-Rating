@@ -238,7 +238,7 @@ export default function ProfessorProfilePage() {
         </h2>
         <p className="text-sm text-text3">{tNoResult("profDesc")}</p>
         <button
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push(`/${params.locale as string}/dashboard`)}
           className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
         >
           ← Back to Dashboard
@@ -281,7 +281,7 @@ export default function ProfessorProfilePage() {
         </button>
 
         <button
-          onClick={() => router.push(`/rate?professorId=${professor.id}`)}
+          onClick={() => router.push(`/${params.locale as string}/rate?professorId=${professor.id}`)}
           className="px-4 py-2 rounded-lg text-xs font-semibold text-white transition-colors cursor-pointer"
           style={{
             backgroundColor: fc.primary,
@@ -1156,7 +1156,7 @@ export default function ProfessorProfilePage() {
       {/* Mobile rate button */}
       <div className="lg:hidden bottom-[57px] left-0 right-0 px-4 py-3 bg-bg z-10">
         <button
-          onClick={() => router.push(`/rate?professorId=${professor.id}`)}
+          onClick={() => router.push(`/${params.locale as string}/rate?professorId=${professor.id}`)}
           className="w-full py-3.5 rounded-xl text-sm font-semibold text-white transition-colors cursor-pointer"
           style={{
             backgroundColor: fc.primary,
