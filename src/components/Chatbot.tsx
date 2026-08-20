@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
-
+import { useUser } from "@/context/UserContext";
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<{ role: string, text: string }[]>([]);
     const [inputText, setInputText] = useState("");
-
+    const { user } = useUser();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(e.target.value)
@@ -25,7 +25,10 @@ export default function Chatbot() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ history: newMessages })
+            body: JSON.stringify({
+                history: newMessages,
+                user: user
+            })
         })
         const data = await response.json();
         setMessages([...newMessages, { role: "bot", text: data.reply }])
@@ -39,7 +42,7 @@ export default function Chatbot() {
                     <div className=" animate-modal fixed flex flex-col bottom-33 right-4 w-[350px] h-[400px] bg-white border border-gray-200 rounded-xl shadow-2xl
      p-4 z-50 dark:bg-gray-900 dark:border-gray-800
      ">
-                        <h3 className="font-bold text-blue-600">ProfRate AI</h3>
+                        <h3 className="font-bold text-blue-600">Prof AI</h3>
                         <p className="text-sm mt-2 text-text2">How can I help you today?</p>
                         <div className="flex-1 overflow-y-auto w-full my-2">
                             {messages.map((msg, idx) => (
@@ -67,7 +70,7 @@ export default function Chatbot() {
                 )}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-18 right-6 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-text rounded-full flex justify-center items-center shadow-lg transition-transform"
+                className="fixed bottom-18 right-6 z-50 w-14 h-14 bg-bg-ai hover:bg-blue-700 text-text-ai rounded-full flex justify-center items-center shadow-lg transition-transform"
             >
                 {isOpen ? <X size={24} /> : <MessageCircle size={28} />}
             </button>
