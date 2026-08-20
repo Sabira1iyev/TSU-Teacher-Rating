@@ -20,7 +20,7 @@ export default function Chatbot() {
         const newMessages = [...messages, { role: "user", text: inputText }];
         setMessages(newMessages);
         setInputText("");
-        const response = await fetch("http://localhost:8000/api/chat", {
+        const response = await fetch("https://profrate-backend.onrender.com/api/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
