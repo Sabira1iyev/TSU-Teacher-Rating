@@ -43,7 +43,7 @@ export default function Chatbot() {
      p-4 z-50 dark:bg-gray-900 dark:border-gray-800
      ">
                         <h3 className="font-bold text-blue-600">Prof AI</h3>
-                        <p className="text-sm mt-2 text-text2">How can I help you today?</p>
+                        <p className="text-sm mt-2 text-text2">How can I help you?</p>
                         <div className="flex-1 overflow-y-auto w-full my-2">
                             {messages.map((msg, idx) => (
                                 <div className={`p-2 my-1 rounded-lg w-max max-w-[80%] text-sm ${msg.role === "user" ? "bg-blue-600 text-white ml-auto" : "bg-gray-100 text-black"}`}
