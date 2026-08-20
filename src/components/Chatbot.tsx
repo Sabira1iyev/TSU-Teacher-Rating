@@ -25,7 +25,7 @@ export default function Chatbot() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ message: inputText })
+            body: JSON.stringify({ history: newMessages })
         })
         const data = await response.json();
         setMessages([...newMessages, { role: "bot", text: data.reply }])
@@ -43,7 +43,7 @@ export default function Chatbot() {
                         <p className="text-sm mt-2 text-text2">How can I help you today?</p>
                         <div className="flex-1 overflow-y-auto w-full my-2">
                             {messages.map((msg, idx) => (
-                                <div className={`p-2 my-1 rounded-lg w-max max-w-[80%] ${msg.role === "user" ? "bg-blue-600 text-white ml-auto" : "bg-gray-100 text-black"}`}
+                                <div className={`p-2 my-1 rounded-lg w-max max-w-[80%] text-sm ${msg.role === "user" ? "bg-blue-600 text-white ml-auto" : "bg-gray-100 text-black"}`}
                                     key={idx}>
                                     {msg.text}
                                 </div>
