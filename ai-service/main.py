@@ -17,7 +17,7 @@ def get_professor_details():
     """
     Retrieves the names, faculties, and ratings of all professors from the database.
     """
-    url = "http://192.168.100.132:3000/api/professors"
+    url = "https://tsuratingteacher.vercel.app/api/professors"
 
     response = requests.get(url)
     if response.status_code == 200:
@@ -60,7 +60,7 @@ async def chat(request: ChatRequest):
    Your name: "Prof AI".
    Your personality: Helpful, brief, honest, direct, professional and very friendly (like a fellow student).
 
-   CRITICAL RULE 1: Always auto-detect the user's language (it will be English, Azerbaijani, or Georgian) and reply in
+   CRITICAL RULE 1: Always auto-detect the user's language (it will be English, Azerbaijani, Turkish or Georgian) and reply in
    the EXACT SAME LANGUAGE the user wrote to you. Never mix languages. Keep answers short.
 
    CRITICAL RULE 2: If the user asks about a teacher or professor, or recommendation, you MUST call the "get_professor_details" tool. DO NOT invent or make
