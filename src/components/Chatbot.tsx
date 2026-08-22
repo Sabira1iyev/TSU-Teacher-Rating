@@ -14,7 +14,7 @@ export default function Chatbot() {
     const pathName = usePathname();
     if (pathName.includes("/login") ||
         pathName.includes("/register") ||
-        pathName.includes("onboarding")
+        pathName.includes("/onboarding")
     ) return null;
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(e.target.value)
