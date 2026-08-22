@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { usePathname } from "next/navigation";
@@ -10,6 +10,11 @@ export default function Chatbot() {
     const [messages, setMessages] = useState<{ role: string, text: string }[]>([]);
     const [inputText, setInputText] = useState("");
     const { user } = useUser();
+    const messagesRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        messagesRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, [messages])
 
     const pathName = usePathname();
     if (pathName.includes("/login") ||
@@ -57,6 +62,7 @@ export default function Chatbot() {
                                     {msg.text}
                                 </div>
                             ))}
+                            <div ref={messagesRef} />
                         </div>
                         <div className="mt-auto w-full flex items-center justify-center">
                             <div className="w-full flex items-center gap-2 bottom-2 border-border rounded-xl px-2 py-2 border-1">
