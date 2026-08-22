@@ -69,7 +69,6 @@ async def chat(request: ChatRequest):
    """,
             tools=[get_professor_details],
         )
-
         formatted_history = []
         for msg in request.history[:-1]:
             gemini_role = "model" if msg["role"] == "bot" else "user"

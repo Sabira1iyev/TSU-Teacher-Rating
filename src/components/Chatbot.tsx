@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { useUser } from "@/context/UserContext";
+import { usePathname } from "next/navigation";
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +11,11 @@ export default function Chatbot() {
     const [inputText, setInputText] = useState("");
     const { user } = useUser();
 
+    const pathName = usePathname();
+    if (pathName.includes("/login") ||
+        pathName.includes("/register") ||
+        pathName.includes("onboarding")
+    ) return null;
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(e.target.value)
     }
@@ -42,7 +48,7 @@ export default function Chatbot() {
                     <div className=" animate-modal fixed flex flex-col bottom-33 right-4 w-[350px] h-[400px] bg-white border border-gray-200 rounded-xl shadow-2xl
      p-4 z-50 dark:bg-gray-900 dark:border-gray-800
      ">
-                        <h3 className="font-bold text-blue-600">Prof AI</h3>
+                        <h3 className="font-bold text-blue-600">Prof AI (in development)</h3>
                         <p className="text-sm mt-2 text-text2">How can I help you?</p>
                         <div className="flex-1 overflow-y-auto w-full my-2">
                             {messages.map((msg, idx) => (
@@ -68,6 +74,7 @@ export default function Chatbot() {
                         </div>
                     </div>
                 )}
+
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="fixed bottom-18 right-6 z-50 w-14 h-14 bg-bg-ai hover:bg-blue-700 text-text-ai rounded-full flex justify-center items-center shadow-lg transition-transform"
