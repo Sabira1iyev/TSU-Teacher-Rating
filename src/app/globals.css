@@ -102,3 +102,19 @@
 .animate-modal {
   animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+@keyframes message-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate_message {
+  animation: message-pop 0.4s ease-out forwards;
+}

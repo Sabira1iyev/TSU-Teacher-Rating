@@ -25,6 +25,18 @@ def get_professor_details():
     return {"error": "Failed to fetch professor data"}
 
 
+def get_professors_by_id(professor_id: str):
+    """
+    Retrieves detailed information (including ALL student reviews, comments, and trend data)
+    for a SPESIFIC professor by their ID. Use this when the user asks for reviews, comments, or detailed analytics of a specific professor.
+    """
+    url = f"https://tsuratingteacher.vercel.app/api/professors/{professor_id}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return {"error": "Failed to fetch professor data"}
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -67,7 +79,7 @@ async def chat(request: ChatRequest):
    up any teachers that are not in the tool's response. If a teacher is not listed in the tool response, explicitly say "This teacher is not in our database." 
    {user_info_text}
    """,
-            tools=[get_professor_details],
+            tools=[get_professor_details, get_professors_by_id],
         )
         formatted_history = []
         for msg in request.history[:-1]:
