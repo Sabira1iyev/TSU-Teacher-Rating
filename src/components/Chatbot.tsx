@@ -1,9 +1,9 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { usePathname } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +11,7 @@ export default function Chatbot() {
     const [inputText, setInputText] = useState("");
     const { user } = useUser();
     const messagesRef = useRef<HTMLDivElement>(null);
+    const [isTyping, setIsTyping] = useState(false);
 
     useEffect(() => {
         messagesRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -31,18 +32,20 @@ export default function Chatbot() {
         const newMessages = [...messages, { role: "user", text: inputText }];
         setMessages(newMessages);
         setInputText("");
+        setIsTyping(true);
         const response = await fetch("https://profrate-backend.onrender.com/api/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                history: newMessages,
+                history: newMessages.slice(-10),
                 user: user
             })
         })
         const data = await response.json();
         setMessages([...newMessages, { role: "bot", text: data.reply }])
+        setIsTyping(false);
     }
 
 
@@ -59,9 +62,18 @@ export default function Chatbot() {
                             {messages.map((msg, idx) => (
                                 <div className={`p-2 my-1 rounded-lg w-max max-w-[80%] text-sm ${msg.role === "user" ? "bg-blue-600 text-white ml-auto" : "bg-gray-100 text-black"}`}
                                     key={idx}>
-                                    {msg.text}
+                                    <div className="space-y-4 font-medium max-w-full overflow-hidden break-words">
+                                        <ReactMarkdown>{msg.text}</ReactMarkdown>
+                                    </div>
                                 </div>
                             ))}
+                            {isTyping && (
+                                <div className="flex justify-start">
+                                    <div className="bg-gray-100 dark:bg-gray-800 text-gray-500 rounded-2xl px-4 py-2 text-sm max-w-[80%] rounded-tl-none animate-pulse">
+                                        Prof Ai is thinking...
+                                    </div>
+                                </div>
+                            )}
                             <div ref={messagesRef} />
                         </div>
                         <div className="mt-auto w-full flex items-center justify-center">
