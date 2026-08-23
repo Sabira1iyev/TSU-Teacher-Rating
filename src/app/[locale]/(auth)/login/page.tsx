@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 import ResetPasswordModal from "./newLogin/ResetPasswordModal";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,6 +18,11 @@ export default function LoginPage() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const buttons = useTranslations("Buttons");
+  const noAccount = useTranslations("noResult");
+  const tIndex = useTranslations("Index");
+  const sidebar = useTranslations("Sidebar");
+  const common = useTranslations("Common");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -56,15 +62,15 @@ export default function LoginPage() {
           onClick={() => router.back()}
           className="text-sm text-[#6b7c8d] hover:text-primary transition-colors cursor-pointer font-medium"
         >
-          ← Back
+          {buttons("backk")}
         </button>
         <div className="flex items-center gap-1 text-sm">
-          <span className="text-text3">No account?</span>
+          <span className="text-text3">{noAccount("noAccount")}</span>
           <span
             onClick={() => router.push("/register")}
             className="text-primary font-medium cursor-pointer hover:underline transition-colors"
           >
-            Sign Up
+            {buttons("signup")}
           </span>
         </div>
       </div>
@@ -73,9 +79,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-bg2 rounded-3xl shadow-[0_4px_32px_rgba(0,60,120,0.08)] mx-5 mb-10 px-7 py-8 flex flex-col gap-6 mt-8">
         {/* Title */}
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-text">Welcome back</h1>
+          <h1 className="text-2xl font-bold text-text">{tIndex("welcome")}</h1>
           <p className="text-sm text-text2 mt-1.5">
-            Sign in with your TSU email
+            {tIndex("sign")}
           </p>
           <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
         </div>
@@ -100,7 +106,7 @@ export default function LoginPage() {
           </div>
           <div>
             <p className="text-sm font-semibold text-text">TeacherRating</p>
-            <p className="text-xs text-text3">Tbilisi State University</p>
+            <p className="text-xs text-text3">{sidebar("tsu")}</p>
           </div>
         </div>
 
@@ -109,7 +115,7 @@ export default function LoginPage() {
           {/* Email */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-text2">
-              TSU email address
+              {common("emailAddress")}
             </label>
             <input
               name="email"
@@ -124,12 +130,12 @@ export default function LoginPage() {
           {/* Password */}
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-medium text-text2">Password</label>
+              <label className="text-xs font-medium text-text2">{common("password")}</label>
               <span
                 className="text-xs text-primary cursor-pointer hover:underline transition-colors font-medium"
                 onClick={() => setIsResetPasswordModalOpen(true)}
               >
-                Forgot password?
+                {common("forgotPassword")}
               </span>
             </div>
             <input
@@ -160,7 +166,7 @@ export default function LoginPage() {
             onClick={handleSubmit}
             className="w-full py-4 bg-primary rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
           >
-            Sign in →
+            {buttons("sigin")}
           </button>
         </div>
       </div>

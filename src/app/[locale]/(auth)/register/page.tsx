@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FACULTIES } from "@/lib/constants";
 import { useUser } from "@/context/UserContext";
+import { useTranslations } from "next-intl";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -21,6 +22,14 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const buttons = useTranslations("Buttons");
+  const noAccount = useTranslations("noResult");
+  const tIndex = useTranslations("Index");
+  const sidebar = useTranslations("Sidebar");
+  const common = useTranslations("Common");
+  const inputs = useTranslations("Inputs");
+  const facultyYear = useTranslations("facultyYear");
+  const faculties = useTranslations("Faculties");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -102,15 +111,15 @@ export default function RegisterPage() {
           onClick={() => router.back()}
           className="text-sm text-[#6b7c8d] hover:text-primary transition-colors cursor-pointer font-medium"
         >
-          ← Back
+          {buttons("backk")}
         </button>
         <div className="flex items-center gap-1 text-sm">
-          <span className="text-text3">Already have an account?</span>
+          <span className="text-text3">{noAccount("already")}</span>
           <span
             onClick={() => router.push("/login")}
             className="text-primary font-medium cursor-pointer hover:underline transition-colors"
           >
-            Sign in
+            {buttons("sigin")}
           </span>
         </div>
       </div>
@@ -119,9 +128,9 @@ export default function RegisterPage() {
       <div className="w-full max-w-md bg-bg2 rounded-3xl shadow-[0_4px_32px_rgba(0,60,120,0.08)] mx-5 mb-10 px-7 py-8 flex flex-col gap-6">
         {/* Title */}
         <div>
-          <h1 className="text-2xl font-bold text-text">Create Account</h1>
+          <h1 className="text-2xl font-bold text-text">{tIndex("create")}</h1>
           <p className="text-sm text-text2 mt-1.5">
-            Sign up with your TSU email to get started
+            {tIndex("signup")}
           </p>
           <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mt-3" />
         </div>
@@ -144,10 +153,10 @@ export default function RegisterPage() {
           </div>
           <div>
             <p className="text-sm font-semibold text-text">
-              TSU Email required
+              {sidebar("required")}
             </p>
             <p className="text-xs text-text2 mt-0.5">
-              Only @hum.tsu.edu.ge and @ens.tsu.edu.ge are accepted
+              {sidebar("only")}
             </p>
           </div>
         </div>
@@ -158,13 +167,13 @@ export default function RegisterPage() {
           <div className="flex gap-3">
             <div className="flex-1 flex flex-col gap-1.5">
               <label className="text-xs font-medium text-text2">
-                First Name
+                {inputs("firstname")}
               </label>
               <input
-                name="firstName"
+                name="frstName"
                 value={formdata.firstName}
                 onChange={handleChange}
-                placeholder="First Name"
+                placeholder={inputs("firstname")}
                 className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>
@@ -173,13 +182,13 @@ export default function RegisterPage() {
                 htmlFor="lastName"
                 className="text-xs font-medium text-text2"
               >
-                Last Name
+                {inputs("lastname")}
               </label>
               <input
                 name="lastName"
                 value={formdata.lastName}
                 onChange={handleChange}
-                placeholder="Last Name"
+                placeholder={inputs("lastname")}
                 className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>
@@ -191,7 +200,7 @@ export default function RegisterPage() {
               htmlFor="email"
               className="text-xs font-medium text-text2"
             >
-              Email
+              {inputs("email")}
             </label>
             <input
               name="email"
@@ -201,7 +210,7 @@ export default function RegisterPage() {
               className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
             />
             <p className="text-xs text-text3 px-1">
-              A verification code will be sent to this address
+              {inputs("verification")}
             </p>
           </div>
 
@@ -211,7 +220,7 @@ export default function RegisterPage() {
               htmlFor="password"
               className="text-xs font-medium text-text2"
             >
-              Password
+              {inputs("password")}
             </label>
             <input
               name="password"
@@ -226,7 +235,7 @@ export default function RegisterPage() {
           {/* Faculty */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-text2">
-              Faculty
+              {inputs("faculty")}
             </label>
             <select
               name="faculty"
@@ -235,23 +244,23 @@ export default function RegisterPage() {
               className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
             >
               <option value="" disabled>
-                Select your faculty...
+                {inputs("select")}
               </option>
               {FACULTIES.filter((f) => f !== "All").map((faculty) => (
                 <option key={faculty} value={faculty}>
-                  {faculty}
+                  {faculties(faculty)}
                 </option>
               ))}
             </select>
             <p className="text-xs text-primary pt-0.5 font-medium">
-              ✓ Professors from your faculty will be shown first
+              {inputs("facultyDesc")}
             </p>
           </div>
 
           {/* Study year */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-text2">
-              Study Year
+              {inputs("studyYear")}
             </label>
             <select
               name="studyYear"
@@ -260,15 +269,15 @@ export default function RegisterPage() {
               className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer appearance-none"
             >
               <option value="" disabled>
-                Select your study year...
+                {inputs("selectYear")}
               </option>
-              <option value="1">1st Year</option>
-              <option value="2">2nd Year</option>
-              <option value="3">3rd Year</option>
-              <option value="4">4th Year</option>
-              <option value="5">5th Year</option>
-              <option value="5+">5+ Year</option>
-              <option value="graduate">Graduate</option>
+              <option value="1">{facultyYear("1")}</option>
+              <option value="2">{facultyYear("2")}</option>
+              <option value="3">{facultyYear("3")}</option>
+              <option value="4">{facultyYear("4")}</option>
+              <option value="5">{facultyYear("5")}</option>
+              <option value="5+">{facultyYear("5+")}</option>
+              <option value="graduate">{facultyYear("graduate")}</option>
             </select>
           </div>
         </div>
@@ -291,13 +300,12 @@ export default function RegisterPage() {
           onClick={handleSubmit}
           disabled={loading}
           className={`w-full py-4 bg-primary rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]
-                        ${
-                          loading
-                            ? "bg-primary/50 text-bg cursor-not-allowed"
-                            : "bg-primary text-bg hover:opacity-90"
-                        }`}
+                        ${loading
+              ? "bg-primary/50 text-bg cursor-not-allowed"
+              : "bg-primary text-bg hover:opacity-90"
+            }`}
         >
-          {loading ? "Creating account..." : "Send verification code →"}
+          {loading ? buttons("creatingAccount") : buttons("verificationCode")}
         </button>
       </div>
     </div>

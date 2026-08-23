@@ -3,7 +3,11 @@
     "title1": "Müəllim",
     "desc": "Tələbələrin təqdim etdiyi kurs məlumatları",
     "title2": "Reytinqi",
-    "footer": "Yalnız təsdiqlənmiş TSU tələbələri üçün."
+    "footer": "Yalnız təsdiqlənmiş TSU tələbələri üçün.",
+    "welcome": "Yenidən xoş gəlmisiniz",
+    "sign": "TSU e-poçtunuzla daxil olun",
+    "create": "Hesab yaradın",
+    "signup": "Başlamaq üçün TSU e-poçtunuzla qeydiyyatdan keçin"
   },
   "Sidebar": {
     "tsu": "Tbilisi Dövlət Universiteti",
@@ -18,7 +22,9 @@
     "Actions": "Fəaliyyətlər",
     "Settings": "Ayarlar",
     "searchD": "Professor və ya kurs axtar..",
-    "searchM": "Axtar..."
+    "searchM": "Axtar...",
+    "required": "TSU e-poçtu tələb olunur",
+    "only": "Yalnız @hum.tsu.edu.ge və @ens.tsu.edu.ge ünvanları qəbul edilir"
   },
 
   "Faculties": {
@@ -66,7 +72,10 @@
     "account": "Hesab",
     "faculty": "Fakültə",
     "reviewHistory": "Rəy tarixçəsi",
-    "ratDist": "Reytinq bölgüsü"
+    "ratDist": "Reytinq bölgüsü",
+    "password": "Şifrə",
+    "emailAddress": "TSU e-poçt ünvanı",
+    "forgotPassword": "Şifrəni unutmusunuz?"
   },
   "Tabs": {
     "Top rated": "Yüksək reytinqli",
@@ -97,7 +106,9 @@
     "profTitle": "Professor tapılmadı",
     "profDesc": "Bu professor mövcud deyil və ya silinib",
     "profLoading": "Professor məlumatları yüklənir...",
-    "noReviews": "Professorun hələ heç bir rəyi yoxdur"
+    "noReviews": "Professorun hələ heç bir rəyi yoxdur",
+    "noAccount": "Hesabınız yoxdur?",
+    "already": "Hesabınız var?"
   },
   "Rules": {
     "privacyTitle": "Məxfilik & qaydalar",
@@ -123,7 +134,10 @@
     "continue": "Davam et →",
     "skip": "Keç →",
     "signup": "Qeydiyyatdan keç",
-    "backk": "← Geri"
+    "sigin": "Daxil ol →",
+    "backk": "← Geri",
+    "verificationCode": "Təsdiqləmə kodunu göndər →",
+    "creatingAccount": "Hesab yaradılır..."
   },
   "Year": {
     "year": "Kurs",
@@ -247,5 +261,26 @@
     "professors": "Professor",
     "reviews": "Rəy",
     "students": "Tələbə"
+  },
+  "Inputs": {
+    "firstname": "Ad",
+    "lastname": "Soyad",
+    "email": "E-poçt",
+    "verification": "Təsdiqləmə kodu bu ünvana göndəriləcək",
+    "password": "Şifrə",
+    "faculty": "Fakültə",
+    "select": "Fakültənizi seçin...",
+    "facultyDesc": "Sizin fakültənizdən olan professorlar əvvəlcə göstəriləcək",
+    "studyYear": "Təhsil ili",
+    "selectYear": "Təhsil ilinizi seçin..."
+  },
+  "facultyYear": {
+    "1": "1-ci kurs",
+    "2": "2-ci kurs",
+    "3": "3-cü kurs",
+    "4": "4-cü kurs",
+    "5": "5-ci kurs",
+    "5+": "5+ kurs",
+    "graduate": "Məzun"
   }
 }

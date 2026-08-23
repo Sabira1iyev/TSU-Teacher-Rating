@@ -3,7 +3,11 @@
     "title1": "Teacher rating ",
     "desc": "Student-driven course insights",
     "title2": "Rating",
-    "footer": "Only for verified TSU students."
+    "footer": "Only for verified TSU students.",
+    "welcome": "Welcome back",
+    "sign": "Sign in with your TSU email",
+    "create": "Create Account",
+    "signup": "Sign up with your TSU email to get started"
   },
   "Sidebar": {
     "tsu": "Tbilisi State University",
@@ -18,7 +22,9 @@
     "Actions": "Actions",
     "Settings": "Settings",
     "searchD": "Search professor or course...",
-    "searchM": "Search..."
+    "searchM": "Search...",
+    "required": "TSU email required",
+    "only": "Only @hum.tsu.edu.ge and @ens.tsu.edu.ge are accepted"
   },
 
   "Faculties": {
@@ -66,7 +72,10 @@
     "account": "Account",
     "faculty": "Faculty",
     "reviewHistory": "Review History",
-    "ratDist": "Rating Distribution"
+    "ratDist": "Rating Distribution",
+    "password": "Password",
+    "emailAddress": "TSU email address",
+    "forgotPassword": "Forgot password?"
   },
   "Tabs": {
     "Top rated": "Top rated",
@@ -98,7 +107,9 @@
     "profTitle": "Professor not found",
     "profDesc": "This professor does not exist or has been removed",
     "profLoading": "Professor informations are loading...",
-    "noReviews": "No reviews yet for this professor"
+    "noReviews": "No reviews yet for this professor",
+    "noAccount": "No Account?",
+    "already": "Already have an account?"
   },
 
   "Rules": {
@@ -126,7 +137,10 @@
     "continue": "Continue →",
     "skip": "Skip →",
     "signup": "Sign up",
-    "backk": "← Back"
+    "sigin": "Sign in →",
+    "backk": "← Back",
+    "verificationCode": "Send Verification code →",
+    "creatingAccount": "Creating account..."
   },
   "Year": {
     "year": "Year",
@@ -247,5 +261,26 @@
     "professors": "Professors",
     "reviews": "Reviews",
     "students": "Students"
+  },
+  "Inputs": {
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "email": "Email",
+    "verification": "A verification code will be sent to this address",
+    "password": "Password",
+    "faculty": "Faculty",
+    "select": "Select your faculty...",
+    "facultyDesc": "Professors from you faculty will be shown first",
+    "studyYear": "Study Year",
+    "selectYear": "Select you study year..."
+  },
+  "facultyYear": {
+    "1": "1st Year",
+    "2": "2nd Year",
+    "3": "3rd Year",
+    "4": "4th Year",
+    "5": "5th Year",
+    "5+": "5+ Year",
+    "graduate": "Graduate"
   }
 }
