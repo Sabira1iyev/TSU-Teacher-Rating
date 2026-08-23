@@ -4,6 +4,7 @@ import { MessageCircle, X, Send } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { usePathname } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import path from "path";
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,10 +19,16 @@ export default function Chatbot() {
     }, [messages])
 
     const pathName = usePathname();
-    if (pathName.includes("/login") ||
+    const isLandingPage = pathName === "/" || pathName === "/en" || pathName === "/az" || pathName === "/ka";
+    
+    if (
+        pathName.includes("/login") ||
         pathName.includes("/register") ||
-        pathName.includes("/onboarding")
-    ) return null;
+        pathName.includes("/onboarding") ||
+        isLandingPage
+    ) {
+        return null;
+    }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputText(e.target.value)
     }
@@ -98,14 +105,12 @@ export default function Chatbot() {
                         </div>
                     </div>
                 )}
-
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="fixed bottom-18 right-6 z-50 w-14 h-14 bg-bg-ai hover:bg-bg-ai text-text-ai rounded-full flex justify-center items-center shadow-lg transition-transform cursor-pointer"
             >
                 {isOpen ? <X size={24} /> : <MessageCircle size={28} />}
             </button>
-
         </>
     )
 }

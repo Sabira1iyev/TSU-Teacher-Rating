@@ -1,7 +1,9 @@
 {
   "Index": {
-    "title1": "Teacher",
-    "title2": "Rating"
+    "title1": "Teacher rating ",
+    "desc": "Student-driven course insights",
+    "title2": "Rating",
+    "footer": "Only for verified TSU students."
   },
   "Sidebar": {
     "tsu": "Tbilisi State University",
@@ -120,7 +122,11 @@
     "change": "Change",
     "yesRecommend": "✓ Yes, I would recommend",
     "noRecommend": "✗ No",
-    "submitReview": "Submit review →"
+    "submitReview": "Submit review →",
+    "continue": "Continue →",
+    "skip": "Skip →",
+    "signup": "Sign up",
+    "backk": "← Back"
   },
   "Year": {
     "year": "Year",
@@ -221,6 +227,25 @@
     "Recommended": "Recommended",
     "Respectful": "Respectful",
     "Tough Grader": "Tough Grader",
-    "Unclear Expectations":"Unclear Expectations"
+    "Unclear Expectations": "Unclear Expectations"
+  },
+  "onBoarding": {
+    "title1": "Welcome",
+    "title2": "Fellow Student",
+    "desc1": "TeacherRating is a platform where you can evaluate TSU professors based on real student experiences. Make informed decisions every semester.",
+    "title3": "Find Professors",
+    "title4": "by faculty",
+    "desc2": "Search by faculty, department or professor name. See teaching quality, exam difficulty and homework load rated separately.",
+    "title5": "Completely",
+    "title6": "anonymous",
+    "desc3": "You are verified with your TSU email once. After that everything is completely anonymous. Your name will never be shown.",
+    "title7": "Ready to",
+    "title8": "get started?",
+    "desc4": "Sign up with your TSU email in 30 seconds. Select your faculty and start discovering the best professors.",
+    "12k": "12K+",
+    "48k": "48K+",
+    "professors": "Professors",
+    "reviews": "Reviews",
+    "students": "Students"
   }
 }

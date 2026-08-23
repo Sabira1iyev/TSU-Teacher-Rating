@@ -8,6 +8,7 @@ export default function SplashScreen() {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
   const t = useTranslations("Index");
+  const rateProf = useTranslations("rateProf")
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,10 +56,10 @@ export default function SplashScreen() {
 
         <div className="text-center mt-6 z-10">
           <h1 className="font-bold text-4xl text-text tracking-tight">
-            {t("title")}
+            {t("title1")}
           </h1>
           <p className="text-text3 text-sm mt-2 tracking-wide">
-            Student-driven course insights
+            {t("desc")}
           </p>
         </div>
 
@@ -71,12 +72,12 @@ export default function SplashScreen() {
               }}
             />
           </div>
-          <p className="text-text3 text-xs animate-pulse">Loading...</p>
+          <p className="text-text3 text-xs animate-pulse">{rateProf("loading")}</p>
         </div>
       </div>
 
       <p className="absolute bottom-8 text-text3 text-xs font-bold text-center px-4">
-        Only for verified TSU students.
+        {t("footer")}
       </p>
     </div>
   );

@@ -1,7 +1,9 @@
 {
   "Index": {
     "title1": "Müəllim",
-    "title2": "Reytinqi"
+    "desc": "Tələbələrin təqdim etdiyi kurs məlumatları",
+    "title2": "Reytinqi",
+    "footer": "Yalnız təsdiqlənmiş TSU tələbələri üçün."
   },
   "Sidebar": {
     "tsu": "Tbilisi Dövlət Universiteti",
@@ -117,7 +119,11 @@
     "change": "Dəyiş",
     "yesRecommend": "✓ Bəli, tövsiyə edərdim",
     "noRecommend": "✗ Xeyr",
-    "submitReview": "Rəyi göndər →"
+    "submitReview": "Rəyi göndər →",
+    "continue": "Davam et →",
+    "skip": "Keç →",
+    "signup": "Qeydiyyatdan keç",
+    "backk": "← Geri"
   },
   "Year": {
     "year": "Kurs",
@@ -218,5 +224,28 @@
     "Respectful": "Hörmətcil",
     "Tough Grader": "Sərt qiymətləndirir",
     "Unclear Expectations": "Gözləntilər aydın deyil"
+  },
+  "onBoarding": {
+    "title1": "Xoş gəlmisiniz",
+    "title2": "Əziz tələbə",
+    "desc1": "TeacherRating real tələbə təcrübələrinə əsasən TSU professorlarını qiymətləndirə biləcəyiniz platformadır. Hər semestr məlumatlı seçimlər edin.",
+
+    "title3": "Professorları tapın",
+    "title4": "fakültəyə görə",
+    "desc2": "Fakültə, şöbə və ya professor adına görə axtarın. Tədris keyfiyyətini, imtahan çətinliyini və ev tapşırığı yükünü ayrıca qiymətləndirmələrlə görün.",
+
+    "title5": "Tamamilə",
+    "title6": "anonim",
+    "desc3": "TSU e-poçtunuzla yalnız bir dəfə təsdiqlənirsiniz. Bundan sonra hər şey tamamilə anonimdir. Adınız heç vaxt göstərilməyəcək.",
+
+    "title7": "Başlamağa",
+    "title8": "hazırsınız?",
+    "desc4": "TSU e-poçtunuzla 30 saniyəyə qeydiyyatdan keçin. Fakültənizi seçin və ən yaxşı professorları kəşf etməyə başlayın.",
+
+    "12k": "12K+",
+    "48k": "48K+",
+    "professors": "Professor",
+    "reviews": "Rəy",
+    "students": "Tələbə"
   }
 }
