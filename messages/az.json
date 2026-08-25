@@ -137,7 +137,11 @@
     "sigin": "Daxil ol →",
     "backk": "← Geri",
     "verificationCode": "Təsdiqləmə kodunu göndər →",
-    "creatingAccount": "Hesab yaradılır..."
+    "creatingAccount": "Hesab yaradılır...",
+    "sentCode": "Kodu göndər",
+    "cancel": "İmtina et",
+    "verifyAndContinue": "Təsdiqləyin və davam edin →",
+    "verifying": "Təsdiqlənir..."
   },
   "Year": {
     "year": "Kurs",
@@ -272,7 +276,8 @@
     "select": "Fakültənizi seçin...",
     "facultyDesc": "Sizin fakültənizdən olan professorlar əvvəlcə göstəriləcək",
     "studyYear": "Təhsil ili",
-    "selectYear": "Təhsil ilinizi seçin..."
+    "selectYear": "Təhsil ilinizi seçin...",
+    "emailAddress": "TSU tələbə e-poçtu"
   },
   "facultyYear": {
     "1": "1-ci kurs",
@@ -282,5 +287,15 @@
     "5": "5-ci kurs",
     "5+": "5+ kurs",
     "graduate": "Məzun"
+  },
+  "Login": {
+    "title": "E-poçt bu ünvana göndəriləcək",
+    "verificationCode": "Təsdiqləmə kodunu daxil edin",
+    "verify": "E-poçtunuzu təsdiqləyin",
+    "digitCode": "<b>{email}</b> ünvanına 6 rəqəmli doğrulama kodu göndərdik.",
+    "didntReceive": "Kodu almadınız?",
+    "resendCode": "Kodu yenidən göndər",
+    "checkSpam": "Spam qovluğunuzu yoxlayın",
+    "codeValid": "Kod 10 dəqiqə ərzində etibarlıdır"
   }
 }

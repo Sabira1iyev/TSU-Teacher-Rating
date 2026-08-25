@@ -29,8 +29,8 @@
 
   "Faculties": {
     "All": "ყველა",
-    "Faculty of Social and Political Sciences": "სოციალურ და პოლიტიკურ მეცნიერებათა ფაკულტეტი",
-    "Faculty of Exact and Natural Sciences": "ზუსტ და საბუნებისმეტყველო მეცნიერებათა ფაკულტეტი",
+    "Faculty of Social and Political Sciences": "სოც. და პოლიტ. მეცნიერებათა ფაკულტეტი",
+    "Faculty of Exact and Natural Sciences": "ზუსტ და საბ. მეც. ფაკულტეტი",
     "Faculty of Psychology and Educational Sciences": "ფსიქოლოგიისა და განათლების მეცნიერებათა ფაკულტეტი",
     "Faculty of Economics and Business": "ეკონომიკისა და ბიზნესის ფაკულტეტი",
     "Faculty of Humanities": "ჰუმანიტარულ მეცნიერებათა ფაკულტეტი",
@@ -140,7 +140,11 @@
     "sigin": "შესვლა →",
     "backk": "← უკან",
     "verificationCode": "დადასტურების კოდის გაგზავნა →",
-    "creatingAccount": "ანგარიში იქმნება..."
+    "creatingAccount": "ანგარიში იქმნება...",
+    "sentCode": "კოდის გაგზავნა",
+    "cancel": "გაუქმება",
+    "verifyAndContinue": "დაადასტურე და გააგრძელე →",
+    "verifying": "მოწმდება..."
   },
   "Year": {
     "year": "კურსი",
@@ -279,7 +283,8 @@
     "select": "აირჩიე ფაკულტეტი...",
     "facultyDesc": "შენი ფაკულტეტის პროფესორები პირველ რიგში გამოჩნდება",
     "studyYear": "სწავლის წელი",
-    "selectYear": "აირჩიე სწავლის წელი..."
+    "selectYear": "აირჩიე სწავლის წელი...",
+    "emailAddress": "TSU სტუდენტის ელფოსტა"
   },
   "facultyYear": {
     "1": "1-ლი კურსი",
@@ -289,5 +294,15 @@
     "5": "მე-5 კურსი",
     "5+": "5+ კურსი",
     "graduate": "კურსდამთავრებული"
+  },
+  "Login": {
+    "title": "ელფოსტა გაიგზავნება ამ მისამართზე",
+    "verificationCode": "შეიყვანე დამადასტურებელი კოდი",
+    "verify": "დაადასტურე ელფოსტა",
+    "digitCode": "6-ნიშნა კოდი გაიგზავნა <b>{email}</b> მისამართზე.",
+    "didntReceive": "კოდი არ მიგიღია?",
+    "resendCode": "კოდის ხელახლა გაგზავნა",
+    "checkSpam": "შეამოწმე სპამის საქაღალდე",
+    "codeValid": "კოდი მოქმედებს 10 წუთის განმავლობაში"
   }
 }

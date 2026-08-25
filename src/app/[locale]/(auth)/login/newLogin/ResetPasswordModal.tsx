@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import SetNewPassword from "./SetNewPassword";
+import { useTranslations } from "next-intl";
 
 export default function ResetPasswordModal({
   onClose,
@@ -20,6 +21,10 @@ export default function ResetPasswordModal({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const label = useTranslations("Label")
+  const login = useTranslations("Login")
+  const loginInputs = useTranslations("Inputs");
+  const button = useTranslations("Buttons");
 
   const isComplete = verifyCode.every((digit) => digit !== "");
 
@@ -127,12 +132,12 @@ export default function ResetPasswordModal({
         <div className="flex items-center justify-between">
           {step === 1 && (
             <h2 className="text-xl font-bold text-text">
-              Email will be sent this email
+              {login("title")}
             </h2>
           )}
           {step === 2 && (
             <h2 className="text-xl font-bold text-text">
-              Enter verification code
+              {login("verificationCode")}
             </h2>
           )}
 
@@ -151,7 +156,7 @@ export default function ResetPasswordModal({
                 htmlFor="email"
                 className="text-xs font-medium text-text2"
               >
-                Email
+                {label("email")}
               </label>
               <input
                 name="email"
@@ -159,7 +164,7 @@ export default function ResetPasswordModal({
                 value={formData.email}
                 onChange={handleChange}
                 autoComplete="new-password"
-                placeholder="TSU Student Email"
+                placeholder={loginInputs("emailAddress")}
                 className="w-full bg-bg2 border border-border2 rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>
@@ -176,13 +181,13 @@ export default function ResetPasswordModal({
                 onClick={onClose}
                 className="px-5 py-2.5 rounded-xl text-sm font-semibold text-text2 hover:bg-bg3 transition-colors cursor-pointer"
               >
-                Cancel
+                {button("cancel")}
               </button>
               <button
                 className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-primary/20"
                 onClick={handleSent}
               >
-                Sent Code
+                {button("sentCode")}
               </button>
             </div>
           </>
@@ -239,13 +244,13 @@ export default function ResetPasswordModal({
                 {/* Title */}
                 <div className="text-center">
                   <h1 className="text-2xl font-bold text-text">
-                    Verify your email
+                    {login("verify")}
                   </h1>
-                  <p className="text-sm text-text2 mt-2">
-                    We sent a 6-digit code to
-                  </p>
-                  <p className="text-sm text-primary font-medium mt-1">
-                    {user?.email || "your email address"}
+                  <p className="text-sm text-text2 mt-2 break-all">
+                    {login.rich("digitCode", {
+                      email: formData.email || "...",
+                      b: (chunks) => <span className="text-primary font-medium">{chunks}</span>
+                    })}
                   </p>
                   <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
                 </div>
@@ -267,11 +272,10 @@ export default function ResetPasswordModal({
                       onKeyDown={(e) => handleKeyDown(i, e)}
                       onPaste={handlePaste}
                       className={`w-12 h-14 text-center text-xl font-semibold rounded-xl border outline-none transition-all duration-200 bg-bg text-text2
-                                ${
-                                  digit
-                                    ? "border-[#0060a9] bg-primary-dim"
-                                    : "border-border2 focus:border-[#0060a9]"
-                                }
+                                ${digit
+                          ? "border-[#0060a9] bg-primary-dim"
+                          : "border-border2 focus:border-[#0060a9]"
+                        }
                             `}
                     />
                   ))}
@@ -291,29 +295,28 @@ export default function ResetPasswordModal({
                   disabled={!isComplete || loading}
                   className={`
                  w-full py-4 rounded-xl text-sm font-semibold transition-all cursor-pointer
-                 ${
-                   isComplete && !loading
-                     ? "bg-primary text-white hover:bg-[#004d8a] shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
-                     : "bg-[#e4eaf0] text-text3 cursor-not-allowed"
-                 }
+                 ${isComplete && !loading
+                      ? "bg-primary text-white hover:bg-[#004d8a] shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
+                      : "bg-[#e4eaf0] text-text3 cursor-not-allowed"
+                    }
                  `}
                 >
-                  {loading ? "Verifying..." : "Verify and continue →"}
+                  {loading ? button("verifying") : button("verifyAndContinue")}
                 </button>
 
                 {/* Resend*/}
                 <div className="text-center">
                   <p className="text-xs text-text3">
-                    Didn't receive the code?{" "}
+                    {login("didntReceive")}{" "}
                     <span
                       // onClick={handleResend}
                       className="text-primary cursor-pointer hover:underline transition-colors font-medium"
                     >
-                      Resend code
+                      {login("resendCode")}
                     </span>
                   </p>
                   <p className="text-xs text-text3 mt-2">
-                    Check your spam folder · Code valid for 10 minutes
+                    {login("checkSpam")} · {login("codeValid")}
                   </p>
                 </div>
               </div>

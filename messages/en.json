@@ -140,7 +140,12 @@
     "sigin": "Sign in →",
     "backk": "← Back",
     "verificationCode": "Send Verification code →",
-    "creatingAccount": "Creating account..."
+    "creatingAccount": "Creating account...",
+    "sentCode": "Sent Code",
+    "cancel": "Cancel",
+    "verifyAnd": "Verify and Continue",
+    "verifyAndContinue": "Verify and continue →",
+    "verifying": "Verifying..."
   },
   "Year": {
     "year": "Year",
@@ -272,7 +277,8 @@
     "select": "Select your faculty...",
     "facultyDesc": "Professors from you faculty will be shown first",
     "studyYear": "Study Year",
-    "selectYear": "Select you study year..."
+    "selectYear": "Select you study year...",
+    "emailAddress": "TSU Student Email"
   },
   "facultyYear": {
     "1": "1st Year",
@@ -282,5 +288,15 @@
     "5": "5th Year",
     "5+": "5+ Year",
     "graduate": "Graduate"
+  },
+  "Login": {
+    "title": "Email will be sent this email",
+    "verificationCode": "Enter verification code",
+    "verify": "Verify your email",
+    "digitCode": "We sent a 6-digit code to <b>{email}</b>",
+    "didntReceive": "Didn't receive code?",
+    "resendCode": "Resend Code",
+    "checkSpam": "Check your spam folder",
+    "codeValid": "Code valid for 10 minutes"
   }
 }
