@@ -4,7 +4,6 @@ import { MessageCircle, X, Send } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { usePathname } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import path from "path";
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -40,19 +39,27 @@ export default function Chatbot() {
         setMessages(newMessages);
         setInputText("");
         setIsTyping(true);
-        const response = await fetch("/api/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                history: newMessages.slice(-10),
-                user: user
-            })
-        })
-        const data = await response.json();
-        setMessages([...newMessages, { role: "bot", text: data.reply }])
-        setIsTyping(false);
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    history: newMessages.slice(-10),
+                    user: user
+                })
+            });
+            const data = await response.json();
+            const reply = data.reply || data.message || "Sorry, I couldn't get a response.";
+            setMessages([...newMessages, { role: "bot", text: reply }]);
+        } catch (error) {
+            console.error("Chat error:", error);
+            setMessages([...newMessages, { role: "bot", text: "⚠️ Connection error. Please try again." }]);
+        } finally {
+            setIsTyping(false);
+        }
     }
 
 
