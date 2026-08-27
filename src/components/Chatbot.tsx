@@ -40,7 +40,7 @@ export default function Chatbot() {
         setMessages(newMessages);
         setInputText("");
         setIsTyping(true);
-        const response = await fetch("https://profrate-backend.onrender.com/api/chat", {
+        const response = await fetch("/api/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
