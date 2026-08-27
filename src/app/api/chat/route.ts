@@ -28,11 +28,19 @@ export async function POST(req: NextRequest) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        body,
-      }),
+      body: JSON.stringify(body),
     });
     const data = await fastApiResponse.json();
     return NextResponse.json(data);
-  } catch (error) {}
+  } catch (error) {
+    console.log("Chat proxy error", error);
+    return NextResponse.json(
+      {
+        message: "Something went wrong!",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
 }
