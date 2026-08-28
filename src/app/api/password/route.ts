@@ -1,14 +1,22 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { getIronSession } from "iron-session";
+import { sessionOptions, SessionData } from "@/lib/session";
+import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, password, oldPassword } = await req.json();
+    const { password, oldPassword } = await req.json();
 
     const db = await getDb();
 
-    if (!userId || !password) {
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const userId = session.userId;
+    if (!session.userId || !password) {
       return NextResponse.json(
         {
           message: "All fields are required!",
