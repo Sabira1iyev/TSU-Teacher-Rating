@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
         {
           message: "All fields are required!",
         },
-        { status: 400 },
+        { status: 401 },
       );
     }
     if (password.length < 8) {

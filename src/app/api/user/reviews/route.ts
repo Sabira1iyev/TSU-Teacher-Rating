@@ -6,8 +6,6 @@ import { cookies } from "next/headers";
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-
     const session = await getIronSession<SessionData>(
       await cookies(),
       sessionOptions,
@@ -24,14 +22,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (!userId) {
-      return NextResponse.json(
-        {
-          message: "User is required",
-        },
-        { status: 400 },
-      );
-    }
 
     const pool = await getDb();
 
