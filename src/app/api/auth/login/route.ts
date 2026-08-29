@@ -5,6 +5,7 @@ import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { DBUser } from "@/types/user";
+import { loginLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
