@@ -38,11 +38,16 @@ export default function DeleteReviewModal({
           window.location.reload();
         }, 1500);
         return;
-      } else {
+      }
+
+      else {
         setError("Failed to delete review!");
+        const data = await response.json()
+        console.log(data.message)
         return;
       }
-    } catch (err) {
+    }
+    catch (err) {
       console.log("Failed to delete review", err);
       setError("Failed to delete review!");
       return;

@@ -9,6 +9,18 @@ import { loginLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    const { success } = await loginLimiter.limit(ip);
+    if (!success) {
+      return NextResponse.json(
+        {
+          message: "Too many attempt, please try again later.",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
     const { email, password } = await req.json();
     const db = await getDb();
 

@@ -295,26 +295,28 @@ export async function DELETE(req: NextRequest) {
 
     const pool = await getDb();
 
-    const ownerCheck = await pool
-      .request()
-      .input("ReviewId", reviewId)
-      .input("UserId", userId)
-      .query(
-        `
-      SELECT ReviewId FROM Reviews
-      WHERE ReviewId = @ReviewId AND UserId = @UserId
-      `,
-      );
+    if (!session.isAdmin) {
+      const ownerCheck = await pool
+        .request()
+        .input("ReviewId", reviewId)
+        .input("UserId", userId)
+        .query(
+          `
+        SELECT ReviewId FROM Reviews
+        WHERE ReviewId = @ReviewId AND UserId = @UserId
+        `,
+        );
 
-    if (ownerCheck.recordset.length === 0) {
-      return NextResponse.json(
-        {
-          message: "Not found or not authorized",
-        },
-        {
-          status: 403,
-        },
-      );
+      if (ownerCheck.recordset.length === 0) {
+        return NextResponse.json(
+          {
+            message: "Not found or not authorized",
+          },
+          {
+            status: 403,
+          },
+        );
+      }
     }
 
     await pool
@@ -324,11 +326,17 @@ export async function DELETE(req: NextRequest) {
       .input("ProfessorId", body.professorId)
       .query(
         `
+      DELETE FROM ReviewInteractions
+      WHERE ReviewId = @ReviewId;
+
+      DELETE FROM Reports
+      WHERE ReviewId = @ReviewId;
+
       DELETE FROM ReviewTags
-      WHERE ReviewId= @ReviewId;
+      WHERE ReviewId = @ReviewId;
       
       DELETE FROM Reviews
-      WHERE ReviewId= @ReviewId;
+      WHERE ReviewId = @ReviewId;
 
       UPDATE Professors
       SET 

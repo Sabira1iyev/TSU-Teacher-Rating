@@ -4,20 +4,13 @@ import bcrypt from "bcryptjs";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { cookies } from "next/headers";
-import { loginLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
     const { password, oldPassword } = await req.json();
 
     const db = await getDb();
-    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-    const { success } = await loginLimiter.limit(ip);
-    if (!success) {
-      return NextResponse.json({
-        message: "Too many attempts, please try again later.",
-      });
-    }
+
     const session = await getIronSession<SessionData>(
       await cookies(),
       sessionOptions,
