@@ -1,9 +1,24 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { verifyResetLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+
+    const { success } = await verifyResetLimiter.limit(ip);
+    if (!success) {
+      return NextResponse.json(
+        {
+          message: "Too many attemps. Please try again later",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
+
     const { email, verifyCode } = await req.json();
     const db = await getDb();
 
