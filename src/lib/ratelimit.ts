@@ -17,3 +17,27 @@ export const loginLimiter = new Ratelimit({
   limiter: Ratelimit.slidingWindow(5, "10m"),
   prefix: "ratelimit:login",
 });
+
+export const forgotPasswordLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10m"),
+  prefix: "ratelimit:forgot-password",
+});
+
+export const registerLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "20m"),
+  prefix: "ratelimit:register",
+});
+
+export const chatBotLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1m"),
+  prefix: "ratelimit:chatBot",
+});
+
+export const reviewLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(2, "1m"),
+  prefix: "ratelimit:review",
+});

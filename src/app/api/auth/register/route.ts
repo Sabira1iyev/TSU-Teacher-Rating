@@ -2,11 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getDb } from "@/lib/db";
 import nodemailer from "nodemailer";
+import { registerLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    const { success } = await registerLimiter.limit(ip);
     const body = await req.json();
     const { firstName, lastName, email, password, faculty, studyYear } = body;
+
+    if (!success) {
+      return NextResponse.json(
+        {
+          message: "Too many atttepmts, please try again later",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
 
     if (!email || !password || !faculty || !firstName || !lastName) {
       return NextResponse.json(

@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import nodemailer from "nodemailer";
+import { forgotPasswordLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    const { success } = await forgotPasswordLimiter.limit(ip);
+    if (!success) {
+      return NextResponse.json(
+        {
+          message: "Too many attempts, please try again later",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
     const { email } = await req.json();
     const db = await getDb();
 
