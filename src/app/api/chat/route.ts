@@ -2,9 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
+import { chatBotLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    const { success } = await chatBotLimiter.limit(ip);
+    if (!success) {
+      return NextResponse.json(
+        {
+          message: "Too many attempts, please try again later!",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
     const session = await getIronSession<SessionData>(
       await cookies(),
       sessionOptions,
