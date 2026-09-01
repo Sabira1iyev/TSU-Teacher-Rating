@@ -3,8 +3,21 @@ import { getDb } from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
+import { reviewLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  const { success } = await reviewLimiter.limit(ip);
+  if (!success) {
+    return NextResponse.json(
+      {
+        message: "Too many reviews. Please try again later",
+      },
+      {
+        status: 429,
+      },
+    );
+  }
   try {
     const body = await req.json();
     const session = await getIronSession<SessionData>(
@@ -21,7 +34,6 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
-    
 
     const pool = await getDb();
 
