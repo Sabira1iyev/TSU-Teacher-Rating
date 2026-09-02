@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
@@ -54,8 +54,10 @@ class ChatRequest(BaseModel):
 
 
 @app.post("/api/chat")
-async def chat(request: ChatRequest):
+async def chat(request: ChatRequest, x_internal_secret: str = Header(None)):
     try:
+        if x_internal_secret != os.getenv("INTERNAL_API_SECRET"):
+            raise HTTPException(status_code=403, detail="Forbidden")
         user_info_text = ""
         if request.user:
             name = request.user.get("firstName", "")

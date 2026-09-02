@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Internal-Secret": process.env.INTERNAL_API_SECRET!,
       },
       body: JSON.stringify(body),
     });
