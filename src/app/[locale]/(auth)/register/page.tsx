@@ -170,7 +170,7 @@ export default function RegisterPage() {
                 {inputs("firstname")}
               </label>
               <input
-                name="frstName"
+                name="firstName"
                 value={formdata.firstName}
                 onChange={handleChange}
                 placeholder={inputs("firstname")}
