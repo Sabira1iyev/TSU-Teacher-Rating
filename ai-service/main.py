@@ -39,6 +39,12 @@ def get_professors_by_id(professor_id: str):
 
 app = FastAPI()
 
+
+@app.get("/")
+async def health_check():
+    return {"status": "alive"}
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
