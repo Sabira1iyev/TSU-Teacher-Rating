@@ -141,7 +141,8 @@
     "sentCode": "Kodu göndər",
     "cancel": "İmtina et",
     "verifyAndContinue": "Təsdiqləyin və davam edin →",
-    "verifying": "Təsdiqlənir..."
+    "verifying": "Təsdiqlənir...",
+    "savePassword": "Yadda saxla"
   },
   "Year": {
     "year": "Kurs",
@@ -296,6 +297,11 @@
     "didntReceive": "Kodu almadınız?",
     "resendCode": "Kodu yenidən göndər",
     "checkSpam": "Spam qovluğunuzu yoxlayın",
-    "codeValid": "Kod 10 dəqiqə ərzində etibarlıdır"
+    "codeValid": "Kod 10 dəqiqə ərzində etibarlıdır",
+    "resetYourPassword": "Şifrənizi sıfırlayın",
+    "newPassword": "Yeni şifrə",
+    "newPasswordPlaceholder": "Min. 8 simvol",
+    "confirmPassword": "Şifrəni təsdiqləyin",
+    "confirmPasswordPleaceholder": "Min. 8 simvol"
   }
 }

@@ -144,7 +144,8 @@
     "sentCode": "კოდის გაგზავნა",
     "cancel": "გაუქმება",
     "verifyAndContinue": "დაადასტურე და გააგრძელე →",
-    "verifying": "მოწმდება..."
+    "verifying": "მოწმდება...",
+    "savePassword": "პაროლის შენახვა"
   },
   "Year": {
     "year": "კურსი",
@@ -303,6 +304,11 @@
     "didntReceive": "კოდი არ მიგიღია?",
     "resendCode": "კოდის ხელახლა გაგზავნა",
     "checkSpam": "შეამოწმე სპამის საქაღალდე",
-    "codeValid": "კოდი მოქმედებს 10 წუთის განმავლობაში"
+    "codeValid": "კოდი მოქმედებს 10 წუთის განმავლობაში",
+    "resetYourPassword": "პაროლის აღდგენა",
+    "newPassword": "ახალი პაროლი",
+    "newPasswordPlaceholder": "მინ. 8 სიმბოლო",
+    "confirmPassword": "დაადასტურე პაროლი",
+    "confirmPasswordPleaceholder": "მინ. 8 სიმბოლო"
   }
 }
