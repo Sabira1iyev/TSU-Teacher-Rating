@@ -3,6 +3,7 @@
 import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useUser } from "@/context/UserContext"
+import { useTranslations } from "next-intl";
 
 
 export default function VerifyPage() {
@@ -13,6 +14,10 @@ export default function VerifyPage() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const inputs = useRef<(HTMLInputElement | null)[]>([]);
+    const label = useTranslations("Label")
+    const login = useTranslations("Login")
+    const loginInputs = useTranslations("Inputs");
+    const button = useTranslations("Buttons");
 
 
     const handleChange = (index: number, value: string) => {
@@ -136,12 +141,12 @@ export default function VerifyPage() {
 
                 {/* Title */}
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-text">Verify your email</h1>
+                    <h1 className="text-2xl font-bold text-text"> email</h1>
                     <p className="text-sm text-text2 mt-2">
-                        We sent a 6-digit code to
-                    </p>
-                    <p className="text-sm text-primary font-medium mt-1">
-                        {user?.email || "your email address"}
+                        {login.rich("digitCode", {
+                            email: user?.email || "...",
+                            b: (chunks) => <span className="text-primary font-medium">{chunks}</span>
+                        })}
                     </p>
                     <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
                 </div>
@@ -187,21 +192,21 @@ export default function VerifyPage() {
                         }
                     `}
                 >
-                    {loading ? "Verifying..." : "Verify and continue →"}
+                    {loading ? button("verifying") : button("verifyAndContinue")}
                 </button>
 
                 {/* Resend*/}
                 <div className="text-center">
                     <p className="text-xs text-text3">
-                        Didn't receive the code? {" "}
+                        {login("didntReceive")}{" "}
                         <span
                             onClick={handleResend}
                             className="text-primary cursor-pointer hover:underline transition-colors font-medium">
-                            Resend code
+                            {login("resendCode")}
                         </span>
                     </p>
                     <p className="text-xs text-text3 mt-2">
-                        Check your spam folder · Code valid for 10 minutes
+                        {login("checkSpam")} · {login("codeValid")}
                     </p>
                 </div>
             </div>

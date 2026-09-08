@@ -145,7 +145,8 @@
     "cancel": "Cancel",
     "verifyAnd": "Verify and Continue",
     "verifyAndContinue": "Verify and continue →",
-    "verifying": "Verifying..."
+    "verifying": "Verifying...",
+    "savePassword": "Save Password"
   },
   "Year": {
     "year": "Year",
@@ -297,6 +298,11 @@
     "didntReceive": "Didn't receive code?",
     "resendCode": "Resend Code",
     "checkSpam": "Check your spam folder",
-    "codeValid": "Code valid for 10 minutes"
+    "codeValid": "Code valid for 10 minutes",
+    "resetYourPassword": "Reset Your Password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Min. 8 characters",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPleaceholder": "Min. 8 characters"
   }
 }
