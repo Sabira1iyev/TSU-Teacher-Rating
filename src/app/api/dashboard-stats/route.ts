@@ -1,57 +1,84 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
-import { stat } from "fs";
+import { supabaseAdmin } from "@/lib/supabase";
+
+function average(values: number[]) {
+  if (values.length === 0) return 0;
+
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
 
 export async function GET(req: NextRequest) {
   try {
-    const pool = await getDb();
+    const { data, error } = await supabaseAdmin
+      .from("reviews")
+      .select("created_at, overall_rating");
 
-    const result = await pool.query(
-      `
-        SELECT
-        COUNT (*) as TotalReviews,
-        SUM(CASE WHEN DATEDIFF(day, CreatedAt, GETDATE()) <= 30 THEN 1 ELSE 0 END) as ThisMonthReviews,
-        SUM(CASE WHEN DATEDIFF(day, CreatedAt, GETDATE()) > 30 AND DATEDIFF(day, CreatedAt, GETDATE()) <= 60 THEN 1 ELSE 0 END) as LastMonthReviews,
+    if (error) {
+      throw error;
+    }
 
-        AVG(CAST(OverallRating as FLOAT)) as TotalAvgRating,
-        AVG(CASE WHEN DATEDIFF(month, CreatedAt, GETDATE()) <= 6 THEN
-        CAST(OverallRating as FLOAT) ELSE NULL END) as ThisSemesterAvgRating,
-        AVG(CASE WHEN DATEDIFF(month, CreatedAt, GETDATE()) > 6 AND DATEDIFF(month,
-        CreatedAt, GETDATE()) <= 12 THEN CAST(OverallRating as FLOAT)ELSE NULL END) as LastSemesterRating
+    const reviews = data ?? [];
+    const now = new Date();
 
-        FROM Reviews
-        `,
+    const thirsdyDaysAgo = new Date(now);
+    thirsdyDaysAgo.setDate(now.getDate() - 30);
+
+    const sixtyDaysAgo = new Date(now);
+    sixtyDaysAgo.setDate(now.getDate() - 60);
+
+    const sixMonthAgo = new Date(now);
+    sixMonthAgo.setDate(now.getMonth() - 6);
+
+    const twelveMonthAgo = new Date(now);
+    twelveMonthAgo.setDate(now.getMonth() - 12);
+
+    const thisMonthReviews = reviews.filter(
+      (review) => new Date(review.created_at) >= thirsdyDaysAgo,
     );
 
-    const stats = result.recordset[0];
+    const lastMonthReviews = reviews.filter((review) => {
+      const createdAt = new Date(review.created_at);
 
-    const lastMonth = stats.LastMonthReviews || 1;
+      return createdAt < thirsdyDaysAgo && createdAt >= sixtyDaysAgo;
+    });
+
+    const thisSemesterRatings = reviews
+      .filter((review) => new Date(review.created_at) >= sixMonthAgo)
+      .map((review) => Number(review.overall_rating));
+
+    const lastSemesterRatings = reviews
+      .filter((review) => {
+        const createdAt = new Date(review.created_at);
+
+        return createdAt < sixMonthAgo && createdAt >= twelveMonthAgo;
+      })
+      .map((review) => Number(review.overall_rating));
+
+    const lastMonthCount = lastMonthReviews.length;
     const monthGrowth =
-      ((stats.ThisMonthReviews - stats.LastMonthReviews) / lastMonth) * 100;
+      ((thisMonthReviews.length - lastMonthCount) / (lastMonthCount || 1)) *
+      100;
 
     const semesterGrowth =
-      (stats.ThisSemesterAvgRating || 0) - (stats.LastSemesterRating || 0);
+      average(thisSemesterRatings) - average(lastSemesterRatings);
 
+    return NextResponse.json({
+      totalReviews: reviews.length,
+      monthGrowth: Math.round(monthGrowth),
+      avgRating: average(
+        reviews.map((review) => Number(review.overall_rating)),
+      ),
+      semesterGrowth: semesterGrowth.toFixed(1),
+    });
+  } catch (error) {
+    console.log("Dashboard stats error:", error);
     return NextResponse.json(
       {
-        totalReviews: stats.TotalReviews || 0,
-        monthGrowth: Math.round(monthGrowth),
-        avgRating: stats.TotalAvgRating || 0,
-        semesterGrowth: semesterGrowth.toFixed(1),
+        message: "Internal server error",
       },
       {
-        status: 200,
+        status: 500,
       },
     );
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(
-        {
-            message: "Internal server error",
-        },
-        {
-            status: 500,
-        }
-    )
   }
 }
