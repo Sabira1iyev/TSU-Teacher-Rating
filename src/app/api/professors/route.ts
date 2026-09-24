@@ -1,47 +1,89 @@
-import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
+import { NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabase";
+
+type ProfessorWithRelations = {
+  id: number;
+  first_name: string,
+  last_name: string;
+  email:string;
+  average_rating: number | string;
+  review_count: number;
+  title: string | null;
+  photo_url: string| null;
+  created_at: string;
+  departments: {
+    name:string;
+    faculties: {
+      name: string;
+    } | null;
+  } | null;
+};
 
 export async function GET() {
   try {
-    const db = await getDb();
+    const { data, error } = await supabaseAdmin
+      .from("professors")
+      .select(
+        `
+      id,
+      first_name,
+      last_name,
+      email,
+      average_rating,
+      review_count,
+      title,
+      photo_url,
+      created_at,
+      departments(
+      name, 
+      faculties(
+      name
+      )
+      )
+      `,
+      )
+      .order("last_name", { ascending: true });
 
-    const result = await db.query(`
-        Select
-        p.ProfessorId as id,
-        p.FirstName as firstName,
-        p.LastName as lastName,
-        p.Email as email,
-        p.AverageRating as overallRating,
-        p.reviewCount as reviewCount,
-        p.Title as title,
-        p.PhotoUrl as photoUrl,
-        p.CreatedAt as createdAt,
-        d.Name as department,
-        f.Name as faculty
-        FROM Professors p
-        LEFT JOIN Departments d ON p.DepartmentId = d.DepartmentId
-        LEFT JOIN Faculties f ON d.FacultyId = f.FacultyId
-        `,
-    )
- 
-    const professors = result.recordset.map(p => ({
-      ...p,
+    if (error) {
+      console.log("Error to fetch professors from supabase:", error);
+      return NextResponse.json(
+        {
+          message: "Failed to fetch professors",
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+    const professorRows = (data ?? []) as unknown as ProfessorWithRelations[];
+    const professors = professorRows.map((professor) => ({
+      id: professor.id,
+      firstName: professor.first_name,
+      lastName: professor.last_name,
+      email: professor.email,
+      overallRating: professor.average_rating,
+      reviewCount: professor.review_count,
+      title: professor.title,
+      photoUrl: professor.photo_url,
+      createdAt: professor.created_at,
+      department: professor.departments?.name ?? "",
+      faculty: professor.departments?.faculties?.name ?? "",
       courses: [],
       recommendationRate: 0,
       trendData: [],
       badges: [],
       criteria: {
-          teaching: p.overallRating || 0,
-          examDifficulty: p.overallRating || 0,
-          homeWork: p.overallRating || 0,
-          accessibility: p.overallRating || 0,
-          examControlLevel: p.overallRating || 0,
-      }
+        teachingQuality: Number(professor.average_rating),
+        examDifficulty: Number(professor.average_rating),
+        homeworkLoad: Number(professor.average_rating),
+        accessibility: Number(professor.average_rating),
+        examControlLevel: Number(professor.average_rating),
+      },
     }));
 
-    return NextResponse.json(professors, { status: 200 });   
+    return NextResponse.json(professors);
   } catch (error) {
-    console.log(error);
+    console.log("Unexpexted professors endpoint error:", error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 },

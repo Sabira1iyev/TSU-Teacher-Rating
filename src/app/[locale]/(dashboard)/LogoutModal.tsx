@@ -5,6 +5,7 @@ import { useUser } from "@/context/UserContext";
 interface LogoutModalProps {
   isOpen: boolean;
   onClose: () => void;
+  
 }
 
 export default function LogoutModal({ isOpen, onClose }: LogoutModalProps) {
