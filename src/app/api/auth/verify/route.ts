@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,64 +13,92 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const db = await getDb();
+    const normalizedEmail = email.trim().toLowerCase();
+    const verificationCode = String(code).trim();
 
-    // Find the user and their verification code
-    const existing = await db
-      .request()
-      .input("Email", email)
-      .query(
-        "SELECT UserId, VerificationCode, VerificationExpiry, IsVerified FROM Users WHERE Email = @Email"
-      );
+    const { data: user, error: userError } = await supabaseAdmin
+      .from("users")
+      .select("id, verification_code, verification_expiry, is_verified")
+      .eq("email", normalizedEmail)
+      .maybeSingle();
 
-    if (existing.recordset.length === 0) {
+    if (userError) {
+      throw userError;
+    }
+
+    if (!user) {
       return NextResponse.json(
-        { error: "User not found." },
-        { status: 404 }
+        {
+          message: "User not found.",
+        },
+        {
+          status: 404,
+        },
       );
     }
 
-    const user = existing.recordset[0];
-
-    if (user.IsVerified) {
+    if (user.is_verified) {
       return NextResponse.json(
-        { error: "Email is already verified." },
-        { status: 400 }
+        {
+          message: "Email is already registered.",
+        },
+        {
+          status: 400,
+        },
       );
     }
 
-    if (user.VerificationCode !== code) {
+    if (user.verification_code !== verificationCode) {
       return NextResponse.json(
-        { error: "Invalid verification code." },
-        { status: 400 }
+        {
+          message: "Invalid verification code!",
+        },
+        {
+          status: 400,
+        },
       );
     }
 
-    if (new Date() > new Date(user.VerificationExpiry)) {
+    if (
+      !user.verification_expiry ||
+      new Date() > new Date(user.verification_expiry)
+    ) {
       return NextResponse.json(
-        { error: "Verification code has expired. Please request a new one." },
-        { status: 400 }
+        {
+          message: "Verification code has expired. Please request a new one.",
+        },
+        {
+          status: 400,
+        },
       );
     }
 
-    // Update user to verified and clear code
-    await db
-      .request()
-      .input("Email", email)
-      .query(
-        "UPDATE Users SET IsVerified = 1, VerificationCode = NULL, VerificationExpiry = NULL WHERE Email = @Email"
-      );
+    const { error: updateError } = await supabaseAdmin
+      .from("users")
+      .update({
+        is_verified: true,
+        verification_code: null,
+        verification_expiry: null,
+      })
+      .eq("id", user.id);
+
+    if (updateError) {
+      throw updateError;
+    }
 
     return NextResponse.json(
-      { message: "Email successfully verified." },
-      { status: 200 }
+      {
+        message: "Email successfully verified.",
+      },
+      {
+        status: 200,
+      },
     );
-
   } catch (error) {
     console.error("Verify error:", error);
     return NextResponse.json(
       { error: "Something went wrong. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

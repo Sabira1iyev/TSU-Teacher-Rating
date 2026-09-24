@@ -1,17 +1,27 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
+import { supabaseAdmin } from "@/lib/supabase";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const pool = await getDb();
-    const result = pool.request().query(
-      `
-            SELECT Name from Tags
-            `,
-    );
+    const { data, error } = await supabaseAdmin
+      .from("tags")
+      .select("name")
+      .order("name", { ascending: true });
 
-    return NextResponse.json((await result).recordset);
+    if (error) {
+      console.log("Error to fetch tags from supabase:", error);
+      return NextResponse.json(
+        {
+          message: "Failed to fetch tags",
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+    return NextResponse.json((data ?? []).map((tag) => ({ Name: tag.name })));
   } catch (error) {
+    console.error("Unexpected error while fetching tags:", error);
     return NextResponse.json(
       {
         message: "Failed to fetch tags",

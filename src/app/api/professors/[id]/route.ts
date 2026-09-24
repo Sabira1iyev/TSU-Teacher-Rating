@@ -1,219 +1,363 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse, NextRequest, userAgent } from "next/server";
 import { getDb } from "@/lib/db";
+import { supabaseAdmin } from "@/lib/supabase";
+import { FACULTIES } from "@/lib/constants";
+
+type ProfessorDetailBase = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  average_rating: number | string;
+  review_count: number;
+  title: string | null;
+  photo_url: string | null;
+  created_at: string;
+  departments: {
+    name: string;
+    faculties: { name: string | null };
+  } | null;
+  courses: Array<{
+    name: string;
+  }>;
+};
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getDb();
   try {
     const { id } = await params;
-    const rawUserId = req.nextUrl.searchParams.get("userId");
-    const userId = rawUserId && rawUserId !== "undefined" ? rawUserId : null;
-
-    const result = await (
-      await db
-    )
-      .request()
-      .input("Id", id)
-      .query(
+    const { data, error } = await supabaseAdmin
+      .from("professors")
+      .select(
         `
-                    Select
-        p.ProfessorId as id,
-        p.FirstName as firstName,
-        p.LastName as lastName,
-        p.Email as email,
-        p.AverageRating as overallRating,
-        p.reviewCount as reviewCount,
-        p.Title as title,
-        p.PhotoUrl as photoUrl,
-        p.CreatedAt as createdAt,
-        d.Name as department,
-        f.Name as faculty
-        FROM Professors p
-        LEFT JOIN Departments d ON p.DepartmentId = d.DepartmentId
-        LEFT JOIN Faculties f ON d.FacultyId = f.FacultyId
-        WHERE p.ProfessorId = @Id
-            `,
-      );
-
-    if (result.recordset.length === 0) {
-      return NextResponse.json(
-        { message: "Professor not found!" },
-        { status: 404 },
-      );
-    }
-
-    const p = result.recordset[0];
-
-    const trenddResult = await (await db).request().input("ProfId", id).query(`
-      SELECT
-      FORMAT(CreatedAt, 'MMM', 'en-US') as month,
-      AVG(CAST(OverallRating as FLOAT)) as rating,
-      COUNT(*) as reviewCount
-      FROM Reviews
-      WHERE ProfessorId = @ProfId
-      AND CreatedAt >= DATEADD(MONTH, -6, GETDATE())
-      GROUP BY FORMAT(CreatedAt, 'MMM', 'en-US'), MONTH(CreatedAt)
-      ORDER BY MONTH(CreatedAt)
-      `);
-
-    const months = [];
-    const now = new Date();
-    for (let i = 5; i >= 0; i--) {
-      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      months.push(d.toLocaleString("en-US", { month: "short" }));
-    }
-
-    const finalTrendData = months.map((monthName) => {
-      const existingData = trenddResult.recordset.find(
-        (row) => row.month === monthName,
-      );
-      if (existingData) {
-        return {
-          month: monthName,
-          rating: existingData.rating,
-          reviewCount: existingData.reviewCount,
-        };
-      } else {
-        return {
-          month: monthName,
-          rating: 0,
-          reviewCount: 0,
-        };
-      }
-    });
-
-    const fullCourses = await (
-      await db
-    )
-      .request()
-      .input("ProfId", id)
-      .query(
-        `
-        SELECT CourseName FROM Courses WHERE ProfessorId = @ProfId `,
-      );
-
-    const fullProfessor = {
-      ...p,
-      courses: fullCourses.recordset.map((c: any) => c.CourseName) || [],
-      recommendationRate: 0,
-      trendData: finalTrendData,
-    };
-
-    const reviewResult = await (
-      await db
-    )
-      .request()
-      .input("ProfId", id)
-      .input("ViewerId", userId)
-      .query(
-        `
-      SELECT
-      (SELECT COUNT(*) FROM ReviewInteractions WHERE ReviewId = r.ReviewId AND InteractionType = 'LIKE') as likeCount,
-      (SELECT COUNT(*) FROM ReviewInteractions WHERE ReviewId = r.ReviewId AND InteractionType = 'DISLIKE') as dislikeCount,
-      (SELECT InteractionType FROM ReviewInteractions WHERE ReviewId = r.ReviewId AND UserId = @ViewerId) as userInteraction,
-      r.ReviewId as id,
-      r.UserId as userId,
-      r.ProfessorId as professorId,
-      r.CourseName as courseName,
-      r.Semester as semester,
-      r.OverallRating as overallRating,
-      r.Comment as comment,
-      r.CreatedAt as createdAt,
-      r.TeachingRating as teaching,
-      r.ExamDifficultyRating as examDifficulty,
-      r.HomeWorkRating as homeWork,
-      r.AccessibilityRating as accessibility,
-      r.ExamControlRating as examControlLevel,
-      r.WouldRecommend as wouldRecommend,
-      r.IsAnonymus as isAnonymus,
-      (SELECT STRING_AGG(t.Name, ',' )
-      FROM ReviewTags rt
-      JOIN Tags t ON rt.TagId = t.TagId
-      WHERE rt.ReviewId = r.ReviewId) as tagsString
-      FROM Reviews r
-      WHERE r.ProfessorId = @ProfId
-      ORDER BY r.CreatedAt DESC
+      id,
+      first_name,
+      last_name,
+      email,
+      average_rating,
+      review_count,
+      title,
+      photo_url,
+      created_at,
+      departments(
+      name,
+      faculties(
+      name)),
+      courses(
+      name
+      )
       `,
+      )
+      .eq("id", id)
+      .maybeSingle();
+
+    if (error) {
+      console.log("Failed to fetch professor detail:", error);
+
+      return NextResponse.json(
+        {
+          message: "Internal server error",
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+    const professor = data as unknown as ProfessorDetailBase | null;
+
+    if (!professor) {
+      return NextResponse.json(
+        {
+          message: "Professor not found!",
+        },
+        {
+          status: 404,
+        },
+      );
+    }
+
+    const rawUserId = req.nextUrl.searchParams.get("userId");
+
+    const viewerId =
+      rawUserId && Number.isSafeInteger(Number(rawUserId))
+        ? Number(rawUserId)
+        : null;
+
+    const [reviewsResult, tagsResult] = await Promise.all([
+      supabaseAdmin
+        .from("reviews")
+        .select(
+          `
+        id,
+        user_id,
+        professor_id,
+        course_name,
+        semester,
+        overall_rating,
+        comment,
+        created_at,
+        teaching_rating,
+        exam_difficulty_rating,
+        homework_rating,
+        accessibility_rating,
+        exam_control_rating,
+        would_recommend,
+        is_anonymous
+        `,
+        )
+        .eq("professor_id", id)
+        .order("created_at", { ascending: false }),
+
+      supabaseAdmin.from("tags").select("id, name"),
+    ]);
+
+    if (reviewsResult.error || tagsResult.error) {
+      console.log("Failed to fetch professor reviews: ", {
+        reviewsError: reviewsResult.error,
+        tagsError: tagsResult.error,
+      });
+      return NextResponse.json(
+        {
+          message: "Internal server error",
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+
+    const rawReviews = reviewsResult.data ?? [];
+    const reviewIds = rawReviews.map((review) => review.id);
+
+    let reviewTagRows: Array<{ review_id: number; tag_id: number }> = [];
+    let interactionRows: Array<{
+      review_id: number;
+      user_id: number;
+      interaction_type: string;
+    }> = [];
+
+    if (reviewIds.length > 0) {
+      const [reviewTagsResult, interactionsResult] = await Promise.all([
+        supabaseAdmin
+          .from("review_tags")
+          .select("review_id, tag_id")
+          .in("review_id", reviewIds),
+
+        supabaseAdmin
+          .from("review_interactions")
+          .select("review_id, user_id, interaction_type")
+          .in("review_id", reviewIds),
+      ]);
+
+      if (reviewTagsResult.error || interactionsResult.error) {
+        console.log("Failed to fetch review relations: ", {
+          reviewTagsEror: reviewTagsResult.error,
+          interactionsError: interactionsResult.error,
+        });
+        return NextResponse.json(
+          {
+            message: "Internal server error!",
+          },
+          {
+            status: 500,
+          },
+        );
+      }
+      reviewTagRows = reviewTagsResult.data ?? [];
+      interactionRows = interactionsResult.data ?? [];
+
+      const tagsById = new Map(
+        (tagsResult.data ?? []).map((tag) => [tag.id, tag.name]),
       );
 
-    const reviews = reviewResult.recordset.map((r: any) => ({
-      id: r.id,
-      userId: r.userId,
-      professorId: r.professorId.toString(),
-      courseName: r.courseName || "",
-      semester: r.semester || "",
-      overallRating: r.overallRating || 0,
-      criteria: {
-        teaching: r.teaching || 0,
-        examDifficulty: r.examDifficulty || 0,
-        homeWork: r.homeWork || 0,
-        accessibility: r.accessibility || 0,
-        examControlLevel: r.examControlLevel || 0,
-      },
-      comment: r.comment || "",
-      tags: r.tagsString ? r.tagsString.split(",") : [],
-      wouldRecommend: r.wouldRecommend || false,
-      isAnonymous: r.isAnonymus || true,
-      displayDate: new Date(r.createdAt).toLocaleDateString("en-us", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      createdAt: r.createdAt,
-      likeCount: r.likeCount || 0,
-      dislikeCount: r.dislikeCount || 0,
-      userInteraction: r.userInteraction || null,
-    }));
+      const tagsByReviewId = new Map<Number, string[]>();
 
-    const recommendCount = reviews.filter((r) => r.wouldRecommend).length;
-    const totalReviews = reviews.length;
+      for (const reviewTag of reviewTagRows) {
+        const tagName = tagsById.get(reviewTag.tag_id);
 
-    const breakDown = [5, 4, 3, 2, 1].map((star) => {
-      const count = reviews.filter(
-        (r) => Math.floor(r.overallRating) === star,
+        if (!tagName) continue;
+
+        const currentTags = tagsByReviewId.get(reviewTag.review_id) ?? [];
+        currentTags.push(tagName);
+        tagsByReviewId.set(reviewTag.review_id, currentTags);
+      }
+
+      const interactionsByReviewId = new Map<
+        number,
+        Array<{ user_id: number; interaction_type: string }>
+      >();
+
+      for (const interaction of interactionRows) {
+        const currentInteractions =
+          interactionsByReviewId.get(interaction.review_id) ?? [];
+
+        currentInteractions.push({
+          user_id: interaction.user_id,
+          interaction_type: interaction.interaction_type,
+        });
+
+        interactionsByReviewId.set(interaction.review_id, currentInteractions);
+      }
+
+      const reviews = rawReviews.map((review) => {
+        const reviewInteractions = interactionsByReviewId.get(review.id) ?? [];
+
+        return {
+          id: review.id,
+          userid: review.user_id,
+          professorId: review.professor_id,
+          courseName: review.course_name,
+          semester: review.semester,
+          overallRating: review.overall_rating,
+          criteria: {
+            teaching: Number(review.teaching_rating),
+            examDifficulty: Number(review.exam_difficulty_rating),
+            homeWork: Number(review.homework_rating),
+            accessibility: Number(review.accessibility_rating),
+            examControlLevel: Number(review.exam_control_rating),
+          },
+          comment: review.comment ?? "",
+          tags: tagsByReviewId.get(review.id) ?? [],
+          wouldRecommend: review.would_recommend,
+          isAnonymous: review.is_anonymous,
+          displayDate: new Date(review.created_at).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+          createdAt: review.created_at,
+          likeCount: reviewInteractions.filter(
+            (interaction) => interaction.interaction_type === "LIKE",
+          ).length,
+          dislikeCount: reviewInteractions.filter(
+            (interaction) => interaction.interaction_type === "DISLIKE",
+          ).length,
+          userInteraction:
+            viewerId === null
+              ? null
+              : (reviewInteractions.find(
+                  (interaction) => interaction.user_id === viewerId,
+                )?.interaction_type ?? null),
+        };
+      });
+      const totalReviews = reviews.length;
+      const recommendCount = reviews.filter(
+        (review) => review.wouldRecommend,
       ).length;
 
-      const percent =
-        totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
+      const ratingBreakDown = [5, 4, 3, 2, 1].map((star) => {
+        const count = reviews.filter(
+          (review) => Math.floor(review.overallRating) === star,
+        ).length;
+        return {
+          star,
+          percent:
+            totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0,
+        };
+      });
+      const now = new Date();
+      const trendMonths = Array.from({ length: 6 }, (_, index) => {
+        const date = new Date(
+          now.getFullYear(),
+          now.getMonth() - (5 - index),
+          1,
+        );
 
-      return { star, percent };
-    });
+        return {
+          key: `${date.getFullYear()}-${date.getMonth()}`,
+          month: date.toLocaleString("en-US", { month: "short" }),
+        };
+      });
 
-    fullProfessor.ratingBreakDown = breakDown;
+      const trendTotals = new Map<
+        string,
+        { ratingTotal: number; reviewCount: number }
+      >();
 
-    fullProfessor.recommendationRate =
-      totalReviews > 0 ? Math.round((recommendCount / totalReviews) * 100) : 0;
+      for (const review of reviews) {
+        const date = new Date(review.createdAt);
+        const key = `${date.getFullYear()}-${date.getMonth()}`;
+        const current = trendTotals.get(key);
 
-    fullProfessor.reviews = reviews;
+        if (current) {
+          current.ratingTotal += review.overallRating;
+          current.reviewCount += 1;
+        } else {
+          trendTotals.set(key, {
+            ratingTotal: review.overallRating,
+            reviewCount: 1,
+          });
+        }
+      }
 
-    fullProfessor.criteria = {
-      teaching: totalReviews
-        ? reviews.reduce((sum, r) => sum + r.criteria.teaching, 0) /
-          totalReviews
-        : 0,
-      examDifficulty: totalReviews
-        ? reviews.reduce((sum, r) => sum + r.criteria.examDifficulty, 0) /
-          totalReviews
-        : 0,
-      homeWork: totalReviews
-        ? reviews.reduce((sum, r) => sum + r.criteria.homeWork, 0) /
-          totalReviews
-        : 0,
-      accessibility: totalReviews
-        ? reviews.reduce((sum, r) => sum + r.criteria.accessibility, 0) /
-          totalReviews
-        : 0,
-      examControlLevel: totalReviews
-        ? reviews.reduce((sum, r) => sum + r.criteria.examControlLevel, 0) /
-          totalReviews
-        : 0,
-    };
+      const trendData = trendMonths.map(({ key, month }) => {
+        const totals = trendTotals.get(key);
 
-    return NextResponse.json(fullProfessor, { status: 200 });
+        return {
+          month,
+          rating: totals ? totals.ratingTotal / totals.reviewCount : 0,
+          reviewCount: totals?.reviewCount ?? 0,
+        };
+      });
+
+      return NextResponse.json({
+        id: professor.id,
+        firstName: professor.first_name,
+        lastName: professor.last_name,
+        email: professor.email,
+        overallRating: Number(professor.average_rating),
+        reviewCount: professor.review_count,
+        title: professor.title,
+        photoUrl: professor.photo_url,
+        createdAt: professor.created_at,
+        department: professor.departments?.name ?? "",
+        faculty: professor.departments?.faculties?.name ?? "",
+        courses: professor.courses.map((course) => course.name),
+        recommendationRate:
+          totalReviews > 0
+            ? Math.round((recommendCount / totalReviews) * 100)
+            : 0,
+        trendData,
+        ratingBreakDown,
+        reviews,
+        criteria: {
+          teaching: totalReviews
+            ? reviews.reduce(
+                (sum, review) => sum + review.criteria.teaching,
+                0,
+              ) / totalReviews
+            : 0,
+          examDifficulty: totalReviews
+            ? reviews.reduce(
+                (sum, review) => sum + review.criteria.examDifficulty,
+                0,
+              ) / totalReviews
+            : 0,
+          homeWork: totalReviews
+            ? reviews.reduce(
+                (sum, review) => sum + review.criteria.homeWork,
+                0,
+              ) / totalReviews
+            : 0,
+          accessibility: totalReviews
+            ? reviews.reduce(
+                (sum, review) => sum + review.criteria.accessibility,
+                0,
+              ) / totalReviews
+            : 0,
+          examControlLevel: totalReviews
+            ? reviews.reduce(
+                (sum, review) => sum + review.criteria.examControlLevel,
+                0,
+              ) / totalReviews
+            : 0,
+        },
+      });
+    }
   } catch (error) {
-    console.log(error);
+    console.log("Unexpected professor detail endpoint error:", error);
     return NextResponse.json(
       {
         message: "Internal server error!",

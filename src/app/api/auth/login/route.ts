@@ -6,6 +6,20 @@ import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { DBUser } from "@/types/user";
 import { loginLimiter } from "@/lib/ratelimit";
+import { supabaseAdmin } from "@/lib/supabase";
+import { use } from "react";
+
+type LoginUser = {
+  id: number;
+  email: string;
+  password_hash: string;
+  display_name: string;
+  is_verified: boolean;
+  faculty: string;
+  academic_level: string | null;
+  created_at: string;
+  is_admin: boolean;
+};
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,75 +36,99 @@ export async function POST(req: NextRequest) {
       );
     }
     const { email, password } = await req.json();
-    const db = await getDb();
+    const normalizedEmail = email.trim().toLowerCase();
 
-    const result = await db
-      .request()
-      .input("Email", email)
-      .query("SELECT * FROM Users WHERE Email = @Email");
+    const { data, error } = await supabaseAdmin
+      .from("users")
+      .select(
+        `
+      id,
+      email,
+      password_hash,
+      display_name,
+      is_verified,
+      faculty,
+      academic_level,
+      created_at,
+      is_admin
+`,
+      )
+      .eq("email", normalizedEmail)
+      .maybeSingle();
 
-    if (result.recordset.length === 0) {
+    const user = data as unknown as LoginUser | null;
+
+    if (!user) {
       return NextResponse.json(
         {
           message: "No account is registered with this email.",
         },
-        { status: 404 },
+        {
+          status: 404,
+        },
       );
     }
 
-    const user: DBUser = result.recordset[0];
-    const isPasswordTrue = await bcrypt.compare(password, user.PasswordHash);
-    if (!isPasswordTrue) {
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      user.password_hash,
+    );
+
+    if (!isPasswordCorrect) {
       return NextResponse.json(
-        { message: "Password is incorrect." },
-        { status: 401 },
+        {
+          message: "Password is incorrect.",
+        },
+        {
+          status: 401,
+        },
       );
-    } else {
-      const nameParts = user.DisplayName
-        ? user.DisplayName.split(" ")
-        : ["", ""];
-      const firstName = nameParts[0] || "";
-      const lastName = nameParts.slice(1).join(" ") || "";
-
-      const isVerifiedTrue = user.IsVerified ? true : false;
-
-      if (!isVerifiedTrue) {
-        return NextResponse.json(
-          {
-            message:
-              "You are not verified yet! Enter your personal code for verification.",
-          },
-          { status: 401 },
-        );
-      } else {
-        const session = await getIronSession<SessionData>(
-          await cookies(),
-          sessionOptions,
-        );
-
-        session.userId = user.UserId;
-        session.isAdmin = user.isAdmin;
-        session.isLoggedIn = true;
-        await session.save();
-
-        return NextResponse.json(
-          {
-            message: "Login successful",
-            user: {
-              firstName: firstName,
-              lastName: lastName,
-              email: user.Email,
-              faculty: user.Faculty,
-              studyYear: user.AcademicLevel,
-              userId: user.UserId,
-              createdAt: user.CreatedAt,
-              isAdmin: user.isAdmin,
-            },
-          },
-          { status: 200 },
-        );
-      }
     }
+
+    if (!user.is_verified) {
+      return NextResponse.json(
+        {
+          message:
+            "You are not verified yet! Enter you personal code for verification.",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    const nameParts = user.display_name.split(" ");
+    const firstName = nameParts[0] ?? "";
+    const lastName = nameParts[1] ?? "";
+
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+
+    session.userId = user.id;
+    session.isAdmin = user.is_admin;
+    session.isLoggedIn = true;
+    await session.save();
+
+    return NextResponse.json(
+      {
+        message: "Login successfull",
+        user: {
+          firstName,
+          lastName,
+          email: user.email,
+          faculty: user.faculty,
+          studyYear: user.academic_level,
+          userId: user.id,
+          createdAt: user.created_at,
+          isAdmin: user.is_admin,
+        },
+      },
+      {
+        status: 200,
+      },
+    );
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(
