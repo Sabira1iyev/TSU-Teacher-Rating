@@ -1,12 +1,21 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { cookies } from "next/headers";
+import { supabaseAdmin } from "@/lib/supabase";
+
+type ProfessorForReview = {
+  first_name: string;
+  last_name: string;
+  title: string | null;
+  departments: {
+    faculties: {
+      name: string;
+    } | null;
+  } | null;
+};
 
 export async function GET(req: NextRequest) {
-
-
   try {
     const session = await getIronSession<SessionData>(
       await cookies(),
@@ -23,36 +32,54 @@ export async function GET(req: NextRequest) {
         },
       );
     }
-
-    const pool = await getDb();
-
-    const result = await pool
-      .request()
-      .input("userId", Number(userId))
-      .query(
+    const { data: userReviews, error: userReviewsError } = await supabaseAdmin
+      .from("reviews")
+      .select(
         `
-    SELECT 
-    r.*,
-    p.FirstName as professorFirstName, 
-    p.LastName as professorLastName, 
-    p.Title as professorTitle
-    FROM Reviews r
-    JOIN Professors p ON r.ProfessorId = p.ProfessorId
-    WHERE r.UserId = @userId
-    ORDER BY r.CreatedAt DESC
-    `,
-      );
+        id, 
+        professor_id, 
+        course_name, 
+        overall_rating, 
+        comment, 
+        created_at,
 
-    const reviews = result?.recordset;
+         professors (
+         first_name, 
+         last_name, 
+         title,
+         departments(
+         faculties(
+         name
+            )
+          )
+        )
+      `,
+      )
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
 
-    return NextResponse.json(
-      {
-        reviews,
-      },
-      {
-        status: 200,
-      },
-    );
+    if (userReviewsError) throw userReviewsError;
+
+    const reviews = (userReviews ?? []).map((review) => {
+      const professor =
+        review.professors as unknown as ProfessorForReview | null;
+
+      return {
+        ReviewId: review.id,
+        ProfessorId: review.professor_id,
+        CourseName: review.course_name,
+        OverallRating: Number(review.overall_rating),
+        Comment: review.comment,
+        CreatedAt: review.created_at,
+
+        professorFirstName: professor?.first_name ?? "",
+        professorLastName: professor?.last_name ?? "",
+        professorTitle: professor?.title ?? "",
+        professorFaculty: professor?.departments?.faculties?.name ?? "",
+      };
+    });
+
+    return NextResponse.json({ reviews });
   } catch (error) {
     console.log("API error:", error);
     return NextResponse.json(
