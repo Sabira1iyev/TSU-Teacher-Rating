@@ -4,6 +4,8 @@ import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { reviewLimiter } from "@/lib/ratelimit";
+import { supabaseAdmin } from "@/lib/supabase";
+/* ---------------POST---------------- */
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
@@ -35,102 +37,82 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const pool = await getDb();
+    const { data: newReview, error: reviewError } = await supabaseAdmin
+      .from("reviews")
+      .insert({
+        professor_id: Number(body.professorId),
+        user_id: userId,
+        course_name: body.courseName,
+        semester: body.semester,
+        overall_rating: body.overallRating,
+        comment: body.comment,
+        is_anonymous: true,
+        teaching_rating: body.criteria.teaching,
+        exam_difficulty_rating: body.criteria.examDifficulty,
+        homework_rating: body.criteria.homeWork,
+        accessibility_rating: body.criteria.accessibility,
+        exam_control_rating: body.criteria.examControlLevel,
+        would_recommend: body.wouldRecommend,
+      })
+      .select("id")
+      .single();
 
-    const result = await pool
-      .request()
-      .input("ProfessorId", body.professorId)
-      .input("UserId", userId)
-      .input("CourseName", body.courseName)
-      .input("Semester", body.semester)
-      .input("TeacherRating", body.criteria.teaching)
-      .input("ExamDifficultyRating", body.criteria.examDifficulty)
-      .input("HomeWorkRating", body.criteria.homeWork)
-      .input("AccessibilityRating", body.criteria.accessibility)
-      .input("ExamControlRating", body.criteria.examControlLevel)
-      .input("WouldRecommend", body.wouldRecommend ? 1 : 0)
-      .input("OverallRating", body.overallRating)
-      .input("Comment", body.comment)
-      .input("IsAnonymus", 1)
-      .query(
-        `
-        INSERT INTO Reviews(
-        ProfessorId,
-        UserId,
-        OverallRating,
-        Comment,
-        IsAnonymus,
-        CourseName,
-        Semester,
-        TeachingRating,
-        ExamDifficultyRating,
-        HomeWorkRating,
-        AccessibilityRating,
-        ExamControlRating,
-        WouldRecommend
-        )
-        OUTPUT INSERTED.ReviewId
-        VALUES(
-        @ProfessorId,
-        @UserId,
-        @OverallRating,
-        @Comment,
-        @IsAnonymus,
-        @CourseName,
-        @Semester,
-        @TeacherRating,
-        @ExamDifficultyRating,
-        @HomeWorkRating,
-        @AccessibilityRating,
-        @ExamControlRating,
-        @WouldRecommend
-        )
-        `,
-      );
-
-    const newReviewId = result.recordset[0].ReviewId;
-
-    if (body.tags && body.tags.length > 0) {
-      for (const tagName of body.tags) {
-        const tagResult = await pool
-          .request()
-          .input("TagName", tagName)
-          .query("Select TagId from Tags where Name=@TagName");
-
-        if (tagResult.recordset.length > 0) {
-          const tagId = tagResult.recordset[0].TagId;
-
-          await pool
-            .request()
-            .input("ReviewId", newReviewId)
-            .input("TagId", tagId)
-            .query(
-              `
-                INSERT INTO ReviewTags(ReviewId, TagId) values (
-                @ReviewId, 
-                @TagId
-                )
-                `,
-            );
-        }
-      }
+    if (reviewError || !newReview) {
+      throw reviewError ?? new Error("Review could not be created.");
     }
 
-    await pool
-      .request()
-      .input("ProfessorId", body.professorId)
-      .query(
-        `
-      UPDATE Professors
-      SET
-      reviewCount = (SELECT COUNT(*) FROM Reviews WHERE ProfessorId = @ProfessorId),
-      AverageRating = (SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews
-      WHERE ProfessorId = @ProfessorId)
-      WHERE ProfessorId = @ProfessorId      
-      `,
-      );
+    const newReviewId = newReview.id;
 
-    return NextResponse.json({ message: "REVIEWS received" }, { status: 200 });
+    if (body.tags?.length > 0) {
+      const { data: selectedTags, error: tagsError } = await supabaseAdmin
+        .from("tags")
+        .select("id")
+        .in("name", body.tags);
+
+      if (tagsError) throw tagsError;
+
+      const reviewTags = selectedTags.map((tag) => ({
+        review_id: newReviewId,
+        tag_id: tag.id,
+      }));
+
+      const { error: reviewTagsError } = await supabaseAdmin
+        .from("review_tags")
+        .insert(reviewTags);
+
+      if (reviewTagsError) throw reviewTagsError;
+    }
+
+    const { data: professorReviews, error: professorReviewsError } =
+      await supabaseAdmin
+        .from("reviews")
+        .select("overall_rating")
+        .eq("professor_id", Number(body.professorId));
+
+    if (professorReviewsError) throw professorReviewsError;
+    const reviewCount = professorReviews.length;
+    const averageRating =
+      reviewCount > 0
+        ? professorReviews.reduce(
+            (sum, review) => sum + Number(review.overall_rating),
+            0,
+          ) / reviewCount
+        : 0;
+
+    const { error: updateReviewsError } = await supabaseAdmin
+      .from("professors")
+      .update({
+        review_count: reviewCount,
+        average_rating: averageRating,
+      })
+      .eq("id", Number(body.professorId));
+
+    if (!updateReviewsError) throw updateReviewsError;
+
+    return NextResponse.json(
+      { message: "Review saved successfully." },
+      { status: 201 },
+    );
   } catch (error: any) {
     console.log("API ERROR", error);
     return NextResponse.json(
@@ -142,6 +124,8 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+/* ---------------PUT---------------- */
 
 export async function PUT(req: NextRequest) {
   try {
@@ -163,116 +147,6 @@ export async function PUT(req: NextRequest) {
         },
       );
     }
-    const pool = await getDb();
-
-    const ownerCheck = await pool
-      .request()
-      .input("ReviewId", reviewId)
-      .input("UserId", userId)
-      .query(
-        `
-      SELECT * FROM Reviews
-      WHERE ReviewId = @ReviewId AND UserId = @UserId;
-      `,
-      );
-    if (ownerCheck.recordset.length === 0) {
-      return NextResponse.json(
-        {
-          message: "Not authorized!",
-        },
-        {
-          status: 403,
-        },
-      );
-    }
-
-    await pool
-      .request()
-      .input("UserId", userId)
-      .input("ReviewId", reviewId)
-      .input("CourseName", body.courseName)
-      .input("Semester", body.semester)
-      .input("TeacherRating", body.criteria.teaching)
-      .input("ExamDifficultyRating", body.criteria.examDifficulty)
-      .input("HomeWorkRating", body.criteria.homeWork)
-      .input("AccessibilityRating", body.criteria.accessibility)
-      .input("ExamControlRating", body.criteria.examControlLevel)
-      .input("WouldRecommend", body.wouldRecommend ? 1 : 0)
-      .input("OverallRating", body.overallRating)
-      .input("Comment", body.comment)
-      .query(
-        `
-      UPDATE Reviews
-      SET 
-      CourseName = @CourseName,
-      Semester = @Semester,
-      TeachingRating = @TeacherRating,
-      ExamDifficultyRating = @ExamDifficultyRating,
-      HomeWorkRating = @HomeWorkRating,
-      AccessibilityRating = @AccessibilityRating,
-      ExamControlRating = @ExamControlRating,
-      WouldRecommend = @WouldRecommend,
-      OverallRating = @OverallRating,
-      Comment = @Comment
-      WHERE ReviewId = @ReviewId
-      `,
-      );
-
-    await pool
-      .request()
-      .input("ReviewId", reviewId)
-      .query(
-        `
-      DELETE FROM ReviewTags
-      WHERE ReviewId = @ReviewId
-      `,
-      );
-    if (body.tags && body.tags.length > 0) {
-      for (const tagName of body.tags) {
-        const tagResult = await pool
-          .request()
-          .input("TagName", tagName)
-          .query("SELECT TagId FROM Tags WHERE Name = @TagName");
-
-        if (tagResult.recordset.length > 0) {
-          const tagId = tagResult.recordset[0].TagId;
-          await pool
-            .request()
-            .input("ReviewId", reviewId)
-            .input("TagId", tagId)
-            .query(
-              `
-            INSERT INTO ReviewTags(ReviewId, TagId)
-            VALUES(
-              @ReviewId,
-              @TagId)
-            `,
-            );
-        }
-      }
-    }
-
-    await pool
-      .request()
-      .input("ProfessorId", body.professorId)
-      .query(
-        `
-     UPDATE Professors
-     SET
-     AverageRating = (
-     SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews WHERE ProfessorId = @ProfessorId)
-     WHERE ProfessorId = @ProfessorId;
-      `,
-      );
-
-    return NextResponse.json(
-      {
-        message: "Review updated successfully!",
-      },
-      {
-        status: 200,
-      },
-    );
   } catch (err: any) {
     console.log("PUT api error", err);
     return NextResponse.json(
@@ -285,6 +159,8 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
+
+/* ---------------DELETE---------------- */
 
 export async function DELETE(req: NextRequest) {
   try {

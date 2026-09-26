@@ -704,7 +704,7 @@ export default function ProfessorProfilePage() {
                   r="2.5"
                   fill="white"
                   stroke="currentColor"
-                  stroke-width="2"
+                  strokeWidth="2"
                 />
               </svg>
             </button>
