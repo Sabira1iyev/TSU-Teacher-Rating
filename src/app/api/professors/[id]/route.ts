@@ -205,7 +205,7 @@ export async function GET(
 
         return {
           id: review.id,
-          userid: review.user_id,
+          userId: review.user_id,
           professorId: review.professor_id,
           courseName: review.course_name,
           semester: review.semester,
