@@ -5,6 +5,20 @@ import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { reviewLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
+
+type UpdatedReview = {
+  course_name: string;
+  semester: number | string;
+  overall_rating: number | string;
+  coment: string;
+  teaching_rating: number;
+  exam_difficulty_rating: number;
+  homework_rating: number;
+  accessibility_rating: number;
+  exam_control_level: number;
+  would_recommend: boolean;
+};
+
 /* ---------------POST---------------- */
 
 export async function POST(req: NextRequest) {
@@ -147,6 +161,108 @@ export async function PUT(req: NextRequest) {
         },
       );
     }
+
+    const { data: ownedReview, error: ownershipError } = await supabaseAdmin
+      .from("reviews")
+      .select("id")
+      .eq("id", reviewId)
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (ownershipError) throw ownershipError;
+
+    if (!ownedReview) {
+      return NextResponse.json(
+        {
+          message: "Not authorized!",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
+
+    const { error: updatedError } = await supabaseAdmin
+      .from("reviews")
+      .update({
+        course_name: body.courseName,
+        semester: body.semester,
+        overall_rating: body.overallRating,
+        comment: body.comment,
+        teaching_rating: body.criteria.teaching,
+        homework_rating: body.criteria.homeWork,
+        exam_difficulty_rating: body.criteria.examDifficulty,
+        accessibility_rating: body.criteria.accessibility,
+        exam_control_rating: body.criteria.examControlLevel,
+        would_recommend: body.wouldRecommend,
+      })
+      .eq("id", reviewId)
+      .eq("user_id", userId);
+
+    const { error: deleteTagsError } = await supabaseAdmin
+      .from("review_tags")
+      .delete()
+      .eq("review_id", reviewId);
+
+    if (deleteTagsError) throw deleteTagsError;
+
+    if (body.tags?.length > 0) {
+      const { data: selectedTags, error: selectedTagsError } =
+        await supabaseAdmin.from("tags").select("id").in("name", body.tags);
+
+      if (selectedTagsError) throw selectedTagsError;
+
+      const reviewTags = (selectedTags ?? []).map((tag) => ({
+        review_id: reviewId,
+        tag_id: tag.id,
+      }));
+
+      if (reviewTags.length > 0) {
+        const { data: insertTagsError } = await supabaseAdmin
+          .from("review_tags")
+          .insert(reviewTags);
+
+        if (insertTagsError) throw insertTagsError;
+      }
+    }
+
+    if (updatedError) throw updatedError;
+     
+    const professorId = Number(body.professorId)
+    const { data: professorReviews, error: professorReviewsError } =
+      await supabaseAdmin
+        .from("reviews")
+        .select("overall_rating")
+        .eq("professor_id", professorId);
+
+    if (professorReviewsError) throw professorReviewsError;
+    const reviewCount = professorReviews.length;
+    const averageRating =
+      reviewCount > 0
+        ? professorReviews.reduce(
+            (sum, review) => sum + Number(review.overall_rating),
+            0,
+          ) / reviewCount
+        : 0;
+
+    const { error: updateReviewsError } = await supabaseAdmin
+      .from("professors")
+      .update({
+        review_count: reviewCount,
+        average_rating: averageRating,
+      })
+      .eq("id", professorId);
+
+    if (updateReviewsError) throw updateReviewsError;
+
+    return NextResponse.json(
+      {
+        message: "Review updated successfully!",
+      },
+      {
+        status: 200,
+      },
+    );
   } catch (err: any) {
     console.log("PUT api error", err);
     return NextResponse.json(
