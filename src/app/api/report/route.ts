@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
     if (!reviewId || !reason || !userId) {
       return NextResponse.json(
         {
-          error: "Fill all required fields.",
           message: "Fill all required fields.",
         },
         {
@@ -25,23 +24,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const pool = await getDb();
+    const { data: existingReport, error: existingError } = await supabaseAdmin
+      .from("reports")
+      .select("id")
+      .eq("review_id", Number(reviewId))
+      .eq("user_id", userId)
+      .maybeSingle();
 
-    const checkReport = await pool
-      .request()
-      .input("reviewId", reviewId)
-      .input("userId", userId)
-      .query(
-        `
-        SELECT * FROM Reports
-        WHERE ReviewId = @reviewId AND UserId = @userId
-        `,
-      );
+    if (existingError) throw existingError;
 
-    if (checkReport.recordset.length > 0) {
+    if (existingReport) {
       return NextResponse.json(
         {
-          error: "You have already reported this review.",
           message: "You have already reported this review.",
         },
         {
@@ -50,22 +44,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await pool
-      .request()
-      .input("reviewId", reviewId)
-      .input("reason", reason)
-      .input("userId", userId)
-      .query(
-        `
-        INSERT INTO Reports(ReviewId, Reason, UserId)
-        VALUES(
-         @reviewId,
-         @reason,
-         @userId
-      )
-        `,
-      );
+    const { error: reportError } = await supabaseAdmin.from("reports").insert({
+      review_id: Number(reviewId),
+      user_id: userId,
+      reason: reason,
+      is_read: false,
+    });
 
+    if (reportError) throw reportError;
     return NextResponse.json(
       {
         message: "Review reported!",
@@ -85,7 +71,6 @@ export async function POST(req: NextRequest) {
     ) {
       return NextResponse.json(
         {
-          error: "This review has already been reported.",
           message: "This review has already been reported.",
         },
         {
@@ -108,9 +93,6 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const reviewId = searchParams.get("reviewId");
-    const pool = await getDb();
     const session = await getIronSession<SessionData>(
       await cookies(),
       sessionOptions,
@@ -125,7 +107,6 @@ export async function GET(req: NextRequest) {
         },
       );
     }
-    const userId = session.userId;
 
     if (!session.isAdmin) {
       return NextResponse.json(
@@ -136,34 +117,48 @@ export async function GET(req: NextRequest) {
           status: 403,
         },
       );
-    } else {
-      const result = await pool
-        .request()
-        .input("reviewId", reviewId)
-        .input("userId", userId)
-        .query(
-          `
-        SELECT
-        r.ReportId,
-        r.ReviewId,
-        r.UserId,
-        r.Reason,
-        r.CreatedAt,
-        r.IsRead,
-        rev.Comment as ReviewComment,
-        rev.ProfessorId
-        FROM Reports r
-        JOIN Reviews rev ON r.ReviewId = rev.ReviewId
-        ORDER BY r.CreatedAt DESC
-        `,
-        );
-      return NextResponse.json(
-        {
-          reports: result.recordset,
-        },
-        { status: 200 },
-      );
     }
+    const { data: reports, error: reportsError } = await supabaseAdmin
+      .from("reports")
+      .select(
+        `
+      id,
+      review_id,
+      user_id,
+      reason,
+      created_at,
+      is_read,
+      reviews(
+      comment,
+      professor_id)
+      `,
+      )
+      .order("created_at", { ascending: false });
+
+    if (reportsError) throw reportsError;
+
+    const result = (reports ?? []).map((report) => {
+      const review = Array.isArray(report.reviews)
+        ? report.reviews[0]
+        : report.reviews;
+      return {
+        ReportId: report.id,
+        ReviewId: report.review_id,
+        UserId: report.user_id,
+        Reason: report.reason,
+        CreatedAt: report.created_at,
+        IsRead: report.is_read,
+        ReviewComment: review?.comment ?? "",
+        ProfessorId: review?.professor_id ?? null,
+      };
+    });
+
+    return NextResponse.json(
+      {
+        reports: result,
+      },
+      { status: 200 },
+    );
   } catch (err) {
     console.log(err);
     return NextResponse.json(
@@ -197,7 +192,6 @@ export async function DELETE(req: NextRequest) {
     if (!reportId) {
       return NextResponse.json(
         {
-          error: "Something went wrong, please try again later",
           message: "Something went wrong, please try again later",
         },
         {
@@ -206,17 +200,13 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    const pool = await getDb();
+    const { error: deleteReport } = await supabaseAdmin
+      .from("reports")
+      .delete()
+      .eq("id", Number(reportId));
 
-    await pool
-      .request()
-      .input("reportId", reportId)
-      .query(
-        `
-      DELETE FROM Reports
-      WHERE ReportId = @reportId
-      `,
-      );
+    if (deleteReport) throw deleteReport;
+
     return NextResponse.json(
       {
         message: "Report has been dismissed!",
@@ -257,16 +247,16 @@ export async function PUT(req: NextRequest) {
         },
       );
     }
-
-    const pool = await getDb();
-
     if (markAll === "true") {
-      await pool.request().query(
-        `
-        UPDATE Reports
-        SET IsRead = 1
-        `,
-      );
+      const { error: markAllReportsError } = await supabaseAdmin
+        .from("reports")
+        .update({
+          is_read: true,
+        })
+        .eq("is_read", false);
+
+      if (markAllReportsError) throw markAllReportsError;
+
       return NextResponse.json(
         {
           message: "All marked as read!",
@@ -275,19 +265,17 @@ export async function PUT(req: NextRequest) {
           status: 200,
         },
       );
-    } else if (reportId && isRead) {
-      await pool
-        .request()
-        .input("reportId", reportId)
-        .input("isRead", isRead === "true" ? 1 : 0)
-        .query(
-          `
-      UPDATE Reports 
-      SET IsRead = @isRead
-      WHERE ReportId = @reportId 
-            
-      `,
-        );
+    }
+
+    if (reportId && isRead) {
+      const { error: markPointReportError } = await supabaseAdmin
+        .from("reports")
+        .update({
+          is_read: isRead === "false",
+        })
+        .eq("id", Number(reportId));
+
+      if (markPointReportError) throw markPointReportError;
       return NextResponse.json(
         {
           message: "Report marked as read!",
@@ -296,22 +284,21 @@ export async function PUT(req: NextRequest) {
           status: 200,
         },
       );
-    } else {
-      return NextResponse.json(
-        {
-          message: "Something went wrong, please try again later!",
-          error: "Something went wrong, please try again later!",
-        },
-        {
-          status: 400,
-        },
-      );
     }
+
+    return NextResponse.json(
+      {
+        message: "Something went wrong, please try again later!",
+      },
+      {
+        status: 400,
+      },
+    );
   } catch (error) {
     console.log("Report PUT error:", error);
     return NextResponse.json(
       {
-        error: "Internal server error!",
+        message: "Internal server error!",
       },
       {
         status: 500,
