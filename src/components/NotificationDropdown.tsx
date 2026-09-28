@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./style.css";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 interface NotificationDropdownProp {
   onClose: () => void;
   reports: any[];
@@ -30,8 +30,10 @@ export default function NotificationDropDown({
           prevReports.filter((report: any) => report.ReportId !== reportId),
         );
       }
-    } catch (error: any) {}
+    } catch (error: any) { }
   };
+
+  const params = useParams();
 
   return (
     <div className="animate-modal fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-bg2 border border-border rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-[200] overflow-hidden">
@@ -122,11 +124,11 @@ export default function NotificationDropDown({
                 <div
                   className="flex-1 min-w-0 flex flex-col gap-0.5 pr-2"
                   onClick={() => {
-                    router.push(`/professor/${report.ProfessorId}?tab=Reviews`);
+                    router.push(`/${params.locale as string}/professor/${report.ProfessorId}?tab=Reviews`);
                     fetch(
                       "/api/report?reportId=" +
-                        report.ReportId +
-                        "&isRead=true",
+                      report.ReportId +
+                      "&isRead=true",
                       {
                         method: "PUT",
                       },
@@ -135,9 +137,9 @@ export default function NotificationDropDown({
                       prev.map((r) =>
                         r.ReportId === report.ReportId
                           ? {
-                              ...r,
-                              IsRead: true,
-                            }
+                            ...r,
+                            IsRead: true,
+                          }
                           : r,
                       ),
                     );
