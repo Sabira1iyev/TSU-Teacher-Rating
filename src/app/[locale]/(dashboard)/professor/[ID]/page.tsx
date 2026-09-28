@@ -8,6 +8,7 @@ import ReportModal from "./ReportModal";
 import ReviewsFilter from "./ReviewsFilter";
 import { useTranslations } from "next-intl";
 
+
 import {
   getInitials,
   formatRating,
@@ -84,15 +85,15 @@ export default function ProfessorProfilePage() {
         reviews: prev.reviews.map((r) =>
           r.id.toString() === id
             ? {
-                ...r,
-                likeCount: isLiked
-                  ? (r.likeCount || 0) - 1
-                  : (r.likeCount || 0) + 1,
-                dislikeCount:
-                  !isLiked && dislike[id]
-                    ? (r.dislikeCount || 0) - 1
-                    : r.dislikeCount || 0,
-              }
+              ...r,
+              likeCount: isLiked
+                ? (r.likeCount || 0) - 1
+                : (r.likeCount || 0) + 1,
+              dislikeCount:
+                !isLiked && dislike[id]
+                  ? (r.dislikeCount || 0) - 1
+                  : r.dislikeCount || 0,
+            }
             : r,
         ),
       };
@@ -131,15 +132,15 @@ export default function ProfessorProfilePage() {
         reviews: prev.reviews.map((r) =>
           r.id.toString() === id
             ? {
-                ...r,
-                dislikeCount: isDisliked
-                  ? (r.dislikeCount || 0) - 1
-                  : (r.dislikeCount || 0) + 1,
-                likeCount:
-                  !isDisliked && likedReviews[id]
-                    ? (r.likeCount || 0) - 1
-                    : r.likeCount || 0,
-              }
+              ...r,
+              dislikeCount: isDisliked
+                ? (r.dislikeCount || 0) - 1
+                : (r.dislikeCount || 0) + 1,
+              likeCount:
+                !isDisliked && likedReviews[id]
+                  ? (r.likeCount || 0) - 1
+                  : r.likeCount || 0,
+            }
             : r,
         ),
       };
@@ -163,7 +164,7 @@ export default function ProfessorProfilePage() {
   };
 
   useEffect(() => {
-    fetch(`/api/professors/${params.ID}?userId=${user?.userId}`)
+    fetch(`/api/professors/${params.ID}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.error && !data.message) {
@@ -183,7 +184,7 @@ export default function ProfessorProfilePage() {
         }
         setLoading(false);
       });
-  }, [params.ID, user]);
+  }, [params.ID]);
 
   useEffect(() => {
     fetch(`/api/favorites?userId=${user?.userId}`)
@@ -627,11 +628,10 @@ export default function ProfessorProfilePage() {
           ).map((tab) => (
             <button
               onClick={() => setActiveTab(tab)}
-              className={`px-3 py-3 text-xs cursor-pointer border-b-2 transition-colors ${
-                activeTab === tab
+              className={`px-3 py-3 text-xs cursor-pointer border-b-2 transition-colors ${activeTab === tab
                   ? "font-medium"
                   : "text-text3 border-transparent hover:text-text2"
-              }`}
+                }`}
               style={
                 activeTab === tab
                   ? { color: fc.primary, borderColor: fc.primary }

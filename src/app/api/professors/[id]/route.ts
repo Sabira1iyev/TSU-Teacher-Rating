@@ -1,6 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getDb } from "@/lib/db";
 import { supabaseAdmin } from "@/lib/supabase";
+import { cookies } from "next/headers";
+import { getIronSession, IronSession } from "iron-session";
+import { SessionData, sessionOptions } from "@/lib/session";
 
 type ProfessorDetailBase = {
   id: number;
@@ -27,6 +30,11 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const viewerId = session?.userId ?? null;
     const { data, error } = await supabaseAdmin
       .from("professors")
       .select(
@@ -77,12 +85,7 @@ export async function GET(
       );
     }
 
-    const rawUserId = req.nextUrl.searchParams.get("userId");
 
-    const viewerId =
-      rawUserId && Number.isSafeInteger(Number(rawUserId))
-        ? Number(rawUserId)
-        : null;
 
     const [reviewsResult, tagsResult] = await Promise.all([
       supabaseAdmin

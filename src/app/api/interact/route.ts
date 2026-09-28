@@ -1,12 +1,11 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
-    const db = await getDb();
     const { reviewId, interactionType } = await req.json();
     const session = await getIronSession<SessionData>(
       await cookies(),
@@ -24,57 +23,56 @@ export async function POST(req: NextRequest) {
         },
       );
     }
-    const result = await db
-      .request()
-      .input("UserId", userId)
-      .input("ReviewId", reviewId)
-      .input("InteractionType", interactionType)
-      .query(
-        `
-             SELECT * FROM ReviewInteractions
-             WHERE UserId = @UserId and ReviewId = @ReviewId
-             `,
+
+    if (!reviewId || !["LIKE", "DISLIKE"].includes(interactionType)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid interaction data.",
+        },
+        {
+          status: 400,
+        },
       );
-    const existingInteraction = result.recordset[0];
+    }
+
+    const { data: existingInteraction, error: existingError } =
+      await supabaseAdmin
+        .from("review_interactions")
+        .select("interaction_type")
+        .eq("user_id", userId)
+        .eq("review_id", Number(reviewId))
+        .maybeSingle();
+
+    if (existingError) throw existingError;
 
     if (!existingInteraction) {
-      const inserInteraction = await db
-        .request()
-        .input("UserId", userId)
-        .input("ReviewId", reviewId)
-        .input("InteractionType", interactionType)
-        .query(
-          `
-                INSERT INTO ReviewInteractions(UserId, ReviewId, InteractionType)
-                VALUES (@UserId, @ReviewId, @InteractionType)                
-                `,
-        );
+      const { error: insertInteractionError } = await supabaseAdmin
+        .from("review_interactions")
+        .insert({
+          user_id: userId,
+          review_id: Number(reviewId),
+          interaction_type: interactionType,
+        });
+      if (insertInteractionError) throw insertInteractionError;
     } else {
-      if (existingInteraction.InteractionType === interactionType) {
-        const deleteInteraction = await db
-          .request()
-          .input("UserId", userId)
-          .input("ReviewId", reviewId)
-          .input("InteractionType", interactionType)
-          .query(
-            `
-                    DELETE FROM ReviewInteractions
-                    WHERE UserId = @UserId and ReviewId = @ReviewId and InteractionType = @InteractionType
-                    `,
-          );
+      if (existingInteraction.interaction_type === interactionType) {
+        const { error: deleteInteractionError } = await supabaseAdmin
+          .from("review_interactions")
+          .delete()
+          .eq("user_id", userId)
+          .eq("review_id", Number(reviewId));
+
+        if (deleteInteractionError) throw deleteInteractionError;
       } else {
-        const updateInteraction = await db
-          .request()
-          .input("UserId", userId)
-          .input("ReviewId", reviewId)
-          .input("InteractionType", interactionType)
-          .query(
-            `
-                    UPDATE ReviewInteractions
-                    SET InteractionType = @InteractionType
-                    WHERE UserId = @UserId and ReviewId = @ReviewId                    
-                    `,
-          );
+        const { error: updateInteractionsError } = await supabaseAdmin
+          .from("review_interactions")
+          .update({
+            interaction_type: interactionType,
+          })
+          .eq("user_id", userId)
+          .eq("review_id", Number(reviewId));
+        if (updateInteractionsError) throw updateInteractionsError;
       }
     }
     return NextResponse.json({
