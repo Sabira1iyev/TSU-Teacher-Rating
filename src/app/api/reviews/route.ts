@@ -1,5 +1,4 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
@@ -227,8 +226,8 @@ export async function PUT(req: NextRequest) {
     }
 
     if (updatedError) throw updatedError;
-     
-    const professorId = Number(body.professorId)
+
+    const professorId = Number(body.professorId);
     const { data: professorReviews, error: professorReviewsError } =
       await supabaseAdmin
         .from("reviews")
@@ -288,7 +287,7 @@ export async function DELETE(req: NextRequest) {
     );
     const userId = session.userId;
 
-    if (!reviewId || !body.professorId) {
+    if (!reviewId || !userId) {
       return NextResponse.json(
         {
           message: "Missing information!",
@@ -297,59 +296,73 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    const pool = await getDb();
+    const { data: reviewToDelete, error: reviewError } = await supabaseAdmin
+      .from("reviews")
+      .select("id, user_id, professor_id")
+      .eq("id", reviewId)
+      .maybeSingle();
 
-    if (!session.isAdmin) {
-      const ownerCheck = await pool
-        .request()
-        .input("ReviewId", reviewId)
-        .input("UserId", userId)
-        .query(
-          `
-        SELECT ReviewId FROM Reviews
-        WHERE ReviewId = @ReviewId AND UserId = @UserId
-        `,
-        );
-
-      if (ownerCheck.recordset.length === 0) {
-        return NextResponse.json(
-          {
-            message: "Not found or not authorized",
-          },
-          {
-            status: 403,
-          },
-        );
-      }
+    if (reviewError) throw reviewError;
+    if (!reviewToDelete) {
+      return NextResponse.json(
+        {
+          message: "Review not found",
+        },
+        {
+          status: 404,
+        },
+      );
     }
 
-    await pool
-      .request()
-      .input("ReviewId", reviewId)
-      .input("UserId", userId)
-      .input("ProfessorId", body.professorId)
-      .query(
-        `
-      DELETE FROM ReviewInteractions
-      WHERE ReviewId = @ReviewId;
-
-      DELETE FROM Reports
-      WHERE ReviewId = @ReviewId;
-
-      DELETE FROM ReviewTags
-      WHERE ReviewId = @ReviewId;
-      
-      DELETE FROM Reviews
-      WHERE ReviewId = @ReviewId;
-
-      UPDATE Professors
-      SET 
-      reviewCount = (SELECT COUNT(*) FROM Reviews WHERE ProfessorId = @ProfessorId),
-      AverageRating = (SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews WHERE ProfessorID = @ProfessorId)
-      WHERE ProfessorId = @ProfessorId;
-      `,
+    if (!session.isAdmin && reviewToDelete.user_id !== userId) {
+      return NextResponse.json(
+        {
+          message: "Not found or not authorized",
+        },
+        {
+          status: 403,
+        },
       );
+    }
 
+    if (reviewToDelete) {
+      const { error: deleteError } = await supabaseAdmin
+        .from("reviews")
+        .delete()
+        .eq("id", reviewToDelete.id);
+
+      if (deleteError) throw deleteError;
+    }
+
+    const professorId = reviewToDelete.professor_id;
+
+    const { data: remainingReviews, error: remainingReviewsError } =
+      await supabaseAdmin
+        .from("reviews")
+        .select("overall_rating")
+        .eq("professor_id", professorId);
+
+    if (remainingReviewsError) throw remainingReviewsError;
+
+    const reviewCount = remainingReviews.length;
+
+    const averageRating =
+      reviewCount > 0
+        ? remainingReviews.reduce(
+            (sum, review) => sum + Number(review.overall_rating),
+            0,
+          ) / reviewCount
+        : 0;
+
+    const { error: reviewUpdateError } = await supabaseAdmin
+      .from("professors")
+      .update({
+        review_count: reviewCount,
+        average_rating: averageRating,
+      })
+      .eq("id", professorId);
+
+    if (reviewUpdateError) throw reviewUpdateError;
     return NextResponse.json(
       {
         message: "Review deleted successfully!",

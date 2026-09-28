@@ -145,12 +145,14 @@ export default function DashboardLayout({
 
   useEffect(() => {
     const fetchReporst = async () => {
-      const res = await fetch("/api/report");
-      const data = await res.json();
 
       if (user?.isAdmin) {
-        setReports(data.reports);
+        setReports([]);
+        return;
       }
+      const res = await fetch("/api/report");
+      const data = await res.json();
+      setReports(Array.isArray(data.reports) ? data.reports : []);
     };
     fetchReporst();
   }, [user]);
@@ -207,11 +209,10 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={`/${locale}${item.href}`}
-                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${
-                  isActive
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${isActive
                     ? "bg-primary-dim text-primary font-medium rounded-lg"
                     : "text-text2 hover:bg-bg3 rounded-lg"
-                }`}
+                  }`}
               >
                 {item.icon}
                 {t(item.label)}
@@ -228,11 +229,10 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={`/${locale}${item.href}`}
-                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${
-                  isActive
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${isActive
                     ? "bg-primary-dim text-primary font-medium rounded-lg"
                     : "text-text2 hover:bg-bg3 rounded-lg"
-                } `}
+                  } `}
               >
                 {item.icon}
                 {t(item.label)}
@@ -459,11 +459,10 @@ export default function DashboardLayout({
                   {item.icon}
                 </span>
                 <span
-                  className={`text-[9px] ${
-                    isActive
+                  className={`text-[9px] ${isActive
                       ? "text-primary text-[8px] font-semibold"
                       : "text-text3 text-[10px] font-semibold"
-                  }`}
+                    }`}
                 >
                   {t(item.label)}
                 </span>

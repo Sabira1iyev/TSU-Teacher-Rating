@@ -1,7 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
 import { supabaseAdmin } from "@/lib/supabase";
-import { useId } from "react";
 
 type FacultyUsers = {
   id: number;
