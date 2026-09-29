@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
     const { firstName, lastName, faculty, studyYear } = await req.json();
 
-    const db = await getDb();
     const displayName = firstName + " " + lastName;
 
     const session = await getIronSession<SessionData>(
@@ -27,21 +26,32 @@ export async function POST(req: NextRequest) {
         },
       );
     }
-    await db
-      .request()
-      .input("DisplayName", displayName)
-      .input("Faculty", faculty)
-      .input("AcademicLevel", studyYear)
-      .input("UserId", userId)
-      .query(
-        `
-        UPDATE Users SET 
-        DisplayName = @DisplayName,
-        Faculty = @Faculty,
-        AcademicLevel = @AcademicLevel
-        Where UserId = @UserId
-        `,
-      );
+    // await db
+    //   .request()
+    //   .input("DisplayName", displayName)
+    //   .input("Faculty", faculty)
+    //   .input("AcademicLevel", studyYear)
+    //   .input("UserId", userId)
+    //   .query(
+    //     `
+    //     UPDATE Users SET
+    //     DisplayName = @DisplayName,
+    //     Faculty = @Faculty,
+    //     AcademicLevel = @AcademicLevel
+    //     Where UserId = @UserId
+    //     `,
+    //   );
+
+    const { error: editProfileError } = await supabaseAdmin
+      .from("users")
+      .update({
+        display_name: displayName,
+        faculty: faculty,
+        academic_level: studyYear,
+      })
+      .eq("id", userId);
+
+    if (editProfileError) throw editProfileError;
 
     return NextResponse.json(
       {
