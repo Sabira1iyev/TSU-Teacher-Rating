@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
-import { DBUser } from "@/types/user";
 import { loginLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
-import { use } from "react";
 
 type LoginUser = {
   id: number;

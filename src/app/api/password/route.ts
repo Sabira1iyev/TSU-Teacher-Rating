@@ -1,15 +1,13 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { cookies } from "next/headers";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
     const { password, oldPassword } = await req.json();
-
-    const db = await getDb();
 
     const session = await getIronSession<SessionData>(
       await cookies(),
@@ -44,16 +42,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const dbPassword = await db
-      .request()
-      .input("UserId", userId)
-      .query(
-        `
-      SELECT PasswordHash FROM Users Where UserId = @UserId
-      `,
-      );
-    const actualHash = dbPassword.recordset[0].PasswordHash;
+    const { data: dbPassword, error: dbPasswordError } = await supabaseAdmin
+      .from("users")
+      .select("password_hash")
+      .eq("id", userId)
+      .maybeSingle();
 
+    if (dbPasswordError) throw dbPasswordError;
+
+    const actualHash = dbPassword?.password_hash;
     const isOldPasswordCorrect = await bcrypt.compare(oldPassword, actualHash);
 
     if (!isOldPasswordCorrect) {
@@ -66,20 +63,16 @@ export async function POST(req: NextRequest) {
         },
       );
     }
-
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    await db
-      .request()
-      .input("UserId", userId)
-      .input("PasswordHash", hashedPassword)
-      .query(
-        `
-        UPDATE Users
-        SET PasswordHash = @PasswordHash
-        WHERE UserId = @UserId;
-        `,
-      );
+    const { error: updatePasswordError } = await supabaseAdmin
+      .from("users")
+      .update({
+        password_hash: hashedPassword,
+      })
+      .eq("id", userId);
+
+    if (updatePasswordError) throw updatePasswordError;
     return NextResponse.json(
       {
         message: "Password successfully changed!",
