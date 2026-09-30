@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getDb } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { verifyResetLimiter } from "@/lib/ratelimit";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,18 +20,36 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, verifyCode } = await req.json();
-    const db = await getDb();
 
-    const result = await db
-      .request()
-      .input("Email", email)
-      .input("VerifyCode", verifyCode)
-      .query(
-        `
-        SELECT VerificationExpiry FROM Users WHERE Email = @Email AND VerificationCode = @VerifyCode
-        `,
-      );
-    if (result.recordset.length === 0) {
+    // const result = await db
+    //   .request()
+    //   .input("Email", email)
+    //   .input("VerifyCode", verifyCode)
+    //   .query(
+    //     `
+    //     SELECT VerificationExpiry FROM Users WHERE Email = @Email AND VerificationCode = @VerifyCode
+    //     `,
+    //   );
+    // if (result.recordset.length === 0) {
+    //   return NextResponse.json(
+    //     {
+    //       message: "Invalid verification code",
+    //     },
+    //     {
+    //       status: 404,
+    //     },
+    //   );
+    // }
+
+    const { data: result, error } = await supabaseAdmin
+      .from("users")
+      .select("verification_expiry")
+      .eq("verification_code", verifyCode)
+      .eq("email", email);
+
+    if (error) throw error;
+
+    if (result.length === 0) {
       return NextResponse.json(
         {
           message: "Invalid verification code",
@@ -42,7 +60,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const expiryTime = new Date(result.recordset[0].VerificationExpiry);
+    const expiryTime = new Date(result[0].verification_expiry);
     const currentTime = new Date();
 
     if (currentTime > expiryTime) {

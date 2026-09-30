@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { getDb } from "@/lib/db";
 import nodemailer from "nodemailer";
 import { registerLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
-import { use } from "react";
 
 async function sendVerificationEmail(email: string, code: string) {
   const transporter = nodemailer.createTransport({

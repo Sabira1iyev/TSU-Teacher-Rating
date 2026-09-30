@@ -158,7 +158,7 @@ function RatePageContent() {
         setSubmitted(true);
       } else {
         setError("A server error occurred while submitting the review.");
-      }
+      } 
     } catch (err) {
       setError("Could not reach the server.");
     }

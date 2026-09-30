@@ -26,21 +26,7 @@ export async function POST(req: NextRequest) {
         },
       );
     }
-    // await db
-    //   .request()
-    //   .input("DisplayName", displayName)
-    //   .input("Faculty", faculty)
-    //   .input("AcademicLevel", studyYear)
-    //   .input("UserId", userId)
-    //   .query(
-    //     `
-    //     UPDATE Users SET
-    //     DisplayName = @DisplayName,
-    //     Faculty = @Faculty,
-    //     AcademicLevel = @AcademicLevel
-    //     Where UserId = @UserId
-    //     `,
-    //   );
+
 
     const { error: editProfileError } = await supabaseAdmin
       .from("users")

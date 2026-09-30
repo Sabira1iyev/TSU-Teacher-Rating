@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
 import nodemailer from "nodemailer";
 import { forgotPasswordLimiter } from "@/lib/ratelimit";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,17 +18,30 @@ export async function POST(req: NextRequest) {
       );
     }
     const { email } = await req.json();
-    const db = await getDb();
 
-    const user = await db
-      .request()
-      .input("Email", email)
-      .query("SELECT * FROM Users WHERE Email = @Email");
-
-    if (user.recordset.length === 0) {
+    if (!email) {
       return NextResponse.json(
         {
-          message: "Email not found",
+          message: "Email is required",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const { data: user, error: userError } = await supabaseAdmin
+      .from("users")
+      .select("id")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (userError) throw userError;
+
+    if (!user) {
+      return NextResponse.json(
+        {
+          message: "No user found with this email",
         },
         {
           status: 404,
@@ -43,19 +56,15 @@ export async function POST(req: NextRequest) {
     const expiryDate = new Date();
     expiryDate.setMinutes(expiryDate.getMinutes() + 10);
 
-    await db
-      .request()
-      .input("Email", email)
-      .input("Code", verificationCode)
-      .input("Expiry", expiryDate)
-      .query(
-        `
-        UPDATE Users
-        set VerificationCode = @Code,
-        VerificationExpiry = @Expiry
-        WHERE Email = @Email;
-        `,
-      );
+    const { error: updatePasswordError } = await supabaseAdmin
+      .from("users")
+      .update({
+        verification_code: verificationCode,
+        verification_expiry: expiryDate.toISOString(),
+      })
+      .eq("email", email);
+
+    if (updatePasswordError) throw updatePasswordError;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",

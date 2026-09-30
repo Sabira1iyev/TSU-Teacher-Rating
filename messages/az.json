@@ -85,16 +85,15 @@
     "myReviews": "Rəylərim",
     "stats": "Statistika"
   },
-
-  "Titles": {
-    "Instructor": "Təlimçi",
-    "Prof Dr": "Prof. Dr",
-    "Associate Professor": "Dosent",
-    "Dr": "Dr.",
-    "Res Asst": "Elmi işçi",
-    "Assistant Professor": "Köməkçi professor",
-    "Professor": "Professor"
-  },
+"Titles": {
+  "Instructor": "Müəllim",
+  "Prof. Dr.": "Prof. Dr.",
+  "Associate Professor": "Dosent",
+  "Doctor": "Dr.",
+  "Res Asst": "Elmi köməkçi",
+  "Assistant Professor": "Dosent",
+  "Professor": "Professor"
+},
   "noResult": {
     "searchTitle": "Heç bir nəticə tapılmadı",
     "searchDesc": "Başqa ad, kurs və ya şöbə sınayın",
@@ -160,7 +159,7 @@
     "facRank": "Fakültə reytinqi",
     "memberFor": "Üzvlük müddəti",
     "spring": "Yaz semestri",
-    "fall": "Payız semestri",
+    "fall": "Payız",
     "day": "gün",
     "days": "gün",
     "week": "həftə",
@@ -172,7 +171,7 @@
     "email": "Email"
   },
   "Rank": {
-    "Rookie": "Yeni başlayan",
+    "Rookie": "Yeni",
     "Protector": "Mentor",
     "Legend": "Əfsanə",
     "likesTo": "{nextRank} olmaq üçün {likes} bəyənmə",

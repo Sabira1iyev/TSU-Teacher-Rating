@@ -86,15 +86,15 @@
     "stats": "Stats"
   },
 
-  "Titles": {
-    "Instructor": "Instructor",
-    "Prof Dr": "Prof. Dr",
-    "Associate Professor": "Associate Professor",
-    "Dr": "Dr.",
-    "Res Asst": "Res. Asst.",
-    "Assistant Professor": "Assistant Professor",
-    "Professor": "Professor"
-  },
+"Titles": {
+  "Instructor": "Instructor",
+  "Prof. Dr.": "Prof. Dr.",
+  "Associate Professor": "Associate Professor",
+  "Doctor": "Dr.",
+  "Res Asst": "Res. Asst.",
+  "Assistant Professor": "Assistant Professor",
+  "Professor": "Professor"
+},
 
   "noResult": {
     "searchTitle": "No results found",

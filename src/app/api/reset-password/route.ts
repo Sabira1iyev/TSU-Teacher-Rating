@@ -1,24 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
     const { email, newPassword } = await req.json();
-    const db = await getDb();
 
     const hashedPassword = await bcrypt.hash(newPassword, 12);
-    const result = await db
-      .request()
-      .input("email", email)
-      .input("newPassword", hashedPassword)
-      .query(
-        `
-      UPDATE Users 
-      SET PasswordHash = @newPassword
-      WHERE Email = @email
-      `,
-      );
+
+
+    const { error } = await supabaseAdmin
+      .from("users")
+      .update({
+        password_hash: hashedPassword,
+      })
+      .eq("email", email);
+
+    if (error) throw error;
+
     return NextResponse.json(
       {
         message: "Password changed successfully!",

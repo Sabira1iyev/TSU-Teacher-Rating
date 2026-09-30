@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
       })
       .eq("id", Number(body.professorId));
 
-    if (!updateReviewsError) throw updateReviewsError;
+    if (updateReviewsError) throw updateReviewsError;
 
     return NextResponse.json(
       { message: "Review saved successfully." },
