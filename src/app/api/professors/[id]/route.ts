@@ -368,23 +368,23 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-
-    // await (
-    //   await db
-    // )
-    //   .request()
-    //   .input("Id", id)
-    //   .query(
-    //     `
-    //   DELETE FROM ReviewTags WHERE ReviewId IN (SELECT ReviewId FROM Reviews WHERE ProfessorId = @Id);
-    //   DELETE FROM ReviewInteractions WHERE ReviewId IN (SELECT ReviewId FROM Reviews WHERE ProfessorID = @Id);
-    //   DELETE FROM Favorites WHERE ProfessorId = @Id;
-    //   DELETE FROM Reviews WHERE ProfessorId = @Id;
-    //   DELETE FROM Professors WHERE ProfessorId = @Id;
-    //   `,
-    //   );
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
 
     const professorId = Number(id);
+
+    if (!session.isAdmin) {
+      return NextResponse.json(
+        {
+          message: "You don't to perform this action!",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
 
     const { error: coursesError } = await supabaseAdmin
       .from("courses")
@@ -398,7 +398,7 @@ export async function DELETE(
       .eq("id", id)
       .select("id");
 
-    if (deleteProfessorError) throw deleteProfessorError;
+    if (deleteProfessorError) throw deleteProfessorError;     
 
     if (!data?.length) {
       return NextResponse.json(
