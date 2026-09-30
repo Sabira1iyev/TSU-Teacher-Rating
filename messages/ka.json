@@ -85,16 +85,15 @@
     "myReviews": "ჩემი შეფასებები",
     "stats": "სტატისტიკა"
   },
-
-  "Titles": {
-    "Instructor": "ლექტორი",
-    "Prof Dr": "პროფ. დოქტ.",
-    "Associate Professor": "ასოცირებული პროფესორი",
-    "Dr": "დოქტ.",
-    "Res Asst": "კვლევითი ასისტენტი",
-    "Assistant Professor": "ასისტენტ-პროფესორი",
-    "Professor": "პროფესორი"
-  },
+"Titles": {
+  "Instructor": "ინსტრუქტორი",
+  "Prof. Dr.": "პროფ. დოქტორი",
+  "Associate Professor": "ასოცირებული პროფესორი",
+  "Doctor": "დოქტორი",
+  "Res Asst": "კვლევითი ასისტენტი",
+  "Assistant Professor": "ასისტენტ-პროფესორი",
+  "Professor": "პროფესორი"
+},
 
   "noResult": {
     "searchTitle": "შედეგები ვერ მოიძებნა",

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
+import { supabaseAdmin } from "@/lib/supabase";
+import { emit } from "process";
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,46 +32,15 @@ export async function POST(req: NextRequest) {
         courses,
       } = body;
 
-      const db = await getDb();
+      const { data: facultyData, error: facultyError } = await supabaseAdmin
+        .from("faculties")
+        .select("id")
+        .eq("name", faculty)
+        .maybeSingle();
 
-      const checkResult = await db
-        .request()
-        .input("faculty", faculty)
-        .input("department", department)
-        .input("email", email)
-        .query(
-          `
-        DECLARE @facId INT;
-        SELECT @facId = FacultyId FROM Faculties WHERE Name = @faculty;
+      if (facultyError) throw facultyError;
 
-        DECLARE @deptId INT;
-        SELECT @deptId = DepartmentId FROM Departments WHERE Name = @department AND FacultyId = @facId;
-
-        IF @deptId IS NULL
-        BEGIN
-            INSERT INTO Departments (Name, FacultyId)
-            VALUES(@department, @facId);
-            SET @deptId = SCOPE_IDENTITY();
-        END
-        
-        DECLARE @existingProfId INT;
-        SELECT @existingProfId = ProfessorId FROM Professors WHERE Email = @email;
-
-        SELECT @facId AS facId, @deptId AS deptId, @existingProfId AS existingProfId;
-        `,
-        );
-
-      const facId = checkResult.recordset[0]?.facId;
-      const deptId = checkResult.recordset[0]?.deptId;
-      const existingProfId = checkResult.recordset[0]?.existingProfId;
-
-      if (existingProfId) {
-        return NextResponse.json(
-          { message: "A professor with this email is already registered!" },
-          { status: 409 },
-        );
-      }
-
+      const facId = facultyData?.id;
       if (!facId) {
         return NextResponse.json(
           {
@@ -80,44 +50,80 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const result = await db
-        .request()
-        .input("firstName", firstName)
-        .input("lastName", lastName)
-        .input("email", email)
-        .input("title", title)
-        .input("deptId", deptId)
-        .query(
-          `
-        INSERT INTO Professors (
-          FirstName, LastName, Email, Title, DepartmentId
-        ) VALUES (
-          @firstName, @lastName, @email, @title, @deptId
+      const { data: existingProf, error: existingProfError } =
+        await supabaseAdmin
+          .from("professors")
+          .select("id")
+          .eq("email", email)
+          .maybeSingle();
+
+      if (existingProfError) throw existingProfError;
+      const existingProfId = existingProf?.id ?? null;
+
+      if (existingProfId) {
+        return NextResponse.json(
+          { message: "A professor with this email is already registered!" },
+          { status: 409 },
         );
-
-        SELECT SCOPE_IDENTITY() AS ProfessorId;
-        `,
-        );
-
-      const professorId = result.recordset[0]?.ProfessorId;
-
-      for (const course of courses) {
-        await db
-          .request()
-          .input("professorId", professorId)
-          .input("courseName", course)
-          .query(
-            `
-        INSERT INTO Courses(
-          ProfessorId, 
-          CourseName)
-          Values(
-          @professorId,
-          @courseName
-          )
-        `,
-          );
       }
+
+      const { data: departmentData, error: departmentError } =
+        await supabaseAdmin
+          .from("departments")
+          .select("id")
+          .eq("name", department)
+          .eq("faculty_id", facId)
+          .maybeSingle();
+
+      if (departmentError) throw departmentError;
+
+      let deptId = departmentData?.id;
+
+      if (!deptId) {
+        const { data: newDepartmentData, error: newDepartmentError } =
+          await supabaseAdmin
+            .from("departments")
+            .insert({
+              name: department,
+              faculty_id: facId,
+            })
+            .select("id")
+            .single();
+
+        if (newDepartmentError) throw newDepartmentError;
+        deptId = newDepartmentData?.id;
+      }
+
+      const { data: insertResultData, error: insertProfError } =
+        await supabaseAdmin
+          .from("professors")
+          .insert({
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            title: title,
+            department_id: deptId,
+          })
+          .select("id")
+          .single();
+
+      if (insertProfError) throw insertProfError;
+      const professorId = insertResultData?.id;
+
+      if (courses && Array.isArray(courses) && courses.length > 0) {
+        const coursesToInsert = courses.map((courseName: string) => ({
+          professor_id: professorId,
+          name: courseName,
+        }));
+
+        const { error: coursesError } = await supabaseAdmin
+          .from("courses")
+          .insert(
+            coursesToInsert,
+          );
+        if (coursesError) throw coursesError;
+      }
+
       return NextResponse.json(
         {
           message: "Data inserted successfully!",
