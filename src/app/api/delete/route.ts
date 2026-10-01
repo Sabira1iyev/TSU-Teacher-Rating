@@ -23,28 +23,6 @@ export async function DELETE(req: NextRequest) {
 
     const userId = session.userId;
 
-    // const profIdResult = await db.request().input("userId", userId).query(`
-    //   SELECT ProfessorId FROM Reviews WHERE UserId = @userId`);
-    // const profIds = profIdResult.recordset.map((row) => row.ProfessorId);
-
-    // await db.request().input("userId", userId).query(`
-    //     DELETE FROM ReviewTags WHERE ReviewId IN (SELECT ReviewId FROM Reviews WHERE UserId = @userId);
-    //     DELETE FROM ReviewInteractions WHERE ReviewId IN (SELECT ReviewId FROM Reviews WHERE UserId = @userId);
-    //     DELETE FROM ReviewInteractions WHERE UserId = @userId;
-    //     DELETE FROM Favorites WHERE UserId = @userId;
-    //     DELETE FROM Reviews WHERE UserId = @userId;
-    //     DELETE FROM Users WHERE UserId = @userId;
-    //     `);
-
-    // for (const profId of profIds) {
-    //   await db.request().input("ProfId", profId).query(`
-    //         UPDATE Professors
-    //         SET
-    //         reviewCount = (SELECT COUNT(*) FROM Reviews WHERE ProfessorId = @ProfId),
-    //         AverageRating = ISNULL((SELECT AVG(CAST(OverallRating as FLOAT)) FROM Reviews WHERE ProfessorId = @ProfId), 0.00)
-    //         WHERE ProfessorId = @ProfId`);
-    // }
-
     const { data: profIdResult, error: profIdError } = await supabaseAdmin
       .from("reviews")
       .select("professor_id")

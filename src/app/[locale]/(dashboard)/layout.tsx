@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { getInitials } from "@/lib/utils";
@@ -143,19 +143,39 @@ export default function DashboardLayout({
 
   const [reports, setReports] = useState<any[]>([]);
 
-  useEffect(() => {
-    const fetchReporst = async () => {
+  const loadReports = useCallback(async () => {
 
-      if (user?.isAdmin) {
-        setReports([]);
-        return;
-      }
+    if (!user?.isAdmin) {
+      setReports([]);
+      return;
+    }
+
+    try {
       const res = await fetch("/api/report");
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch reports");
+      }
       setReports(Array.isArray(data.reports) ? data.reports : []);
-    };
-    fetchReporst();
-  }, [user]);
+    }
+    catch (error) {
+      console.error("Failed to load notifications:", error);
+    }
+  }, [user?.isAdmin])
+
+  useEffect(() => {
+    void loadReports();
+  }, [user?.isAdmin]);
+
+  const toggleNotifications = () => {
+    const willOpen = !isNotificationOpen;
+    setIsNotificationOpen(willOpen);
+
+    if(willOpen){
+      void loadReports();
+    }
+  }
+
 
   const unreadCount = reports.filter((r) => !r.IsRead).length;
 
@@ -210,8 +230,8 @@ export default function DashboardLayout({
                 key={item.href}
                 href={`/${locale}${item.href}`}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${isActive
-                    ? "bg-primary-dim text-primary font-medium rounded-lg"
-                    : "text-text2 hover:bg-bg3 rounded-lg"
+                  ? "bg-primary-dim text-primary font-medium rounded-lg"
+                  : "text-text2 hover:bg-bg3 rounded-lg"
                   }`}
               >
                 {item.icon}
@@ -230,8 +250,8 @@ export default function DashboardLayout({
                 key={item.href}
                 href={`/${locale}${item.href}`}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] mb-0.5 transition-colors ${isActive
-                    ? "bg-primary-dim text-primary font-medium rounded-lg"
-                    : "text-text2 hover:bg-bg3 rounded-lg"
+                  ? "bg-primary-dim text-primary font-medium rounded-lg"
+                  : "text-text2 hover:bg-bg3 rounded-lg"
                   } `}
               >
                 {item.icon}
@@ -302,7 +322,7 @@ export default function DashboardLayout({
               <div className="relative flex items-center" ref={notificationRef}>
                 <button
                   className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
-                  onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                  onClick={toggleNotifications}
                 >
                   <svg
                     width="24"
@@ -371,7 +391,7 @@ export default function DashboardLayout({
               <div className="relative flex items-center" ref={notificationRef}>
                 <button
                   className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
-                  onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                  onClick={toggleNotifications}
                 >
                   <svg
                     width="24"
@@ -460,8 +480,8 @@ export default function DashboardLayout({
                 </span>
                 <span
                   className={`text-[9px] ${isActive
-                      ? "text-primary text-[8px] font-semibold"
-                      : "text-text3 text-[10px] font-semibold"
+                    ? "text-primary text-[8px] font-semibold"
+                    : "text-text3 text-[10px] font-semibold"
                     }`}
                 >
                   {t(item.label)}

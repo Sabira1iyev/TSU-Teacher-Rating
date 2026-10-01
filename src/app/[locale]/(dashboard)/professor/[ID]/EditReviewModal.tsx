@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import DeleteReviewModal from "./DeleteReviewModal";
 export default function EditReviewModal({
   reviewId,
@@ -16,6 +17,7 @@ export default function EditReviewModal({
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isDeleteReviewOpen, setIsDeleteReviewOpen] = useState(false);
+  const buttons = useTranslations("Buttons");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,14 +61,14 @@ export default function EditReviewModal({
                 )
               }
             >
-              Edit review
+              {buttons("editReview")}
             </button>
           )}
           <button
             className="w-full text-center text-white font-semibold px-4 py-2 bg-red-400  text-sm hover:bg-red-300 border-none rounded-full cursor-pointer"
             onClick={() => setIsDeleteReviewOpen(true)}
           >
-            Remove
+            {buttons("removeReview")}
           </button>
         </div>
       )}

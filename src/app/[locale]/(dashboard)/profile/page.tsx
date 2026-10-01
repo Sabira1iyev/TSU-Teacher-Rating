@@ -8,6 +8,7 @@ import {
   Sprout,
   Clock,
   Star,
+  User,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -218,6 +219,8 @@ export default function ProfilePage() {
   const tRank = useTranslations("Rank");
   const Tabs = useTranslations("Tabs");
 
+  const studyYearLabel = user?.studyYear ? Year(String(user.studyYear)) : "-"
+
   useEffect(() => {
     if (user?.userId) {
       fetch(`/api/stats?userId=${user.userId}`)
@@ -250,7 +253,7 @@ export default function ProfilePage() {
   return (
     <div className="flex flex-col pt-10 bg-bg">
       {/* Desktop topbar */}
-      <div className="hidden lg:flex items-center justify-between px-6 py-3.5 mt-[10px] border-b border-border bg-bg2 sticky z-10">
+      <div className="hidden lg:flex items-center justify-between px-6 py-3.5 mt-2.5 border-b border-border bg-bg2 sticky z-10">
         <h1
           className="font-bold text-[16px] text-text"
           style={{
@@ -272,7 +275,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Mobile topbar */}
-      <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-[49px] z-10">
+      <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-12.25 z-10">
         <span className="text-sm font-bold text-text">
           {tCommon("myProfile")}
         </span>
@@ -300,7 +303,7 @@ export default function ProfilePage() {
             }}
           >
             <div
-              className="w-16 h-16 lg:w-[72px] lg:h-[72px] rounded-full flex items-center justify-center text-xl lg:text-2xl font-semibold mt-6 mx-auto mb-3 border-2 border-border2"
+              className="w-16 h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center text-xl lg:text-2xl font-semibold mt-6 mx-auto mb-3 border-2 border-border2"
               style={{
                 background: `linear-gradient(180deg, ${fc.light} 35%, #fdf6e3 300%)`,
                 border: `2px solid ${fc.mid}`,
@@ -330,7 +333,7 @@ export default function ProfilePage() {
               }}
             >
               {user?.faculty ? tFac(user.faculty) : "Faculty"} •{" "}
-              {Year(String(user?.studyYear))}
+               {studyYearLabel}
             </p>
 
             <div className="h-[0.5px] bg-border my-4" />
@@ -405,9 +408,9 @@ export default function ProfilePage() {
                 ),
                 sub: rankInfo.next
                   ? tRank("likesTo", {
-                      likes: rankInfo.remaining,
-                      nextRank: tRank(rankInfo.next),
-                    })
+                    likes: rankInfo.remaining,
+                    nextRank: tRank(rankInfo.next),
+                  })
                   : tRank("maxRank"),
               },
               {
@@ -445,14 +448,14 @@ export default function ProfilePage() {
                 }}
               >
                 <p className="text-[9px] text-white mb-1">{item.label}</p>
-                <p
+                <div
                   className={`text-lg font-semibold`}
                   style={{
                     color: "white",
                   }}
                 >
                   {item.value}
-                </p>
+                </div>
               </div>
             ))}
           </div>
@@ -486,17 +489,16 @@ export default function ProfilePage() {
                   label: tCommon("faculty"),
                   value: user?.faculty ? tFac(user.faculty) : user?.faculty,
                 },
-                { label: Year("year"), value: Year(String(user?.studyYear)) },
+                { label: Year("year"), value: studyYearLabel },
               ].map((item, i, arr) => (
                 <div
                   key={item.label}
-                  className={`flex justify-between py-2 text-[11px] ${
-                    i < arr.length - 1 ? "border-b border-border" : ""
-                  }`}
+                  className={`flex justify-between py-2 text-[11px] ${i < arr.length - 1 ? "border-b border-border" : ""
+                    }`}
                 >
                   <span className="text-text3">{item.label}</span>
                   <span
-                    className="text-text truncate ml-4 text-right max-w-[160px]"
+                    className="text-text truncate ml-4 text-right max-w-40"
                     style={
                       item.label === "Faculty" ? { color: fc.primary } : {}
                     }
@@ -517,11 +519,10 @@ export default function ProfilePage() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors capitalize ${
-                  activeTab === tab
-                    ? "bg-bg2 text-text font-medium"
-                    : "text-text3"
-                }`}
+                className={`px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors capitalize ${activeTab === tab
+                  ? "bg-bg2 text-text font-medium"
+                  : "text-text3"
+                  }`}
               >
                 {tab === "reviews" ? Tabs("myReviews") : Tabs("stats")}
               </button>
@@ -547,11 +548,11 @@ export default function ProfilePage() {
                       key={star}
                       className="flex items-center gap-2 text-[11px]"
                     >
-                      <div className="flex items-center gap-1 w-8 flex-shrink-0">
+                      <div className="flex items-center gap-1 w-8 shrink-0">
                         <span className="text-text3">{star}</span>
-                        <Star className="w-[11px] h-[11px] fill-amber-400 text-amber-400" />
+                        <Star className="w-2.75 h-2.75 fill-amber-400 text-amber-400" />
                       </div>
-                      <div className="flex-1 h-[4px] bg-bg4 rounded-full overflow-hidden">
+                      <div className="flex-1 h-1 bg-bg4 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -596,7 +597,7 @@ export default function ProfilePage() {
                     className="bg-bg2 border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-bg transition-colors"
                   >
                     <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0"
                       style={{ backgroundColor: colors.bg, color: colors.text }}
                     >
                       {getInitials(
@@ -626,7 +627,7 @@ export default function ProfilePage() {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <div
                               key={star}
-                              className="w-[8px] h-[8px]"
+                              className="w-2 h-2"
                               style={{
                                 clipPath:
                                   "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",

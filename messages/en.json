@@ -24,7 +24,8 @@
     "searchD": "Search professor or course...",
     "searchM": "Search...",
     "required": "TSU email required",
-    "only": "Only @hum.tsu.edu.ge and @ens.tsu.edu.ge are accepted"
+    "only": "Only @hum.tsu.edu.ge and @ens.tsu.edu.ge are accepted",
+    "Student Account": "Student Account"
   },
 
   "Faculties": {
@@ -86,15 +87,17 @@
     "stats": "Stats"
   },
 
-"Titles": {
-  "Instructor": "Instructor",
-  "Prof. Dr.": "Prof. Dr.",
-  "Associate Professor": "Associate Professor",
-  "Doctor": "Dr.",
-  "Res Asst": "Res. Asst.",
-  "Assistant Professor": "Assistant Professor",
-  "Professor": "Professor"
-},
+  "Titles": {
+    "Instructor": "Instructor",
+    "Prof": "Prof. Dr.",
+    "Prof Dr": "Prof. Dr.",
+    "Associate Professor": "Associate Professor",
+    "Doctor": "Dr.",
+    "Dr": "Dr.",
+    "Res Asst": "Res. Asst.",
+    "Assistant Professor": "Assistant Professor",
+    "Professor": "Professor"
+  },
 
   "noResult": {
     "searchTitle": "No results found",
@@ -146,7 +149,14 @@
     "verifyAnd": "Verify and Continue",
     "verifyAndContinue": "Verify and continue →",
     "verifying": "Verifying...",
-    "savePassword": "Save Password"
+    "savePassword": "Save Password",
+    "newest": "Newest First",
+    "onlyFive": "Only 5 Stars",
+    "mostLiked": "Most Liked",
+    "editReview": "Edit Review",
+    "removeReview": "Remove",
+    "reportReview": "Report",
+    "submitReport": "Submit Report"
   },
   "Year": {
     "year": "Year",
@@ -304,5 +314,17 @@
     "newPasswordPlaceholder": "Min. 8 characters",
     "confirmPassword": "Confirm Password",
     "confirmPasswordPleaceholder": "Min. 8 characters"
+  },
+  "ReportPopup": {
+    "reportTitle": "Report this review",
+    "reportDesc": "Please select why you are reporting this comment",
+    "reason": "Reason",
+    "selectReason": "Select a reason",
+    "spam": "Spam or fake review",
+    "inappropriate": "Inappropriate language",
+    "irrelevant": "Irrelevant content",
+    "sharing": "Sharing personal information",
+    "other": "Other",
+    "otherReason": "Enter a reason"
   }
 }

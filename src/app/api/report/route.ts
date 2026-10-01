@@ -271,7 +271,7 @@ export async function PUT(req: NextRequest) {
       const { error: markPointReportError } = await supabaseAdmin
         .from("reports")
         .update({
-          is_read: isRead === "false",
+          is_read: isRead === "true",
         })
         .eq("id", Number(reportId));
 

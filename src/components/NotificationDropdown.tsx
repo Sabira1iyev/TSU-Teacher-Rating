@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "./style.css";
 import { useRouter, useParams } from "next/navigation";
+import { useUser } from "@/context/UserContext";
+
 interface NotificationDropdownProp {
   onClose: () => void;
   reports: any[];
@@ -13,24 +15,29 @@ export default function NotificationDropDown({
   setReports,
 }: NotificationDropdownProp) {
   const router = useRouter();
+  const { user } = useUser();
 
   const handleDismiss = async (reportId: string) => {
     try {
-      const res = await fetch("/api/report", {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          reportId: reportId,
-        }),
-      });
-      if (res.ok) {
-        setReports((prevReports: any) =>
-          prevReports.filter((report: any) => report.ReportId !== reportId),
-        );
-      }
-    } catch (error: any) { }
+        const res = await fetch("/api/report", {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            reportId: reportId,
+          }),
+        });
+
+        if (res.ok) {
+          setReports((prevReports: any) =>
+            prevReports.filter((report: any) => report.ReportId !== reportId),
+          );
+        }
+      
+    } catch (error: any) {
+      console.log("Error dismissing report: ", error);
+    }
   };
 
   const params = useParams();
@@ -79,7 +86,7 @@ export default function NotificationDropDown({
         </button>
       </div>
 
-      <div className="max-h-[380px] overflow-y-auto custom-scrollbar">
+      <div className="max-h-95 overflow-y-auto custom-scrollbar">
         {reports.length === 0 ? (
           <div className="p-8 text-center text-sm text-text3">
             You're all caught up!
