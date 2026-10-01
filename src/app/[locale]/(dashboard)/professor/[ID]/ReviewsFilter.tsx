@@ -1,9 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ReviewsFilter({ setFilterType, onClose }: any) {
-  
 
+  const buttons = useTranslations("Buttons");
   return (
     <div className="animate-modal flex flex-col absolute right-0 top-11 bg-bg2 border border-border rounded-xl shadow-[0_4px_20px_rgba(0,40,80,0.08)] w-40 z-50 overflow-hidden py-1">
       <button
@@ -13,7 +14,7 @@ export default function ReviewsFilter({ setFilterType, onClose }: any) {
         }}
         className="px-4 py-2 text-[11px] text-left text-text2 hover:text-primary hover:bg-bg3 transition-colors cursor-pointer bg-transparent border-none"
       >
-        Newest First
+        {buttons("newest")}
       </button>
       <button
         onClick={() => {
@@ -22,7 +23,7 @@ export default function ReviewsFilter({ setFilterType, onClose }: any) {
         }}
         className="px-4 py-2 text-[11px] text-left text-text2 hover:text-primary hover:bg-bg3 transition-colors cursor-pointer bg-transparent border-none"
       >
-        Only 5 Stars
+        {buttons("onlyFive")}
       </button>
       <button
         onClick={() => {
@@ -31,7 +32,7 @@ export default function ReviewsFilter({ setFilterType, onClose }: any) {
         }}
         className="px-4 py-2 text-[11px] text-left text-text2 hover:text-primary hover:bg-bg3 transition-colors cursor-pointer bg-transparent border-none"
       >
-        Most Liked
+        {buttons("mostLiked")}
       </button>
     </div>
   );

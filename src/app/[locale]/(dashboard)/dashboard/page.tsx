@@ -130,7 +130,7 @@ export default function DashBoardPage() {
               <button
                 key={faculty}
                 onClick={() => setSelectedFaculty(faculty)}
-                className={`flex-shrink-0 min-w-[110px] text-left p-3 rounded-xl border transition-all cursor-pointer 
+                className={`shrink-0 min-w-27.5 text-left p-3 rounded-xl border transition-all cursor-pointer 
                                 ${
                                   isActive
                                     ? "bg-bg border-primary-dim shadow-sm"
@@ -221,7 +221,7 @@ export default function DashBoardPage() {
             {formatRating(avgRating)}
           </p>
           <p className="text-[9px] text-text2 mt-1">
-            <span className="text-primary mr-[2px]">
+            <span className="text-primary mr-0.5">
               ↑ {stats?.semesterGrowth || 0}
             </span>{" "}
             {tDash("thisSem")}
@@ -233,7 +233,7 @@ export default function DashBoardPage() {
             {totalReviews.toLocaleString()}
           </p>
           <p className="text-[9px] text-text2 mt-1">
-            <span className="text-primary mr-[2px]">
+            <span className="text-primary mr-0.5">
               {stats?.monthGrowth > 0 ? "+" : ""}
               {stats?.monthGrowth || 0}
             </span>
@@ -303,7 +303,7 @@ export default function DashBoardPage() {
                   <span className="text-[11px] text-text3">{index + 1}</span>
                   <div className="flex items-center gap-2">
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-medium flex-shrink-0 ${colors.bg} ${colors.text}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-medium shrink-0 ${colors.bg} ${colors.text}`}
                     >
                       {getInitials(professor.firstName, professor.lastName)}
                     </div>
@@ -327,7 +327,7 @@ export default function DashBoardPage() {
                       {[1, 2, 3, 4, 5].map((star) => (
                         <div
                           key={star}
-                          className="w-[7px] h-[7px]"
+                          className="w-1.75 h-1.75"
                           style={{
                             clipPath:
                               "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
@@ -378,7 +378,7 @@ export default function DashBoardPage() {
                     {index + 1}
                   </span>
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-medium flex-shrink-0 ${colors.bg} ${colors.text}`}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-medium shrink-0 ${colors.bg} ${colors.text}`}
                   >
                     {getInitials(professor.firstName, professor.lastName)}
                   </div>
@@ -391,7 +391,7 @@ export default function DashBoardPage() {
                       {professor.department}
                     </p>
                   </div>
-                  <div className="text-right flex-shrink-0">
+                  <div className="text-right shrink-0">
                     <p
                       className={`text-[15px] font-semibold ${getRatingColor(professor.overallRating)}`}
                     >

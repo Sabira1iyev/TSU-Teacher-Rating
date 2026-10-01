@@ -13,7 +13,7 @@ import {
 } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
 import { useUser } from "@/context/UserContext";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 
 const STAR_COLOR = {
   teaching: "#0060a9",
@@ -34,6 +34,8 @@ function RatePageContent() {
   const [allProfessors, setAllProfessors] = useState<any[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const tDash = useTranslations("Common");
+  const messages = useMessages();
+  console.log("CLIENT Titles:", messages.Titles);
   const tTitles = useTranslations("Titles");
   const rules = useTranslations("Rules");
   const buttons = useTranslations("Buttons");
@@ -170,7 +172,7 @@ function RatePageContent() {
   }
   if (submitted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-6">
+      <div className="flex flex-col items-center justify-center min-h-100 gap-4 px-6">
         <div className="w-16 h-16 rounded-full bg-primary-dim flex items-center justify-center">
           <svg
             width="28"
@@ -240,7 +242,7 @@ function RatePageContent() {
             </p>
             {professor ? (
               <div className="flex items-center gap-3 bg-bg2 border border-border rounded-xl p-3">
-                <div className="w-11 h-11 rounded-full bg-amber-dim flex items-center justify-center text-sm text-amber font-semibold flex-shrink-0">
+                <div className="w-11 h-11 rounded-full bg-amber-dim flex items-center justify-center text-sm text-amber font-semibold shrink-0">
                   {getInitials(professor.firstName, professor.lastName)}
                 </div>
                 <div className="flex-1">
@@ -291,7 +293,7 @@ function RatePageContent() {
                         }}
                       >
                         <div
-                          className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
+                          className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0"
                           style={{
                             background: pColor.mid,
                             color: pColor.primary,
@@ -399,7 +401,7 @@ function RatePageContent() {
                 <div className="flex flex-col gap-3">
                   {criteriaEntries.map(([key, label]) => (
                     <div key={key} className="flex items-center gap-3">
-                      <span className="text-xs text-text2 w-32 flex-shrink-0">
+                      <span className="text-xs text-text2 w-32 shrink-0">
                         {profId(key)}
                       </span>
                       <div className="flex gap-1.5">
@@ -463,18 +465,17 @@ function RatePageContent() {
                     <button
                       key={tag}
                       onClick={() => handleTagToggle(tag)}
-                      className={`px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all border ${
-                        !form.tags.includes(tag)
+                      className={`px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all border ${!form.tags.includes(tag)
                           ? "bg-bg2 border-border text-text2 hover:border-border"
                           : ""
-                      }`}
+                        }`}
                       style={
                         form.tags.includes(tag)
                           ? {
-                              backgroundColor: fc.light,
-                              borderColor: fc.primary,
-                              color: fc.primary,
-                            }
+                            backgroundColor: fc.light,
+                            borderColor: fc.primary,
+                            color: fc.primary,
+                          }
                           : {}
                       }
                     >
@@ -494,11 +495,10 @@ function RatePageContent() {
                     onClick={() =>
                       setForm((prev) => ({ ...prev, wouldRecommend: true }))
                     }
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${
-                      form.wouldRecommend
+                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${form.wouldRecommend
                         ? "bg-primary-dim border-border text-primary"
                         : "border-border text-text2 hover:bg-bg2"
-                    }`}
+                      }`}
                   >
                     {buttons("yesRecommend")}
                   </button>
@@ -507,11 +507,10 @@ function RatePageContent() {
                     onClick={() =>
                       setForm((prev) => ({ ...prev, wouldRecommend: false }))
                     }
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${
-                      !form.wouldRecommend
+                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${!form.wouldRecommend
                         ? "bg-amber-dim border-amber text-amber"
                         : "border-border text-text2 hover:bg-bg2"
-                    }`}
+                      }`}
                   >
                     {buttons("noRecommend")}
                   </button>
@@ -559,7 +558,7 @@ function RatePageContent() {
                 rules("rule4"),
               ].map((rule) => (
                 <div key={rule} className="flex items-start gap-2">
-                  <div className="w-1 h-1 rounded-full bg-text3 flex-shrink-0 mt-1.5" />
+                  <div className="w-1 h-1 rounded-full bg-text3 shrink-0 mt-1.5" />
                   <p className="text-[11px] text-text3 leading-relaxed">
                     {rule}
                   </p>
@@ -607,13 +606,13 @@ function RatePageContent() {
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="lucide lucide-star w-[11px] h-[11px] fill-amber-400 text-amber-400"
+                          className="lucide lucide-star w-2.75 h-2.75 fill-amber-400 text-amber-400"
                           aria-hidden="true"
                         >
                           <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
                         </svg>
                       </span>
-                      <div className="flex-1 h-[3px] bg-bg4 rounded-full overflow-hidden">
+                      <div className="flex-1 h-0.75 bg-bg4 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{

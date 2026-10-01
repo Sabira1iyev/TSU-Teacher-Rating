@@ -24,7 +24,8 @@
     "searchD": "Professor və ya kurs axtar..",
     "searchM": "Axtar...",
     "required": "TSU e-poçtu tələb olunur",
-    "only": "Yalnız @hum.tsu.edu.ge və @ens.tsu.edu.ge ünvanları qəbul edilir"
+    "only": "Yalnız @hum.tsu.edu.ge və @ens.tsu.edu.ge ünvanları qəbul edilir",
+    "Student Account": "Tələbə hesabı"
   },
 
   "Faculties": {
@@ -85,15 +86,17 @@
     "myReviews": "Rəylərim",
     "stats": "Statistika"
   },
-"Titles": {
-  "Instructor": "Müəllim",
-  "Prof. Dr.": "Prof. Dr.",
-  "Associate Professor": "Dosent",
-  "Doctor": "Dr.",
-  "Res Asst": "Elmi köməkçi",
-  "Assistant Professor": "Dosent",
-  "Professor": "Professor"
-},
+  "Titles": {
+    "Instructor": "Müəllim",
+    "Prof": "Prof. Dr.",
+    "Prof Dr": "Prof. Dr.",
+    "Associate Professor": "Dosent",
+    "Doctor": "Dr.",
+    "Dr": "Dr.",
+    "Res Asst": "Elmi köməkçi",
+    "Assistant Professor": "Dosent",
+    "Professor": "Professor"
+  },
   "noResult": {
     "searchTitle": "Heç bir nəticə tapılmadı",
     "searchDesc": "Başqa ad, kurs və ya şöbə sınayın",
@@ -141,7 +144,13 @@
     "cancel": "İmtina et",
     "verifyAndContinue": "Təsdiqləyin və davam edin →",
     "verifying": "Təsdiqlənir...",
-    "savePassword": "Yadda saxla"
+    "savePassword": "Yadda saxla",
+    "newest": "Ən yenilər",
+    "onlyFive": "Yalnız 5 ulduz",
+    "mostLiked": "Ən çox bəyənilən",
+    "editReview": "Redaktə et",
+    "removeReview": "Sil",
+    "reportReview": "Şikayət"
   },
   "Year": {
     "year": "Kurs",
@@ -302,5 +311,17 @@
     "newPasswordPlaceholder": "Min. 8 simvol",
     "confirmPassword": "Şifrəni təsdiqləyin",
     "confirmPasswordPleaceholder": "Min. 8 simvol"
+  },
+  "ReportPopup": {
+    "reportTitle": "Bu rəy haqqında şikayət et",
+    "reportDesc": "Bu rəyi niyə şikayət etdiyinizi seçin",
+    "reason": "Səbəb",
+    "selectReason": "Səbəb seçin",
+    "spam": "Spam və ya saxta rəy",
+    "inappropriate": "Uyğunsuz ifadələr",
+    "irrelevant": "Əlaqəsiz məzmun",
+    "sharing": "Şəxsi məlumatların paylaşılması",
+    "other": "Digər",
+    "otherReason": "Səbəbi daxil edin"
   }
 }

@@ -21,6 +21,7 @@ export default async function RootLayout({
   const { locale } = await params;
   const messages = await getMessages();
 
+
   return (
     <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col">

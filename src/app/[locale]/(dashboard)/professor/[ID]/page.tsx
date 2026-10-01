@@ -24,6 +24,7 @@ import DeleteProfessorModal from "./DeleteProfessorModal";
 
 type Tab = "Overview" | "Reviews" | "Courses";
 
+
 export default function ProfessorProfilePage() {
   const { user } = useUser();
   const params = useParams();
@@ -49,6 +50,13 @@ export default function ProfessorProfilePage() {
   const tSideBar = useTranslations("Sidebar");
   const tProfId = useTranslations("ProfId");
   const tTrend = useTranslations("Months");
+  const tTags = useTranslations("Tags");
+
+  const tabs: { key: Tab; label: string }[] = [
+    { key: "Overview", label: tProfId("overview") },
+    { key: "Reviews", label: tProfId("reviews") },
+    { key: "Courses", label: tProfId("courses") },
+  ];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -269,7 +277,7 @@ export default function ProfessorProfilePage() {
     <div className="flex flex-col">
       {/* Desktop topBar */}
       <div
-        className="hidden lg:flex items-center justify-between px-6 py-3 sticky top-[-57px] z-10"
+        className="hidden lg:flex items-center justify-between px-6 py-3 sticky top-14.25 z-10"
         style={{
           background: `linear-gradient(135deg, ${fc.light} 0%, transparent 100%)`,
         }}
@@ -319,7 +327,7 @@ export default function ProfessorProfilePage() {
           {/* Avatar + Info */}
           <div className="flex items-start gap-4 lg:gap-5">
             {/* Avatar with glow ring */}
-            <div className="relative flex-shrink-0">
+            <div className="relative shrink-0">
               <div
                 className="absolute  inset-3 rounded-full opacity-40 blur-sm"
                 style={{
@@ -327,7 +335,7 @@ export default function ProfessorProfilePage() {
                 }}
               />
               <div
-                className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-xl lg:text-2xl font-bold flex-shrink-0"
+                className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center text-xl lg:text-2xl font-bold shrink-0"
                 style={{
                   background: `linear-gradient(135deg, ${fc.light} 60%, #fdf6e3 400%)`,
                   border: `2px solid ${fc.mid}`,
@@ -619,28 +627,21 @@ export default function ProfessorProfilePage() {
       {/* Tabs */}
       <div className="flex flex-row justify-between items-center px-5 lg:px-6">
         <div className="flex border-b border-border">
-          {(
-            [
-              tProfId("overview"),
-              tProfId("reviews"),
-              tProfId("courses"),
-            ] as Tab[]
-          ).map((tab) => (
-            <button
-              onClick={() => setActiveTab(tab)}
-              className={`px-3 py-3 text-xs cursor-pointer border-b-2 transition-colors ${activeTab === tab
-                  ? "font-medium"
-                  : "text-text3 border-transparent hover:text-text2"
-                }`}
-              style={
-                activeTab === tab
-                  ? { color: fc.primary, borderColor: fc.primary }
-                  : {}
-              }
-            >
-              {tab}
-            </button>
-          ))}
+          {
+            tabs.map(({ key, label }) => (
+              <button
+                key={key}
+                onClick={() => setActiveTab(key)}
+                className={`px-3 py-3 text-xs cursor-pointer border-b-2 transition-colors ${activeTab === key ?
+                  "font-medium" :
+                  "text-text3 border-transparent hover:text-text2"
+                  } `}
+                style={
+                  activeTab === key ? { color: fc.primary, borderColor: fc.primary } : {}
+                }
+              >{label}</button>
+            ))
+          }
         </div>
         {activeTab === "Reviews" && (
           <div className="relative" ref={revireFilterRef}>
@@ -735,10 +736,10 @@ export default function ProfessorProfilePage() {
                     const value = professor.criteria[key];
                     return (
                       <div key={key} className="flex items-center gap-3">
-                        <span className="text-[11px] text-text2 w-32 flex-shrink-0">
+                        <span className="text-[11px] text-text2 w-32 shrink-0">
                           {tProfId(key)}
                         </span>
-                        <div className="flex-1 h-[5px] bg-bg4 rounded-full overflow-hidden">
+                        <div className="flex-1 h-1.25 bg-bg4 rounded-full overflow-hidden">
                           <div
                             className="h-full rounded-full"
                             style={{
@@ -803,7 +804,7 @@ export default function ProfessorProfilePage() {
                           {[1, 2, 3, 4, 5].map((star) => (
                             <div
                               key={star}
-                              className="w-[10px] h-[10px]"
+                              className="w-2.5 h-2.5"
                               style={{
                                 clipPath:
                                   "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
@@ -839,7 +840,7 @@ export default function ProfessorProfilePage() {
                               color: fc.primary,
                             }}
                           >
-                            {tag}
+                            {tTags(tag)}
                           </span>
                         ))}
                       </div>
@@ -875,13 +876,13 @@ export default function ProfessorProfilePage() {
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="lucide lucide-star w-[11px] h-[11px] fill-amber-400 text-amber-400"
+                          className="lucide lucide-star w-2.75 h-2.75 fill-amber-400 text-amber-400"
                           aria-hidden="true"
                         >
                           <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
                         </svg>
                       </span>
-                      <div className="flex-1 h-[4px] bg-bg4 rounded-full overflow-hidden">
+                      <div className="flex-1 h-1 bg-bg4 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -955,7 +956,7 @@ export default function ProfessorProfilePage() {
                       {[1, 2, 3, 4, 5].map((star) => (
                         <div
                           key={star}
-                          className="w-[11px] h-[11px]"
+                          className="w-2.75 h-2.75"
                           style={{
                             clipPath:
                               "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
@@ -993,7 +994,7 @@ export default function ProfessorProfilePage() {
                         key={tag}
                         className="px-2 py-0.5 bg-primary-dim text-primary text-[9px] rounded-lg"
                       >
-                        {tag}
+                        {tTags(tag)}
                       </span>
                     ))}
                   </div>
@@ -1054,7 +1055,7 @@ export default function ProfessorProfilePage() {
                         <span className="text-[11px] font-medium text-text2 ml-1.5">
                           {review.likeCount}
                         </span>
-                        <p className="w-[1px] h-3 bg-black mx-2"></p>
+                        <p className="w-px h-3 bg-black mx-2"></p>
 
                         <button
                           onClick={() => handleDislike(review.id.toString())}
@@ -1122,7 +1123,7 @@ export default function ProfessorProfilePage() {
                               strokeLinejoin="round"
                             />
                           </svg>
-                          <span className="text-xs text-primary">Report</span>
+                          <span className="text-xs text-primary">{tButton("reportReview")}</span>
                         </button>
                       )}
                     </div>
@@ -1154,7 +1155,7 @@ export default function ProfessorProfilePage() {
       </div>
 
       {/* Mobile rate button */}
-      <div className="lg:hidden bottom-[57px] left-0 right-0 px-4 py-3 bg-bg z-10">
+      <div className="lg:hidden bottom-14.25 left-0 right-0 px-4 py-3 bg-bg z-10">
         <button
           onClick={() => router.push(`/${params.locale as string}/rate?professorId=${professor.id}`)}
           className="w-full py-3.5 rounded-xl text-sm font-semibold text-white transition-colors cursor-pointer"

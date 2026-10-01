@@ -378,7 +378,7 @@ export async function DELETE(
     if (!session.isAdmin) {
       return NextResponse.json(
         {
-          message: "You don't to perform this action!",
+          message: "You don't have permission to perform this action!",
         },
         {
           status: 401,

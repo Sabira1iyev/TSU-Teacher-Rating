@@ -24,7 +24,8 @@
     "searchD": "მოძებნეთ პროფესორი ან კურსი...",
     "searchM": "მოძებნეთ...",
     "required": "TSU ელფოსტა აუცილებელია",
-    "only": "მხოლოდ @hum.tsu.edu.ge და @ens.tsu.edu.ge მისამართები მიიღება"
+    "only": "მხოლოდ @hum.tsu.edu.ge და @ens.tsu.edu.ge მისამართები მიიღება",
+    "Student Account": "სტუდენტის ანგარიში"
   },
 
   "Faculties": {
@@ -85,15 +86,17 @@
     "myReviews": "ჩემი შეფასებები",
     "stats": "სტატისტიკა"
   },
-"Titles": {
-  "Instructor": "ინსტრუქტორი",
-  "Prof. Dr.": "პროფ. დოქტორი",
-  "Associate Professor": "ასოცირებული პროფესორი",
-  "Doctor": "დოქტორი",
-  "Res Asst": "კვლევითი ასისტენტი",
-  "Assistant Professor": "ასისტენტ-პროფესორი",
-  "Professor": "პროფესორი"
-},
+  "Titles": {
+    "Instructor": "ინსტრუქტორი",
+    "Prof": "პროფ. დოქტორი",
+    "Prof Dr": "პროფ. დოქტორი",
+    "Associate Professor": "ასოცირებული პროფესორი",
+    "Doctor": "დოქტორი",
+    "Dr": "დოქტორი",
+    "Res Asst": "კვლევითი ასისტენტი",
+    "Assistant Professor": "ასისტენტ-პროფესორი",
+    "Professor": "პროფესორი"
+  },
 
   "noResult": {
     "searchTitle": "შედეგები ვერ მოიძებნა",
@@ -144,7 +147,13 @@
     "cancel": "გაუქმება",
     "verifyAndContinue": "დაადასტურე და გააგრძელე →",
     "verifying": "მოწმდება...",
-    "savePassword": "პაროლის შენახვა"
+    "savePassword": "პაროლის შენახვა",
+    "newest": "უახლესი",
+    "onlyFive": "მხოლოდ 5 ვარსკვლავი",
+    "mostLiked": "ყველაზე მეტი მოწონება",
+    "editReview": "რედაქტირება",
+    "removeReview": "წაშლა",
+    "reportReview": "დარეპორტება"
   },
   "Year": {
     "year": "კურსი",
@@ -309,5 +318,17 @@
     "newPasswordPlaceholder": "მინ. 8 სიმბოლო",
     "confirmPassword": "დაადასტურე პაროლი",
     "confirmPasswordPleaceholder": "მინ. 8 სიმბოლო"
-  }
+  },
+  "ReportPopup": {
+  "reportTitle": "ამ შეფასების დარეპორტება",
+  "reportDesc": "გთხოვთ, აირჩიოთ მიზეზი, რის გამოც ამ კომენტარს არეპორტებთ",
+  "reason": "მიზეზი",
+  "selectReason": "აირჩიეთ მიზეზი",
+  "spam": "სპამი ან ყალბი შეფასება",
+  "inappropriate": "შეუფერებელი ენა",
+  "irrelevant": "არარელევანტური შინაარსი",
+  "sharing": "პირადი ინფორმაციის გაზიარება",
+  "other": "სხვა",
+  "otherReason": "მიუთითეთ მიზეზი"
+}
 }

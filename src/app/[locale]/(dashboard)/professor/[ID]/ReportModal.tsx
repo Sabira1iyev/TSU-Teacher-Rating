@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
+import { useTranslations } from "next-intl";
 
 interface ReportModalProps {
   onClose: () => void;
@@ -15,7 +16,7 @@ export default function ReportModal({ onClose, reviewId }: ReportModalProps) {
   const [form, setFormData] = useState();
   const [otherReason, setOtherReason] = useState("");
   const { user } = useUser();
-
+  const reportPopup = useTranslations("ReportPopup");
   const handleSubmit = async () => {
     setSuccess("");
     setError("");
@@ -57,16 +58,16 @@ export default function ReportModal({ onClose, reviewId }: ReportModalProps) {
   };
 
   return (
-    <div className="animate-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="animate-backdrop fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="animate-modal bg-bg2 border border-border w-[90%] max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col gap-5">
         <div className="flex flex-col items-center text-center gap-4 py-4">
-          <h3 className="text-lg font-bold text-text">Report this review</h3>
+          <h3 className="text-lg font-bold text-text">{reportPopup("reportTitle")}</h3>
           <p className="text-sm text-text2">
-            Please select why you are reporting this comment
+            {reportPopup("reportDesc")}
           </p>
           <div className="flex flex-col w-full gap-2">
             <label className="text-xs font-medium text-text2 self-start">
-              Reason
+              {reportPopup("reason")}
             </label>
             <select
               name=""
@@ -76,13 +77,13 @@ export default function ReportModal({ onClose, reviewId }: ReportModalProps) {
               onChange={(e) => setReason(e.target.value)}
             >
               <option value="" disabled>
-                Select a reason
+                {reportPopup("selectReason")}
               </option>
-              <option value="spam">Spam or fake review</option>
-              <option value="inappropraite">Inappropriate language</option>
-              <option value="irrelevant">Irrelevant content</option>
-              <option value="sharing">Sharing personal information</option>
-              <option value="other">Other</option>
+              <option value="spam">{reportPopup("spam")}</option>
+              <option value="inappropriate">{reportPopup("inappropriate")}</option>
+              <option value="irrelevant">{reportPopup("irrelevant")}</option>
+              <option value="sharing">{reportPopup("sharing")}</option>
+              <option value="other">{reportPopup("other")}</option>
             </select>
             {reason === "other" && (
               <textarea
@@ -91,7 +92,7 @@ export default function ReportModal({ onClose, reviewId }: ReportModalProps) {
                 value={otherReason}
                 onChange={(e) => setOtherReason(e.target.value)}
                 className="border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all cursor-pointer resize-none"
-                placeholder="Enter a reason..."
+                placeholder={reportPopup("otherReason")}
                 rows={8}
               />
             )}
