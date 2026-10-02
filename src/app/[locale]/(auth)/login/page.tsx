@@ -23,35 +23,44 @@ export default function LoginPage() {
   const tIndex = useTranslations("Index");
   const sidebar = useTranslations("Sidebar");
   const common = useTranslations("Common");
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     setError("");
     setSuccess("");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+      const data = await res.json();
 
-    const data = await res.json();
+      if (!res.ok) {
+        setError(data.message);
+        return;
+      }
 
-    if (!res.ok) {
-      setError(data.message);
-      return;
+      setSuccess("Login successful! Redirecting...");
+
+      setUser(data.user);
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 1500);
     }
-
-    setSuccess("Login successful! Redirecting...");
-
-    setUser(data.user);
-
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 1500);
+    catch {
+      console.error("Could not reach the server.")
+    }
+    finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -83,7 +92,7 @@ export default function LoginPage() {
           <p className="text-sm text-text2 mt-1.5">
             {tIndex("sign")}
           </p>
-          <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
+          <div className="w-10 h-0.75 rounded-full bg-[#e6b800] mx-auto mt-3" />
         </div>
 
         {/* Logo */}
@@ -166,7 +175,11 @@ export default function LoginPage() {
             onClick={handleSubmit}
             className="w-full py-4 bg-primary rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
           >
-            {buttons("sigin")}
+            
+             {
+              isSubmitting ? buttons("signingIn") : success ? buttons("redirecting") : buttons("sigin")
+             }
+            
           </button>
         </div>
       </div>

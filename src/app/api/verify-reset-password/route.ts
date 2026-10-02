@@ -20,27 +20,6 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, verifyCode } = await req.json();
-
-    // const result = await db
-    //   .request()
-    //   .input("Email", email)
-    //   .input("VerifyCode", verifyCode)
-    //   .query(
-    //     `
-    //     SELECT VerificationExpiry FROM Users WHERE Email = @Email AND VerificationCode = @VerifyCode
-    //     `,
-    //   );
-    // if (result.recordset.length === 0) {
-    //   return NextResponse.json(
-    //     {
-    //       message: "Invalid verification code",
-    //     },
-    //     {
-    //       status: 404,
-    //     },
-    //   );
-    // }
-
     const { data: result, error } = await supabaseAdmin
       .from("users")
       .select("verification_expiry")

@@ -165,7 +165,7 @@ export default function DashboardLayout({
 
   useEffect(() => {
     void loadReports();
-  }, [user?.isAdmin]);
+  }, [loadReports]);
 
   const toggleNotifications = () => {
     const willOpen = !isNotificationOpen;

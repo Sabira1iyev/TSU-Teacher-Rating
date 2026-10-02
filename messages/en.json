@@ -156,7 +156,9 @@
     "editReview": "Edit Review",
     "removeReview": "Remove",
     "reportReview": "Report",
-    "submitReport": "Submit Report"
+    "submitReport": "Submit Report",
+    "signingIn": "Signing in...",
+    "redirecting": "Redirecting..."
   },
   "Year": {
     "year": "Year",

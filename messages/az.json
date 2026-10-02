@@ -150,7 +150,9 @@
     "mostLiked": "Ən çox bəyənilən",
     "editReview": "Redaktə et",
     "removeReview": "Sil",
-    "reportReview": "Şikayət"
+    "reportReview": "Şikayət",
+    "signingIn": "Giriş edilir...",
+    "redirecting": "Yönləndirilir..."
   },
   "Year": {
     "year": "Kurs",
