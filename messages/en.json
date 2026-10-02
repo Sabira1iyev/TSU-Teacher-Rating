@@ -158,7 +158,9 @@
     "reportReview": "Report",
     "submitReport": "Submit Report",
     "signingIn": "Signing in...",
-    "redirecting": "Redirecting..."
+    "redirecting": "Redirecting...",
+    "logout": "Yes, log out",
+    "markAll": "Mark all as read"
   },
   "Year": {
     "year": "Year",
@@ -241,7 +243,9 @@
     "wouldProf": "Would you recommend this professor?",
     "currentRating": "Current rating",
     "studentRating": "students rated",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "wouldRecommend": "✓ Would recommend",
+    "notRecommend": "✗ Would not recommend"
   },
   "Tags": {
     "Amazing Lectures": "Amazing Lectures",
@@ -328,5 +332,14 @@
     "sharing": "Sharing personal information",
     "other": "Other",
     "otherReason": "Enter a reason"
+  },
+  "LogoutPopup": {
+    "title": "Log out",
+    "desc": "Are you sure you want to log out of your account?"
+  },
+  
+  "Notifications": {
+    "notifications": "Notifications",
+    "reviewFlagged": "Review flagged"
   }
 }

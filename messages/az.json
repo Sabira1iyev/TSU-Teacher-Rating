@@ -152,7 +152,10 @@
     "removeReview": "Sil",
     "reportReview": "Şikayət",
     "signingIn": "Giriş edilir...",
-    "redirecting": "Yönləndirilir..."
+    "redirecting": "Yönləndirilir...",
+    "logout": "Bəli, çıxış et",
+    "logging": "Çıxış edilir...",
+    "markAll": "Hamısını oxundu et"
   },
   "Year": {
     "year": "Kurs",
@@ -234,7 +237,9 @@
     "wouldProf": "Bu professoru tövsiyə edərdiniz?",
     "currentRating": "Cari reytinq",
     "studentRating": "tələbə qiymətləndirib",
-    "loading": "Yüklənir..."
+    "loading": "Yüklənir...",
+    "wouldRecommend": "✓ Tövsiyə olunur",
+    "notRecommend": "✗ Tövsiyə olunmur"
   },
   "Tags": {
     "Amazing Lectures": "Əla mühazirələr",
@@ -325,5 +330,13 @@
     "sharing": "Şəxsi məlumatların paylaşılması",
     "other": "Digər",
     "otherReason": "Səbəbi daxil edin"
+  },
+  "LogoutPopup": {
+    "title": "Hesabdan çıxış",
+    "desc": "Hesabınızdan çıxmaq istədiyinizə əminsiniz?"
+  },
+  "Notifications": {
+    "notifications": "Bildirişlər",
+    "reviewFlagged": "Şikayət"
   }
 }

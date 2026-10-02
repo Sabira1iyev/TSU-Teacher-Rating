@@ -51,6 +51,7 @@ export default function ProfessorProfilePage() {
   const tProfId = useTranslations("ProfId");
   const tTrend = useTranslations("Months");
   const tTags = useTranslations("Tags");
+  const tRateProf = useTranslations("rateProf");
 
   const tabs: { key: Tab; label: string }[] = [
     { key: "Overview", label: tProfId("overview") },
@@ -1001,12 +1002,12 @@ export default function ProfessorProfilePage() {
                   <div className="flex items-center justify-between mt-2">
                     {review.wouldRecommend && (
                       <p className="text-[10px] text-primary mt-2">
-                        ✓ Would recommend
+                        {tRateProf("wouldRecommend")}
                       </p>
                     )}
                     {!review.wouldRecommend && (
                       <p className="text-[10px] text-red-500 mt-2">
-                        ✗ Would not recommend
+                        {tRateProf("notRecommend")}
                       </p>
                     )}
                     <div className="flex flex-row justify-center items-center gap-2">

@@ -155,7 +155,10 @@
     "removeReview": "წაშლა",
     "reportReview": "დარეპორტება",
     "signingIn": "შესვლა...",
-    "redirecting": "გადამისამართება..."
+    "redirecting": "გადამისამართება...",
+    "logout": "დიახ, გასვლა",
+    "logging": "მიმდინარეობს გასვლა...",
+    "markAll": "ყველას წაკითხულად"
   },
   "Year": {
     "year": "კურსი",
@@ -237,7 +240,9 @@
     "wouldProf": "ურჩევდი ამ პროფესორს?",
     "currentRating": "მიმდინარე შეფასება",
     "studentRating": "სტუდენტმა შეაფასა",
-    "loading": "იტვირთება..."
+    "loading": "იტვირთება...",
+    "wouldRecommend": "✓ რეკომენდებულია",
+    "notRecommend": "✗ არ არის რეკომენდებული"
   },
   "Tags": {
     "Amazing Lectures": "შესანიშნავი ლექციები",
@@ -332,5 +337,13 @@
     "sharing": "პირადი ინფორმაციის გაზიარება",
     "other": "სხვა",
     "otherReason": "მიუთითეთ მიზეზი"
+  },
+  "LogoutPopup": {
+    "title": "გასვლა",
+    "desc": "დარწმუნებული ხართ, რომ გსურთ თქვენი ანგარიშიდან გასვლა?"
+  },
+  "Notifications": {
+    "notifications": "შეტყობინებები",
+    "reviewFlagged": "დარეპორტებული"
   }
 }

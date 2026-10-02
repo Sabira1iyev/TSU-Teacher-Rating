@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./style.css";
 import { useRouter, useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface NotificationDropdownProp {
   onClose: () => void;
@@ -39,13 +40,15 @@ export default function NotificationDropDown({
   };
 
   const params = useParams();
-
+  const buttons = useTranslations("Buttons");
+  const notifications = useTranslations("Notifications");
+  const report = useTranslations("ReportPopup")
   return (
     <div className="animate-modal fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-bg2 border border-border rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-200 overflow-hidden">
       {/* HEADER */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <span className="font-semibold text-[15px] text-text">
-          Notifications
+          {notifications("notifications")}
         </span>
         <button
           className="flex items-center gap-1 text-primary hover:text-[#004a82] text-[13px] font-medium transition-colors cursor-pointer"
@@ -80,7 +83,7 @@ export default function NotificationDropDown({
               strokeLinejoin="round"
             />
           </svg>
-          Mark all as read
+          {buttons("markAll")}
         </button>
       </div>
 
@@ -151,7 +154,7 @@ export default function NotificationDropDown({
                   }}
                 >
                   <p className="gap-1 text-[14px] text-text leading-snug">
-                    <span className="font-bold">Review Flagged</span>
+                    <span className="font-bold">{notifications("reviewFlagged")}</span>
                     <span className="text-text3">•</span>
                     <span className="inline-block bg-red-100 text-red-500 px-2 py-0.5 rounded-md text-[12px] mt-1">
                       {report.Reason}

@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
     }
 
     for (const interaction of interactions) {
-      if (interaction.interaction_type === "LIKE") continue;
+      if (interaction.interaction_type !== "LIKE") continue;
 
       const reviewOwnerId = reviewOwnerById.get(interaction.review_id);
 
