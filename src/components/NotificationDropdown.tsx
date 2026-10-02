@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./style.css";
 import { useRouter, useParams } from "next/navigation";
-import { useUser } from "@/context/UserContext";
 
 interface NotificationDropdownProp {
   onClose: () => void;
@@ -15,7 +14,6 @@ export default function NotificationDropDown({
   setReports,
 }: NotificationDropdownProp) {
   const router = useRouter();
-  const { user } = useUser();
 
   const handleDismiss = async (reportId: string) => {
     try {
@@ -43,7 +41,7 @@ export default function NotificationDropDown({
   const params = useParams();
 
   return (
-    <div className="animate-modal fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-bg2 border border-border rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-[200] overflow-hidden">
+    <div className="animate-modal fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-bg2 border border-border rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-200 overflow-hidden">
       {/* HEADER */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <span className="font-semibold text-[15px] text-text">
