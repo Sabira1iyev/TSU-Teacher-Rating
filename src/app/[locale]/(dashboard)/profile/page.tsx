@@ -111,17 +111,17 @@ const getRankIcon = (rank: number | string) => {
 };
 
 const getRankDetails = (likes: number) => {
-  if (likes < 3) {
+  if (likes < 20) {
     return {
       current: "Rookie",
       next: "Protector",
-      remaining: 3 - likes,
+      remaining: 20 - likes,
     };
-  } else if (likes < 7) {
+  } else if (likes < 50) {
     return {
       current: "Protector",
       next: "Legend",
-      remaining: 7 - likes,
+      remaining: 50 - likes,
     };
   } else {
     return {

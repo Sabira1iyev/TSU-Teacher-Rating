@@ -45,7 +45,12 @@ export default function RegisterPage() {
     }
     if (
       !formdata.email.endsWith("@hum.tsu.edu.ge") &&
-      !formdata.email.endsWith("@ens.tsu.edu.ge")
+      !formdata.email.endsWith("@ens.tsu.edu.ge") &&
+      !formdata.email.endsWith("@eab.tsu.edu.ge") &&
+      !formdata.email.endsWith("@pes.tsu.edu.ge") &&
+      !formdata.email.endsWith("@sps.tsu.edu.ge") &&
+      !formdata.email.endsWith("@law.tsu.edu.ge") &&
+      !formdata.email.endsWith("@med.tsu.edu.ge")
     ) {
       setError(
         "Please use your TSU email addres(@hum.tsu.edu.ge or @ens.tsu.edu.ge).",
