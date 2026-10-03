@@ -55,7 +55,7 @@ export default function RegisterPage() {
       setError(
         "Please use your TSU email addres(@hum.tsu.edu.ge or @ens.tsu.edu.ge).",
       );
-      return;
+      return; 
     }
     if (formdata.password.length < 8) {
       setError("Password must be at least 8 characters long.");
