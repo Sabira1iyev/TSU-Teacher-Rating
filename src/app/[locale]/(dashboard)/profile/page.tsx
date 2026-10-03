@@ -638,7 +638,7 @@ export default function ProfilePage() {
                                     ? reviewFc.primary
                                     : reviewFc.mid,
                               }}
-                            ></div>
+                            ></div> 
                           ))}
                         </div>
                       </div>
