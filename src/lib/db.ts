@@ -17,4 +17,4 @@ export async function getDb(): Promise<sql.ConnectionPool> {
   if (pool) return pool;
   pool = await sql.connect(config);
   return pool;
-}
+} 
