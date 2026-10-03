@@ -42,7 +42,7 @@ export default function RegisterPage() {
     if (!formdata.firstName || !formdata.lastName) {
       setError("Please enter your full name");
       return;
-    }
+    } 
     if (
       !formdata.email.endsWith("@hum.tsu.edu.ge") &&
       !formdata.email.endsWith("@ens.tsu.edu.ge") &&
