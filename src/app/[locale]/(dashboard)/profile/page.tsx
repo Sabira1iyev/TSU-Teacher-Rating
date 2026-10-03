@@ -218,6 +218,7 @@ export default function ProfilePage() {
   const Label = useTranslations("Label");
   const tRank = useTranslations("Rank");
   const Tabs = useTranslations("Tabs");
+  const title= useTranslations("Titles");
 
   const studyYearLabel = user?.studyYear ? Year(String(user.studyYear)) : "-"
 
@@ -608,7 +609,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text">
-                        {review.professorTitle} {review.professorFirstName}{" "}
+                        {title(review.professorTitle)} {review.professorFirstName}{" "}
                         {review.professorLastName}
                       </p>
                       <p

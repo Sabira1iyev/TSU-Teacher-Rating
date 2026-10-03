@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FACULTIES } from "@/lib/constants";
 import { useUser } from "@/context/UserContext";
 import ChangePasswordModal from "./ChangePasswordModal";
@@ -91,6 +91,15 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
 
     setSuccess("Everything is valid, saving...");
   };
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
 
   return (
     <div className="animate-backdrop fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-sm">

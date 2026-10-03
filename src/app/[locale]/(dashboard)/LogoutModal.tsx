@@ -1,12 +1,12 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
 import { useTranslations } from "next-intl";
 
 interface LogoutModalProps {
   isOpen: boolean;
   onClose: () => void;
-  
+
 }
 
 export default function LogoutModal({ isOpen, onClose }: LogoutModalProps) {
@@ -15,6 +15,18 @@ export default function LogoutModal({ isOpen, onClose }: LogoutModalProps) {
   const { setUser } = useUser();
   const logoutPopup = useTranslations("LogoutPopup");
   const buttons = useTranslations("Buttons");
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleLogout = async () => {
