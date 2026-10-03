@@ -160,7 +160,13 @@
     "signingIn": "Signing in...",
     "redirecting": "Redirecting...",
     "logout": "Yes, log out",
-    "markAll": "Mark all as read"
+    "markAll": "Mark all as read",
+    "dismiss": "Dissmiss",
+    "changePassword": "Change Password",
+    "deleteAccount": "Delete Account",
+    "saveChanges": "Save Changes",
+        "yes": "Yes",
+    "no": "No"
   },
   "Year": {
     "year": "Year",
@@ -294,7 +300,7 @@
     "select": "Select your faculty...",
     "facultyDesc": "Professors from you faculty will be shown first",
     "studyYear": "Study Year",
-    "selectYear": "Select you study year...",
+    "selectYear": "Select your study year...",
     "emailAddress": "TSU Student Email"
   },
   "facultyYear": {
@@ -319,7 +325,9 @@
     "newPassword": "New Password",
     "newPasswordPlaceholder": "Min. 8 characters",
     "confirmPassword": "Confirm Password",
-    "confirmPasswordPleaceholder": "Min. 8 characters"
+    "confirmPasswordPleaceholder": "Min. 8 characters",
+    "oldPassword": "Old Password",
+    "oldPasswordPlaceholder": "Enter your old password"
   },
   "ReportPopup": {
     "reportTitle": "Report this review",
@@ -337,9 +345,16 @@
     "title": "Log out",
     "desc": "Are you sure you want to log out of your account?"
   },
-  
+
   "Notifications": {
     "notifications": "Notifications",
     "reviewFlagged": "Review flagged"
+  },
+  "Popups": {
+    "editTitle": "Are you sure?",
+    "editDesc": "Do you really want to save these changes?",
+    "changePassword": "Change your password",
+    "deleteDesc": "Do you really want to delete your account?",
+    "saveChangesDesc": "Do you really want to save these changes?"
   }
 }

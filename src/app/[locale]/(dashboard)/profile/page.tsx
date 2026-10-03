@@ -333,7 +333,7 @@ export default function ProfilePage() {
               }}
             >
               {user?.faculty ? tFac(user.faculty) : "Faculty"} •{" "}
-               {studyYearLabel}
+              {studyYearLabel}
             </p>
 
             <div className="h-[0.5px] bg-border my-4" />
@@ -461,10 +461,11 @@ export default function ProfilePage() {
           </div>
           {user?.isAdmin && (
             <button
-              className="px-4 py-3 border border-border rounded-full text-lg text-primary font-bold cursor-pointer"
+              className="px-4 py-3 border border-border rounded-full text-lg text-white font-bold cursor-pointer "
               style={{
-                background: `${fc.primary}`,
-                color: "white",
+                border: `1px solid ${fc.light}`,
+                background: `linear-gradient(15deg, ${fc.primary} 50%, transparent 120%)`,
+                
               }}
               onClick={() => router.push("/adminPanel")}
             >

@@ -158,7 +158,13 @@
     "redirecting": "გადამისამართება...",
     "logout": "დიახ, გასვლა",
     "logging": "მიმდინარეობს გასვლა...",
-    "markAll": "ყველას წაკითხულად"
+    "markAll": "ყველას წაკითხულად",
+    "dismiss": "დახურვა",
+    "changePassword": "პაროლის შეცვლა",
+    "deleteAccount": "ანგარიშის წაშლა",
+    "saveChanges": "შენახვა",
+    "yes": "დიახ",
+    "no": "არა"
   },
   "Year": {
     "year": "კურსი",
@@ -175,8 +181,8 @@
     "title": "წოდება",
     "facRank": "ფაკულტეტის რეიტინგი",
     "memberFor": "წევრია",
-    "spring": "გაზაფხულის სემ.",
-    "fall": "შემოდგომის სემესტრი",
+    "spring": "გაზაფხული",
+    "fall": "შემოდგომა",
     "day": "დღე",
     "days": "დღე",
     "week": "კვირა",
@@ -324,7 +330,9 @@
     "newPassword": "ახალი პაროლი",
     "newPasswordPlaceholder": "მინ. 8 სიმბოლო",
     "confirmPassword": "დაადასტურე პაროლი",
-    "confirmPasswordPleaceholder": "მინ. 8 სიმბოლო"
+    "confirmPasswordPleaceholder": "მინ. 8 სიმბოლო",
+    "oldPassword": "ძველი პაროლი",
+    "oldPasswordPlaceholder": "შეიყვანეთ ძველი პაროლი"
   },
   "ReportPopup": {
     "reportTitle": "ამ შეფასების დარეპორტება",
@@ -345,5 +353,12 @@
   "Notifications": {
     "notifications": "შეტყობინებები",
     "reviewFlagged": "დარეპორტებული"
+  },
+  "Popups": {
+    "editTitle": "დარწმუნებული ხართ?",
+    "editDesc": "ნამდვილად გსურთ ამ ცვლილებების შენახვა?",
+    "changePassword": "შეცვალეთ თქვენი პაროლი",
+    "deleteDesc": "ნამდვილად გსურთ თქვენი ანგარიშის წაშლა?",
+    "saveChangesDesc": "ნამდვილად გსურთ ამ ცვლილებების შენახვა?"
   }
 }

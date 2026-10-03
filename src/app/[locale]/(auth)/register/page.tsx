@@ -132,12 +132,12 @@ export default function RegisterPage() {
           <p className="text-sm text-text2 mt-1.5">
             {tIndex("signup")}
           </p>
-          <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mt-3" />
+          <div className="w-10 h-0.75 rounded-full bg-[#e6b800] mt-3" />
         </div>
 
         {/* TSU email notice */}
         <div className="flex items-center gap-3 bg-bg2 border border-border rounded-2xl p-4">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shrink-0">
             <svg
               width="18"
               height="18"

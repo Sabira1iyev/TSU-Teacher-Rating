@@ -26,7 +26,7 @@ export default function DeleteProfessorModal({
   };
 
   return (
-    <div className="animate-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="animate-backdrop fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="animate-modal bg-bg2 border border-border w-[90%] max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col gap-5">
         <div className="flex flex-col items-center text-center gap-4 py-4">
           <div className="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center">

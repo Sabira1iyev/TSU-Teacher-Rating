@@ -1,6 +1,7 @@
 import { useUser } from "@/context/UserContext";
 import { useState } from "react";
 import ResetPasswordModal from "@/app/[locale]/(auth)/login/newLogin/ResetPasswordModal";
+import { useTranslations } from "next-intl";
 
 interface ChangeProfileModalAppsProps {
   onClose: () => void;
@@ -21,8 +22,11 @@ export default function ChangePasswordModa({
   const [oldPassword, setOldPassword] = useState("");
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
     useState(false);
-
   const { user } = useUser();
+  const common = useTranslations("Common");
+  const login = useTranslations("Login");
+  const button = useTranslations("Buttons");
+  const popups = useTranslations("Popups");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -82,10 +86,10 @@ export default function ChangePasswordModa({
   };
 
   return (
-    <div className="animate-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="animate-backdrop fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="animate-modal bg-bg2 border border-border w-[90%] max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col gap-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-text">Change your password</h2>
+          <h2 className="text-xl font-bold text-text">{popups("changePassword")}</h2>
           <button
             onClick={onClose}
             className="text-text3 hover:text-text cursor-pointer transition-colors p-1"
@@ -96,9 +100,9 @@ export default function ChangePasswordModa({
 
         {showConfirm ? (
           <div className="flex flex-col items-center text-center gap-4 py-4">
-            <h3 className="text-lg font-bold text-text">Are you sure?</h3>
+            <h3 className="text-lg font-bold text-text">{popups("editTitle")}</h3>
             <p className="text-sm text-text2">
-              Do you really want to save these changes?
+              {popups("saveChangesDesc")}
             </p>
 
             <div className="flex gap-3 mt-4 w-full">
@@ -106,13 +110,13 @@ export default function ChangePasswordModa({
                 onClick={() => setShowConfirm(false)}
                 className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-bg3 text-text2 hover:bg-border transition-colors cursor-pointer"
               >
-                No
+                {button("no")}
               </button>
               <button
                 className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-primary/20"
                 onClick={confirmAndSave}
               >
-                Yes
+                {button("yes")}
               </button>
             </div>
 
@@ -127,7 +131,7 @@ export default function ChangePasswordModa({
                 htmlFor="password"
                 className="text-xs font-medium text-text2"
               >
-                Password
+                {common("password")}
               </label>
               <input
                 name="password"
@@ -135,7 +139,7 @@ export default function ChangePasswordModa({
                 value={formData.password}
                 onChange={handleChange}
                 autoComplete="new-password"
-                placeholder="Min. 8 characters"
+                placeholder={login("newPasswordPlaceholder")}
                 className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>
@@ -145,7 +149,7 @@ export default function ChangePasswordModa({
                 htmlFor="password"
                 className="text-xs font-medium text-text2"
               >
-                Confirm Password
+                {login("confirmPassword")}
               </label>
               <input
                 name="confirmPassword"
@@ -153,7 +157,7 @@ export default function ChangePasswordModa({
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 autoComplete="new-password"
-                placeholder="Min. 8 characters"
+                placeholder={login("confirmPasswordPleaceholder")}
                 className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
             </div>
@@ -163,7 +167,7 @@ export default function ChangePasswordModa({
                 htmlFor="password"
                 className="text-xs font-medium text-text2"
               >
-                Old Password
+                {login("oldPassword")}
               </label>
               <input
                 name="oldPassword"
@@ -171,14 +175,14 @@ export default function ChangePasswordModa({
                 value={formData.oldPassword}
                 onChange={handleChange}
                 autoComplete="old-password"
-                placeholder="Enter your old password"
+                placeholder={login("oldPasswordPlaceholder")}
                 className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
               />
               <span
                 className="text-xs text-primary cursor-pointer hover:underline transition-colors font-medium"
                 onClick={() => setIsResetPasswordModalOpen(true)}
               >
-                Forgot password?
+                {common("forgotPassword")}
               </span>
             </div>
 
@@ -189,13 +193,13 @@ export default function ChangePasswordModa({
                 onClick={onClose}
                 className="px-5 py-2.5 rounded-xl text-sm font-semibold text-text2 hover:bg-bg3 transition-colors cursor-pointer"
               >
-                Cancel
+                {button("cancel")}
               </button>
               <button
                 className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-primary/20"
                 onClick={changePassword}
               >
-                Change
+                {button("change")}
               </button>
             </div>
           </>

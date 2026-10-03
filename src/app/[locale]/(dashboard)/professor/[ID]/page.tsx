@@ -278,7 +278,7 @@ export default function ProfessorProfilePage() {
     <div className="flex flex-col">
       {/* Desktop topBar */}
       <div
-        className="hidden lg:flex items-center justify-between px-6 py-3 sticky top-14.25 z-10"
+        className="hidden lg:flex items-center justify-between px-6 py-3 sticky z-10"
         style={{
           background: `linear-gradient(135deg, ${fc.light} 0%, transparent 100%)`,
         }}

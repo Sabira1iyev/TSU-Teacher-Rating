@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./style.css";
 import { useRouter, useParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface NotificationDropdownProp {
   onClose: () => void;
@@ -15,25 +15,26 @@ export default function NotificationDropDown({
   setReports,
 }: NotificationDropdownProp) {
   const router = useRouter();
+  const locale = useLocale();
 
   const handleDismiss = async (reportId: string) => {
     try {
-        const res = await fetch("/api/report", {
-          method: "DELETE",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            reportId: reportId,
-          }),
-        });
+      const res = await fetch("/api/report", {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          reportId: reportId,
+        }),
+      });
 
-        if (res.ok) {
-          setReports((prevReports: any) =>
-            prevReports.filter((report: any) => report.ReportId !== reportId),
-          );
-        }
-      
+      if (res.ok) {
+        setReports((prevReports: any) =>
+          prevReports.filter((report: any) => report.ReportId !== reportId),
+        );
+      }
+
     } catch (error: any) {
       console.log("Error dismissing report: ", error);
     }
@@ -42,7 +43,8 @@ export default function NotificationDropDown({
   const params = useParams();
   const buttons = useTranslations("Buttons");
   const notifications = useTranslations("Notifications");
-  const report = useTranslations("ReportPopup")
+  const reportsNotification = useTranslations("ReportPopup");
+  const months = useTranslations("Months");
   return (
     <div className="animate-modal fixed top-16 right-4 w-[min(320px,calc(100vw-2rem))] bg-bg2 border border-border rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] origin-top-right animate-in fade-in zoom-in-95 duration-200 z-200 overflow-hidden">
       {/* HEADER */}
@@ -94,6 +96,22 @@ export default function NotificationDropDown({
           </div>
         ) : (
           reports.map((report) => {
+            const createdAt = new Date(report.CreatedAt);
+            const monthKey = new Intl.DateTimeFormat("en-US", {
+              month: "short",
+              timeZone: "UTC",
+            })
+              .format(createdAt)
+              .replace(".", "");
+            const day = new Intl.DateTimeFormat(locale, {
+              day: "numeric",
+              timeZone: "UTC",
+            }).format(createdAt);
+            const year = new Intl.DateTimeFormat(locale, {
+              year: "numeric",
+              timeZone: "UTC",
+            }).format(createdAt);
+
             return (
               <div
                 key={report.ReportId}
@@ -157,7 +175,7 @@ export default function NotificationDropDown({
                     <span className="font-bold">{notifications("reviewFlagged")}</span>
                     <span className="text-text3">•</span>
                     <span className="inline-block bg-red-100 text-red-500 px-2 py-0.5 rounded-md text-[12px] mt-1">
-                      {report.Reason}
+                      {reportsNotification(report.Reason)}
                     </span>
                   </p>
 
@@ -166,11 +184,7 @@ export default function NotificationDropDown({
                   </p>
                   <div className="flex justify-between items-center w-full mt-2">
                     <p className="text-[12px] text-text3">
-                      {new Date(report.CreatedAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
+                      {`${day} ${months(monthKey)} ${year}`}
                     </p>
                     <button
                       className="text-[11px] font-semibold text-[#64748b] hover:text-red hover:bg-bg3 px-2 py-0.5 rounded-md transition-all cursor-pointer"
@@ -179,7 +193,7 @@ export default function NotificationDropDown({
                         handleDismiss(report.ReportId);
                       }}
                     >
-                      Dismiss
+                      {buttons("dismiss")}
                     </button>
                   </div>
                 </div>

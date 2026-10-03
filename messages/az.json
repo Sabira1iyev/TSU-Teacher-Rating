@@ -155,7 +155,13 @@
     "redirecting": "Yönləndirilir...",
     "logout": "Bəli, çıxış et",
     "logging": "Çıxış edilir...",
-    "markAll": "Hamısını oxundu et"
+    "markAll": "Hamısını oxundu et",
+    "dismiss": "Bağla",
+    "changePassword": "Şifrəni dəyiş",
+    "deleteAccount": "Hesabı sil",
+    "saveChanges": "Yadda saxla",
+    "yes": "Bəli",
+    "no": "Xeyr"
   },
   "Year": {
     "year": "Kurs",
@@ -317,7 +323,9 @@
     "newPassword": "Yeni şifrə",
     "newPasswordPlaceholder": "Min. 8 simvol",
     "confirmPassword": "Şifrəni təsdiqləyin",
-    "confirmPasswordPleaceholder": "Min. 8 simvol"
+    "confirmPasswordPleaceholder": "Min. 8 simvol",
+    "oldPassword": "Köhnə şifrə",
+    "oldPasswordPlaceholder": "Köhnə şifrənizi daxil edin"
   },
   "ReportPopup": {
     "reportTitle": "Bu rəy haqqında şikayət et",
@@ -338,5 +346,12 @@
   "Notifications": {
     "notifications": "Bildirişlər",
     "reviewFlagged": "Şikayət"
+  },
+  "Popups": {
+    "editTitle": "Əminsiniz?",
+    "editDesc": "Bu dəyişiklikləri yadda saxlamaq istədiyinizə əminsiniz?",
+    "changePassword": "Şifrənizi dəyişin",
+    "deleteDesc": "Hesabınızı həqiqətən silmək istəyirsiniz?",
+    "saveChangesDesc": "Bu dəyişiklikləri yadda saxlamaq istədiyinizə əminsiniz?"
   }
 }
