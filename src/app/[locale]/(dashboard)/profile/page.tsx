@@ -8,7 +8,6 @@ import {
   Sprout,
   Clock,
   Star,
-  User,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";

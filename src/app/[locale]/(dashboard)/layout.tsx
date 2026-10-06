@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { getInitials } from "@/lib/utils";
+import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import LogoutModal from "./LogoutModal";
@@ -120,7 +121,8 @@ export default function DashboardLayout({
   const [isLogOutOpen, setIsLogOutOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const { user } = useUser();
-  const notificationRef = useRef<HTMLDivElement>(null);
+  const notificationRefDesktop = useRef<HTMLDivElement>(null);
+  const notificationRefMobile = useRef<HTMLDivElement>(null);
   const initials = getInitials(
     user?.firstName || "FirstName",
     user?.lastName || "LastName",
@@ -128,10 +130,9 @@ export default function DashboardLayout({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        notificationRef.current &&
-        !notificationRef.current.contains(event.target as Node)
-      ) {
+      const inDesktop = notificationRefDesktop.current?.contains(event.target as Node);
+      const inMobile = notificationRefMobile.current?.contains(event.target as Node);
+      if (!inDesktop && !inMobile) {
         setIsNotificationOpen(false);
       }
     };
@@ -171,13 +172,17 @@ export default function DashboardLayout({
     const willOpen = !isNotificationOpen;
     setIsNotificationOpen(willOpen);
 
-    if(willOpen){
+    if (willOpen) {
       void loadReports();
     }
   }
 
 
   const unreadCount = reports.filter((r) => !r.IsRead).length;
+
+  const fc = user?.faculty
+    ? FACULTY_COLORS[user.faculty] || DEFAULT_FACULTY_COLOR
+    : DEFAULT_FACULTY_COLOR;
 
   return (
     <div className="min-h-screen bg-bg flex overflow-x-hidden">
@@ -262,25 +267,34 @@ export default function DashboardLayout({
         </nav>
 
         {/* User */}
-        <div className="flex flex-col itemsc-center px-3 py-4 border-t border-border">
+        <div className="flex flex-col items-center px-3 py-4 gap-2 border-t border-border">
           <Link
             href={`/${locale}/profile`}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer hover:bg-[#f8fafc] transition-all group"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer hover:bg-bg3 transition-all group"
           >
-            <div className="w-10 h-10 rounded-full bg-primary-dim flex items-center justify-center text-[11px] text-primary font-bold flex-shrink-0 transition-transform group-hover:scale-105 shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-primary-dim flex items-center justify-center text-[11px] text-primary font-bold shrink-0 transition-transform group-hover:scale-105 shadow-sm"
+              style={{
+                backgroundColor: fc.light,
+                color: fc.primary
+              }}
+            >
               {initials}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-[13px] font-bold text-text truncate leading-tight group-hover:text-primary transition-colors">
+              <span className="text-[12px] font-bold text-text truncate leading-tight group-hover:text-text2 transition-colors">
                 {user?.firstName} {user?.lastName}
               </span>
-              <span className="text-[10px] text-text3 truncate leading-tight mt-0.5 font-medium">
+              <span className="text-[8px] text-text3 truncate leading-tight mt-0.5 font-medium"
+                style={{
+                  color: fc.primary
+                }}
+              >
                 {user?.faculty ? tFac(user.faculty) : t("Student Account")}
               </span>
             </div>
           </Link>
           <button
-            className="flex items-center w-full gap-2 px-4 py-2 border-none rounded-lg text-xs text-primary bg-[#fef2f2] hover:bg-[#fee2e2]  font-bold cursor-pointer"
+            className="flex items-center w-full gap-2 px-4 py-2 border-none rounded-lg text-xs text-primary bg-bg3 hover:bg-[#fee2e2]  font-bold cursor-pointer"
             onClick={() => setIsLogOutOpen(true)}
           >
             <svg
@@ -304,7 +318,7 @@ export default function DashboardLayout({
       </aside>
 
       {/* content */}
-      <main className="flex-1 lg:ml-[220px] flex flex-col min-h-screen min-w-0">
+      <main className="flex-1 lg:ml-55 flex flex-col min-h-screen min-w-0">
         {/* Desktop topbar */}
         <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <h1
@@ -319,7 +333,7 @@ export default function DashboardLayout({
             <LanguageSwitcher />
             <ThemeToggle />
             {user?.isAdmin && (
-              <div className="relative flex items-center" ref={notificationRef}>
+              <div className="relative flex items-center" ref={notificationRefDesktop}>
                 <button
                   className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
                   onClick={toggleNotifications}
@@ -388,7 +402,7 @@ export default function DashboardLayout({
             <LanguageSwitcher />
             <ThemeToggle />
             {user?.isAdmin ? (
-              <div className="relative flex items-center" ref={notificationRef}>
+              <div className="relative flex items-center" ref={notificationRefMobile}>
                 <button
                   className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
                   onClick={toggleNotifications}

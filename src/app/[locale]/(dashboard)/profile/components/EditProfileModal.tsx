@@ -126,13 +126,13 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
                 onClick={() => setShowConfirm(false)}
                 className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-bg3 text-text2 hover:bg-border transition-colors cursor-pointer"
               >
-                No
+                {buttons("no")}
               </button>
               <button
                 onClick={confirmAndSave}
                 className="flex-1 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white hover:opacity-90 transition-opacity cursor-pointer shadow-md shadow-primary/20"
               >
-                Yes
+                {buttons("yes")}
               </button>
             </div>
 

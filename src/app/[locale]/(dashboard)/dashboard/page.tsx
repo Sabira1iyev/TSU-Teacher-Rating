@@ -78,7 +78,7 @@ export default function DashBoardPage() {
 
   const avgRating = ratedProfessors.length
     ? ratedProfessors.reduce((sum, p) => sum + p.overallRating, 0) /
-      ratedProfessors.length
+    ratedProfessors.length
     : 0;
 
   const totalReviews = filteredProfessors.reduce(
@@ -95,6 +95,30 @@ export default function DashBoardPage() {
       .then((res) => res.json())
       .then((data) => setStats(data));
   }, []);
+
+  const getProfessorBadges = (professor: Professor) => {
+    let profBadge: string | undefined;
+    if (!professor.overallRating) {
+      profBadge = "-"
+    }
+    else if (professor.overallRating >= 5) {
+      profBadge = "Exceptional";
+    }
+    else if (professor.overallRating >= 4.0) {
+      profBadge = "Excellent";
+    } else if (professor.overallRating >= 3.5) {
+      profBadge = "Good";
+    } else if (professor.overallRating >= 3.0) {
+      profBadge = "Average";
+    } else if (professor.overallRating >= 2.5) {
+      profBadge = "Fair";
+    } else if (professor.overallRating >= 2.0) {
+      profBadge = "Poor";
+    } else {
+      profBadge = "Low";
+    }
+    return profBadge;
+  }
 
   return (
     <div className="flex flex-col gap-5 p-5 lg:p-6">
@@ -131,27 +155,24 @@ export default function DashBoardPage() {
                 key={faculty}
                 onClick={() => setSelectedFaculty(faculty)}
                 className={`shrink-0 min-w-27.5 text-left p-3 rounded-xl border transition-all cursor-pointer 
-                                ${
-                                  isActive
-                                    ? "bg-bg border-primary-dim shadow-sm"
-                                    : "bg-bg2 border-border hover:bg-bg hover:border-border"
-                                }`}
+                                ${isActive
+                    ? "bg-bg border-primary-dim shadow-sm"
+                    : "bg-bg2 border-border hover:bg-bg hover:border-border"
+                  }`}
               >
                 <div className="text-lg mb-1.5">
                   {FACULTY_ICONS[faculty] || "🎓"}
                 </div>
                 <div
-                  className={`text-[10px] font-medium leading-snug ${
-                    isActive ? "text-primary" : "text-text"
-                  }`}
+                  className={`text-[10px] font-medium leading-snug ${isActive ? "text-primary" : "text-text"
+                    }`}
                 >
                   {tFac(faculty)}
                 </div>
 
                 <div
-                  className={`text-[9px] mt-1 ${
-                    isActive ? "text-[#5a8bbf]" : "text-text3"
-                  }`}
+                  className={`text-[9px] mt-1 ${isActive ? "text-[#5a8bbf]" : "text-text3"
+                    }`}
                 >
                   {count} profs
                 </div>
@@ -173,26 +194,23 @@ export default function DashBoardPage() {
                 key={faculty}
                 onClick={() => setSelectedFaculty(faculty)}
                 className={`text-left p-3 rounded-xl border transition-all cursor-pointer
-                                ${
-                                  isActive
-                                    ? "bg-bg border-border2 shadow-sm"
-                                    : "bg-bg2 border-border"
-                                }`}
+                                ${isActive
+                    ? "bg-bg border-border2 shadow-sm"
+                    : "bg-bg2 border-border"
+                  }`}
               >
                 <div className="text-lg mb-1.5">
                   {FACULTY_ICONS[faculty] || "🎓"}
                 </div>
                 <div
-                  className={`text-[10px] font-medium leading-snug ${
-                    isActive ? "text-primary" : "text-text"
-                  }`}
+                  className={`text-[10px] font-medium leading-snug ${isActive ? "text-primary" : "text-text"
+                    }`}
                 >
                   {tFac(faculty)}
                 </div>
                 <div
-                  className={`text-[12px] mt-1 ${
-                    isActive ? "text-[#5a8bbf]" : "text-text3"
-                  }`}
+                  className={`text-[12px] mt-1 ${isActive ? "text-[#5a8bbf]" : "text-text3"
+                    }`}
                 >
                   {count} {tDash("prof")}
                 </div>
@@ -252,11 +270,10 @@ export default function DashBoardPage() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-3 py-1.5 rounded-lg text-[11px] cursor-pointer transition-colors
-                                ${
-                                  activeTab === tab
-                                    ? "bg-bg2 text-primary font-medium"
-                                    : "text-text hover:text-text hover:bg-bg2"
-                                }`}
+                                ${activeTab === tab
+                    ? "bg-bg2 text-primary font-medium"
+                    : "text-text hover:text-text hover:bg-bg2"
+                  }`}
               >
                 {tTabs(tab)}
               </button>
@@ -345,9 +362,9 @@ export default function DashBoardPage() {
                     {professor.reviewCount} {tDash("reviews")}
                   </p>
                   <div className="text-right">
-                    {professor.badges[0] ? (
+                    {professor.overallRating ? (
                       <span className="inline-block px-2 py-0.5 rounded-full text-[9px] font-medium bg-primary-dim text-primary">
-                        {professor.badges[0]}
+                         {getProfessorBadges(professor)}
                       </span>
                     ) : (
                       <span className="text-[10px] text-text3">-</span>
