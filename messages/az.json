@@ -161,7 +161,8 @@
     "deleteAccount": "Hesabı sil",
     "saveChanges": "Yadda saxla",
     "yes": "Bəli",
-    "no": "Xeyr"
+    "no": "Xeyr",
+    "submitReport": "Şikayəti göndər"
   },
   "Year": {
     "year": "Kurs",
@@ -352,6 +353,7 @@
     "editDesc": "Bu dəyişiklikləri yadda saxlamaq istədiyinizə əminsiniz?",
     "changePassword": "Şifrənizi dəyişin",
     "deleteDesc": "Hesabınızı həqiqətən silmək istəyirsiniz?",
-    "saveChangesDesc": "Bu dəyişiklikləri yadda saxlamaq istədiyinizə əminsiniz?"
+    "saveChangesDesc": "Bu dəyişiklikləri yadda saxlamaq istədiyinizə əminsiniz?",
+    "deleteReviewDesc": "Rəyi həqiqətən silmək istəyirsiniz?"
   }
 }

@@ -6,7 +6,7 @@ import { useUser } from "@/context/UserContext";
 import EditReviewModal from "./EditReviewModal";
 import ReportModal from "./ReportModal";
 import ReviewsFilter from "./ReviewsFilter";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 
 import {
@@ -52,6 +52,7 @@ export default function ProfessorProfilePage() {
   const tTrend = useTranslations("Months");
   const tTags = useTranslations("Tags");
   const tRateProf = useTranslations("rateProf");
+  const locale = useLocale();
 
   const tabs: { key: Tab; label: string }[] = [
     { key: "Overview", label: tProfId("overview") },
@@ -273,6 +274,20 @@ export default function ProfessorProfilePage() {
     keyof typeof CRITERIS_LABELS,
     string,
   ][];
+
+  const MONTHS_KEY = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"] as const;
 
   return (
     <div className="flex flex-col">
@@ -769,6 +784,7 @@ export default function ProfessorProfilePage() {
                   {professor.trendData.map((t, i) => {
                     const isLast = i === professor.trendData.length - 1;
                     const height = `${((t.rating - 3) / 2) * 100}%`;
+
                     return (
                       <div
                         key={t.month}
@@ -798,55 +814,58 @@ export default function ProfessorProfilePage() {
                   {tProfId("latReviews")}
                 </p>
                 <div className="flex flex-col gap-3">
-                  {reviews.slice(0, 2).map((review) => (
-                    <div key={review.id} className="bg-bg2 rounded-xl p-4">
-                      <div className="flex justify-between items-center mb-1.5">
-                        <div className="flex gap-0.5">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <div
-                              key={star}
-                              className="w-2.5 h-2.5"
+                  {reviews.slice(0, 2).map((review) => {
+                    const d = new Date(review.createdAt);
+                    return (
+                      <div key={review.id} className="bg-bg2 rounded-xl p-4">
+                        <div className="flex justify-between items-center mb-1.5">
+                          <div className="flex gap-0.5">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <div
+                                key={star}
+                                className="w-2.5 h-2.5"
+                                style={{
+                                  clipPath:
+                                    "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
+                                  background:
+                                    star <= review.overallRating
+                                      ? `${fc.primary}`
+                                      : "#d8dfe6",
+                                }}
+                              />
+                            ))}
+                          </div>
+
+                          <span className="text-[10px] text-text3">
+                             {tTrend(MONTHS_KEY[d.getMonth()])} {d.getDate()}, {d.getFullYear()}
+                          </span>
+                        </div>
+                        <p
+                          className="text-[11px] mb-1.5"
+                          style={{ color: fc.primary }}
+                        >
+                          {review.courseName}
+                        </p>
+                        <p className="text-[12px] text-text2 leading-relaxed">
+                          {review.comment}
+                        </p>
+                        <div className="flex flex-wrap gap-1.5 mt-2.5">
+                          {review.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-2 py-0.5 text-[9px] rounded-lg"
                               style={{
-                                clipPath:
-                                  "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
-                                background:
-                                  star <= review.overallRating
-                                    ? `${fc.primary}`
-                                    : "#d8dfe6",
+                                background: `${fc.light}`,
+                                color: fc.primary,
                               }}
-                            />
+                            >
+                              {tTags(tag)}
+                            </span>
                           ))}
                         </div>
-
-                        <span className="text-[10px] text-text3">
-                          {review.displayDate}
-                        </span>
                       </div>
-                      <p
-                        className="text-[11px] mb-1.5"
-                        style={{ color: fc.primary }}
-                      >
-                        {review.courseName}
-                      </p>
-                      <p className="text-[12px] text-text2 leading-relaxed">
-                        {review.comment}
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 mt-2.5">
-                        {review.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-0.5 text-[9px] rounded-lg"
-                            style={{
-                              background: `${fc.light}`,
-                              color: fc.primary,
-                            }}
-                          >
-                            {tTags(tag)}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
             </div>
@@ -947,190 +966,194 @@ export default function ProfessorProfilePage() {
                 {tNoResult("noReviews")}
               </div>
             ) : (
-              displayReviews.map((review) => (
-                <div
-                  key={review.id}
-                  className="bg-bg2 border-border rounded-xl p-4"
-                >
-                  <div className="flex justify-between items-center mb-1.5">
-                    <div className="flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <div
-                          key={star}
-                          className="w-2.75 h-2.75"
-                          style={{
-                            clipPath:
-                              "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
-                            background:
-                              star <= review.overallRating
-                                ? fc.primary
-                                : "#22222e",
-                          }}
-                        />
+              displayReviews.map((review) => {
+                const d = new Date(review.createdAt)
+                return (
+                  <div
+                    key={review.id}
+                    className="bg-bg2 border-border rounded-xl p-4"
+                  >
+                    <div className="flex justify-between items-center mb-1.5">
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <div
+                            key={star}
+                            className="w-2.75 h-2.75"
+                            style={{
+                              clipPath:
+                                "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+                              background:
+                                star <= review.overallRating
+                                  ? fc.primary
+                                  : "#22222e",
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <div className="flex flex-row justify-center items-center gap-2">
+                        <span className="text-[10px] text-text3"
+                        >
+                          {tTrend(MONTHS_KEY[d.getMonth()])} {d.getDate()}, {d.getFullYear()}
+                        </span>
+                        {(user?.userId === review.userId || user?.isAdmin) && (
+                          <EditReviewModal
+                            reviewId={review.id}
+                            isAdmin={user?.isAdmin}
+                            isOwner={user?.userId === review.userId}
+                            professorId={professor.id}
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-primary mb-2">
+                      {review.courseName}
+                    </p>
+                    <p className="text-[12px] text-text2 leading-relaxed">
+                      {review.comment}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 mt-3">
+                      {review.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 bg-primary-dim text-primary text-[9px] rounded-lg"
+                        >
+                          {tTags(tag)}
+                        </span>
                       ))}
                     </div>
-                    <div className="flex flex-row justify-center items-center gap-2">
-                      <span className="text-[10px] text-text3">
-                        {review.displayDate}
-                      </span>
-                      {(user?.userId === review.userId || user?.isAdmin) && (
-                        <EditReviewModal
-                          reviewId={review.id}
-                          isAdmin={user?.isAdmin}
-                          isOwner={user?.userId === review.userId}
-                          professorId={professor.id}
-                        />
+                    <div className="flex items-center justify-between mt-2">
+                      {review.wouldRecommend && (
+                        <p className="text-[10px] text-primary mt-2">
+                          {tRateProf("wouldRecommend")}
+                        </p>
                       )}
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-primary mb-2">
-                    {review.courseName}
-                  </p>
-                  <p className="text-[12px] text-text2 leading-relaxed">
-                    {review.comment}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    {review.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-0.5 bg-primary-dim text-primary text-[9px] rounded-lg"
-                      >
-                        {tTags(tag)}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-between mt-2">
-                    {review.wouldRecommend && (
-                      <p className="text-[10px] text-primary mt-2">
-                        {tRateProf("wouldRecommend")}
-                      </p>
-                    )}
-                    {!review.wouldRecommend && (
-                      <p className="text-[10px] text-red-500 mt-2">
-                        {tRateProf("notRecommend")}
-                      </p>
-                    )}
-                    <div className="flex flex-row justify-center items-center gap-2">
-                      <div className="flex items-center bg-bg hover:bg-gray-700 rounded-full px-3 py-1 transition-colors">
-                        <button
-                          onClick={() => {
-                            handleLike(review.id.toString());
-                          }}
-                        >
-                          {likedReviews[review.id.toString()] ? (
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                              cursor="pointer"
-                            >
-                              <path
-                                d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
-                                fill="currentColor"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          ) : (
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                              cursor="pointer"
-                            >
-                              <path
-                                d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          )}
-                        </button>
-                        <span className="text-[11px] font-medium text-text2 ml-1.5">
-                          {review.likeCount}
-                        </span>
-                        <p className="w-px h-3 bg-black mx-2"></p>
-
-                        <button
-                          onClick={() => handleDislike(review.id.toString())}
-                        >
-                          {dislike[review.id.toString()] ? (
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                              cursor="pointer"
-                            >
-                              <path
-                                d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
-                                fill="currentColor"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          ) : (
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                              cursor="pointer"
-                            >
-                              <path
-                                d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          )}
-                        </button>
-                        <span className="text-[11px] font-medium text-text2 ml-1.5">
-                          {review.dislikeCount}
-                        </span>
-                      </div>
-                      {user?.userId !== review.userId && !user?.isAdmin && (
-                        <button
-                          className="flex justify-center items-center gap-1 bg-bg hover:bg-gray-700 rounded-full px-3 py-1 transition-colors cursor-pointer"
-                          onClick={() => {
-                            setIsReportModalOpen(true);
-                            setReportedReviewId(review.id);
-                          }}
-                        >
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+                      {!review.wouldRecommend && (
+                        <p className="text-[10px] text-red-500 mt-2">
+                          {tRateProf("notRecommend")}
+                        </p>
+                      )}
+                      <div className="flex flex-row justify-center items-center gap-2">
+                        <div className="flex items-center bg-bg hover:bg-gray-700 rounded-full px-3 py-1 transition-colors">
+                          <button
+                            onClick={() => {
+                              handleLike(review.id.toString());
+                            }}
                           >
-                            <path
-                              d="M6 21V4C6 3.44772 6.44772 3 7 3H17.5858C18.4767 3 18.9229 4.07714 18.2929 4.70711L15 8L18.2929 11.2929C18.9229 11.8229 18.4767 13 17.5858 13H7"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          <span className="text-xs text-primary">{tButton("reportReview")}</span>
-                        </button>
-                      )}
+                            {likedReviews[review.id.toString()] ? (
+                              <svg
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                cursor="pointer"
+                              >
+                                <path
+                                  d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                cursor="pointer"
+                              >
+                                <path
+                                  d="M7 22V11M2 13v7a2 2 0 002 2h11.4a2 2 0 001.97-1.67l1.1-7A2 2 0 0016.5 11H13V6a3 3 0 00-3-3L7 11"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            )}
+                          </button>
+                          <span className="text-[11px] font-medium text-text2 ml-1.5">
+                            {review.likeCount}
+                          </span>
+                          <p className="w-px h-3 bg-black mx-2"></p>
+
+                          <button
+                            onClick={() => handleDislike(review.id.toString())}
+                          >
+                            {dislike[review.id.toString()] ? (
+                              <svg
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                cursor="pointer"
+                              >
+                                <path
+                                  d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                cursor="pointer"
+                              >
+                                <path
+                                  d="M17 2v11M22 11v-7a2 2 0 00-2-2H8.6a2 2 0 00-1.97 1.67l-1.1 7A2 2 0 007.5 13H11v5a3 3 0 003 3l3-8"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            )}
+                          </button>
+                          <span className="text-[11px] font-medium text-text2 ml-1.5">
+                            {review.dislikeCount}
+                          </span>
+                        </div>
+                        {user?.userId !== review.userId && !user?.isAdmin && (
+                          <button
+                            className="flex justify-center items-center gap-1 bg-bg hover:bg-gray-700 rounded-full px-3 py-1 transition-colors cursor-pointer"
+                            onClick={() => {
+                              setIsReportModalOpen(true);
+                              setReportedReviewId(review.id);
+                            }}
+                          >
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M6 21V4C6 3.44772 6.44772 3 7 3H17.5858C18.4767 3 18.9229 4.07714 18.2929 4.70711L15 8L18.2929 11.2929C18.9229 11.8229 18.4767 13 17.5858 13H7"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                            <span className="text-xs text-primary">{tButton("reportReview")}</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                )
+              })
             )}
           </div>
         )}

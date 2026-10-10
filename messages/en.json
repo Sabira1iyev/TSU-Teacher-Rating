@@ -355,6 +355,7 @@
     "editDesc": "Do you really want to save these changes?",
     "changePassword": "Change your password",
     "deleteDesc": "Do you really want to delete your account?",
-    "saveChangesDesc": "Do you really want to save these changes?"
+    "saveChangesDesc": "Do you really want to save these changes?",
+    "deleteReviewDesc": "Do you really want to delete this review?"
   }
 }
