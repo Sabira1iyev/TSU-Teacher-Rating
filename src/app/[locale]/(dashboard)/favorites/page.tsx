@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Professor } from "@/types/teacher";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useUser } from "@/context/UserContext";
 import {
   CRITERIS_LABELS,
@@ -26,6 +26,7 @@ const getAvatarColor = (id: string) => {
 
 export default function FavoritesPage() {
   const router = useRouter();
+  const locale = useLocale();
   const { user } = useUser();
   const tSidebar = useTranslations("Sidebar");
   const tNoResult = useTranslations("noResult");
@@ -120,7 +121,7 @@ export default function FavoritesPage() {
               {tNoResult("favDesc")}
             </p>
             <button
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push(`/${locale}/dashboard`)}
               className="px-6 py-2.5 bg-primary rounded-xl text-sm font-semibold text-bg hover:opacity-90 transition-opacity cursor-pointer mt-2"
             >
               {tNoResult("favExploreBtn")}
@@ -138,7 +139,9 @@ export default function FavoritesPage() {
                   <div
                     key={professor.id}
                     className="bg-bg2 border border-border rounded-2xl p-4 cursor-pointer hover:bg-bg3 hover:border-border2 transition-all relative group "
-                    onClick={() => router.push(`/professor/${professor.id}`)}
+                    onClick={() =>
+                      router.push(`/${locale}/professor/${professor.id}`)
+                    }
                   >
                     <button
                       onClick={(e) => {
@@ -222,7 +225,9 @@ export default function FavoritesPage() {
                 return (
                   <div
                     key={professor.id}
-                    onClick={() => router.push(`/professor/${professor.id}`)}
+                    onClick={() =>
+                      router.push(`/${locale}/professor/${professor.id}`)
+                    }
                     className="bg-bg2 border border-border rounded-xl px-3 py-3 flex items-center gap-3 cursor-pointer active:bg-bg3 transition-colors relative"
                   >
                     <div

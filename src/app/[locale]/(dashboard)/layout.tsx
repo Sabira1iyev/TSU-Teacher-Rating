@@ -193,7 +193,7 @@ export default function DashboardLayout({
         <div className="flex items-center gap-3 px-5 py-5">
           <div
             className="w-8 h-8 rounded-[9px] bg-primary flex items-center justify-center flex-shrink-0 cursor-pointer"
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push(`/${locale}/dashboard`)}
           >
             <svg
               width="16"
@@ -211,7 +211,7 @@ export default function DashboardLayout({
             </svg>
           </div>
           <span
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push(`/${locale}/dashboard`)}
             className="font-bold text-[15px] text-text cursor-pointer"
             style={{
               fontFamily: "Syne, sans-serif",
@@ -379,7 +379,7 @@ export default function DashboardLayout({
 
             <div
               className="flex items-center gap-3 bg-bg2 border border-border rounded-[9px] px-3 py-2 cursor-pointer hover:border-[#0060a9] transition-colors"
-              onClick={() => router.push("/search")}
+              onClick={() => router.push(`/${locale}/search`)}
             >
               <span className="text-text3 text-sm">⌕</span>
               <span className="text-[12px] text-text3">{t("searchD")}</span>
@@ -389,7 +389,7 @@ export default function DashboardLayout({
         {/* Mobile topbar */}
         <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <span
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push(`/${locale}/dashboard`)}
             className="font-bold text-[16px] text-text cursor-pointer"
             style={{
               fontFamily: "Syne, sans-serif",
@@ -482,7 +482,7 @@ export default function DashboardLayout({
         {/* Bottom nav mobile */}
         <nav className="flex lg:hidden border-t border-border bg-bg2 fixed bottom-0 left-0 right-0 z-50 shadow-[0_-1px_4px_rgba(0,40,80,0.04)]">
           {navItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === `/${locale}${item.href}`;
             return (
               <Link
                 key={item.href}

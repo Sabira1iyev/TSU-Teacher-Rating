@@ -34,14 +34,17 @@ function RatePageContent() {
   const [allProfessors, setAllProfessors] = useState<any[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const tDash = useTranslations("Common");
-  const messages = useMessages();
-  console.log("CLIENT Titles:", messages.Titles);
-  const tTitles = useTranslations("Titles");
+  const tTitlesRaw = useTranslations("Titles");
+  const tTitles = (title?: string | null) => {
+    const key = (title ?? "").replace(/\./g, "");
+    return key && tTitlesRaw.has(key) ? tTitlesRaw(key) : (title ?? "");
+  };
   const rules = useTranslations("Rules");
   const buttons = useTranslations("Buttons");
   const rateProf = useTranslations("rateProf");
   const profId = useTranslations("ProfId");
   const profTags = useTranslations("Tags");
+  const sidebar = useTranslations("Sidebar");
 
   const [form, setForm] = useState<ReviewForm>({
     professorId: professorId || "",
@@ -191,11 +194,10 @@ function RatePageContent() {
           className="text-xl font-bold text-text text-center"
           style={{ fontFamily: "Syne, sans-serif" }}
         >
-          Review Submitted!
+          {rateProf("reviewSub")}
         </h2>
         <p className="text-sm text-text2 text-center max-w-sm">
-          Your anonymous review has been submitted successfull. Thank you for
-          helping other students!
+          {rateProf("reviewMessage")}
         </p>
         <div className="flex gap-3 mt-2">
           <button
@@ -206,7 +208,7 @@ function RatePageContent() {
             }
             className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
           >
-            Dashboard
+           {rateProf("dashboard")}
           </button>
         </div>
       </div>
@@ -247,7 +249,7 @@ function RatePageContent() {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-text">
-                    {professor.title} {professor.firstName} {professor.lastName}
+                    {tTitles(professor.title)} {professor.firstName} {professor.lastName}
                   </p>
                   <p className="text-xs text-text3 mt-0.5">
                     {professor.faculty}
@@ -401,7 +403,7 @@ function RatePageContent() {
                 <div className="flex flex-col gap-3">
                   {criteriaEntries.map(([key, label]) => (
                     <div key={key} className="flex items-center gap-3">
-                      <span className="text-xs text-text2 w-32 shrink-0">
+                      <span className="text-xs text-text2 w-45 shrink-0">
                         {profId(key)}
                       </span>
                       <div className="flex gap-1.5">
@@ -466,8 +468,8 @@ function RatePageContent() {
                       key={tag}
                       onClick={() => handleTagToggle(tag)}
                       className={`px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all border ${!form.tags.includes(tag)
-                          ? "bg-bg2 border-border text-text2 hover:border-border"
-                          : ""
+                        ? "bg-bg2 border-border text-text2 hover:border-border"
+                        : ""
                         }`}
                       style={
                         form.tags.includes(tag)
@@ -496,8 +498,8 @@ function RatePageContent() {
                       setForm((prev) => ({ ...prev, wouldRecommend: true }))
                     }
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${form.wouldRecommend
-                        ? "bg-primary-dim border-border text-primary"
-                        : "border-border text-text2 hover:bg-bg2"
+                      ? "bg-primary-dim border-border text-primary"
+                      : "border-border text-text2 hover:bg-bg2"
                       }`}
                   >
                     {buttons("yesRecommend")}
@@ -508,8 +510,8 @@ function RatePageContent() {
                       setForm((prev) => ({ ...prev, wouldRecommend: false }))
                     }
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${!form.wouldRecommend
-                        ? "bg-amber-dim border-amber text-amber"
-                        : "border-border text-text2 hover:bg-bg2"
+                      ? "bg-amber-dim border-amber text-amber"
+                      : "border-border text-text2 hover:bg-bg2"
                       }`}
                   >
                     {buttons("noRecommend")}
@@ -593,7 +595,7 @@ function RatePageContent() {
                       key={star}
                       className="flex items-center gap-2 text-[10px]"
                     >
-                      <span className="text-text3 w-6 flex items-center gap-1">
+                      <span className="text-text3 w-6 flex items-center justify-center gap-1">
                         {star}
 
                         <svg

@@ -13,6 +13,7 @@ import {
 } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
 import { useUser } from "@/context/UserContext";
+import { useLocale, useTranslations } from "next-intl";
 
 function RatePageContent() {
   const { user } = useUser();
@@ -22,6 +23,20 @@ function RatePageContent() {
   const [professor, setProfessor] = useState<any>(null);
   const [allProfessors, setAllProfessors] = useState<any[]>([]);
   const [tags, setTags] = useState<string[]>([]);
+  const tTitlesRaw = useTranslations("Titles");
+  const tTitles = (title?: string | null) => {
+    const key = (title ?? "").replace(/\./g, "");
+    return key && tTitlesRaw.has(key) ? tTitlesRaw(key) : (title ?? "");
+  };
+  const rules = useTranslations("Rules");
+  const buttons = useTranslations("Buttons");
+  const rateProf = useTranslations("rateProf");
+  const profId = useTranslations("ProfId");
+  const profTags = useTranslations("Tags");
+  const tDash = useTranslations("Common");
+  const sidebar = useTranslations("Sidebar");
+  const locale = useLocale();
+
 
   const [form, setForm] = useState<ReviewForm>({
     professorId: professorId || "",
@@ -158,7 +173,7 @@ function RatePageContent() {
         setSubmitted(true);
       } else {
         setError("A server error occurred while submitting the review.");
-      } 
+      }
     } catch (err) {
       setError("Could not reach the server.");
     }
@@ -173,7 +188,7 @@ function RatePageContent() {
   }
   if (submitted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-6">
+      <div className="flex flex-col items-center justify-center min-h-100 gap-4 px-6">
         <div className="w-16 h-16 rounded-full bg-primary-dim flex items-center justify-center">
           <svg
             width="28"
@@ -192,18 +207,17 @@ function RatePageContent() {
           className="text-xl font-bold text-text text-center"
           style={{ fontFamily: "Syne, sans-serif" }}
         >
-          Review Submitted!
+          {rateProf("editReview")}
         </h2>
         <p className="text-sm text-text2 text-center max-w-sm">
-          Your anonymous review has been submitted successfull. Thank you for
-          helping other students!
+          {rateProf("reviewMessage")}
         </p>
         <div className="flex gap-3 mt-2">
           <button
-            onClick={() => router.push(`/professor/${form.professorId}`)}
+            onClick={() => router.push(`/${locale}/professor/${form.professorId}`)}
             className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
           >
-            Dashboard
+            {rateProf("dashboard")}
           </button>
         </div>
       </div>
@@ -235,16 +249,16 @@ function RatePageContent() {
           {/* Professor selector */}
           <div>
             <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
-              Professor
+              {tDash("prof")}
             </p>
             {professor ? (
               <div className="flex items-center gap-3 bg-bg2 border border-border rounded-xl p-3">
-                <div className="w-11 h-11 rounded-full bg-amber-dim flex items-center justify-center text-sm text-amber font-semibold flex-shrink-0">
+                <div className="w-11 h-11 rounded-full bg-amber-dim flex items-center justify-center text-sm text-amber font-semibold shrink-0">
                   {getInitials(professor.firstName, professor.lastName)}
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-text">
-                    {professor.title} {professor.firstName} {professor.lastName}
+                    {tTitles(professor.title)} {professor.firstName} {professor.lastName}
                   </p>
                   <p className="text-xs text-text3 mt-0.5">
                     {professor.faculty}
@@ -254,7 +268,7 @@ function RatePageContent() {
             ) : (
               <div className="flex flex-col gap-2">
                 <p className="text-xs text-text3 mb-1">
-                  Select a professor to rate
+                  {tDash("selectProf")}
                 </p>
                 <div className="flex flex-col gap-2 h-auto overflow-y-auto">
                   {allProfessors.map((p) => {
@@ -272,7 +286,7 @@ function RatePageContent() {
                                 ? p.courses[0]
                                 : "",
                           }));
-                          router.push(`/rate?professorId=${p.id}`);
+                          router.push(`/${locale}/rate?professorId=${p.id}`);
                         }}
                         className="flex items-center gap-3 border border-border rounded-xl p-3 cursor-pointer transition-colors"
                         style={{
@@ -281,7 +295,7 @@ function RatePageContent() {
                         }}
                       >
                         <div
-                          className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
+                          className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0"
                           style={{
                             background: pColor.mid,
                             color: pColor.primary,
@@ -291,7 +305,7 @@ function RatePageContent() {
                         </div>
                         <div>
                           <p className="text-sm font-medium text-text">
-                            {p.title} {p.firstName} {p.lastName}
+                            {tTitles(p.title)} {p.firstName} {p.lastName}
                           </p>
                           <p className="text-xs text-text3">{p.department}</p>
                         </div>
@@ -313,7 +327,7 @@ function RatePageContent() {
               {/* Course */}
               <div>
                 <p className="text-[10px] text-text3 uppercase trancking-widest mb-3">
-                  Course
+                  {rateProf("course")}
                 </p>
                 <select
                   value={form.courseName}
@@ -333,7 +347,7 @@ function RatePageContent() {
               {/* Semester */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Semester
+                  {rateProf("semester")}
                 </p>
                 <select
                   value={form.semester}
@@ -353,7 +367,7 @@ function RatePageContent() {
               {/* Overall rating */}
               <div>
                 <p className="text-[10px] text=text3 uppercase tracking-widest mb-3">
-                  Overall rating
+                  {profId("overallRating")}
                 </p>
                 <div className="flex gap-2 justify-center py-2">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -384,13 +398,13 @@ function RatePageContent() {
               {/* Criteria */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Detailed criteria
+                  {rateProf("detCriteria")}
                 </p>
                 <div className="flex flex-col gap-3">
                   {criteriaEntries.map(([key, label]) => (
                     <div key={key} className="flex items-center gap-3">
-                      <span className="text-xs text-text2 w-32 flex-shrink-0">
-                        {label}
+                      <span className="text-xs text-text2 w-45 shrink-0">
+                        {profId(key)}
                       </span>
                       <div className="flex gap-1.5">
                         {[1, 2, 3, 4, 5].map((star) => (
@@ -424,7 +438,7 @@ function RatePageContent() {
               {/* Comment */}
               <div>
                 <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
-                  Comment (anonymous)
+                  {rateProf("comment")}
                 </p>
                 <div className="bg-bg2 border-border2 rounded-xl p-3 focus-within:border-primary transition-colors">
                   <textarea
@@ -432,7 +446,7 @@ function RatePageContent() {
                     onChange={(e) =>
                       setForm((prev) => ({ ...prev, comment: e.target.value }))
                     }
-                    placeholder="Share your experience - exam style, lecture quality, tips for future students..."
+                    placeholder={rateProf("commentPlaceHolder")}
                     maxLength={500}
                     rows={4}
                     className="w-full bg-transparent text-sm text-text placeholder:text-text3 outline-none resize-none"
@@ -446,29 +460,28 @@ function RatePageContent() {
               {/* Tags */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Add Tags
+                  {rateProf("addTag")}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
                     <button
                       key={tag}
                       onClick={() => handleTagToggle(tag)}
-                      className={`px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all border ${
-                        !form.tags.includes(tag)
-                          ? "bg-bg2 border-border text-text2 hover:border-border"
-                          : ""
-                      }`}
+                      className={`px-3 py-1.5 rounded-full text-xs cursor-pointer transition-all border ${!form.tags.includes(tag)
+                        ? "bg-bg2 border-border text-text2 hover:border-border"
+                        : ""
+                        }`}
                       style={
                         form.tags.includes(tag)
                           ? {
-                              backgroundColor: fc.light,
-                              borderColor: fc.primary,
-                              color: fc.primary,
-                            }
+                            backgroundColor: fc.light,
+                            borderColor: fc.primary,
+                            color: fc.primary,
+                          }
                           : {}
                       }
                     >
-                      {tag}
+                      {profTags(tag)}
                     </button>
                   ))}
                 </div>
@@ -477,33 +490,30 @@ function RatePageContent() {
               {/* Would Recommend */}
               <div>
                 <p className="text-[10px] text-text3 uppercase tracking-widest mb-3">
-                  Would you recommend this professor ?
-                </p>
+                  {rateProf("wouldProf")}                </p>
                 <div className="flex gap-2">
                   <button
                     onClick={() =>
                       setForm((prev) => ({ ...prev, wouldRecommend: true }))
                     }
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${
-                      form.wouldRecommend
-                        ? "bg-primary-dim border-border text-primary"
-                        : "border-border text-text2 hover:bg-bg2"
-                    }`}
+                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${form.wouldRecommend
+                      ? "bg-primary-dim border-border text-primary"
+                      : "border-border text-text2 hover:bg-bg2"
+                      }`}
                   >
-                    ✓ Yes, I would recommend
+                    {buttons("yesRecommend")}
                   </button>
 
                   <button
                     onClick={() =>
                       setForm((prev) => ({ ...prev, wouldRecommend: false }))
                     }
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${
-                      !form.wouldRecommend
-                        ? "bg-amber-dim border-amber text-amber"
-                        : "border-border2 text-text2 hover:bg-bg3"
-                    }`}
+                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all border ${!form.wouldRecommend
+                      ? "bg-amber-dim border-amber text-amber"
+                      : "border-border2 text-text2 hover:bg-bg3"
+                      }`}
                   >
-                    ✗ No
+                    {buttons("noRecommend")}
                   </button>
                 </div>
               </div>
@@ -524,7 +534,7 @@ function RatePageContent() {
                   boxShadow: `${fc.shadow}`,
                 }}
               >
-                Save changes →
+                {buttons("saveChanges")}
               </button>
             </>
           )}
@@ -534,7 +544,7 @@ function RatePageContent() {
         <div className="hidden lg:flex flex-col gap-5 p-6">
           {/* Privacy */}
           <p className="text-[10px] text-text2 uppercase tracking-widest mb-3">
-            Privacy & rules
+            {rules("privacyTitle")}
           </p>
           <div className="bg-bg2 rounded-xl p-4">
             <p className="text-xs text-text2 mb-3 leading-relaxed">
@@ -544,13 +554,13 @@ function RatePageContent() {
             </p>
             <div className="flex flex-col">
               {[
-                "Only rate professors whose courses you have taken",
-                "One review per professor per semester",
-                "Personal attacks will be removed",
-                "Rating manipulation results in account suspension",
+                rules("rule1"),
+                rules("rule2"),
+                rules("rule3"),
+                rules("rule4"),
               ].map((rule) => (
                 <div key={rule} className="flex items-start gap-2">
-                  <div className="w-1 h-1 rounded-full bg-text3 flex-shrink-0 mt-1.5" />
+                  <div className="w-1 h-1 rounded-full bg-text3 shrink-0 mt-1.5" />
                   <p className="text-[11px] text-text3 leading-relaxed">
                     {rule}
                   </p>
@@ -564,7 +574,7 @@ function RatePageContent() {
         {professor && (
           <div>
             <p className="text-[10px] text-text2 uppercase tracking-widest mb-3 ml-5">
-              Current rating
+              {rateProf("currentRating")}
             </p>
             <div className="bg-bg2 rounded-xl p-4">
               <p
@@ -576,7 +586,7 @@ function RatePageContent() {
                 {formatRating(professor.overallRating)}
               </p>
               <p className="text-[11px] text-text3 text-center mb-4">
-                {professor.reviewCount} students rated
+                {professor.reviewCount} {rateProf("studentRating")}
               </p>
               <div className="flex flex-col gap-2">
                 {ratingBreakDown.map(
@@ -585,8 +595,24 @@ function RatePageContent() {
                       key={star}
                       className="flex items-center gap-2 text-[10px]"
                     >
-                      <span className="text-text3 w-12">{star} stars</span>
-                      <div className="flex-1 h-[3px] bg-bg4 rounded-full overflow-hidden">
+                      <span className="flex text-text3 w-6 gap-1 items-center justify-center">{star}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-star w-2.75 h-2.75 fill-amber-400 text-amber-400"
+                          aria-hidden="true"
+                        >
+                          <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                        </svg>
+                      </span>
+                      <div className="flex-1 h-0.75 bg-bg4 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{

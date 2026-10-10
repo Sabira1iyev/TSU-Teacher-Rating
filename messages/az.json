@@ -246,7 +246,11 @@
     "studentRating": "tələbə qiymətləndirib",
     "loading": "Yüklənir...",
     "wouldRecommend": "✓ Tövsiyə olunur",
-    "notRecommend": "✗ Tövsiyə olunmur"
+    "notRecommend": "✗ Tövsiyə olunmur",
+    "reviewSub": "Rəy göndərildi!",
+    "reviewMessage": "Anonim rəyiniz uğurla göndərildi. Digər tələbələrə kömək etdiyiniz üçün təşəkkür edirik!",
+    "editReview": "Rəy uğurla redaktə edildi!",
+    "dashboard": "Professor səhifəsinə qayıt"
   },
   "Tags": {
     "Amazing Lectures": "Əla mühazirələr",

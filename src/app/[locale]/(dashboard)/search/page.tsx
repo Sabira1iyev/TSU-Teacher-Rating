@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FACULTIES, ACADEMIC_TITLES } from "@/lib/constants";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { Professor } from "@/types/teacher";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { title } from "process";
 
 type SortOption = "rating" | "reviews";
@@ -21,6 +21,7 @@ const MIN_REVIEW_OPTIONS = [
 
 export default function SearchPage() {
   const router = useRouter();
+  const locale = useLocale();
 
   const [query, setQuery] = useState("");
 
@@ -240,7 +241,9 @@ export default function SearchPage() {
                 return (
                   <div
                     key={profesor.id}
-                    onClick={() => router.push(`/professor/${profesor.id}`)}
+                    onClick={() =>
+                      router.push(`/${locale}/professor/${profesor.id}`)
+                    }
                     className="flex items-center bg-bg2 gap-3 lg:gap-4 px-5 lg:px-6 py-4 border-b border-border cursor-pointer hover:bg-bg transition-colors"
                   >
                     <div

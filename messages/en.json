@@ -251,7 +251,11 @@
     "studentRating": "students rated",
     "loading": "Loading...",
     "wouldRecommend": "✓ Would recommend",
-    "notRecommend": "✗ Would not recommend"
+    "notRecommend": "✗ Would not recommend",
+    "reviewSub": "Review Submitted!",
+    "reviewMessage": "Your anonymous message has been submitted successfull. Thank you for helping other students!",
+    "editReview": "Review edited successfully!",
+    "dashboard": "Back to professor"
   },
   "Tags": {
     "Amazing Lectures": "Amazing Lectures",

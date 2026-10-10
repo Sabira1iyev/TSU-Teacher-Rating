@@ -38,6 +38,7 @@ const AVATAR_COLORS: Record<string, { bg: string; text: string }> = {
 
 export default function DashBoardPage() {
   const router = useRouter();
+  const locale = useLocale();
   const [selectedFaculty, setSelectedFaculty] = useState<string>("All");
   const [activeTab, setActiveTab] = useState<Tab>("Top rated");
   const [professors, setProfessors] = useState<Professor[]>([]);
@@ -314,7 +315,9 @@ export default function DashBoardPage() {
               return (
                 <div
                   key={professor.id}
-                  onClick={() => router.push(`/professor/${professor.id}`)}
+                  onClick={() =>
+                    router.push(`/${locale}/professor/${professor.id}`)
+                  }
                   className="grid grid-cols-[40px_2.5fr_1fr_1fr_1fr] gap-2 px-4 py-2.5 border-b border-border last:border-none hover:bg-bg cursor-pointer transition-colors items-center"
                 >
                   <span className="text-[11px] text-text3">{index + 1}</span>
@@ -388,7 +391,9 @@ export default function DashBoardPage() {
               return (
                 <div
                   key={professor.id}
-                  onClick={() => router.push(`/professor/${professor.id}`)}
+                  onClick={() =>
+                    router.push(`/${locale}/professor/${professor.id}`)
+                  }
                   className="bg-bg2 border border-border rounded-xl px-3 py-2.5 flex items-center gap-2.5 cursor-pointer active:bg-bg3 transition-colors shadow-[0_1px_3px_rgba(0,40,80,0.03)]"
                 >
                   <span className="text-[11px] text-text3 w-3.5">

@@ -16,7 +16,7 @@ import { useUser } from "@/context/UserContext";
 import EditProfileModal from "./components/EditProfileModal";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { getInitials } from "@/lib/utils";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const MOCK_USER = {
   firstName: "FirstName",
@@ -201,6 +201,7 @@ const getCurrentSemester = (springStr: string, fallStr: string) => {
 export default function ProfilePage() {
   const { user } = useUser();
   const router = useRouter();
+  const locale = useLocale();
   const [activeTab, setActiveTab] = useState<"reviews" | "stats">("reviews");
   const [reviewsHistory, setReviewsHistory] = useState<any[]>([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -593,7 +594,7 @@ export default function ProfilePage() {
                   <div
                     key={review.ReviewId}
                     onClick={() =>
-                      router.push(`/professor/${review.ProfessorId}`)
+                      router.push(`/${locale}/professor/${review.ProfessorId}`)
                     }
                     className="bg-bg2 border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-bg transition-colors"
                   >

@@ -1201,7 +1201,7 @@ export default function ProfessorProfilePage() {
               method: "DELETE",
               headers: { "Content-Type": "application/json" },
             });
-            router.push("/dashboard");
+            router.push(`/${params.locale as string}/dashboard`);
           }}
         />
       )}
