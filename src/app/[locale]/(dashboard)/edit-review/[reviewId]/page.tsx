@@ -35,6 +35,7 @@ function RatePageContent() {
   const profTags = useTranslations("Tags");
   const tDash = useTranslations("Common");
   const sidebar = useTranslations("Sidebar");
+  const faculties = useTranslations("Faculties");
   const locale = useLocale();
 
 
@@ -261,7 +262,7 @@ function RatePageContent() {
                     {tTitles(professor.title)} {professor.firstName} {professor.lastName}
                   </p>
                   <p className="text-xs text-text3 mt-0.5">
-                    {professor.faculty}
+                    {faculties(professor.faculty)}
                   </p>
                 </div>
               </div>

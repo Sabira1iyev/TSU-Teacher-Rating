@@ -1194,6 +1194,7 @@ export default function ProfessorProfilePage() {
 
       {showDeleteModal && (
         <DeleteProfessorModal
+          faculty={professor.faculty}
           professorName={`${professor.firstName} ${professor.lastName}`}
           onClose={() => setShowDeleteModal(false)}
           onConfirm={async () => {

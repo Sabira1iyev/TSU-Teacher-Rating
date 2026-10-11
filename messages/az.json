@@ -162,7 +162,9 @@
     "saveChanges": "Yadda saxla",
     "yes": "Bəli",
     "no": "Xeyr",
-    "submitReport": "Şikayəti göndər"
+    "submitReport": "Şikayəti göndər",
+    "yesDelete": "Bəli, sil",
+    "deleting": "Silinir..."
   },
   "Year": {
     "year": "Kurs",
@@ -358,6 +360,9 @@
     "changePassword": "Şifrənizi dəyişin",
     "deleteDesc": "Hesabınızı həqiqətən silmək istəyirsiniz?",
     "saveChangesDesc": "Bu dəyişiklikləri yadda saxlamaq istədiyinizə əminsiniz?",
-    "deleteReviewDesc": "Rəyi həqiqətən silmək istəyirsiniz?"
+    "deleteReviewDesc": "Rəyi həqiqətən silmək istəyirsiniz?",
+    "deleteProfDesc": "Bu əməliyyatı geri qaytarmaq mümkün deyil. Bu professorla bağlı bütün rəylər, reytinqlər və favoritlər həmişəlik silinəcək.",
+    "deleteProf": "Professoru sil",
+    "deleteProfConfirm": "<name>{professorName}</name> adlı professoru silmək istədiyinizə əminsiniz?"
   }
 }

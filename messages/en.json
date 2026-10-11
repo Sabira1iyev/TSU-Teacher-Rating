@@ -166,7 +166,9 @@
     "deleteAccount": "Delete Account",
     "saveChanges": "Save Changes",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "yesDelete": "Yes, Delete",
+    "deleting": "Deleting"
   },
   "Year": {
     "year": "Year",
@@ -360,6 +362,9 @@
     "changePassword": "Change your password",
     "deleteDesc": "Do you really want to delete your account?",
     "saveChangesDesc": "Do you really want to save these changes?",
-    "deleteReviewDesc": "Do you really want to delete this review?"
+    "deleteReviewDesc": "Do you really want to delete this review?",
+    "deleteProfDesc": "This action cannot be undone. All reviews, ratings and favorites related to this professor will be permanently removed.",
+    "deleteProf": "Delete profesor",
+    "deleteProfConfirm": "Are you sure you want to delete <name>{professorName}</name>?"
   }
 }

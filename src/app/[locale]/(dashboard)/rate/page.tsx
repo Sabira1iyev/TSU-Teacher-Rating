@@ -45,6 +45,7 @@ function RatePageContent() {
   const profId = useTranslations("ProfId");
   const profTags = useTranslations("Tags");
   const sidebar = useTranslations("Sidebar");
+  const faculties = useTranslations("Faculties");
 
   const [form, setForm] = useState<ReviewForm>({
     professorId: professorId || "",
@@ -208,7 +209,7 @@ function RatePageContent() {
             }
             className="px-5 py-2.5 bg-primary rounded-xl text-sm font-semibold text-white cursor-pointer hover:bg-[#004d8a] transition-colors shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
           >
-           {rateProf("dashboard")}
+            {rateProf("dashboard")}
           </button>
         </div>
       </div>
@@ -252,7 +253,7 @@ function RatePageContent() {
                     {tTitles(professor.title)} {professor.firstName} {professor.lastName}
                   </p>
                   <p className="text-xs text-text3 mt-0.5">
-                    {professor.faculty}
+                    {faculties(professor.faculty)}
                   </p>
                 </div>
                 <button
