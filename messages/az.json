@@ -191,7 +191,9 @@
     "months": "ay",
     "year": "il",
     "years": "il",
-    "email": "Email"
+    "email": "Email",
+    "ratingFall": "Payız semestri",
+    "ratingSpring": "Yaz semestri"
   },
   "Rank": {
     "Rookie": "Yeni",

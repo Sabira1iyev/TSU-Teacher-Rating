@@ -36,6 +36,7 @@ function RatePageContent() {
   const tDash = useTranslations("Common");
   const sidebar = useTranslations("Sidebar");
   const faculties = useTranslations("Faculties");
+  const label = useTranslations("Label");
   const locale = useLocale();
 
 
@@ -357,11 +358,17 @@ function RatePageContent() {
                   }
                   className="w-full bg-bg2 border border-border2 rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
                 >
-                  {SEMESTERS.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
+                  {SEMESTERS.map((semester) => {
+                   const  displaySemester = semester.endsWith("Fall")
+                      ? semester.replace("Fall", `${label("ratingFall")}`)
+                      : semester.replace("Spring", `${label("ratingSpring")}`)
+                    return (
+                      <option key={semester} value={semester}>
+                        {displaySemester}
+
+                      </option>
+                    )
+                  })}
                 </select>
               </div>
 

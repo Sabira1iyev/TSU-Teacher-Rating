@@ -195,7 +195,9 @@
     "months": "months",
     "year": "year",
     "years": "years",
-    "email": "Email"
+    "email": "Email",
+    "ratingFall": "Fall",
+    "ratingSpring": "Spring"
   },
   "Rank": {
     "Rookie": "Rookie",

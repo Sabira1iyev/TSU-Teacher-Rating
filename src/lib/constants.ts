@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 export const FACULTIES = [
   "All",
   "Faculty of Social and Political Sciences",
@@ -43,10 +45,12 @@ export const CRITERIS_LABELS = {
   examControlLevel: "Exam Control Level",
 };
 
+
 const getDynamicSemesters = () => {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
+
 
   const currentAcademicyear = month >= 9 ? year : year - 1;
 
