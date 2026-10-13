@@ -37,7 +37,11 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(true);
   const tFac = useTranslations("Faculties");
   const tDash = useTranslations("Common");
-  const tTitles = useTranslations("Titles");
+  const tTitlesRaw = useTranslations("Titles");
+  const tTitles = (title?: string | null) => {
+    const key = (title ?? "").replace(/\./g, "");
+    return key && tTitlesRaw.has(key) ? tTitlesRaw(key) : (title ?? "");
+  };
   const tNoResult = useTranslations("noResult");
 
   useEffect(() => {

@@ -365,7 +365,6 @@ function RatePageContent() {
                     return (
                       <option key={semester} value={semester}>
                         {displaySemester}
-
                       </option>
                     )
                   })}

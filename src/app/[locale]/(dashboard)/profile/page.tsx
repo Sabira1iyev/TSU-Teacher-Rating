@@ -218,7 +218,11 @@ export default function ProfilePage() {
   const Label = useTranslations("Label");
   const tRank = useTranslations("Rank");
   const Tabs = useTranslations("Tabs");
-  const title= useTranslations("Titles");
+  const titleRaw = useTranslations("Titles");
+  const title = (value?: string | null) => {
+    const key = (value ?? "").replace(/\./g, "");
+    return key && titleRaw.has(key) ? titleRaw(key) : (value ?? "");
+  };
 
   const studyYearLabel = user?.studyYear ? Year(String(user.studyYear)) : "-"
 

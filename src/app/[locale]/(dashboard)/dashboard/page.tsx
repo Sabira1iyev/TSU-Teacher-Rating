@@ -47,7 +47,11 @@ export default function DashBoardPage() {
   const tFac = useTranslations("Faculties");
   const tDash = useTranslations("Common");
   const tTabs = useTranslations("Tabs");
-  const tTitles = useTranslations("Titles");
+  const tTitlesRaw = useTranslations("Titles");
+  const tTitles = (title?: string | null) => {
+    const key = (title ?? "").replace(/\./g, "");
+    return key && tTitlesRaw.has(key) ? tTitlesRaw(key) : (title ?? "");
+  };
   const tNoResult = useTranslations("noResult");
   const tIndex = useTranslations("Index");
 

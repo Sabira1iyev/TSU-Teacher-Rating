@@ -44,7 +44,11 @@ export default function ProfessorProfilePage() {
   const revireFilterRef = useRef<HTMLDivElement>(null);
   const tButton = useTranslations("Buttons");
   const tCommon = useTranslations("Common");
-  const tTitle = useTranslations("Titles");
+  const tTitleRaw = useTranslations("Titles");
+  const tTitle = (title?: string | null) => {
+    const key = (title ?? "").replace(/\./g, "");
+    return key && tTitleRaw.has(key) ? tTitleRaw(key) : (title ?? "");
+  };
   const tFaculties = useTranslations("Faculties");
   const tNoResult = useTranslations("noResult");
   const tSideBar = useTranslations("Sidebar");

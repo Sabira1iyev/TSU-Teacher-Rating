@@ -32,7 +32,11 @@ export default function FavoritesPage() {
   const tNoResult = useTranslations("noResult");
   const tCommon = useTranslations("Common");
   const tFac = useTranslations("Faculties");
-  const tTitles = useTranslations("Titles");
+  const tTitlesRaw = useTranslations("Titles");
+  const tTitles = (title?: string | null) => {
+    const key = (title ?? "").replace(/\./g, "");
+    return key && tTitlesRaw.has(key) ? tTitlesRaw(key) : (title ?? "");
+  };
 
   const [favorites, setFavorites] = useState<Professor[]>([]);
   const [loading, setLoading] = useState(true);
