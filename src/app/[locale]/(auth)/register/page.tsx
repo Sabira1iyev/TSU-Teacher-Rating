@@ -30,6 +30,7 @@ export default function RegisterPage() {
   const inputs = useTranslations("Inputs");
   const facultyYear = useTranslations("facultyYear");
   const faculties = useTranslations("Faculties");
+  const errorSuccess = useTranslations("ErrorSuccess")
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -40,9 +41,11 @@ export default function RegisterPage() {
   const handleSubmit = async () => {
     setSuccess("");
     if (!formdata.firstName || !formdata.lastName) {
-      setError("Please enter your full name");
+      setError(`${errorSuccess("fullName")}`)
+
+
       return;
-    } 
+    }
     if (
       !formdata.email.endsWith("@hum.tsu.edu.ge") &&
       !formdata.email.endsWith("@ens.tsu.edu.ge") &&
@@ -52,21 +55,19 @@ export default function RegisterPage() {
       !formdata.email.endsWith("@law.tsu.edu.ge") &&
       !formdata.email.endsWith("@med.tsu.edu.ge")
     ) {
-      setError(
-        "Please use your TSU email addres(@hum.tsu.edu.ge or @ens.tsu.edu.ge).",
-      );
-      return; 
+      setError(`${errorSuccess("tsuEmail")}`)
+      return;
     }
     if (formdata.password.length < 8) {
-      setError("Password must be at least 8 characters long.");
+      setError(`${errorSuccess("mustPassword")}`)
       return;
     }
     if (!formdata.faculty) {
-      setError("Please select your faculty");
+      setError(`${errorSuccess("selectFaculty")}`)
       return;
     }
     if (!formdata.studyYear) {
-      setError("Please enter your study year");
+      setError(`${errorSuccess("studyYear")}`)
       return;
     }
     setError("");
@@ -81,7 +82,7 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Something went wrong.");
+        setError(data.error || `${errorSuccess("somethingWentWrong")}`);
         return;
       }
 
@@ -96,13 +97,13 @@ export default function RegisterPage() {
         isAdmin: false,
       });
 
-      setSuccess("Registration successful! Redirecting to verification...");
-
+      setError(`${errorSuccess("successReqstr")}`)
       setTimeout(() => {
         router.push("/verify");
       }, 1500);
     } catch (err) {
-      setError("Connection error. Please try again.");
+      setError(`${errorSuccess("connectionError")}`)
+
     } finally {
       setLoading(false);
     }
@@ -211,7 +212,7 @@ export default function RegisterPage() {
               name="email"
               value={formdata.email}
               onChange={handleChange}
-              placeholder="name.surname@hum.tsu.edu.ge"
+              placeholder="exp: name.surname@hum.tsu.edu.ge"
               className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text placeholder:text-[#a0acb8] outline-none focus:border-[#0060a9] focus:ring-1 focus:ring-[#0060a9]/20 transition-all"
             />
             <p className="text-xs text-text3 px-1">

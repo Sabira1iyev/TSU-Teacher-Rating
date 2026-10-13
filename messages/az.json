@@ -24,7 +24,7 @@
     "searchD": "Professor və ya kurs axtar..",
     "searchM": "Axtar...",
     "required": "TSU e-poçtu tələb olunur",
-    "only": "Yalnız @hum.tsu.edu.ge və @ens.tsu.edu.ge ünvanları qəbul edilir",
+    "only": "Yalnız tsu.edu.ge ünvanları qəbul edilir",
     "Student Account": "Tələbə hesabı"
   },
 
@@ -366,5 +366,35 @@
     "deleteProfDesc": "Bu əməliyyatı geri qaytarmaq mümkün deyil. Bu professorla bağlı bütün rəylər, reytinqlər və favoritlər həmişəlik silinəcək.",
     "deleteProf": "Professoru sil",
     "deleteProfConfirm": "<name>{professorName}</name> adlı professoru silmək istədiyinizə əminsiniz?"
+  },
+  "ErrorSuccess": {
+    "fullName": "Zəhmət olmasa, tam adınızı daxil edin",
+    "tsuEmail": "Zəhmət olmasa, TSU e-poçt ünvanınızdan istifadə edin",
+    "mustPassword": "Şifrə ən azı 8 simvoldan ibarət olmalıdır.",
+    "selectFaculty": "Zəhmət olmasa, fakültənizi seçin",
+    "studyYear": "Zəhmət olmasa, təhsil ilinizi seçin",
+    "somethingWentWrong": "Xəta baş verdi",
+    "successReqstr": "Qeydiyyat uğurludur! Təsdiqləmə səhifəsinə yönləndirilirsiniz...",
+    "connectionError": "Bağlantı xətası. Yenidən cəhd edin",
+    "loginSuccess": "Giriş uğurludur! Yönləndirilirsiniz...",
+    "couldnotReach": "Serverə qoşulmaq mümkün olmadı.",
+    "notMatch": "Şifrələr uyğun gəlmir",
+    "tryAgain": "Xəta baş verdi, zəhmət olmasa yenidən cəhd edin",
+    "fullDigit": "Zəhmət olmasa, 6 rəqəmli kodu tam daxil edin.",
+    "missingEmal": "E-poçt ünvanı yoxdur. Zəhmət olmasa, yenidən qeydiyyatdan keçin.",
+    "failingVerification": "Təsdiqləmə uğursuz oldu.",
+    "logSubmit": "Rəy yazmaq üçün daxil olun.",
+    "selectProf": "Zəhmət olmasa, professor seçin.",
+    "giveOverall": "Zəhmət olmasa, ümumi qiymət verin.",
+    "lengthComment": "Şərhiniz ən azı 10 simvoldan ibarət olmalıdır.",
+    "serverOccured": "Rəy göndərilərkən server xətası baş verdi.",
+    "oldPassword": "Zəhmət olmasa, köhnə şifrənizi daxil edin",
+    "passChangingSuccess": "Şifrə uğurla dəyişdirildi!",
+    "deleteAccount": "Hesabı silmək mümkün olmadı",
+    "deletedAccount": "Hesab uğurla silindi!",
+    "nameSurname": "Zəhmət olmasa, adınızı və soyadınızı daxil edin",
+    "dontSelectedFac": "Fakültə seçməmisiniz",
+    "updatingError": "Yeniləmə zamanı xəta baş verdi",
+    "everythingValid": "Hər şey qaydasındadır, yadda saxlanılır..."
   }
 }

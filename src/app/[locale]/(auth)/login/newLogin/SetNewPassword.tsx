@@ -19,6 +19,7 @@ export default function SetNewPassword({
   });
   const login = useTranslations("Login")
   const buttons = useTranslations("Buttons");
+  const errorSuccess = useTranslations("ErrorSuccess");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -30,12 +31,12 @@ export default function SetNewPassword({
   const handleSavePassword = async () => {
     setError("");
     if (formData.newPassword !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      setError(`${errorSuccess("notMatch")}`)
       return;
     }
 
     if (formData.newPassword.length < 8) {
-      setError("Password must be at least 8 characters long");
+      setError(`${errorSuccess("mustPassword")}`)
       return;
     }
     try {
@@ -58,12 +59,12 @@ export default function SetNewPassword({
       }
     } catch (error) {
       console.log("Password reset error:", error);
-      setError("Something went wrong, please try again")
+      setError(`${errorSuccess("tryAgain")}`)
     }
   };
 
   return (
-    <div className="animate-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="animate-backdrop fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="animate-modal bg-bg2 border border-border w-[90%] max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-text">{login("resetYourPassword")}</h2>

@@ -127,7 +127,7 @@ export default function ResetPasswordModal({
   }
 
   return (
-    <div className="animate-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="animate-backdrop fixed inset-0 z-100 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="animate-modal bg-bg2 border border-border w-[90%] max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col gap-5">
         <div className="flex items-center justify-between">
           {step === 1 && (
@@ -212,11 +212,11 @@ export default function ResetPasswordModal({
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
-                  <div className="w-8 h-[1px] bg-[#d8dfe6]" />
+                  <div className="w-8 h-px bg-border2" />
                   <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
                     <span className="text-xs font-bold text-white">2</span>
                   </div>
-                  <div className="w-8 h-[1px] bg-[#d8dfe6]" />
+                  <div className="w-8 h-px bg-border2" />
                   <div className="w-6 h-6 rounded-full bg-[#e4eaf0] flex items-center justify-center">
                     <span className="text-xs text-text3">3</span>
                   </div>
@@ -252,7 +252,7 @@ export default function ResetPasswordModal({
                       b: (chunks) => <span className="text-primary font-medium">{chunks}</span>
                     })}
                   </p>
-                  <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
+                  <div className="w-10 h-0.75 rounded-full bg-[#e6b800] mx-auto mt-3" />
                 </div>
 
                 {/* Code inputs */}

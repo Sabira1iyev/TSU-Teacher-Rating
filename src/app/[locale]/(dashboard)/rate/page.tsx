@@ -47,6 +47,8 @@ function RatePageContent() {
   const sidebar = useTranslations("Sidebar");
   const faculties = useTranslations("Faculties");
   const label = useTranslations("Label");
+  const errorSuccess = useTranslations("ErrorSuccess")
+
 
   const [form, setForm] = useState<ReviewForm>({
     professorId: professorId || "",
@@ -132,21 +134,21 @@ function RatePageContent() {
 
   const handleSubmit = async () => {
     if (!user) {
-      setError("Please log in to submit a review.");
+      setError(`${errorSuccess("logSubmit")}`);
       return;
     }
 
     if (!form.professorId) {
-      setError("Please select a professor.");
+      setError(`${errorSuccess("selectProf")}`);
       return;
     }
 
     if (form.overallRating === 0) {
-      setError("Please give an overall rating.");
+      setError(`${errorSuccess("giveOverall")}`);
       return;
     }
     if (form.comment.length < 10) {
-      setError("Please write at least 10 characters in your comment.");
+      setError(`${errorSuccess("lengthComment")}`);
       return;
     }
     setError("");
@@ -161,10 +163,10 @@ function RatePageContent() {
       if (res.ok) {
         setSubmitted(true);
       } else {
-        setError("A server error occurred while submitting the review.");
+        setError(`${errorSuccess("serverOccured")}`);
       }
     } catch (err) {
-      setError("Could not reach the server.");
+      setError(`${errorSuccess("couldnotReach")}`);
     }
   };
 
@@ -359,9 +361,9 @@ function RatePageContent() {
                   className="w-full bg-bg2 border border-border rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
                 >
                   {SEMESTERS.map((semester) => {
-                        const displaySemester = semester.endsWith("Fall")
-                        ? semester.replace("Fall", `${label("ratingFall")}`) :
-                        semester.replace("Spring", `${label("ratingSpring")}`)
+                    const displaySemester = semester.endsWith("Fall")
+                      ? semester.replace("Fall", `${label("ratingFall")}`) :
+                      semester.replace("Spring", `${label("ratingSpring")}`)
                     return (
                       <option key={semester} value={semester}>
                         {displaySemester}

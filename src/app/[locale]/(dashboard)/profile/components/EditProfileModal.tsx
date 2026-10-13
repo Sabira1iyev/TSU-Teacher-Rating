@@ -32,21 +32,23 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
   const faculties = useTranslations("Faculties");
   const buttons = useTranslations("Buttons");
   const popups = useTranslations("Popups");
+    const errorSuccess = useTranslations("ErrorSuccess");
+
 
   const handleSave = () => {
     setError("");
     setSuccess("");
     if (!formdata.firstName || !formdata.lastName) {
-      setError("Please enter your name and surname");
+      setError(`${errorSuccess("nameSurname")}`);
       return;
     }
 
     if (!formdata.faculty) {
-      setError("You don't have selected Faculty");
+      setError(`${errorSuccess("dontSelectedFac")}`);
       return;
     }
     if (!formdata.studyYear) {
-      setError("Please enter your faculty year");
+      setError(`${errorSuccess("studyYear")}`);
       return;
     }
 
@@ -67,7 +69,7 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || "Updating went wrong");
+        setError(data.message || `${errorSuccess("updatingError")}`);
         return;
       } else if (user) {
         setUser({
@@ -85,11 +87,11 @@ export default function EditProfileModal({ onClose }: EditProfileModalProps) {
       }
     } catch (error) {
       console.log(error);
-      setError("Something went wrong. Please try again.");
+      setError(`${errorSuccess("tryAgain")}`);
       return;
     }
 
-    setSuccess("Everything is valid, saving...");
+    setSuccess(`${errorSuccess("everythingValid")}`);
   };
 
   useEffect(() => {

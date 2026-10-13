@@ -18,6 +18,8 @@ export default function VerifyPage() {
     const login = useTranslations("Login")
     const loginInputs = useTranslations("Inputs");
     const button = useTranslations("Buttons");
+    const errorSuccess = useTranslations("ErrorSuccess")
+
 
 
     const handleChange = (index: number, value: string) => {
@@ -55,12 +57,12 @@ export default function VerifyPage() {
     const handleSubmit = async () => {
         const fullCode = code.join("");
         if (fullCode.length < 6) {
-            setError("Please enter the full 6-digit code.");
+            setError(`${errorSuccess("fullDigit")}`);
             return;
         }
 
         if (!user?.email) {
-            setError("Email address is missing. Please register again.");
+            setError(`${errorSuccess("missingEmal")}`);
             return;
         }
 
@@ -77,7 +79,7 @@ export default function VerifyPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                setError(data.error || "Verification failed.");
+                setError(data.error || `${errorSuccess("failingVerification")}`);
                 setLoading(false);
                 return;
             }
@@ -85,7 +87,7 @@ export default function VerifyPage() {
             // Success
             router.push("/dashboard");
         } catch (err) {
-            setError("Connection error. Please try again.");
+            setError(`${errorSuccess("connectionError")}`);
             setLoading(false);
         }
     }
@@ -119,11 +121,11 @@ export default function VerifyPage() {
                             <polyline points="20 6 9 17 4 12" />
                         </svg>
                     </div>
-                    <div className="w-8 h-[1px] bg-[#d8dfe6]" />
+                    <div className="w-8 h-px bg-border2" />
                     <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
                         <span className="text-xs font-bold text-white">2</span>
                     </div>
-                    <div className="w-8 h-[1px] bg-[#d8dfe6]" />
+                    <div className="w-8 h-px bg-border2" />
                     <div className="w-6 h-6 rounded-full bg-[#e4eaf0] flex items-center justify-center">
                         <span className="text-xs text-text3">3</span>
                     </div>
@@ -148,7 +150,7 @@ export default function VerifyPage() {
                             b: (chunks) => <span className="text-primary font-medium">{chunks}</span>
                         })}
                     </p>
-                    <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mx-auto mt-3" />
+                    <div className="w-10 h-0.75 rounded-full bg-[#e6b800] mx-auto mt-3" />
                 </div>
 
                 {/* Code inputs */}

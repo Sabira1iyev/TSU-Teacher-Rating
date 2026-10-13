@@ -23,6 +23,7 @@ export default function LoginPage() {
   const tIndex = useTranslations("Index");
   const sidebar = useTranslations("Sidebar");
   const common = useTranslations("Common");
+  const errorSuccess = useTranslations("ErrorSuccess")
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,7 +48,7 @@ export default function LoginPage() {
         return;
       }
 
-      setSuccess("Login successful! Redirecting...");
+      setSuccess(`${errorSuccess("loginSuccess")}`);
 
       setUser(data.user);
 
@@ -56,7 +57,7 @@ export default function LoginPage() {
       }, 1500);
     }
     catch {
-      console.error("Could not reach the server.")
+      console.error(`${errorSuccess("couldnotReach")}`)
     }
     finally {
       setIsSubmitting(false);
@@ -175,11 +176,11 @@ export default function LoginPage() {
             onClick={handleSubmit}
             className="w-full py-4 bg-primary rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
           >
-            
-             {
+
+            {
               isSubmitting ? buttons("signingIn") : success ? buttons("redirecting") : buttons("sigin")
-             }
-            
+            }
+
           </button>
         </div>
       </div>

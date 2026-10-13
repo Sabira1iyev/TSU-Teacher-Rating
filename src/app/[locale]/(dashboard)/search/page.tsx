@@ -6,7 +6,6 @@ import { FACULTIES, ACADEMIC_TITLES } from "@/lib/constants";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { Professor } from "@/types/teacher";
 import { useLocale, useTranslations } from "next-intl";
-import { title } from "process";
 
 type SortOption = "rating" | "reviews";
 
@@ -38,6 +37,8 @@ export default function SearchPage() {
   const tFac = useTranslations("Faculties");
   const tDash = useTranslations("Common");
   const tTitlesRaw = useTranslations("Titles");
+  const errorSuccess = useTranslations("ErrorSuccess");
+
   const tTitles = (title?: string | null) => {
     const key = (title ?? "").replace(/\./g, "");
     return key && tTitlesRaw.has(key) ? tTitlesRaw(key) : (title ?? "");
@@ -108,7 +109,7 @@ export default function SearchPage() {
   return (
     <div className="flex flex-col">
       {/* Search bar + Filter pills — single sticky block */}
-      <div className="sticky top-[48px] lg:top-[57px] z-20 bg-bg2">
+      <div className="sticky top-12 lg:top-14.25 z-20 bg-bg2">
         {/* Search bar */}
         <div className="px-5 lg:px-6 py-4 border-b border-border">
           <div className="flex items-center gap-3 bg-bg2 border border-border rounded-xl px-4 py-3 focus-within:border-primary transition">
@@ -137,35 +138,33 @@ export default function SearchPage() {
             <button
               key={faculty}
               onClick={() => setSelectedFaculty(faculty)}
-              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer transition-all border ${
-                selectedFaculty === faculty
+              className={`shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer transition-all border ${selectedFaculty === faculty
                   ? "bg-primary-dim border-primary-mid text-primary"
                   : "border-border text-text2 hover:border-border"
-              }`}
+                }`}
             >
               {faculty === "All"
                 ? tFac("All")
                 : tFac(faculty).replace("Faculty of ", "")}
             </button>
           ))}
-          <div className="w-[0.5px] h-4 bg-border2 flex-shrink-0 mx-1" />
+          <div className="w-[0.5px] h-4 bg-border2 shrink-0 mx-1" />
           <button
             onClick={() =>
               setSortBy(sortBy === "rating" ? "reviews" : "rating")
             }
-            className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer border border-border text-text2 hover:border-border whitespace-nowrap"
+            className="shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer border border-border text-text2 hover:border-border whitespace-nowrap"
           >
             {tDash("sort")}:{" "}
             {sortBy === "rating" ? tDash("sortRating") : tDash("sortReviews")}
           </button>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex lg:hidden flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all 
-                        ${
-                          showFilters
-                            ? "bg-primary-dim border-primary-mid text-primary"
-                            : "border-border text-text2 hover:border-border"
-                        }`}
+            className={`flex lg:hidden shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all 
+                        ${showFilters
+                ? "bg-primary-dim border-primary-mid text-primary"
+                : "border-border text-text2 hover:border-border"
+              }`}
           >
             {tDash("searchFilter")}
           </button>
@@ -183,11 +182,10 @@ export default function SearchPage() {
                   <button
                     key={title}
                     onClick={() => toglleTittle(title)}
-                    className={`px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all ${
-                      selectedTitles.includes(title)
+                    className={`px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all ${selectedTitles.includes(title)
                         ? "bg-primary-dim border-primary-mid text-primary"
                         : "border-border2 text-text2"
-                    }`}
+                      }`}
                   >
                     {tTitles(title.replace(/\./g, ""))}
                   </button>
@@ -204,11 +202,10 @@ export default function SearchPage() {
                   <button
                     key={rating}
                     onClick={() => setMinRating(rating)}
-                    className={`px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all ${
-                      minRating === rating
+                    className={`px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all ${minRating === rating
                         ? "bg-primary-dim border-primary-mid text-primary"
                         : "border-border2 text-text2"
-                    }`}
+                      }`}
                   >
                     {rating === 0 ? tFac("All") : `${rating}+`}
                   </button>
@@ -251,7 +248,7 @@ export default function SearchPage() {
                     className="flex items-center bg-bg2 gap-3 lg:gap-4 px-5 lg:px-6 py-4 border-b border-border cursor-pointer hover:bg-bg transition-colors"
                   >
                     <div
-                      className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 ${colors.bg} ${colors.text}`}
+                      className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-semibold shrink-0 ${colors.bg} ${colors.text}`}
                     >
                       {getInitials(profesor.firstName, profesor.lastName)}
                     </div>
@@ -284,7 +281,7 @@ export default function SearchPage() {
                       </div>
                     </div>
 
-                    <div className="text-right flex-shrink-0">
+                    <div className="text-right shrink-0">
                       <p
                         className={`text-lg font-semibold ${getRatingColor(profesor.overallRating)}`}
                       >
@@ -294,7 +291,7 @@ export default function SearchPage() {
                         {[1, 2, 3, 4, 5].map((star) => (
                           <div
                             key={star}
-                            className="w-[7px] h-[7px]"
+                            className="w-1.75 h-1.75"
                             style={{
                               clipPath:
                                 "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
@@ -318,7 +315,7 @@ export default function SearchPage() {
         </div>
 
         {/* Desktop filter sidebar */}
-        <div className="hidden lg:flex lg:flex-col w-[260px] flex-shrink-0 border-l border-border p-5 gap-2">
+        <div className="hidden lg:flex lg:flex-col w-65 shrink-0 border-l border-border p-5 gap-2">
           <p className="text-[10px] text-text3 uppercase tracking-widest">
             {tDash("searchFilter")}
           </p>
@@ -333,11 +330,10 @@ export default function SearchPage() {
                 <button
                   key={rating}
                   onClick={() => setMinRating(rating)}
-                  className={`text-left px-3 py-1.5 rounded-lg text-[11px] cursor-pointer transition-colors ${
-                    minRating === rating
+                  className={`text-left px-3 py-1.5 rounded-lg text-[11px] cursor-pointer transition-colors ${minRating === rating
                       ? "bg-primary-dim text-primary"
                       : "text-text2 hover:bg-bg3"
-                  }`}
+                    }`}
                 >
                   {rating === 0 ? tDash("allRatings") : `${rating}+ ${tDash("stars")}`}
                 </button>
@@ -356,11 +352,10 @@ export default function SearchPage() {
                 >
                   <div
                     onClick={() => toglleTittle(title)}
-                    className={`w-3.5 h-3.5 rounded border flex-shrink-0 flex items-center justify-center cursor-pointer transition-color ${
-                      selectedTitles.includes(title)
+                    className={`w-3.5 h-3.5 rounded border shrink-0 flex items-center justify-center cursor-pointer transition-color ${selectedTitles.includes(title)
                         ? "bg-primary border-primary"
                         : "border-border2"
-                    }`}
+                      }`}
                   >
                     {selectedTitles.includes(title) && (
                       <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
@@ -389,11 +384,10 @@ export default function SearchPage() {
                 <button
                   key={opt.value}
                   onClick={() => setMinReviews(opt.value)}
-                  className={`text-left px-3 py-1.5 rounded-lg text-[11px] cursor-pointer transition-colors ${
-                    minReviews === opt.value
+                  className={`text-left px-3 py-1.5 rounded-lg text-[11px] cursor-pointer transition-colors ${minReviews === opt.value
                       ? "bg-primary-dim text-primary"
                       : "text-text2 hover:bg-bg3"
-                  }`}
+                    }`}
                 >
                   {opt.label === "All" ? tFac("All") : `${opt.value}+ ${tDash("reviews")}`}
                 </button>

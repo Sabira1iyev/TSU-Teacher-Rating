@@ -97,7 +97,7 @@ export default function OnBoardingPage() {
                     {slides.map((_, i) => (
                         <div
                             key={i}
-                            className="flex-1 h-[3px] rounded-full bg-[#d8dfe6] overflow-hidden"
+                            className="flex-1 h-0.75 rounded-full bg-border2 overflow-hidden"
                         >
                             <div
                                 className={`h-full rounded-full transition-all duration-500 ${i <= current ? "bg-primary" : "bg-transparent"
@@ -135,7 +135,7 @@ export default function OnBoardingPage() {
                     </h1>
 
                     {/* Gold accent bar */}
-                    <div className="w-10 h-[3px] rounded-full bg-[#e6b800]" />
+                    <div className="w-10 h-0.75 rounded-full bg-[#e6b800]" />
 
                     {/* Description */}
                     <p className="text-text2 text-sm leading-relaxed text-center max-w-xs">
@@ -154,7 +154,7 @@ export default function OnBoardingPage() {
                                 <div className="text-[11px] text-text3 mt-0.5 font-medium">{onBoarding("reviews")}</div>
                             </div>
                             <div className="flex-1 py-4 text-center">
-                                <div className="text-xl font-bold text-[#d4a017]">500+</div>
+                                <div className="text-xl font-bold text-amber">500+</div>
                                 <div className="text-[11px] text-text3 mt-0.5 font-medium">{onBoarding("students")}</div>
                             </div>
                         </div>
@@ -164,7 +164,7 @@ export default function OnBoardingPage() {
                     <div className="flex flex-col items-center gap-3 w-full mt-2">
                         <button
                             onClick={handleNext}
-                            className="w-[220px] h-[44px] flex items-center justify-center bg-primary rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
+                            className="w-55 h-11 flex items-center justify-center bg-primary rounded-xl text-sm font-semibold text-white hover:bg-[#004d8a] transition-colors cursor-pointer shadow-[0_2px_12px_rgba(0,96,169,0.25)]"
                         >
                             {isLast ? buttons("signup") : buttons("continue")}
                         </button>
@@ -172,7 +172,7 @@ export default function OnBoardingPage() {
                         {current > 0 && (
                             <button
                                 onClick={handleBack}
-                                className="w-[220px] h-[44px] flex items-center justify-center border border-border rounded-xl text-sm text-text2 font-medium hover:bg-[#eef2f5] transition-colors cursor-pointer"
+                                className="w-55 h-11 flex items-center justify-center border border-border rounded-xl text-sm text-text2 font-medium hover:bg-[#eef2f5] transition-colors cursor-pointer"
                             >
                                 {buttons("backk")}
                             </button>

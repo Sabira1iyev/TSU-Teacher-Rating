@@ -76,7 +76,7 @@ export default function FavoritesPage() {
   return (
     <div className="flex flex-col">
       {/* Desktop topbar */}
-      <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-[57px] z-10">
+      <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-14.25 z-10">
         <h1
           className="
                  font-bold text-[16px] text-text                
@@ -94,7 +94,7 @@ export default function FavoritesPage() {
       </div>
 
       {/* mobile topbar */}
-      <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-[49px] z-10">
+      <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-12.25 z-10">
         <span className="text-sm font-medium text-text">
           {tSidebar("Favorites")}
         </span>
@@ -191,7 +191,7 @@ export default function FavoritesPage() {
                       {[1, 2, 3, 4, 5].map((star) => (
                         <div
                           key={star}
-                          className="w-[7px] h-[7px]"
+                          className="w-1.75 h-1.75"
                           style={{
                             clipPath:
                               "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)",
@@ -235,7 +235,7 @@ export default function FavoritesPage() {
                     className="bg-bg2 border border-border rounded-xl px-3 py-3 flex items-center gap-3 cursor-pointer active:bg-bg3 transition-colors relative"
                   >
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 ${colors.bg} ${colors.text}`}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold shrink-0 ${colors.bg} ${colors.text}`}
                     >
                       {getInitials(professor.firstName, professor.lastName)}
                     </div>
@@ -257,7 +257,7 @@ export default function FavoritesPage() {
                         </span>
                       </p>
                     </div>
-                    <div className="text-right flex-shrink-0 mr-6">
+                    <div className="text-right shrink-0 mr-6">
                       <p
                         className={`text-base font-semibold ${getRatingColor(professor.overallRating)}`}
                       >

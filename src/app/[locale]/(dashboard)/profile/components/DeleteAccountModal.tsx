@@ -16,6 +16,8 @@ export default function DeleteAccountModal({
   const router = useRouter();
   const popups = useTranslations("Popups");
   const button = useTranslations("Buttons");
+  const errorSuccess = useTranslations("ErrorSuccess");
+
 
   const handleDelete = async () => {
     setError("");
@@ -31,11 +33,11 @@ export default function DeleteAccountModal({
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.mesage || "Failed to delete account");
+        setError(data.mesage || `${errorSuccess("deleteAccount")}`);
         return;
       } else {
         setUser(null);
-        setSuccess("Account deleted successfully!");
+        setSuccess(`${errorSuccess("deletedAccount")}`);
         router.push("/register");
         setTimeout(() => {
           onClose();
@@ -43,7 +45,7 @@ export default function DeleteAccountModal({
       }
     } catch (error) {
       console.log(error);
-      setError("Failed to delete account");
+      setError(`${errorSuccess("deleteAccount")}`);
     }
   };
 

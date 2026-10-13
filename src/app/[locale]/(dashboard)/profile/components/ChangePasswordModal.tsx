@@ -27,6 +27,8 @@ export default function ChangePasswordModa({
   const login = useTranslations("Login");
   const button = useTranslations("Buttons");
   const popups = useTranslations("Popups");
+  const errorSuccess = useTranslations("ErrorSuccess")
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -41,17 +43,17 @@ export default function ChangePasswordModa({
     setError("");
     setSuccess("");
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      setError(`${errorSuccess("notMatch")}`);
       return;
     }
 
     if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters long.");
+      setError(`${errorSuccess("mustPassword")}`);
       return;
     }
 
     if (!formData.oldPassword) {
-      setError("Please enter your old password");
+      setError(`${errorSuccess("oldPassword")}`);
       return;
     }
     setShowConfirm(true);
@@ -71,17 +73,17 @@ export default function ChangePasswordModa({
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || "Something went wrong!");
+        setError(data.message || `${errorSuccess("somethingWentWrong")}`);
         return;
       } else {
-        setSuccess("Password changed successfully!");
+        setSuccess(`${errorSuccess("passChangingSuccess")}`);
         setTimeout(() => {
           onClose();
         }, 1500);
       }
     } catch (error) {
       console.log(error);
-      setError("Connection error. Please try again.");
+      setError(`${errorSuccess("connectionError")}`);
     }
   };
 
