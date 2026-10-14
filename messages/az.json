@@ -406,5 +406,11 @@
     "rateProf": "Professoru qiymətləndir",
     "myProfile": "Profilim",
     "search": "Axtar"
-  }
+  },
+"ChatBot": {
+  "inDevelop": "Development mərhələsində",
+  "howCan": "Necə kömək edə bilərəm?",
+  "isThinking": "Düşünür...",
+  "askAI": "Süni intellektə soruş"
+}
 }

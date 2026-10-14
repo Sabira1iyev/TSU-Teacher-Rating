@@ -4,6 +4,7 @@ import { MessageCircle, X, Send } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { usePathname } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import { useTranslations } from "next-intl";
 
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function Chatbot() {
     const { user } = useUser();
     const messagesRef = useRef<HTMLDivElement>(null);
     const [isTyping, setIsTyping] = useState(false);
+    const chatbot = useTranslations("ChatBot");
 
     useEffect(() => {
         messagesRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -19,7 +21,7 @@ export default function Chatbot() {
 
     const pathName = usePathname();
     const isLandingPage = pathName === "/" || pathName === "/en" || pathName === "/az" || pathName === "/ka";
-    
+
     if (
         pathName.includes("/login") ||
         pathName.includes("/register") ||
@@ -69,8 +71,8 @@ export default function Chatbot() {
                 isOpen && (
                     <div className=" animate-modal fixed flex flex-col bottom-33 right-4 w-[350px] h-[400px] bg-bg2 border border-border rounded-xl shadow-2xl
      p-4 z-50">
-                        <h3 className="font-bold text-blue-600">Prof AI (in development)</h3>
-                        <p className="text-sm mt-2 text-text2">How can I help you?</p>
+                        <h3 className="font-bold text-blue-600">Prof AI ({chatbot("inDevelop")})</h3>
+                        <p className="text-sm mt-2 text-text2">{chatbot("howCan")}</p>
                         <div className="flex-1 overflow-y-auto w-full my-2">
                             {messages.map((msg, idx) => (
                                 <div className={`animate_message p-2 my-1 rounded-lg w-max max-w-[80%] text-sm ${msg.role === "user" ? "bg-blue-600 text-white ml-auto shadow-sm" : "bg-bg3 border border-border2 text-text shadow-sm"}`}
@@ -83,7 +85,7 @@ export default function Chatbot() {
                             {isTyping && (
                                 <div className="flex justify-start">
                                     <div className="bg-bg3 border border-border2 text-text3 rounded-2xl px-4 py-2 text-sm max-w-[80%] rounded-tl-none animate-pulse">
-                                        Prof Ai is thinking...
+                                        {chatbot("isThinking")}
                                     </div>
                                 </div>
                             )}
@@ -100,13 +102,13 @@ export default function Chatbot() {
                                     type="text"
                                     value={inputText}
                                     onChange={handleChange}
-                                    placeholder="Ask AI"
+                                    placeholder={chatbot("askAI")}
                                     className="w-full h-8 md:text-base bg-transparent outline-none text-sm rounded-lg text-text"
                                 />
                                 <button className="bg-blue w-max ml-auto p-1 text-white hover:text-gray-100 rounded-lg hover:shadow-lg transition-transform focus:outline-none focus:scale-95 px-2"
                                     type="submit"
                                 >
-                                    <Send size={15} className="cursor-pointer"/>
+                                    <Send size={15} className="cursor-pointer" />
                                 </button>
                             </form>
                         </div>

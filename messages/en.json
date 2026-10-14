@@ -397,33 +397,7 @@
     "nameSurname": "Please enter your name and surname",
     "dontSelectedFac": "You don't have selected Faculty",
     "updatingError": "Updating went wrong",
-    "everythingValid": "Everything is valid, saving...",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": "",
-    "": ""
+    "everythingValid": "Everything is valid, saving..."
   },
   "NotFound": {
     "absent": "Absent from class",
@@ -434,5 +408,11 @@
     "rateProf": "Rate a professor",
     "myProfile": "My Profile",
     "search": "Search"
+  },
+  "ChatBot": {
+    "inDevelop": "in development",
+    "howCan": "How can I help you",
+    "isThinking": "Prof AI is thinking...",
+    "askAI": "Ask AI"
   }
 }
