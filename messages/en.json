@@ -425,9 +425,14 @@
     "": "",
     "": ""
   },
-  "NotFound":{
+  "NotFound": {
     "absent": "Absent from class",
     "pageabsent": "This page has been absent too many times and got dropped. It may have moved, been delated, or never existed in the first place.",
-    "backToDashboard": "Back to Dashboard"
+    "backToDashboard": "Back to Dashboard",
+    "maybeLooking": "Maybe your looking for",
+    "topProf": "Top professors",
+    "rateProf": "Rate a professor",
+    "myProfile": "My Profile",
+    "search": "Search"
   }
 }

@@ -396,5 +396,15 @@
     "dontSelectedFac": "Fakültə seçməmisiniz",
     "updatingError": "Yeniləmə zamanı xəta baş verdi",
     "everythingValid": "Hər şey qaydasındadır, yadda saxlanılır..."
+  },
+  "NotFound": {
+    "absent": "Dərsdə yoxdur",
+    "pageabsent": "Bu səhifə dəfələrlə tapılmadığı üçün silinib. Səhifənin ünvanı dəyişmiş, səhifə silinmiş və ya heç mövcud olmamış ola bilər.",
+    "backToDashboard": "Əsas səhifəyə qayıt",
+    "maybeLooking": "Bəlkə bunları axtarırsınız",
+    "topProf": "Ən yaxşı professorlar",
+    "rateProf": "Professoru qiymətləndir",
+    "myProfile": "Profilim",
+    "search": "Axtar"
   }
 }

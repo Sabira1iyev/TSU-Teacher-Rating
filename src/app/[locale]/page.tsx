@@ -34,7 +34,7 @@ export default function SplashScreen() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-bg relative overflow-hidden">
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/8 blur-[80px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-100 h-100 rounded-full bg-primary/8 blur-[80px] pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center gap-6">
         <div className="w-16 h-16 rounded-2xl bg-primary-dim border border-[#c8ddf0] flex items-center justify-center">
@@ -64,7 +64,7 @@ export default function SplashScreen() {
         </div>
 
         <div className="flex flex-col items-center gap-2 mt-6">
-          <div className="w-28 h-[3px] bg-[#d8dfe6] rounded-full overflow-hidden">
+          <div className="w-28 h-0.75 bg-border2 rounded-full overflow-hidden">
             <div
               className="h-full bg-primary rounded-full"
               style={{
