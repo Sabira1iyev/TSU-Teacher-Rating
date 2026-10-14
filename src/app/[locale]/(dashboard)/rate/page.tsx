@@ -130,7 +130,7 @@ function RatePageContent() {
         ? prev.tags.filter((t) => t !== tag)
         : [...prev.tags, tag],
     }));
-  };
+  }; 
 
   const handleSubmit = async () => {
     if (!user) {
@@ -564,7 +564,6 @@ function RatePageContent() {
             <div className="flex flex-col">
               {[
                 rules("rule1"),
-                rules("rule2"),
                 rules("rule3"),
                 rules("rule4"),
               ].map((rule) => (

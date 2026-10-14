@@ -556,13 +556,12 @@ function RatePageContent() {
           <div className="bg-bg2 rounded-xl p-4">
             <p className="text-xs text-text2 mb-3 leading-relaxed">
               <span className="inline-block w-2 h-2 rounded-full bg-primary mr-1.5"></span>
-              Your review is completely anonymous. Your name or student ID will
-              never be shown.
+                    {rules("privacyDesc")}
+
             </p>
             <div className="flex flex-col">
               {[
                 rules("rule1"),
-                rules("rule2"),
                 rules("rule3"),
                 rules("rule4"),
               ].map((rule) => (
