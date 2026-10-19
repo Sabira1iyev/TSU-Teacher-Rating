@@ -335,6 +335,8 @@ export default function DashboardLayout({
             {user?.isAdmin && (
               <div className="relative flex items-center" ref={notificationRefDesktop}>
                 <button
+                  type="button"
+                  aria-label="Notifications"
                   className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
                   onClick={toggleNotifications}
                 >
@@ -345,6 +347,7 @@ export default function DashboardLayout({
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
                   >
                     <path
                       d="M12 4C8.5 4 6 6.5 6 10V13.5L4 16H20L18 13.5V10C18 6.5 15.5 4 12 4Z"
@@ -404,6 +407,8 @@ export default function DashboardLayout({
             {user?.isAdmin ? (
               <div className="relative flex items-center" ref={notificationRefMobile}>
                 <button
+                  type="button"
+                  aria-label="Notifications"
                   className="flex items-center justify-center cursor-pointer transition-transform hover:scale-105"
                   onClick={toggleNotifications}
                 >
@@ -414,6 +419,7 @@ export default function DashboardLayout({
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
                   >
                     <path
                       d="M12 4C8.5 4 6 6.5 6 10V13.5L4 16H20L18 13.5V10C18 6.5 15.5 4 12 4Z"

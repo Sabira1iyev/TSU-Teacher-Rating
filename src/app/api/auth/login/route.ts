@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
           message: "Too many attempt, please try again later.",
         },
         {
-          status: 429,
+          status: 429, 
         },
       );
     }

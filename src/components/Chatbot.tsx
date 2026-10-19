@@ -117,8 +117,9 @@ export default function Chatbot() {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="fixed bottom-18 right-6 z-50 w-14 h-14 bg-bg-ai hover:bg-bg-ai text-text-ai rounded-full flex justify-center items-center shadow-lg transition-transform cursor-pointer"
-            >
-                {isOpen ? <X size={24} /> : <MessageCircle size={28} />}
+              aria-label="Open AI chat"
+           >
+                {isOpen ? <X size={24} /> : <MessageCircle aria-hidden="true" size={28} />}
             </button>
         </>
     )
