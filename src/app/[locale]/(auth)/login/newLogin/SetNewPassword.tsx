@@ -4,9 +4,11 @@ import { useTranslations } from "next-intl";
 import { log } from "console";
 export default function SetNewPassword({
   email,
+  verifyCode,
   onClose,
 }: {
   email: string;
+  verifyCode: string[];
   onClose: () => void;
 }) {
   const [newPassword, setNewPassword] = useState("");

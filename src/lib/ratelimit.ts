@@ -10,7 +10,7 @@ export const verifyResetLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(5, "10m"),
   prefix: "ratelimit:verify-reset",
-});
+}); 
 
 export const loginLimiter = new Ratelimit({
   redis,
@@ -41,3 +41,11 @@ export const reviewLimiter = new Ratelimit({
   limiter: Ratelimit.slidingWindow(2, "1m"),
   prefix: "ratelimit:review",
 });
+
+export const userEmailLimit = new Ratelimit(
+  {
+    redis,
+    limiter: Ratelimit.slidingWindow(5, "10m"),
+    prefix: "ratelimit:login:email"
+  }
+)

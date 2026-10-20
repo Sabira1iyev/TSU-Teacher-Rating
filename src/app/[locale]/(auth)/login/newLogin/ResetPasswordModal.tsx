@@ -12,11 +12,6 @@ export default function ResetPasswordModal({
   onClose: () => void;
 }) {
   const [step, setStep] = useState(1);
-  const { user } = useUser();
-  const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const router = useRouter();
   const [verifyCode, setVerifyCode] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -123,7 +118,7 @@ export default function ResetPasswordModal({
   };
 
   if (step === 3) {
-    return <SetNewPassword onClose={onClose} email={formData.email} />;
+    return <SetNewPassword onClose={onClose} email={formData.email} verifyCode= {verifyCode} />;
   }
 
   return (
