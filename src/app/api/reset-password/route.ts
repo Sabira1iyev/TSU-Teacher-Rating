@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
       })
       .eq("email", email)
       .eq("verification_code", verifyCode)
-      .gt("verification_expiry", new Date().toISOString)
+      .gt("verification_expiry", new Date().toISOString())
       .select("id");
     if (error) throw error;
 
