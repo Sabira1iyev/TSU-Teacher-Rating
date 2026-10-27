@@ -47,15 +47,22 @@ export const resetPasswordLimiter = new Ratelimit(
   {
     redis,
     limiter: Ratelimit.slidingWindow(5, "10m"),
-    prefix: "ratelimit: reset-password",
+    prefix: "ratelimit:reset-password",
   }
 )
-
 
 export const userEmailLimit = new Ratelimit(
   {
     redis,
     limiter: Ratelimit.slidingWindow(5, "10m"),
     prefix: "ratelimit:login:email"
+  }
+)
+
+export const userResetPasswordLimiter = new Ratelimit(
+  {
+    redis,
+    limiter: Ratelimit.slidingWindow(5, "10m"),
+    prefix: "ratelimit:reset-password:email"
   }
 )

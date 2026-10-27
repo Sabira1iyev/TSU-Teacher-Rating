@@ -47,7 +47,9 @@ export default function SetNewPassword({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
+          verifyCode: verifyCode.join(""),
           newPassword: formData.newPassword,
+
         }),
       });
       const data = await response.json();
