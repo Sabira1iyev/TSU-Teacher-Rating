@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "@/lib/supabase";
-import { loginLimiter } from "@/lib/ratelimit";
+import { resetPasswordLimiter } from "@/lib/ratelimit";
+import { userEmailLimit } from "@/lib/ratelimit";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { cookies } from "next/headers";
@@ -11,14 +12,15 @@ export async function POST(req: NextRequest) {
     const { email, newPassword } = await req.json();
     const normalizedEmail = email.trim().toLowerCase();
     const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-    const emailResult = await loginLimiter.limit(normalizedEmail);
-    const sucsess = await loginLimiter.limit(ip);
+    const { success: emailSuccess } =
+      await userEmailLimit.limit(normalizedEmail);
+    const { success } = await resetPasswordLimiter.limit(ip);
     const session = await getIronSession<SessionData>(
       await cookies(),
       sessionOptions,
     );
 
-    if (!sucsess || !emailResult) {
+    if (!success || !emailSuccess) {
       return NextResponse.json(
         {
           message: "Too many attempt, please try again later",

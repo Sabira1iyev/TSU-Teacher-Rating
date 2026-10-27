@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
     const normalizedEmail = email.trim().toLowerCase();
 
-    const { data, error } = await supabaseAdmin
+    const { data } = await supabaseAdmin
       .from("users")
       .select(
         `

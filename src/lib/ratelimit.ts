@@ -1,5 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { preconnect } from "react-dom";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL,
@@ -41,6 +42,15 @@ export const reviewLimiter = new Ratelimit({
   limiter: Ratelimit.slidingWindow(2, "1m"),
   prefix: "ratelimit:review",
 });
+
+export const resetPasswordLimiter = new Ratelimit(
+  {
+    redis,
+    limiter: Ratelimit.slidingWindow(5, "10m"),
+    prefix: "ratelimit: reset-password",
+  }
+)
+
 
 export const userEmailLimit = new Ratelimit(
   {
