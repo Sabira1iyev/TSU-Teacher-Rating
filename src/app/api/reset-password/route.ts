@@ -68,9 +68,14 @@ export async function POST(req: NextRequest) {
     }
 
     if (!/^\d{6}$/.test(verifyCode)) {
-      return NextResponse.json({
-        message: "Verification code must be 6 digits",
-      });
+      return NextResponse.json(
+        {
+          message: "Verification code must be 6 digits",
+        },
+        {
+          status: 400,
+        },
+      );
     }
     const hashedPassword = await bcrypt.hash(newPassword, 12);
 
