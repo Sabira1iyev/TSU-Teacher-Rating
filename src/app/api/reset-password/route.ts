@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "@/lib/supabase";
-import { userResetPasswordLimiter, resetPasswordLimiter } from "@/lib/ratelimit";
-
+import {
+  userResetPasswordLimiter,
+  resetPasswordLimiter,
+} from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
@@ -40,7 +42,8 @@ export async function POST(req: NextRequest) {
     }
 
     const normalizedEmail = email.trim().toLowerCase();
-    const { success: emailOk } = await userResetPasswordLimiter.limit(normalizedEmail);
+    const { success: emailOk } =
+      await userResetPasswordLimiter.limit(normalizedEmail);
 
     if (!emailOk) {
       return NextResponse.json(
@@ -52,6 +55,23 @@ export async function POST(req: NextRequest) {
         },
       );
     }
+
+    if (newPassword.length < 8) {
+      return NextResponse.json(
+        {
+          message: "Password must be at least 8 characters.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (!/^\d{6}$/.test(verifyCode)) {
+      return NextResponse.json({
+        message: "Verification code must be 6 digits",
+      });
+    }
     const hashedPassword = await bcrypt.hash(newPassword, 12);
 
     const { data, error } = await supabaseAdmin
@@ -61,7 +81,7 @@ export async function POST(req: NextRequest) {
         verification_code: null,
         verification_expiry: null,
       })
-      .eq("email", email)
+      .eq("email", normalizedEmail)
       .eq("verification_code", verifyCode)
       .gt("verification_expiry", new Date().toISOString())
       .select("id");
