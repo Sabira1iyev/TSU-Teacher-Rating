@@ -2,13 +2,16 @@ import { NextResponse, NextRequest } from "next/server";
 import bcrypt from "bcryptjs";
 import { verifyResetLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
+import { userVerifyResetLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    const ip = (req.headers.get("x-forwarded-for") ?? "127.0.0.1")
+      .split(",")[0]
+      .trim();
 
-    const { success } = await verifyResetLimiter.limit(ip);
-    if (!success) {
+    const { success: ipOk } = await verifyResetLimiter.limit(ip);
+    if (!ipOk) {
       return NextResponse.json(
         {
           message: "Too many attemps. Please try again later",
@@ -20,11 +23,49 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, verifyCode } = await req.json();
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const { success: emailOk } =
+      await userVerifyResetLimiter.limit(normalizedEmail);
+
+    if (!emailOk) {
+      return NextResponse.json(
+        {
+          message: "Too many attempts!",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
+
+    if (typeof email !== "string" || typeof verifyCode !== "string") {
+      return NextResponse.json(
+        {
+          message: "Invalid request",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (!/^\d{6}/.test(verifyCode)) {
+      return NextResponse.json(
+        {
+          message: "Verification code must be 6 digits!",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
     const { data: result, error } = await supabaseAdmin
       .from("users")
       .select("verification_expiry")
       .eq("verification_code", verifyCode)
-      .eq("email", email);
+      .eq("email", normalizedEmail);
 
     if (error) throw error;
 

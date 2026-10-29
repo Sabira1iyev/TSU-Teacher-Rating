@@ -1,20 +1,61 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { verifyIpLimiter } from "@/lib/ratelimit";
+import { verifyEmailLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
+    const ip = (req.headers.get("x-forwarded-for") ?? "127.0.0.1")
+      .split(",")[0]
+      .trim();
+    const { success: ipOk } = await verifyIpLimiter.limit(ip);
+
+    if (!ipOk) {
+      return NextResponse.json(
+        {
+          message: "Too many attempt. Please try again later",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
+
     const { email, code } = body;
 
-    if (!email || !code) {
-      return NextResponse.json(
-        { error: "Email and code are required." },
-        { status: 400 },
-      );
+    if (typeof email !== "string" || typeof code !== "string") {
+      return NextResponse.json({ error: "Invlid request" }, { status: 400 });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
     const verificationCode = String(code).trim();
+
+    if (!/^\d{d}/.test(normalizedEmail)) {
+      return NextResponse.json(
+        {
+          message: "Verification code must be 6 digits!",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const { success: emailOk } =
+      await verifyEmailLimiter.limit(normalizedEmail);
+    
+      if (!emailOk) {
+      return NextResponse.json(
+        {
+          message: "Too many request!",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
 
     const { data: user, error: userError } = await supabaseAdmin
       .from("users")

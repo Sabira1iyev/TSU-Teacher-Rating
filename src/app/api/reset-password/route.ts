@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     if (!/^\d{6}$/.test(verifyCode)) {
       return NextResponse.json(
         {
-          message: "Verification code must be 6 digits",
+          message: "Verification code must be 6 digits!",
         },
         {
           status: 400,

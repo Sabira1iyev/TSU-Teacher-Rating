@@ -11,7 +11,7 @@ export const verifyResetLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(5, "10m"),
   prefix: "ratelimit:verify-reset",
-}); 
+});
 
 export const loginLimiter = new Ratelimit({
   redis,
@@ -43,26 +43,38 @@ export const reviewLimiter = new Ratelimit({
   prefix: "ratelimit:review",
 });
 
-export const resetPasswordLimiter = new Ratelimit(
-  {
-    redis,
-    limiter: Ratelimit.slidingWindow(5, "10m"),
-    prefix: "ratelimit:reset-password",
-  }
-)
+export const resetPasswordLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10m"),
+  prefix: "ratelimit:reset-password",
+});
 
-export const userEmailLimit = new Ratelimit(
-  {
-    redis,
-    limiter: Ratelimit.slidingWindow(5, "10m"),
-    prefix: "ratelimit:login:email"
-  }
-)
+export const userEmailLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10m"),
+  prefix: "ratelimit:login:email",
+});
 
-export const userResetPasswordLimiter = new Ratelimit(
-  {
-    redis,
-    limiter: Ratelimit.slidingWindow(5, "10m"),
-    prefix: "ratelimit:reset-password:email"
-  }
-)
+export const userResetPasswordLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10m"),
+  prefix: "ratelimit:reset-password:email",
+});
+
+export const userVerifyResetLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10m"),
+  prefix: "ratelimit:verify-reset:email",
+});
+
+export const verifyIpLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10m"),
+  prefix: "ratelimit:auth-verify",
+});
+
+export const verifyEmailLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "10m"),
+  prefix: "ratelimit:auth-verify:email",
+});
