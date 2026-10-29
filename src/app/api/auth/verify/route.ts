@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     const { email, code } = body;
 
     if (typeof email !== "string" || typeof code !== "string") {
-      return NextResponse.json({ error: "Invlid request" }, { status: 400 });
+      return NextResponse.json({ message: "Invlid request" }, { status: 400 });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
