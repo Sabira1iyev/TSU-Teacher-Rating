@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     const normalizedEmail = email.trim().toLowerCase();
     const verificationCode = String(code).trim();
 
-    if (!/^\d{d}/.test(normalizedEmail)) {
+    if (!/^\d{6}$/.test(verificationCode)) {
       return NextResponse.json(
         {
           message: "Verification code must be 6 digits!",
@@ -138,7 +138,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Verify error:", error);
     return NextResponse.json(
-      { error: "Something went wrong. Please try again." },
+      { message: "Something went wrong. Please try again." },
       { status: 500 },
     );
   }

@@ -1,5 +1,4 @@
 import { NextResponse, NextRequest } from "next/server";
-import bcrypt from "bcryptjs";
 import { verifyResetLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
 import { userVerifyResetLimiter } from "@/lib/ratelimit";
@@ -23,6 +22,18 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, verifyCode } = await req.json();
+
+    if (typeof email !== "string" || typeof verifyCode !== "string") {
+      return NextResponse.json(
+        {
+          message: "Invalid request",
+        },
+        {
+          status: 400,
+        },
+      );
+    }   
+
     const normalizedEmail = email.trim().toLowerCase();
 
     const { success: emailOk } =
@@ -39,18 +50,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (typeof email !== "string" || typeof verifyCode !== "string") {
-      return NextResponse.json(
-        {
-          message: "Invalid request",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (!/^\d{6}/.test(verifyCode)) {
+    if (!/^\d{6}$/.test(verifyCode)) {
       return NextResponse.json(
         {
           message: "Verification code must be 6 digits!",
