@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
-import { loginLimiter, userEmailLimit,userLoginEmailLimit } from "@/lib/ratelimit";
+import { loginLimiter,userLoginEmailLimit } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
 
 
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     if (!emailOk) {
       return NextResponse.json(
         {
-          message: "Too manny request please try again later.",
+          message: "Too many requests please try again later.",
         },
         {
           status: 429,
