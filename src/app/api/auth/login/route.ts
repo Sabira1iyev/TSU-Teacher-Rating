@@ -3,8 +3,9 @@ import bcrypt from "bcryptjs";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
-import { loginLimiter } from "@/lib/ratelimit";
+import { loginLimiter, userEmailLimit } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
+import { userLoginEmailLimit } from "@/lib/ratelimit";
 
 type LoginUser = {
   id: number;
@@ -20,20 +21,57 @@ type LoginUser = {
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-    const { success } = await loginLimiter.limit(ip);
-    if (!success) {
+    const ip = (req.headers.get("x-forwarded-for") ?? "127.0.0.1")
+      .split(",")[0]
+      .trim();
+    const { success: ipOk } = await loginLimiter.limit(ip);
+    if (!ipOk) {
       return NextResponse.json(
         {
           message: "Too many attempt, please try again later.",
         },
         {
-          status: 429, 
+          status: 429,
         },
       );
     }
     const { email, password } = await req.json();
+
+    if (password.length < 8) {
+      return NextResponse.json(
+        {
+          message: "Password must be at least 8 characters!",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (typeof email !== "string") {
+      return NextResponse.json(
+        {
+          messag: "Invalid request",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
     const normalizedEmail = email.trim().toLowerCase();
+
+    const { success: emailOk } = await userEmailLimit.limit(normalizedEmail);
+
+    if (!emailOk) {
+      return NextResponse.json(
+        {
+          message: "Too manny request please try again later.",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
 
     const { data } = await supabaseAdmin
       .from("users")
@@ -58,7 +96,7 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          message: "No account is registered with this email.",
+          message: "Invalid email or password",
         },
         {
           status: 404,
