@@ -83,5 +83,5 @@ export const verifyEmailLimiter = new Ratelimit({
 export const userLoginEmailLimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(5, "10m"),
-  prefix: "ratelimit:login:email",
+  prefix: "ratelimit:login-limiter:email",
 });

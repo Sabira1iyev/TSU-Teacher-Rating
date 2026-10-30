@@ -3,9 +3,9 @@ import bcrypt from "bcryptjs";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
-import { loginLimiter, userEmailLimit } from "@/lib/ratelimit";
+import { loginLimiter, userEmailLimit,userLoginEmailLimit } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
-import { userLoginEmailLimit } from "@/lib/ratelimit";
+
 
 type LoginUser = {
   id: number;
@@ -37,6 +37,17 @@ export async function POST(req: NextRequest) {
     }
     const { email, password } = await req.json();
 
+    if (typeof email !== "string" || typeof password !== "string") {
+      return NextResponse.json(
+        {
+          message: "Invalid request",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
     if (password.length < 8) {
       return NextResponse.json(
         {
@@ -48,19 +59,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (typeof email !== "string") {
-      return NextResponse.json(
-        {
-          messag: "Invalid request",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
     const normalizedEmail = email.trim().toLowerCase();
 
-    const { success: emailOk } = await userEmailLimit.limit(normalizedEmail);
+    const { success: emailOk } = await userLoginEmailLimit.limit(normalizedEmail);
 
     if (!emailOk) {
       return NextResponse.json(
@@ -73,7 +74,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { data } = await supabaseAdmin
+    const { data, error } = await supabaseAdmin
       .from("users")
       .select(
         `
@@ -91,15 +92,19 @@ export async function POST(req: NextRequest) {
       .eq("email", normalizedEmail)
       .maybeSingle();
 
+    if (error) {
+      throw error;
+    }
+
     const user = data as unknown as LoginUser | null;
 
     if (!user) {
       return NextResponse.json(
         {
-          message: "Invalid email or password",
+          message: "Invalid email or password.",
         },
         {
-          status: 404,
+          status: 401,
         },
       );
     }
@@ -112,7 +117,7 @@ export async function POST(req: NextRequest) {
     if (!isPasswordCorrect) {
       return NextResponse.json(
         {
-          message: "Password is incorrect.",
+          message: "Invalid email or password.",
         },
         {
           status: 401,
