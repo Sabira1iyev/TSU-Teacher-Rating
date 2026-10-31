@@ -8,9 +8,11 @@ import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    const ip = (req.headers.get("x-forwarded-for") ?? "127.0.0.1")
+      .split(",")[0]
+      .trim();
     const { success: ipOk } = await forgotPasswordLimiter.limit(ip);
-    if (ipOk) {
+    if (!ipOk) {
       return NextResponse.json(
         {
           message: "Too many attempts, please try again later",
@@ -33,16 +35,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const normalizedEmail = email.trim().toLocaleLowerCase();
+    const normalizedEmail = email.trim().toLowerCase();
 
-    const emailOk = await forgotPasswordEmailLimiter.limit(normalizedEmail);
+    const { success: emailOk } =
+      await forgotPasswordEmailLimiter.limit(normalizedEmail);
 
     if (!emailOk) {
       return NextResponse.json({
         message: "Too many attempts! Please try again later.",
       });
     }
-
 
     const { data: user, error: userError } = await supabaseAdmin
       .from("users")
@@ -55,7 +57,7 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return NextResponse.json(
         {
-          message: "No user found with this email",
+          message: "If this email address is registered, a code has been sent.",
         },
         {
           status: 404,

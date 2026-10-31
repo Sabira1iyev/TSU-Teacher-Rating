@@ -82,5 +82,5 @@ export const userLoginEmailLimit = new Ratelimit({
 export const forgotPasswordEmailLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(3, "10m"),
-  prefix: "ratelimit:email",
+  prefix: "ratelimit:forgot-password:email",
 });
