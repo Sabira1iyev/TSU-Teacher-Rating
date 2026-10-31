@@ -9,19 +9,19 @@ const redis = new Redis({
 
 export const verifyResetLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(5, "10m"),
+  limiter: Ratelimit.slidingWindow(20, "10m"),
   prefix: "ratelimit:verify-reset",
 });
 
 export const loginLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(5, "10m"),
+  limiter: Ratelimit.slidingWindow(30, "10m"),
   prefix: "ratelimit:login",
 });
 
 export const forgotPasswordLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(5, "10m"),
+  limiter: Ratelimit.slidingWindow(15, "10m"),
   prefix: "ratelimit:forgot-password",
 });
 
@@ -45,7 +45,7 @@ export const reviewLimiter = new Ratelimit({
 
 export const resetPasswordLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(5, "10m"),
+  limiter: Ratelimit.slidingWindow(20, "10m"),
   prefix: "ratelimit:reset-password",
 });
 
@@ -63,7 +63,7 @@ export const userVerifyResetLimiter = new Ratelimit({
 
 export const verifyIpLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(5, "10m"),
+  limiter: Ratelimit.slidingWindow(20, "10m"),
   prefix: "ratelimit:auth-verify",
 });
 
@@ -72,7 +72,6 @@ export const verifyEmailLimiter = new Ratelimit({
   limiter: Ratelimit.slidingWindow(5, "10m"),
   prefix: "ratelimit:auth-verify:email",
 });
-
 
 export const userLoginEmailLimit = new Ratelimit({
   redis,
