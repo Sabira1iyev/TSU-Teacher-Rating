@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { forgotPasswordLimiter } from "@/lib/ratelimit";
+import {
+  forgotPasswordLimiter,
+  forgotPasswordEmailLimiter,
+} from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-    const { success } = await forgotPasswordLimiter.limit(ip);
-    if (!success) {
+    const { success: ipOk } = await forgotPasswordLimiter.limit(ip);
+    if (ipOk) {
       return NextResponse.json(
         {
           message: "Too many attempts, please try again later",
@@ -19,10 +22,10 @@ export async function POST(req: NextRequest) {
     }
     const { email } = await req.json();
 
-    if (!email) {
+    if (!email || typeof email !== "string") {
       return NextResponse.json(
         {
-          message: "Email is required",
+          message: "Invalid request",
         },
         {
           status: 400,
@@ -30,10 +33,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const normalizedEmail = email.trim().toLocaleLowerCase();
+
+    const emailOk = await forgotPasswordEmailLimiter.limit(normalizedEmail);
+
+    if (!emailOk) {
+      return NextResponse.json({
+        message: "Too many attempts! Please try again later.",
+      });
+    }
+
+
     const { data: user, error: userError } = await supabaseAdmin
       .from("users")
       .select("id")
-      .eq("email", email)
+      .eq("email", normalizedEmail)
       .maybeSingle();
 
     if (userError) throw userError;
@@ -62,7 +76,7 @@ export async function POST(req: NextRequest) {
         verification_code: verificationCode,
         verification_expiry: expiryDate.toISOString(),
       })
-      .eq("email", email);
+      .eq("email", normalizedEmail);
 
     if (updatePasswordError) throw updatePasswordError;
 
@@ -76,7 +90,7 @@ export async function POST(req: NextRequest) {
 
     const mailOptions = {
       from: `"TSU Teacher Rating" <${process.env.EMAIL_USER}>`,
-      to: email,
+      to: normalizedEmail,
       subject: "Password Reset",
       text: `Your password reset code is: ${verificationCode}. It will expire in 10 minutes.`,
       html: `

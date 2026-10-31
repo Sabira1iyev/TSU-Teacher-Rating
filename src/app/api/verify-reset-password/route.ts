@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
           status: 400,
         },
       );
-    }   
+    }
 
     const normalizedEmail = email.trim().toLowerCase();
 
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     if (!emailOk) {
       return NextResponse.json(
         {
-          message: "Too many attempts!",
+          message: "Too many attempts! Please try again later.",
         },
         {
           status: 429,

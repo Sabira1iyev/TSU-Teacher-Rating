@@ -27,7 +27,7 @@ export const forgotPasswordLimiter = new Ratelimit({
 
 export const registerLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(10, "20m"),
+  limiter: Ratelimit.slidingWindow(50, "20m"),
   prefix: "ratelimit:register",
 });
 
@@ -77,4 +77,10 @@ export const userLoginEmailLimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(5, "10m"),
   prefix: "ratelimit:login-limiter:email",
+});
+
+export const forgotPasswordEmailLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(3, "10m"),
+  prefix: "ratelimit:email",
 });
