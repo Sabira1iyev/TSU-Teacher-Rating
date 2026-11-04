@@ -70,6 +70,18 @@ export async function POST(req: NextRequest) {
       .select("id")
       .single();
 
+    if (reviewError?.code === "23505") {
+      return NextResponse.json(
+        {
+          message:
+            "You have already submitted a review for this professor for this course and semester. You can edit your review or select a different course.",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
+
     if (reviewError || !newReview) {
       throw reviewError ?? new Error("Review could not be created.");
     }
@@ -197,6 +209,18 @@ export async function PUT(req: NextRequest) {
       })
       .eq("id", reviewId)
       .eq("user_id", userId);
+
+    if (updatedError?.code == "23505") {
+      return NextResponse.json(
+        {
+          message:
+            "You have already submitted a review for this professor for this course and semester. You can edit your review or select a different course.",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
 
     const { error: deleteTagsError } = await supabaseAdmin
       .from("review_tags")
