@@ -642,7 +642,7 @@ function RatePageContent() {
                     </div>
                   ),
                 )}
-              </div>
+              </div> 
             </div>
           </div>
         )}

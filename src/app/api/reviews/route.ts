@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
       sessionOptions,
     );
     const userId = session.userId;
+    const professorId = Number(body.professorId);
 
     if (!session.userId) {
       return NextResponse.json(
@@ -50,10 +51,43 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const { data: professor, error: professorError } = await supabaseAdmin
+      .from("professors")
+      .select("id, courses(name)")
+      .eq("id", professorId)
+      .maybeSingle();
+
+    if (professorError) throw professorError;
+
+    if (!professor) {
+      return NextResponse.json(
+        {
+          message: "Professor not found",
+        },
+        {
+          status: 404,
+        },
+      );
+    }
+    const existingCourse = professor?.courses.some(
+      (course) => course.name === body.courseName,
+    );
+
+    if (!existingCourse) {
+      return NextResponse.json(
+        {
+          message: "Invalid course",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
     const { data: newReview, error: reviewError } = await supabaseAdmin
       .from("reviews")
       .insert({
-        professor_id: Number(body.professorId),
+        professor_id: professorId,
         user_id: userId,
         course_name: body.courseName,
         semester: body.semester,
