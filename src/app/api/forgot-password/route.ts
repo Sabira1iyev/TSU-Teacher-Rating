@@ -41,9 +41,14 @@ export async function POST(req: NextRequest) {
       await forgotPasswordEmailLimiter.limit(normalizedEmail);
 
     if (!emailOk) {
-      return NextResponse.json({
-        message: "Too many attempts! Please try again later.",
-      });
+      return NextResponse.json(
+        {
+          message: "Too many attempts! Please try again later.",
+        },
+        {
+          status: 429,
+        },
+      );
     }
 
     const { data: user, error: userError } = await supabaseAdmin
@@ -60,7 +65,7 @@ export async function POST(req: NextRequest) {
           message: "If this email address is registered, a code has been sent.",
         },
         {
-          status: 404,
+          status: 200,
         },
       );
     }
