@@ -209,7 +209,7 @@ export async function PUT(req: NextRequest) {
 
     const { data: ownedReview, error: ownershipError } = await supabaseAdmin
       .from("reviews")
-      .select("id")
+      .select("id, professor_id")
       .eq("id", reviewId)
       .eq("user_id", userId)
       .maybeSingle();
