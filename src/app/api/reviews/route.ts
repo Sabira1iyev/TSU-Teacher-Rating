@@ -285,7 +285,16 @@ export async function PUT(req: NextRequest) {
 
     if (updatedError) throw updatedError;
 
-    const professorId = Number(body.professorId);
+    const professorId = Number(ownedReview.professor_id);
+
+    const { data: professor, error: professorError } = await supabaseAdmin
+      .from("professors")
+      .select("id, courses(name)")
+      .eq("id", ownedReview.professor_id)
+      .maybeSingle();
+
+    if (professorError) throw professorError;
+
     const { data: professorReviews, error: professorReviewsError } =
       await supabaseAdmin
         .from("reviews")
@@ -293,6 +302,22 @@ export async function PUT(req: NextRequest) {
         .eq("professor_id", professorId);
 
     if (professorReviewsError) throw professorReviewsError;
+  
+    const existingCourse = professor?.courses.some(
+      (course) => course.name === body.courseName,
+    );
+
+    if (!existingCourse) {
+      return NextResponse.json(
+        {
+          message: "Invalid course",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
     const reviewCount = professorReviews.length;
     const averageRating =
       reviewCount > 0
