@@ -54,6 +54,13 @@ export async function POST(req: NextRequest) {
     const userId = session.userId;
     const professorId = Number(body.professorId);
 
+    if (!Number.isInteger(professorId) || professorId <= 0) {
+      return NextResponse.json(
+        { message: "Invalid professor" },
+        { status: 400 },
+      );
+    }
+
     if (!session.userId) {
       return NextResponse.json(
         {
