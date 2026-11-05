@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { reviewLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
+import { validateReviewBody } from "@/lib/validateReview";
 
 type UpdatedReview = {
   course_name: string;
@@ -35,6 +36,17 @@ export async function POST(req: NextRequest) {
   }
   try {
     const body = await req.json();
+    const validationError = validateReviewBody(body);
+    if (validationError) {
+      return NextResponse.json(
+        {
+          message: validationError,
+        },
+        {
+          status: 400,
+        },
+      );
+    }
     const session = await getIronSession<SessionData>(
       await cookies(),
       sessionOptions,

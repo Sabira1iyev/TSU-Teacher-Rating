@@ -13,7 +13,7 @@ import {
 } from "@/lib/constants";
 import { ReviewForm } from "@/types/review";
 import { useUser } from "@/context/UserContext";
-import { useMessages, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 const STAR_COLOR = {
   teaching: "#0060a9",
