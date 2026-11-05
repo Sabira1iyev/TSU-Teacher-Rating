@@ -255,6 +255,7 @@ export async function PUT(req: NextRequest) {
         },
       );
     }
+    if (updatedError) throw updatedError;
 
     const { error: deleteTagsError } = await supabaseAdmin
       .from("review_tags")
@@ -275,15 +276,13 @@ export async function PUT(req: NextRequest) {
       }));
 
       if (reviewTags.length > 0) {
-        const { data: insertTagsError } = await supabaseAdmin
+        const { error: insertTagsError } = await supabaseAdmin
           .from("review_tags")
           .insert(reviewTags);
 
         if (insertTagsError) throw insertTagsError;
       }
     }
-
-    if (updatedError) throw updatedError;
 
     const professorId = Number(ownedReview.professor_id);
 
@@ -302,7 +301,7 @@ export async function PUT(req: NextRequest) {
         .eq("professor_id", professorId);
 
     if (professorReviewsError) throw professorReviewsError;
-  
+
     const existingCourse = professor?.courses.some(
       (course) => course.name === body.courseName,
     );
