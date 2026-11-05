@@ -227,6 +227,14 @@ export async function PUT(req: NextRequest) {
       );
     }
 
+    const { data: professor, error: professorError } = await supabaseAdmin
+      .from("professors")
+      .select("id, courses(name)")
+      .eq("id", ownedReview.professor_id)
+      .maybeSingle();
+
+    if (professorError) throw professorError;
+
     const { error: updatedError } = await supabaseAdmin
       .from("reviews")
       .update({
@@ -285,14 +293,6 @@ export async function PUT(req: NextRequest) {
     }
 
     const professorId = Number(ownedReview.professor_id);
-
-    const { data: professor, error: professorError } = await supabaseAdmin
-      .from("professors")
-      .select("id, courses(name)")
-      .eq("id", ownedReview.professor_id)
-      .maybeSingle();
-
-    if (professorError) throw professorError;
 
     const { data: professorReviews, error: professorReviewsError } =
       await supabaseAdmin
