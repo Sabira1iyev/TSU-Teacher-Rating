@@ -235,6 +235,21 @@ export async function PUT(req: NextRequest) {
 
     if (professorError) throw professorError;
 
+    const existingCourse = professor?.courses.some(
+      (course) => course.name === body.courseName,
+    );
+
+    if (!existingCourse) {
+      return NextResponse.json(
+        {
+          message: "Invalid course",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
     const { error: updatedError } = await supabaseAdmin
       .from("reviews")
       .update({
@@ -301,21 +316,6 @@ export async function PUT(req: NextRequest) {
         .eq("professor_id", professorId);
 
     if (professorReviewsError) throw professorReviewsError;
-
-    const existingCourse = professor?.courses.some(
-      (course) => course.name === body.courseName,
-    );
-
-    if (!existingCourse) {
-      return NextResponse.json(
-        {
-          message: "Invalid course",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
 
     const reviewCount = professorReviews.length;
     const averageRating =
