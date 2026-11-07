@@ -130,7 +130,7 @@ function RatePageContent() {
         ? prev.tags.filter((t) => t !== tag)
         : [...prev.tags, tag],
     }));
-  }; 
+  };
 
   const handleSubmit = async () => {
     if (!user) {
@@ -151,6 +151,31 @@ function RatePageContent() {
       setError(`${errorSuccess("lengthComment")}`);
       return;
     }
+    if (form.criteria.teaching === 0) {
+      setError("Please rate the teaching quality criteria!");
+      return;
+    }
+
+    if (form.criteria.examDifficulty === 0) {
+      setError("Please rate the exam difficulty criteria!");
+      return;
+    }
+
+    if (form.criteria.homeWork === 0) {
+      setError("Please rate the exam homework criteria!");
+      return;
+    }
+    if (form.criteria.accessibility === 0) {
+      setError("Please rate the exam accessibility criteria!");
+      return;
+    }
+
+    if (form.criteria.examControlLevel === 0) {
+      setError("Please rate the exam exam control level criteria!");
+      return;
+    }
+
+
     setError("");
 
     try {
@@ -159,11 +184,16 @@ function RatePageContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, userId: user?.userId }),
       });
+      const data: { message?: unknown } = await res.json();
 
       if (res.ok) {
         setSubmitted(true);
       } else {
-        setError(`${errorSuccess("serverOccured")}`);
+        setError(
+          typeof data.message === "string"
+            ? data.message
+            : `${errorSuccess("serverOccured")}`,
+        );
       }
     } catch (err) {
       setError(`${errorSuccess("couldnotReach")}`);
@@ -642,7 +672,7 @@ function RatePageContent() {
                     </div>
                   ),
                 )}
-              </div> 
+              </div>
             </div>
           </div>
         )}
