@@ -12,6 +12,7 @@ function isRating(value: unknown): boolean {
   return (
     typeof value === "number" &&
     Number.isFinite(value) &&
+    Number.isInteger(value) &&
     value >= 1 &&
     value <= 5
   );
