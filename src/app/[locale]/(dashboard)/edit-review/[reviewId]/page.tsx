@@ -39,7 +39,6 @@ function RatePageContent() {
   const label = useTranslations("Label");
   const locale = useLocale();
 
-
   const [form, setForm] = useState<ReviewForm>({
     professorId: professorId || "",
     courseName: "",
@@ -59,6 +58,7 @@ function RatePageContent() {
 
   const params = useParams();
   const reviewId = params.reviewId;
+  const semesterOptions = [...new Set([form.semester, ...SEMESTERS])];
 
   useEffect(() => {
     if (professorId) {
@@ -358,8 +358,8 @@ function RatePageContent() {
                   }
                   className="w-full bg-bg2 border border-border2 rounded-xl px-4 py-3 text-sm text-text outline-none focus:border-primary transition-colors cursor-pointer appearance-none"
                 >
-                  {SEMESTERS.map((semester) => {
-                   const  displaySemester = semester.endsWith("Fall")
+                  {semesterOptions.map((semester) => {
+                    const displaySemester = semester.endsWith("Fall")
                       ? semester.replace("Fall", `${label("ratingFall")}`)
                       : semester.replace("Spring", `${label("ratingSpring")}`)
                     return (
@@ -556,7 +556,7 @@ function RatePageContent() {
           <div className="bg-bg2 rounded-xl p-4">
             <p className="text-xs text-text2 mb-3 leading-relaxed">
               <span className="inline-block w-2 h-2 rounded-full bg-primary mr-1.5"></span>
-                    {rules("privacyDesc")}
+              {rules("privacyDesc")}
 
             </p>
             <div className="flex flex-col">

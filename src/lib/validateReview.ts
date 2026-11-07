@@ -33,9 +33,6 @@ export function validateReviewBody(body: any): string | null {
     return "Invalid rating values!";
   }
 
-  if (CRITERIA_KEYS.some((key) => criteria[key] === 0)) {
-    return "Please rate all criteria!";
-  }
 
   if (typeof body.courseName !== "string" || body.courseName.length === 0) {
     return "Invalid course!";

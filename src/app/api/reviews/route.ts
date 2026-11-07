@@ -123,8 +123,6 @@ export async function POST(req: NextRequest) {
       .select("id")
       .single();
 
-    
-
     if (reviewError?.code === "23505") {
       return NextResponse.json(
         {
@@ -242,7 +240,8 @@ export async function PUT(req: NextRequest) {
 
     const { data: ownedReview, error: ownershipError } = await supabaseAdmin
       .from("reviews")
-      .select("id, professor_id")
+      .select("id, professor_id, semester")
+
       .eq("id", reviewId)
       .eq("user_id", userId)
       .maybeSingle();
