@@ -227,17 +227,6 @@ export async function PUT(req: NextRequest) {
     );
     const userId = session.userId;
 
-    if (!reviewId || !session.userId) {
-      return NextResponse.json(
-        {
-          message: "Missing information",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
     const { data: ownedReview, error: ownershipError } = await supabaseAdmin
       .from("reviews")
       .select("id, professor_id, semester")
@@ -255,6 +244,17 @@ export async function PUT(req: NextRequest) {
         },
         {
           status: 403,
+        },
+      );
+    }
+
+    if (!reviewId || !session.userId) {
+      return NextResponse.json(
+        {
+          message: "Missing information",
+        },
+        {
+          status: 400,
         },
       );
     }

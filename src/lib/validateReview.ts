@@ -18,7 +18,10 @@ function isRating(value: unknown): boolean {
   );
 }
 
-export function validateReviewBody(body: any): string | null {
+export function validateReviewBody(
+  body: any,
+  extraAllowedSemesters: string[] = [],
+): string | null {
   if (typeof body !== "object" || body === null || Array.isArray(body)) {
     return "Invalid request body!";
   }
@@ -33,12 +36,16 @@ export function validateReviewBody(body: any): string | null {
     return "Invalid rating values!";
   }
 
-
   if (typeof body.courseName !== "string" || body.courseName.length === 0) {
     return "Invalid course!";
   }
 
-  if (typeof body.semester !== "string" || !SEMESTERS.includes(body.semester)) {
+  if (
+    typeof body.semester !== "string" ||
+    !SEMESTERS.includes(
+      body.semester || extraAllowedSemesters.includes(body.semester),
+    )
+  ) {
     return "Invalid semester value!";
   }
 
