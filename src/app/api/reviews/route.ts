@@ -407,7 +407,7 @@ export async function DELETE(req: NextRequest) {
         {
           message: "Missing information!",
         },
-        { status: 400 },
+        { status: 401 },
       );
     }
 
