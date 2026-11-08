@@ -44,7 +44,7 @@ export function validateReviewBody(
     typeof body.semester !== "string" ||
     !(
       SEMESTERS.includes(body.semester) ||
-      extraAllowedSemesters.includes(body.semester)
+      extraAllowedSemesters.includes(body.semester)  
     )
   ) {
     return "Invalid semester value!";

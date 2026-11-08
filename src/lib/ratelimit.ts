@@ -39,8 +39,14 @@ export const chatBotLimiter = new Ratelimit({
 
 export const reviewLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(2, "1m"),
+  limiter: Ratelimit.slidingWindow(20, "1m"),
   prefix: "ratelimit:review",
+});
+
+export const reviewUserLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, "1m"),
+  prefix: "ratelimit:review:user",
 });
 
 export const resetPasswordLimiter = new Ratelimit({

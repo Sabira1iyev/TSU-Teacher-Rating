@@ -5,6 +5,7 @@ import { sessionOptions, SessionData } from "@/lib/session";
 import { reviewLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
 import { validateReviewBody } from "@/lib/validateReview";
+import { reviewUserLimiter } from "@/lib/ratelimit";
 
 type UpdatedReview = {
   course_name: string;
@@ -53,6 +54,18 @@ export async function POST(req: NextRequest) {
     );
     const userId = session.userId;
     const professorId = Number(body.professorId);
+
+    const { success: userOk } = await reviewUserLimiter.limit(String(userId));
+    if (!userOk) {
+      return NextResponse.json(
+        {
+          message: "Too many reviews. Please try again later",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
 
     if (!Number.isInteger(professorId) || professorId <= 0) {
       return NextResponse.json(
