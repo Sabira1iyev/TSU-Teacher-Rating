@@ -209,23 +209,23 @@ export async function PUT(req: NextRequest) {
   try {
     const reviewId = req.nextUrl.searchParams.get("reviewId");
     const body = await req.json();
-    const validationError = validateReviewBody(body);
-    if (validationError) {
-      return NextResponse.json(
-        {
-          message: validationError,
-        },
-        {
-          status: 400,
-        },
-      );
-    }
 
     const session = await getIronSession<SessionData>(
       await cookies(),
       sessionOptions,
     );
     const userId = session.userId;
+
+    if (!reviewId || !session.userId) {
+      return NextResponse.json(
+        {
+          message: "Missing information",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
 
     const { data: ownedReview, error: ownershipError } = await supabaseAdmin
       .from("reviews")
@@ -248,10 +248,11 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    if (!reviewId || !session.userId) {
+    const validationError = validateReviewBody(body, [ownedReview.semester]);
+    if (validationError) {
       return NextResponse.json(
         {
-          message: "Missing information",
+          message: validationError,
         },
         {
           status: 400,
