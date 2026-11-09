@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
-import { chatBotLimiter } from "@/lib/ratelimit";
+import { chatBotIpLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const ip = (req.headers.get("x-forwarded-for") ?? "127.0.0.1")
       .split(",")[0]
       .trim();
-    const { success: chatBotSuccess } = await chatBotLimiter.limit(
+    const { success: chatBotSuccess } = await chatBotIpLimiter.limit(
       String(session.userId),
     );
     if (!chatBotSuccess) {
