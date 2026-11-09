@@ -6,18 +6,6 @@ import { chatBotLimiter } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-    const { success } = await chatBotLimiter.limit(ip);
-    if (!success) {
-      return NextResponse.json(
-        {
-          message: "Too many attempts, please try again later!",
-        },
-        {
-          status: 429,
-        },
-      );
-    }
     const session = await getIronSession<SessionData>(
       await cookies(),
       sessionOptions,
@@ -30,6 +18,23 @@ export async function POST(req: NextRequest) {
         },
         {
           status: 401,
+        },
+      );
+    }
+
+    const ip = (req.headers.get("x-forwarded-for") ?? "127.0.0.1")
+      .split(",")[0]
+      .trim();
+    const { success: chatBotSuccess } = await chatBotLimiter.limit(
+      String(session.userId),
+    );
+    if (!chatBotSuccess) {
+      return NextResponse.json(
+        {
+          message: "Too many attempts, please try again later!",
+        },
+        {
+          status: 429,
         },
       );
     }
@@ -57,4 +62,4 @@ export async function POST(req: NextRequest) {
       },
     );
   }
-} 
+}

@@ -1,5 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { randomBytes } from "crypto";
 import { preconnect } from "react-dom";
 
 const redis = new Redis({
@@ -89,4 +90,10 @@ export const forgotPasswordEmailLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(3, "10m"),
   prefix: "ratelimit:forgot-password:email",
+});
+
+export const chatBotIpLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(20, "1m"),
+  prefix: "ratelimit:chatbot:ip",
 });

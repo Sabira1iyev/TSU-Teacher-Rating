@@ -23,7 +23,9 @@ type UpdatedReview = {
 /* ---------------POST---------------- */
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  const ip = (req.headers.get("x-forwarded-for") ?? "127.0.0.1")
+    .split(",")[0]
+    .trim();
   const { success } = await reviewLimiter.limit(ip);
   if (!success) {
     return NextResponse.json(
@@ -55,6 +57,15 @@ export async function POST(req: NextRequest) {
     const userId = session.userId;
     const professorId = Number(body.professorId);
 
+    if (!session.userId) {
+      return NextResponse.json(
+        {
+          message: "You have to be logged in to submit a review",
+        },
+        { status: 401 },
+      );
+    }
+
     const { success: userOk } = await reviewUserLimiter.limit(String(userId));
     if (!userOk) {
       return NextResponse.json(
@@ -71,15 +82,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { message: "Invalid professor" },
         { status: 400 },
-      );
-    }
-
-    if (!session.userId) {
-      return NextResponse.json(
-        {
-          message: "You have to be logged in to submit a review",
-        },
-        { status: 401 },
       );
     }
 
@@ -236,6 +238,19 @@ export async function PUT(req: NextRequest) {
         },
         {
           status: 400,
+        },
+      );
+    }
+
+    const { success: userOk } = await reviewUserLimiter.limit(String(userId));
+
+    if (!userOk) {
+      return NextResponse.json(
+        {
+          message: "Too many reviews. Please try again later",
+        },
+        {
+          status: 429,
         },
       );
     }
