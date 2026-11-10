@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import { registerLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
+import { registerEmailLimiter } from "@/lib/ratelimit";
 
 async function sendVerificationEmail(email: string, code: string) {
   const transporter = nodemailer.createTransport({
@@ -32,11 +33,11 @@ async function sendVerificationEmail(email: string, code: string) {
 export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-    const { success } = await registerLimiter.limit(ip);
+    const { success: ipOk } = await registerLimiter.limit(ip);
     const body = await req.json();
     const { firstName, lastName, email, password, faculty, studyYear } = body;
 
-    if (!success) {
+    if (!ipOk) {
       return NextResponse.json(
         {
           message: "Too many atttepmts, please try again later",
@@ -49,18 +50,50 @@ export async function POST(req: NextRequest) {
 
     if (!email || !password || !faculty || !firstName || !lastName) {
       return NextResponse.json(
-        { error: "All fields are required." },
+        { message: "All fields are required." },
         { status: 400 },
       );
     }
     if (password.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 8 characters." },
+        { message: "Password must be at least 8 characters." },
         { status: 400 },
       );
     }
 
     const normalizedEmail = email.trim().toLowerCase();
+
+    if (
+      !normalizedEmail.email.endsWith("@hum.tsu.edu.ge") &&
+      !normalizedEmail.email.endsWith("@ens.tsu.edu.ge") &&
+      !normalizedEmail.email.endsWith("@eab.tsu.edu.ge") &&
+      !normalizedEmail.email.endsWith("@pes.tsu.edu.ge") &&
+      !normalizedEmail.email.endsWith("@sps.tsu.edu.ge") &&
+      !normalizedEmail.email.endsWith("@law.tsu.edu.ge") &&
+      !normalizedEmail.email.endsWith("@med.tsu.edu.ge")
+    ) {
+      return NextResponse.json(
+        {
+          message: "Required email must be a valid TSU email address!",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const { success: emailOk } =
+      await registerEmailLimiter.limit(normalizedEmail);
+    if (!emailOk) {
+      return NextResponse.json(
+        {
+          message: "Too many attempts. Please try again later!",
+        },
+        {
+          status: 429,
+        },
+      );
+    }
 
     const { data: existingUser, error: existingUserError } = await supabaseAdmin
       .from("users")
@@ -83,7 +116,7 @@ export async function POST(req: NextRequest) {
     }
 
     const verificationCode = Math.floor(
-      100000 + Math.random() * 900000,
+      100000 + crypto.randomInt(100000, 1000000),
     ).toString();
     const verificationExpiry = new Date(
       Date.now() + 10 * 60 * 1000,
@@ -95,7 +128,7 @@ export async function POST(req: NextRequest) {
       const { error: updateError } = await supabaseAdmin
         .from("users")
         .update({
-          passwordHash: passwordHash,
+          password_hash: passwordHash,
           verification_code: verificationCode,
           verification_expiry: verificationExpiry,
         })
@@ -158,7 +191,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Register error.", error);
     return NextResponse.json(
-      { error: "Something went wrong. Please try again." },
+      { message: "Something went wrong. Please try again." },
       { status: 500 },
     );
   }

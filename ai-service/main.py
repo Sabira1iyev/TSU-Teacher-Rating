@@ -105,4 +105,4 @@ async def chat(request: ChatRequest, x_internal_secret: str = Header(None)):
         return {"reply": response.text}
     except Exception as e:
         print("Chat error:", e)
-        return {"reply": "Sorry, something went wrong. Please try again later."}
+        return {"reply": "Sorry, I am currently unavailable. Please try again later."}

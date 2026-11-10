@@ -44,7 +44,7 @@ export default function RegisterPage() {
       setError(`${errorSuccess("fullName")}`)
 
 
-      return;
+      return;           
     }
     if (
       !formdata.email.endsWith("@hum.tsu.edu.ge") &&

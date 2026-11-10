@@ -97,3 +97,9 @@ export const chatBotIpLimiter = new Ratelimit({
   limiter: Ratelimit.slidingWindow(20, "1m"),
   prefix: "ratelimit:chatbot:ip",
 });
+
+export const registerEmailLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(3, "10m"),
+  prefix: "ratelimit:register:email",
+});
