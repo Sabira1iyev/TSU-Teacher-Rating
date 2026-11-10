@@ -63,6 +63,16 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({ history: body.history }),
     });
     const data = await fastApiResponse.json();
+    if (!fastApiResponse.ok) {
+      return NextResponse.json(
+        {
+          message: "Chat service is unavailable.",
+        },
+        {
+          status: 502,
+        },
+      );
+    }
     return NextResponse.json(data);
   } catch (error) {
     console.log("Chat proxy error", error);

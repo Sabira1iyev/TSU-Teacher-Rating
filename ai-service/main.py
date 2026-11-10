@@ -61,9 +61,10 @@ class ChatRequest(BaseModel):
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest, x_internal_secret: str = Header(None)):
+    if x_internal_secret != os.getenv("INTERNAL_API_SECRET"):
+        raise HTTPException(status_code=403, detail="Forbidden")
+
     try:
-        if x_internal_secret != os.getenv("INTERNAL_API_SECRET"):
-            raise HTTPException(status_code=403, detail="Forbidden")
         user_info_text = ""
         if request.user:
             name = request.user.get("firstName", "")
@@ -103,4 +104,5 @@ async def chat(request: ChatRequest, x_internal_secret: str = Header(None)):
 
         return {"reply": response.text}
     except Exception as e:
-        return {"reply": f"Error:{str(e)}"}
+        print("Chat error:", e)
+        return {"reply": "Sorry, something went wrong. Please try again later."}
