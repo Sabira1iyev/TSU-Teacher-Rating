@@ -4,6 +4,8 @@ import nodemailer from "nodemailer";
 import { registerLimiter } from "@/lib/ratelimit";
 import { supabaseAdmin } from "@/lib/supabase";
 import { registerEmailLimiter } from "@/lib/ratelimit";
+import crypto from "crypto";
+import { FACULTIES } from "@/lib/constants";
 
 async function sendVerificationEmail(email: string, code: string) {
   const transporter = nodemailer.createTransport({
@@ -40,7 +42,7 @@ export async function POST(req: NextRequest) {
     if (!ipOk) {
       return NextResponse.json(
         {
-          message: "Too many atttepmts, please try again later",
+          message: "Too many attempts, please try again later",
         },
         {
           status: 429,
@@ -54,6 +56,25 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
+
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      typeof faculty !== "string" ||
+      typeof firstName !== "string" ||
+      typeof lastName !== "string" ||
+      !FACULTIES.includes(faculty)
+    ) {
+      return NextResponse.json(
+        {
+          message: "Invalid informations!",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
     if (password.length < 8) {
       return NextResponse.json(
         { message: "Password must be at least 8 characters." },
@@ -64,13 +85,13 @@ export async function POST(req: NextRequest) {
     const normalizedEmail = email.trim().toLowerCase();
 
     if (
-      !normalizedEmail.email.endsWith("@hum.tsu.edu.ge") &&
-      !normalizedEmail.email.endsWith("@ens.tsu.edu.ge") &&
-      !normalizedEmail.email.endsWith("@eab.tsu.edu.ge") &&
-      !normalizedEmail.email.endsWith("@pes.tsu.edu.ge") &&
-      !normalizedEmail.email.endsWith("@sps.tsu.edu.ge") &&
-      !normalizedEmail.email.endsWith("@law.tsu.edu.ge") &&
-      !normalizedEmail.email.endsWith("@med.tsu.edu.ge")
+      !normalizedEmail.endsWith("@hum.tsu.edu.ge") &&
+      !normalizedEmail.endsWith("@ens.tsu.edu.ge") &&
+      !normalizedEmail.endsWith("@eab.tsu.edu.ge") &&
+      !normalizedEmail.endsWith("@pes.tsu.edu.ge") &&
+      !normalizedEmail.endsWith("@sps.tsu.edu.ge") &&
+      !normalizedEmail.endsWith("@law.tsu.edu.ge") &&
+      !normalizedEmail.endsWith("@med.tsu.edu.ge")
     ) {
       return NextResponse.json(
         {
@@ -116,7 +137,7 @@ export async function POST(req: NextRequest) {
     }
 
     const verificationCode = Math.floor(
-      100000 + crypto.randomInt(100000, 1000000),
+      crypto.randomInt(100000, 1000000),
     ).toString();
     const verificationExpiry = new Date(
       Date.now() + 10 * 60 * 1000,
@@ -139,12 +160,24 @@ export async function POST(req: NextRequest) {
       }
       userId = existingUser.id;
     } else {
+      const displayName = `${firstName} ${lastName}`;
+
+      if (displayName.trim().length > 50) {
+        return NextResponse.json(
+          {
+            message: "Long display name error",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
       const { data: newUser, error: insertError } = await supabaseAdmin
         .from("users")
         .insert({
           email: normalizedEmail,
           password_hash: passwordHash,
-          display_name: `${firstName} ${lastName}`,
+          display_name: displayName,
           faculty,
           academic_level: studyYear,
           is_verified: false,
