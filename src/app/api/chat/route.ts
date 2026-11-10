@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
         "Content-Type": "application/json",
         "X-Internal-Secret": process.env.INTERNAL_API_SECRET!,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ history: body.history }),
     });
     const data = await fastApiResponse.json();
     return NextResponse.json(data);
