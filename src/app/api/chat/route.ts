@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { chatBotIpLimiter } from "@/lib/ratelimit";
+import { validateChatBody } from "@/lib/validateChatBody";
 
 export async function POST(req: NextRequest) {
   try {
@@ -40,6 +41,18 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
+
+    const validationChatBodyError = validateChatBody(body);
+    if (validationChatBodyError) {
+      return NextResponse.json(
+        {
+          message: validationChatBodyError,
+        },
+        {
+          status: 400,
+        },
+      );
+    }
 
     const fastApiResponse = await fetch(process.env.AI_SERVICE_URL!, {
       method: "POST",

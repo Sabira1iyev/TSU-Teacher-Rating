@@ -69,7 +69,7 @@ export default function Chatbot() {
         <>
             {
                 isOpen && (
-                    <div className=" animate-modal fixed flex flex-col bottom-33 right-4 w-[350px] h-[400px] bg-bg2 border border-border rounded-xl shadow-2xl
+                    <div className=" animate-modal fixed flex flex-col bottom-33 right-4 w-87.5 h-100 bg-bg2 border border-border rounded-xl shadow-2xl
      p-4 z-50">
                         <h3 className="font-bold text-blue-600">Prof AI ({chatbot("inDevelop")})</h3>
                         <p className="text-sm mt-2 text-text2">{chatbot("howCan")}</p>
@@ -77,7 +77,7 @@ export default function Chatbot() {
                             {messages.map((msg, idx) => (
                                 <div className={`animate_message p-2 my-1 rounded-lg w-max max-w-[80%] text-sm ${msg.role === "user" ? "bg-blue-600 text-white ml-auto shadow-sm" : "bg-bg3 border border-border2 text-text shadow-sm"}`}
                                     key={idx}>
-                                    <div className="space-y-4 font-medium max-w-full overflow-hidden break-words">
+                                    <div className="space-y-4 font-medium max-w-full overflow-hidden wrap-break-word">
                                         <ReactMarkdown>{msg.text}</ReactMarkdown>
                                     </div>
                                 </div>
@@ -117,8 +117,8 @@ export default function Chatbot() {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="fixed bottom-18 right-6 z-50 w-14 h-14 bg-bg-ai hover:bg-bg-ai text-text-ai rounded-full flex justify-center items-center shadow-lg transition-transform cursor-pointer"
-              aria-label="Open AI chat"
-           >
+                aria-label="Open AI chat"
+            >
                 {isOpen ? <X size={24} /> : <MessageCircle aria-hidden="true" size={28} />}
             </button>
         </>
