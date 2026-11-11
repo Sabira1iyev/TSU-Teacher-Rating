@@ -92,7 +92,7 @@ export const forgotPasswordEmailLimiter = new Ratelimit({
   prefix: "ratelimit:forgot-password:email",
 });
 
-export const chatBotIpLimiter = new Ratelimit({
+export const chatBotUserLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(20, "1m"),
   prefix: "ratelimit:chatbot:ip",
