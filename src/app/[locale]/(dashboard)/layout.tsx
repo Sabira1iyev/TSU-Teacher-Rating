@@ -404,8 +404,6 @@ export default function DashboardLayout({
             <span className="text-primary">{tIndex("title2")}</span>
           </span>
           <div className="flex items-center gap-2">
-            <LanguageSwitcher />
-            <ThemeToggle />
             {user?.isAdmin ? (
               <div className="relative flex items-center" ref={notificationRefMobile}>
                 <button
