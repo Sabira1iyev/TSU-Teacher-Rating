@@ -15,7 +15,7 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-1 bg-bg2 border-border rounded-xl py-1 shadow-sm">
+    <div className="flex items-center justify-center gap-1 bg-bg2 border-border rounded-xl py-1 shadow-sm">
       {["en", "az", "ka"].map((lang) => (
         <button
           className={`px-2.5 py-1 text-xs font-semibold rounded-lg uppercase transition-all cursor-pointer
