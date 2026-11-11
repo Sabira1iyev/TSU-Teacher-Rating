@@ -381,7 +381,7 @@ export async function DELETE(
           message: "You don't have permission to perform this action!",
         },
         {
-          status: 401,
+          status: 403,
         },
       );
     }
