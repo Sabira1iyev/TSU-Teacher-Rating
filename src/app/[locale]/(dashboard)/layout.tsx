@@ -11,6 +11,7 @@ import LogoutModal from "./LogoutModal";
 import NotificationDropDown from "@/components/NotificationDropdown";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import TopMenuMobile from "@/components/TopMenuMobile";
 const navItems = [
   {
     label: "Dashboard",
@@ -120,6 +121,7 @@ export default function DashboardLayout({
   const router = useRouter();
   const [isLogOutOpen, setIsLogOutOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isTopPopupModalOpen, setIsTopPopupModalOpen] = useState(false);
   const { user } = useUser();
   const notificationRefDesktop = useRef<HTMLDivElement>(null);
   const notificationRefMobile = useRef<HTMLDivElement>(null);
@@ -188,11 +190,11 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-bg flex overflow-x-hidden">
       {/* Sidebar desktop */}
 
-      <aside className="hidden lg:flex w-[220px] flex-shrink-0 flex-col bg-bg2 border-r border-border fixed top-0 left-0 h-full z-10 shadow-[1px_0_8px_rgba(0,40,80,0.04)]">
+      <aside className="hidden lg:flex w-55 shrink-0 flex-col bg-bg2 border-r border-border fixed top-0 left-0 h-full z-10 shadow-[1px_0_8px_rgba(0,40,80,0.04)]">
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 py-5">
           <div
-            className="w-8 h-8 rounded-[9px] bg-primary flex items-center justify-center flex-shrink-0 cursor-pointer"
+            className="w-8 h-8 rounded-[9px] bg-primary flex items-center justify-center shrink-0 cursor-pointer"
             onClick={() => router.push(`/${locale}/dashboard`)}
           >
             <svg
@@ -320,7 +322,7 @@ export default function DashboardLayout({
       {/* content */}
       <main className="flex-1 lg:ml-55 flex flex-col min-h-screen min-w-0">
         {/* Desktop topbar */}
-        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+        <div className="hidden lg:flex items-center justify-between px-6 py-3.5 border-b border-border bg-bg2 sticky top-0 z-60 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <h1
             className="font-bold text-[16px] text-text"
             style={{
@@ -390,7 +392,7 @@ export default function DashboardLayout({
           </div>
         </div>
         {/* Mobile topbar */}
-        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-0 z-[60] shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
+        <div className="flex lg:hidden items-center justify-between px-5 py-3 border-b border-border bg-bg2 sticky top-0 z-60 shadow-[0_1px_4px_rgba(0,40,80,0.04)]">
           <span
             onClick={() => router.push(`/${locale}/dashboard`)}
             className="font-bold text-[16px] text-text cursor-pointer"
@@ -455,8 +457,11 @@ export default function DashboardLayout({
             )}
 
             <div className="lg:hidden flex items-center justify-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary-dim flex items-center justify-center text-[10px] text-primary font-medium cursor-pointer">
+              <div className="w-8 h-8 rounded-full bg-primary-dim flex items-center justify-center text-[10px] text-primary font-medium cursor-pointer"
+                onClick={() => setIsTopPopupModalOpen(!isTopPopupModalOpen)}
+              >
                 {initials}
+
               </div>
               <button
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-[#fef2f2] hover:bg-[#fee2e2] transition-colors border-none cursor-pointer"
@@ -514,6 +519,9 @@ export default function DashboardLayout({
           isOpen={isLogOutOpen}
           onClose={() => setIsLogOutOpen(false)}
         />
+        {isTopPopupModalOpen && (
+          <TopMenuMobile />
+        )}
       </main>
     </div>
   );
