@@ -32,12 +32,6 @@ export const registerLimiter = new Ratelimit({
   prefix: "ratelimit:register",
 });
 
-export const chatBotLimiter = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(10, "1m"),
-  prefix: "ratelimit:chatBot",
-});
-
 export const reviewLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(20, "1m"),
