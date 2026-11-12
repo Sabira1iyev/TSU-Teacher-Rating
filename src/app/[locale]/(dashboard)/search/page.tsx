@@ -10,7 +10,7 @@ import { useLocale, useTranslations } from "next-intl";
 type SortOption = "rating" | "reviews";
 
 const INITIAL_VISIBLE = 20;
-const LOAD_MORE_STEP = 5;
+const LOAD_MORE_STEP = 20;
 
 const MIN_REVIEW_OPTIONS = [
   { label: "All", value: 0 },
