@@ -58,6 +58,8 @@
     "searchFilter": "Filtrlər",
     "acTitle": "Akademik ünvan",
     "searchMinRating": "Minimum qiymət",
+    "showingCount": "{total} müəllimdən {shown} göstərilir",
+    "showMore": "Daha çox göstər",
     "sort": "Sırala",
     "reviews": "rəy",
     "selectProf": "Qiymətləndirmək üçün professor seçin",

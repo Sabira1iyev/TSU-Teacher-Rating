@@ -9,6 +9,9 @@ import { useLocale, useTranslations } from "next-intl";
 
 type SortOption = "rating" | "reviews";
 
+const INITIAL_VISIBLE = 20;
+const LOAD_MORE_STEP = 5;
+
 const MIN_REVIEW_OPTIONS = [
   { label: "All", value: 0 },
   { label: "10+ reviews", value: 10 },
@@ -102,6 +105,19 @@ export default function SearchPage() {
     return filtered;
   }, [professors, query, selectedFaculty, selectedTitles, minRating, minReviews, sortBy]);
 
+  const filterKey = JSON.stringify([
+    query,
+    selectedFaculty,
+    selectedTitles,
+    minRating,
+    minReviews,
+    sortBy,
+  ]);
+  const [limit, setLimit] = useState({ key: filterKey, count: INITIAL_VISIBLE });
+  const visibleCount = limit.key === filterKey ? limit.count : INITIAL_VISIBLE;
+
+  const visibleResults = results.slice(0, visibleCount);
+
   const AVATAR_COLORS = [
     { bg: "bg-amber-dim", text: "text-amber" },
     { bg: "bg-primary-dim", text: "text-primary" },
@@ -116,7 +132,6 @@ export default function SearchPage() {
 
   return (
     <div className="flex flex-col">
-      {/* Search bar + Filter pills — single sticky block */}
       <div className="sticky top-12 lg:top-14.25 z-20 bg-bg2">
         {/* Search bar */}
         <div className="px-5 lg:px-6 py-4 border-b border-border">
@@ -230,8 +245,13 @@ export default function SearchPage() {
         <div className="flex-1 flex flex-col">
           <div className="px-5 lg:px-6 py-3 border-b border-border">
             <p className="text-[11px] text-text3">
-              <span className="text-text font-medium">{results.length}</span>
-              {query && ` for "${query}`}
+              <span className="text-text font-medium">
+                {tDash("showingCount", {
+                  shown: visibleResults.length,
+                  total: results.length,
+                })}
+              </span>
+              {query && ` · "${query}"`}
             </p>
           </div>
 
@@ -245,7 +265,7 @@ export default function SearchPage() {
             </div>
           ) : (
             <div className="flex flex-col">
-              {results.map((profesor) => {
+              {visibleResults.map((profesor) => {
                 const colors = getAvatarColor(profesor.id);
                 return (
                   <div
@@ -318,6 +338,21 @@ export default function SearchPage() {
                   </div>
                 );
               })}
+              {visibleCount < results.length && (
+                <div className="flex justify-center py-6">
+                  <button
+                    onClick={() =>
+                      setLimit({
+                        key: filterKey,
+                        count: visibleCount + LOAD_MORE_STEP,
+                      })
+                    }
+                    className="px-5 py-2 rounded-full text-xs cursor-pointer border border-primary-mid bg-primary-dim text-primary hover:opacity-80 transition"
+                  >
+                    {tDash("showMore")}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

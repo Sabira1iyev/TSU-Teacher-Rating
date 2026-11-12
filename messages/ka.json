@@ -58,6 +58,8 @@
     "searchFilter": "ფილტრები",
     "acTitle": "აკადემიური წოდება",
     "searchMinRating": "მინიმალური რეიტინგი",
+    "showingCount": "ნაჩვენებია {shown} {total} პროფესორიდან",
+    "showMore": "მეტის ჩვენება",
     "sort": "დალაგება",
     "reviews": "მიმოხილვა",
     "selectProf": "აირჩიეთ პროფესორი შესაფასებლად",

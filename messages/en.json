@@ -57,6 +57,8 @@
     "searchFilter": "Filters",
     "acTitle": "Academic title",
     "searchMinRating": "Minimum Rating",
+    "showingCount": "Showing {shown} of {total} professors",
+    "showMore": "Show more",
     "sort": "Sort",
     "reviews": "Reviews",
     "selectProf": "Select a professor to rate",
