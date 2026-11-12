@@ -68,6 +68,7 @@ export default function SearchPage() {
       const matchesQuery =
         query === "" ||
         fullName.includes(query.toLowerCase()) ||
+        localizedTitle.includes(normalizedQuery) ||
         (p.department &&
           p.department.toLowerCase().includes(query.toLowerCase())) ||
         (p.courses || []).some((c) =>
