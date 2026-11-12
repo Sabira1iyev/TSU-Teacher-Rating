@@ -37,7 +37,6 @@ export default function SearchPage() {
   const tFac = useTranslations("Faculties");
   const tDash = useTranslations("Common");
   const tTitlesRaw = useTranslations("Titles");
-  const errorSuccess = useTranslations("ErrorSuccess");
 
   const tTitles = (title?: string | null) => {
     const key = (title ?? "").replace(/\./g, "");
@@ -61,14 +60,22 @@ export default function SearchPage() {
   const results = useMemo(() => {
     let filtered = professors.filter((p: Professor) => {
       const fullName = `${p.firstName} ${p.lastName} ${p.title}`.toLowerCase();
+
+      const normalizedQuery = query.toLocaleLowerCase(locale);
+
+      const localizedFaculty = p.faculty ? tFac(p.faculty).toLocaleLowerCase(locale) : "";
+      const localizedTitle = p.title ? tTitles(p.title).toLocaleLowerCase(locale) : "";
       const matchesQuery =
         query === "" ||
         fullName.includes(query.toLowerCase()) ||
         (p.department &&
           p.department.toLowerCase().includes(query.toLowerCase())) ||
         (p.courses || []).some((c) =>
-          c.toLowerCase().includes(query.toLowerCase()),
-        );
+          c.toLowerCase().includes(query.toLowerCase())) ||
+        (p.faculty &&
+          p.faculty.toLocaleLowerCase(locale).includes(normalizedQuery)
+        ) || localizedFaculty.includes(normalizedQuery);
+      ;
 
       const matchesFaculty =
         selectedFaculty === "All" || p.faculty === selectedFaculty;
@@ -92,7 +99,7 @@ export default function SearchPage() {
         : b.reviewCount - a.reviewCount,
     );
     return filtered;
-  }, [query, selectedFaculty, selectedTitles, minRating, minReviews, sortBy]);
+  }, [professors, query, selectedFaculty, selectedTitles, minRating, minReviews, sortBy]);
 
   const AVATAR_COLORS = [
     { bg: "bg-amber-dim", text: "text-amber" },
@@ -139,8 +146,8 @@ export default function SearchPage() {
               key={faculty}
               onClick={() => setSelectedFaculty(faculty)}
               className={`shrink-0 px-3 py-1.5 rounded-full text-[11px] cursor-pointer transition-all border ${selectedFaculty === faculty
-                  ? "bg-primary-dim border-primary-mid text-primary"
-                  : "border-border text-text2 hover:border-border"
+                ? "bg-primary-dim border-primary-mid text-primary"
+                : "border-border text-text2 hover:border-border"
                 }`}
             >
               {faculty === "All"
@@ -183,8 +190,8 @@ export default function SearchPage() {
                     key={title}
                     onClick={() => toglleTittle(title)}
                     className={`px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all ${selectedTitles.includes(title)
-                        ? "bg-primary-dim border-primary-mid text-primary"
-                        : "border-border2 text-text2"
+                      ? "bg-primary-dim border-primary-mid text-primary"
+                      : "border-border2 text-text2"
                       }`}
                   >
                     {tTitles(title.replace(/\./g, ""))}
@@ -203,8 +210,8 @@ export default function SearchPage() {
                     key={rating}
                     onClick={() => setMinRating(rating)}
                     className={`px-3 py-1.5 rounded-full text-[11px] cursor-pointer border transition-all ${minRating === rating
-                        ? "bg-primary-dim border-primary-mid text-primary"
-                        : "border-border2 text-text2"
+                      ? "bg-primary-dim border-primary-mid text-primary"
+                      : "border-border2 text-text2"
                       }`}
                   >
                     {rating === 0 ? tFac("All") : `${rating}+`}
@@ -331,8 +338,8 @@ export default function SearchPage() {
                   key={rating}
                   onClick={() => setMinRating(rating)}
                   className={`text-left px-3 py-1.5 rounded-lg text-[11px] cursor-pointer transition-colors ${minRating === rating
-                      ? "bg-primary-dim text-primary"
-                      : "text-text2 hover:bg-bg3"
+                    ? "bg-primary-dim text-primary"
+                    : "text-text2 hover:bg-bg3"
                     }`}
                 >
                   {rating === 0 ? tDash("allRatings") : `${rating}+ ${tDash("stars")}`}
@@ -353,8 +360,8 @@ export default function SearchPage() {
                   <div
                     onClick={() => toglleTittle(title)}
                     className={`w-3.5 h-3.5 rounded border shrink-0 flex items-center justify-center cursor-pointer transition-color ${selectedTitles.includes(title)
-                        ? "bg-primary border-primary"
-                        : "border-border2"
+                      ? "bg-primary border-primary"
+                      : "border-border2"
                       }`}
                   >
                     {selectedTitles.includes(title) && (
@@ -385,8 +392,8 @@ export default function SearchPage() {
                   key={opt.value}
                   onClick={() => setMinReviews(opt.value)}
                   className={`text-left px-3 py-1.5 rounded-lg text-[11px] cursor-pointer transition-colors ${minReviews === opt.value
-                      ? "bg-primary-dim text-primary"
-                      : "text-text2 hover:bg-bg3"
+                    ? "bg-primary-dim text-primary"
+                    : "text-text2 hover:bg-bg3"
                     }`}
                 >
                   {opt.label === "All" ? tFac("All") : `${opt.value}+ ${tDash("reviews")}`}
