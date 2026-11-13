@@ -3,7 +3,7 @@ import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { supabaseAdmin } from "@/lib/supabase";
-import { emit } from "process";
+import { ACADEMIC_TITLES } from "@/lib/constants";
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,6 +31,13 @@ export async function POST(req: NextRequest) {
         title,
         courses,
       } = body;
+
+      if (typeof title !== "string" || !ACADEMIC_TITLES.includes(title)) {
+        return NextResponse.json(
+          { message: "A valid academic title is required!" },
+          { status: 400 },
+        );
+      }
 
       const { data: facultyData, error: facultyError } = await supabaseAdmin
         .from("faculties")

@@ -84,7 +84,9 @@ export default function SearchPage() {
       const matchesFaculty =
         selectedFaculty === "All" || p.faculty === selectedFaculty;
 
-      const matchesTitle = selectedTitles.includes(p.title);
+      // Titles outside ACADEMIC_TITLES (or empty) have no checkbox, so never hide them
+      const isKnownTitle = ACADEMIC_TITLES.includes(p.title);
+      const matchesTitle = !isKnownTitle || selectedTitles.includes(p.title);
       const matchesRating = p.overallRating >= minRating;
       const matchesReviews = p.reviewCount >= minReviews;
 
