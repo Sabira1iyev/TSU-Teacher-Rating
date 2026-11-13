@@ -8,7 +8,6 @@ type ProfessorDetailBase = {
   id: number;
   first_name: string;
   last_name: string;
-  email: string;
   average_rating: number | string;
   review_count: number;
   title: string | null;
@@ -34,6 +33,17 @@ export async function GET(
       sessionOptions,
     );
     const viewerId = session?.userId ?? null;
+
+    if (!session.isLoggedIn) {
+      return NextResponse.json(
+        {
+          message: "You must be logged in to view this professor!",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
     const { data, error } = await supabaseAdmin
       .from("professors")
       .select(
@@ -41,7 +51,6 @@ export async function GET(
       id,
       first_name,
       last_name,
-      email,
       average_rating,
       review_count,
       title,
@@ -300,7 +309,6 @@ export async function GET(
       id: professor.id,
       firstName: professor.first_name,
       lastName: professor.last_name,
-      email: professor.email,
       overallRating: Number(professor.average_rating),
       reviewCount: professor.review_count,
       title: professor.title,
@@ -398,7 +406,7 @@ export async function DELETE(
       .eq("id", id)
       .select("id");
 
-    if (deleteProfessorError) throw deleteProfessorError;     
+    if (deleteProfessorError) throw deleteProfessorError;
 
     if (!data?.length) {
       return NextResponse.json(

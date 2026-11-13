@@ -34,24 +34,13 @@ export async function GET(req: NextRequest) {
     );
     const userId = session.userId;
 
-    if (!session.userId) {
+    if (typeof userId !== "number" || !Number.isSafeInteger(userId)) {
       return NextResponse.json(
         {
           message: "You must be logged in to perform this action!",
         },
         {
           status: 401,
-        },
-      );
-    }
-
-    if (!Number.isSafeInteger(userId)) {
-      return NextResponse.json(
-        {
-          message: "UserId is required",
-        },
-        {
-          status: 400,
         },
       );
     }

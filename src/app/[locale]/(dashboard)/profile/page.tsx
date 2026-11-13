@@ -228,7 +228,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (user?.userId) {
-      fetch(`/api/stats?userId=${user.userId}`)
+      fetch(`/api/stats`)
         .then((res) => res.json())
         .then((data) => {
           setStats({
@@ -470,7 +470,7 @@ export default function ProfilePage() {
               style={{
                 border: `1px solid ${fc.light}`,
                 background: `linear-gradient(15deg, ${fc.primary} 50%, transparent 120%)`,
-                
+
               }}
               onClick={() => router.push("/adminPanel")}
             >
@@ -642,7 +642,7 @@ export default function ProfilePage() {
                                     ? reviewFc.primary
                                     : reviewFc.mid,
                               }}
-                            ></div> 
+                            ></div>
                           ))}
                         </div>
                       </div>
