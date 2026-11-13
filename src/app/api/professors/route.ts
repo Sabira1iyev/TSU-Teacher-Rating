@@ -3,20 +3,21 @@ import { supabaseAdmin } from "@/lib/supabase";
 
 type ProfessorWithRelations = {
   id: number;
-  first_name: string,
+  first_name: string;
   last_name: string;
-  email:string;
+  email: string;
   average_rating: number | string;
   review_count: number;
   title: string | null;
-  photo_url: string| null;
+  photo_url: string | null;
   created_at: string;
   departments: {
-    name:string;
+    name: string;
     faculties: {
       name: string;
     } | null;
   } | null;
+  courses: Array<{ name: string }>;
 };
 
 export async function GET() {
@@ -36,10 +37,10 @@ export async function GET() {
       created_at,
       departments(
       name, 
-      faculties(
-      name
-      )
-      )
+      faculties(name)
+      ),
+      courses(name)
+
       `,
       )
       .order("last_name", { ascending: true });
@@ -68,7 +69,7 @@ export async function GET() {
       createdAt: professor.created_at,
       department: professor.departments?.name ?? "",
       faculty: professor.departments?.faculties?.name ?? "",
-      courses: [],
+      courses: (professor.courses ?? []).map((course) => course.name),
       recommendationRate: 0,
       trendData: [],
       badges: [],
