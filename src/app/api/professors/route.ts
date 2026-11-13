@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { getIronSession } from "iron-session";
+import { sessionOptions, SessionData } from "@/lib/session";
+import { cookies } from "next/headers";
 
 type ProfessorWithRelations = {
   id: number;
@@ -22,6 +25,22 @@ type ProfessorWithRelations = {
 
 export async function GET() {
   try {
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+
+    if (!session.isLoggedIn) {
+      return NextResponse.json(
+        {
+          message: "You must be logged in to view professors",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
     const { data, error } = await supabaseAdmin
       .from("professors")
       .select(
