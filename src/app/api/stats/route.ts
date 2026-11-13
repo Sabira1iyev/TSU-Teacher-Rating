@@ -1,5 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { getIronSession } from "iron-session";
+import { sessionOptions, SessionData } from "@/lib/session";
+import { cookies } from "next/headers";
 
 type FacultyUsers = {
   id: number;
@@ -25,7 +28,22 @@ function average(values: number[]) {
 
 export async function GET(req: NextRequest) {
   try {
-    const userId = Number(req.nextUrl.searchParams.get("userId"));
+    const session = await getIronSession<SessionData>(
+      await cookies(),
+      sessionOptions,
+    );
+    const userId = session.userId;
+
+    if (!session.userId) {
+      return NextResponse.json(
+        {
+          message: "You must be logged in to perform this action!",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
 
     if (!Number.isSafeInteger(userId)) {
       return NextResponse.json(
