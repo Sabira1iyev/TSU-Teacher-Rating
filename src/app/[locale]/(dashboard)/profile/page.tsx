@@ -311,6 +311,7 @@ export default function ProfilePage() {
               className="w-16 h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center text-xl lg:text-2xl font-semibold mt-6 mx-auto mb-3 border-2 border-border2"
               style={{
                 background: `linear-gradient(180deg, ${fc.light} 35%, #fdf6e3 300%)`,
+                backgroundOrigin: "border-box",
                 border: `2px solid ${fc.mid}`,
                 color: fc.primary,
               }}
