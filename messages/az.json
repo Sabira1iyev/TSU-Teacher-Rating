@@ -237,7 +237,7 @@
     "Aug": "Avq",
     "Sep": "Sep",
     "Oct": "Okt",
-    "Nov": "Nov",
+    "Nov": "Noy",
     "Dec": "Dek"
   },
   "rateProf": {
@@ -277,6 +277,8 @@
     "Unclear Expectations": "Gözləntilər aydın deyil"
   },
   "onBoarding": {
+    "teacherRating1": "Müəllim",
+     "teacherRating2": "Reytinqi",
     "title1": "Xoş gəlmisiniz",
     "title2": "Əziz tələbə",
     "desc1": "TeacherRating real tələbə təcrübələrinə əsasən TSU professorlarını qiymətləndirə biləcəyiniz platformadır. Hər semestr məlumatlı seçimlər edin.",
@@ -293,8 +295,8 @@
     "title8": "hazırsınız?",
     "desc4": "TSU e-poçtunuzla 30 saniyəyə qeydiyyatdan keçin. Fakültənizi seçin və ən yaxşı professorları kəşf etməyə başlayın.",
 
-    "12k": "12K+",
-    "48k": "48K+",
+    "12k": "500+",
+    "48k": "300+",
     "professors": "Professor",
     "reviews": "Rəy",
     "students": "Tələbə"
@@ -409,10 +411,10 @@
     "myProfile": "Profilim",
     "search": "Axtar"
   },
-"ChatBot": {
-  "inDevelop": "Development mərhələsində",
-  "howCan": "Necə kömək edə bilərəm?",
-  "isThinking": "Düşünür...",
-  "askAI": "Süni intellektə soruş"
-}
+  "ChatBot": {
+    "inDevelop": "Development mərhələsində",
+    "howCan": "Necə kömək edə bilərəm?",
+    "isThinking": "Düşünür...",
+    "askAI": "Süni intellektə soruş"
+  }
 }

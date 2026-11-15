@@ -154,7 +154,7 @@ export default function OnBoardingPage() {
                                 <div className="text-[11px] text-text3 mt-0.5 font-medium">{onBoarding("reviews")}</div>
                             </div>
                             <div className="flex-1 py-4 text-center">
-                                <div className="text-xl font-bold text-amber">500+</div>
+                                <div className="text-xl font-bold text-amber">1500+</div>
                                 <div className="text-[11px] text-text3 mt-0.5 font-medium">{onBoarding("students")}</div>
                             </div>
                         </div>

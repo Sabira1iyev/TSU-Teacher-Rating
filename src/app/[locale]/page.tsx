@@ -9,6 +9,7 @@ export default function SplashScreen() {
   const [progress, setProgress] = useState(0);
   const t = useTranslations("Index");
   const rateProf = useTranslations("rateProf")
+  const onBoarding = useTranslations("onBoarding");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,9 +56,15 @@ export default function SplashScreen() {
         </div>
 
         <div className="text-center mt-6 z-10">
+          <div className="flex items-center gap-2">
           <h1 className="font-bold text-4xl text-text tracking-tight">
-            {t("title1")}
+           {onBoarding("teacherRating1")}
           </h1>
+          <h1 className="font-bold text-4xl text-primary tracking-tight">
+           {onBoarding("teacherRating2")}
+           
+          </h1>
+          </div>
           <p className="text-text3 text-sm mt-2 tracking-wide">
             {t("desc")}
           </p>

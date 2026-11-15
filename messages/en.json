@@ -282,6 +282,8 @@
     "Unclear Expectations": "Unclear Expectations"
   },
   "onBoarding": {
+    "teacherRating1": "Teacher",
+    "teacherRating2": "Rating",
     "title1": "Welcome",
     "title2": "Fellow Student",
     "desc1": "TeacherRating is a platform where you can evaluate TSU professors based on real student experiences. Make informed decisions every semester.",
@@ -294,8 +296,8 @@
     "title7": "Ready to",
     "title8": "get started?",
     "desc4": "Sign up with your TSU email in 30 seconds. Select your faculty and start discovering the best professors.",
-    "12k": "12K+",
-    "48k": "48K+",
+    "12k": "500+",
+    "48k": "300+",
     "professors": "Professors",
     "reviews": "Reviews",
     "students": "Students"
