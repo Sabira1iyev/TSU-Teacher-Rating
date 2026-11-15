@@ -56,7 +56,7 @@ export default function SplashScreen() {
         </div>
 
         <div className="text-center mt-6 z-10">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 justify-center">
           <h1 className="font-bold text-4xl text-text tracking-tight">
            {onBoarding("teacherRating1")}
           </h1>
