@@ -38,10 +38,6 @@ export default function AddProfessorForm() {
       setError("Please enter professor's email");
       return;
     }
-    if (!formdata.email.endsWith("@tsu.ge")) {
-      setError("Please enter professor's TSU email correctly!");
-      return;
-    }
     if (!formdata.faculty) {
       setError("Choose professor's faculty");
       return;
