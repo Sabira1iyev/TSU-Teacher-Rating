@@ -2,10 +2,11 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { FACULTIES, ACADEMIC_TITLES } from "@/lib/constants";
+import { FACULTIES, ACADEMIC_TITLES, FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { Professor } from "@/types/teacher";
 import { useLocale, useTranslations } from "next-intl";
+import { useUser } from "@/context/UserContext";
 
 type SortOption = "rating" | "reviews";
 
@@ -40,6 +41,7 @@ export default function SearchPage() {
   const tFac = useTranslations("Faculties");
   const tDash = useTranslations("Common");
   const tTitlesRaw = useTranslations("Titles");
+  const { user } = useUser();
 
   const tTitles = (title?: string | null) => {
     const key = (title ?? "").replace(/\./g, "");
@@ -131,6 +133,7 @@ export default function SearchPage() {
   const getAvatarColor = (id: string) => {
     return AVATAR_COLORS[Number(id) % AVATAR_COLORS.length];
   };
+
 
   return (
     <div className="flex flex-col">
@@ -268,6 +271,9 @@ export default function SearchPage() {
           ) : (
             <div className="flex flex-col">
               {visibleResults.map((profesor) => {
+                  const fc = 
+    FACULTY_COLORS[profesor.faculty] || DEFAULT_FACULTY_COLOR;
+
                 const colors = getAvatarColor(profesor.id);
                 return (
                   <div
@@ -287,10 +293,18 @@ export default function SearchPage() {
                         {tTitles(profesor.title.replace(/\./g, ""))}{" "}
                         {profesor.firstName} {profesor.lastName}
                       </p>
-                      <p className="text-xs text-text2 mt-0.5">
-                        {tFac(profesor.faculty).replace("Faculty of ", "")} ·{" "}
-                        {profesor.department}
-                      </p>
+                      <div className="flex gap-1">
+                        <p className="text-xs mt-0.5"
+                          style={{
+                            color: `${fc.primary}`
+                          }}>
+                          {tFac(profesor.faculty).replace("Faculty of ", "")} ·{" "}
+                        </p>
+                        <p className="text-xs text-text2 mt-0.5">
+                          {profesor.department}
+                        </p>
+
+                      </div>
                       <div className="flex flex-wrap gap-1.5 mt-2">
                         {(profesor.badges || []).map((badge) => (
                           <span

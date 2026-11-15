@@ -7,7 +7,6 @@ import { getInitials, formatRating, getRatingColor } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import { useUser } from "@/context/UserContext";
 import {
-  CRITERIS_LABELS,
   FACULTY_COLORS,
   DEFAULT_FACULTY_COLOR,
 } from "@/lib/constants";
