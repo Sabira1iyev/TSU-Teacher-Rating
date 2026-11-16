@@ -30,6 +30,7 @@ export default function ProfessorProfilePage() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const reviewId = searchParams.get("reviewId")
   const [activeTab, setActiveTab] = useState<Tab>("Overview");
   const [professor, setProfessor] = useState<Professor | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,6 +42,7 @@ export default function ProfessorProfilePage() {
   const [reportedReviewId, setReportedReviewId] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterType, setFilterType] = useState("newest");
+  const [hightlightedReviewId, setHighlightedReviewId] = useState<string | null>(null);
   const revireFilterRef = useRef<HTMLDivElement>(null);
   const tButton = useTranslations("Buttons");
   const tCommon = useTranslations("Common");
@@ -57,6 +59,7 @@ export default function ProfessorProfilePage() {
   const tTags = useTranslations("Tags");
   const tRateProf = useTranslations("rateProf");
   const locale = useLocale();
+
 
   const tabs: { key: Tab; label: string }[] = [
     { key: "Overview", label: tProfId("overview") },
@@ -84,6 +87,23 @@ export default function ProfessorProfilePage() {
       setActiveTab(searchParams.get("tab") as Tab);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (activeTab !== "Reviews" || !reviewId) return;
+
+    const target = document.getElementById(`review-${reviewId}`)
+    if (!target) return;
+
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+    setHighlightedReviewId(reviewId);
+
+    const timer = setTimeout(() => {
+      setHighlightedReviewId(null);
+    }, 1800);
+
+    return () => clearTimeout(timer);
+
+  }, [activeTab, reviewId, professor])
 
   const handleLike = async (id: string) => {
     if (!user) return;
@@ -841,7 +861,7 @@ export default function ProfessorProfilePage() {
                           </div>
 
                           <span className="text-[10px] text-text3">
-                             {tTrend(MONTHS_KEY[d.getMonth()])} {d.getDate()}, {d.getFullYear()}
+                            {tTrend(MONTHS_KEY[d.getMonth()])} {d.getDate()}, {d.getFullYear()}
                           </span>
                         </div>
                         <p
@@ -975,7 +995,10 @@ export default function ProfessorProfilePage() {
                 return (
                   <div
                     key={review.id}
-                    className="bg-bg2 border-border rounded-xl p-4"
+                    id={`review-${review.id}`}
+                    className={`bg-bg2 border-border rounded-xl p-4 transition-shadow ${hightlightedReviewId === String(review.id) ?
+                        "animate-pulse ring-text-ai shadow-[0_0_24px_#0060A9]" : ""
+                      }`}
                   >
                     <div className="flex justify-between items-center mb-1.5">
                       <div className="flex gap-0.5">

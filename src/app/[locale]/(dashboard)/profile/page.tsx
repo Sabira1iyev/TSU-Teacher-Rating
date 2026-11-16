@@ -8,15 +8,17 @@ import {
   Sprout,
   Clock,
   Star,
+  SearchCheck,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import EditProfileModal from "./components/EditProfileModal";
 import { FACULTY_COLORS, DEFAULT_FACULTY_COLOR } from "@/lib/constants";
 import { getInitials } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
+import { report } from "process";
 
 const MOCK_USER = {
   firstName: "FirstName",
@@ -223,7 +225,8 @@ export default function ProfilePage() {
     const key = (value ?? "").replace(/\./g, "");
     return key && titleRaw.has(key) ? titleRaw(key) : (value ?? "");
   };
-
+  const params = useParams();
+  const searchParams = useSearchParams();
   const studyYearLabel = user?.studyYear ? Year(String(user.studyYear)) : "-"
 
   useEffect(() => {
@@ -599,7 +602,7 @@ export default function ProfilePage() {
                   <div
                     key={review.ReviewId}
                     onClick={() =>
-                      router.push(`/${locale}/professor/${review.ProfessorId}`)
+                      router.push(`/${params.locale as string}/professor/${review.ProfessorId}?tab=Reviews&reviewId=${review.ReviewId}`)
                     }
                     className="bg-bg2 border border-border rounded-xl p-4 flex items-start gap-3 cursor-pointer hover:bg-bg transition-colors"
                   >

@@ -95,7 +95,7 @@ export default function AddProfessorForm() {
           <p className="text-sm text-text2 mt-1.5">
             Enter professor's information to add them to the site
           </p>
-          <div className="w-10 h-[3px] rounded-full bg-[#e6b800] mt-3" />
+          <div className="w-10 h-0.75 rounded-full bg-[#e6b800] mt-3" />
         </div>
 
         {/* Form */}
