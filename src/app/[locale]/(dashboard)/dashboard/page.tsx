@@ -48,6 +48,7 @@ export default function DashBoardPage() {
   const tDash = useTranslations("Common");
   const tTabs = useTranslations("Tabs");
   const tTitlesRaw = useTranslations("Titles");
+  const profBadges = useTranslations("ProfBadge");
   const tTitles = (title?: string | null) => {
     const key = (title ?? "").replace(/\./g, "");
     return key && tTitlesRaw.has(key) ? tTitlesRaw(key) : (title ?? "");
@@ -107,20 +108,20 @@ export default function DashBoardPage() {
       profBadge = "-"
     }
     else if (professor.overallRating >= 5) {
-      profBadge = "Exceptional";
+      profBadge = profBadges("exceptional");
     }
     else if (professor.overallRating >= 4.0) {
-      profBadge = "Excellent";
+      profBadge = profBadges("excellent");
     } else if (professor.overallRating >= 3.5) {
-      profBadge = "Good";
+      profBadge = profBadges("good");
     } else if (professor.overallRating >= 3.0) {
-      profBadge = "Average";
+      profBadge = profBadges("average");
     } else if (professor.overallRating >= 2.5) {
-      profBadge = "Fair";
+      profBadge = profBadges("fair");
     } else if (professor.overallRating >= 2.0) {
-      profBadge = "Poor";
+      profBadge = profBadges("poor");
     } else {
-      profBadge = "Low";
+      profBadge = profBadges("low");
     }
     return profBadge;
   }
@@ -370,8 +371,8 @@ export default function DashBoardPage() {
                   </p>
                   <div className="text-right">
                     {professor.overallRating ? (
-                      <span className="inline-block px-2 py-0.5 rounded-full text-[9px] font-medium bg-primary-dim text-primary">
-                         {getProfessorBadges(professor)}
+                      <span className="inline-block px-5 py-1 rounded-full text-[12px] font-medium bg-primary-dim text-primary">
+                        {getProfessorBadges(professor)}
                       </span>
                     ) : (
                       <span className="text-[10px] text-text3">-</span>

@@ -418,5 +418,14 @@
     "howCan": "How can I help you",
     "isThinking": "Prof AI is thinking...",
     "askAI": "Ask AI"
+  },
+  "ProfBadge": {
+    "exceptional": "Exceptional",
+    "excellent": "Excellent",
+    "good": "Good",
+    "average": "Average",
+    "fair": "Fair",
+    "poor": "Poor",
+    "low": "Low"
   }
 }

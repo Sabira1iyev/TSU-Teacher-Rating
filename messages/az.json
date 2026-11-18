@@ -278,7 +278,7 @@
   },
   "onBoarding": {
     "teacherRating1": "Müəllim",
-     "teacherRating2": "Reytinqi",
+    "teacherRating2": "Reytinqi",
     "title1": "Xoş gəlmisiniz",
     "title2": "Əziz tələbə",
     "desc1": "TeacherRating real tələbə təcrübələrinə əsasən TSU professorlarını qiymətləndirə biləcəyiniz platformadır. Hər semestr məlumatlı seçimlər edin.",
@@ -416,5 +416,14 @@
     "howCan": "Necə kömək edə bilərəm?",
     "isThinking": "Düşünür...",
     "askAI": "Süni intellektə soruş"
+  },
+  "ProfBadge": {
+    "exceptional": "Fövqəladə",
+    "excellent": "Əla",
+    "good": "Yaxşı",
+    "average": "Orta",
+    "fair": "Kafi",
+    "poor": "Zəif",
+    "low": "Aşağı"
   }
 }
