@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
-import { useUser } from "@/context/UserContext";
 import { usePathname } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { useTranslations } from "next-intl";
@@ -10,7 +9,6 @@ export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<{ role: string, text: string }[]>([]);
     const [inputText, setInputText] = useState("");
-    const { user } = useUser();
     const messagesRef = useRef<HTMLDivElement>(null);
     const [isTyping, setIsTyping] = useState(false);
     const chatbot = useTranslations("ChatBot");
@@ -48,10 +46,7 @@ export default function Chatbot() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    history: newMessages.slice(-10),
-                    user: user
-                })
+                body: JSON.stringify({ history: newMessages.slice(-10) })
             });
             const data = await response.json();
             const reply = data.reply || data.message || "Sorry, I couldn't get a response.";

@@ -1,49 +1,13 @@
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
-import requests
-from typing import Optional
 import requests
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-
-def get_professor_details():
-    """
-    Retrieves the names, faculties, and ratings of all professors from the database.
-    """
-    url = "https://tsuratingteacher.vercel.app/api/professors"
-
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    return {"error": "Failed to fetch professor data"}
-
-
-def get_professors_by_id(professor_id: str):
-    """
-    Retrieves detailed information (including ALL student reviews, comments, and trend data)
-    for a SPESIFIC professor by their ID. Use this when the user asks for reviews, comments, or detailed analytics of a specific professor.
-    """
-    url = f"https://tsuratingteacher.vercel.app/api/professors/{professor_id}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    return {"error": "Failed to fetch professor data"}
-
-
 app = FastAPI()
-
-
-@app.get("/")
-async def health_check():
-    return {"status": "alive"}
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -56,53 +20,104 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     history: list[dict]
-    user: Optional[dict] = None
+    user: dict = Field(default_factory=dict)
+    professors: list[dict] = Field(default_factory=list)
+
+
+@app.get("/")
+async def health_check():
+    return {"status": "alive"}
+
+
+def professor_context(professors: list[dict]) -> str:
+    rows = []
+    for professor in professors:
+        department = professor.get("departments") or {}
+        if isinstance(department, list):
+            department = department[0] if department else {}
+        courses = professor.get("courses") or []
+        rows.append({
+            "id": professor.get("id"),
+            "name": " ".join(part for part in [professor.get("first_name"), professor.get("last_name")] if part),
+            "title": professor.get("title"),
+            "rating": professor.get("average_rating"),
+            "review_count": professor.get("review_count"),
+            "department": department.get("name", "") if isinstance(department, dict) else "",
+            "courses": [course.get("name") for course in courses if isinstance(course, dict)],
+        })
+    return "\nPROFESSOR DATABASE (authoritative; total records: {}):\n{}".format(
+        len(rows), rows
+    )
 
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest, x_internal_secret: str = Header(None)):
-    if x_internal_secret != os.getenv("INTERNAL_API_SECRET"):
+    if not os.getenv("INTERNAL_API_SECRET") or x_internal_secret != os.getenv("INTERNAL_API_SECRET"):
         raise HTTPException(status_code=403, detail="Forbidden")
 
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=503, detail="Claude API key is not configured")
+    if not request.history:
+        raise HTTPException(status_code=400, detail="Message history is required")
+
+    user = request.user or {}
+    user_name = " ".join(part for part in [user.get("firstName"), user.get("lastName")] if part).strip()
+    profile_context = (
+        f"\nAUTHENTICATED USER PROFILE: Name: {user_name or 'not provided'}; "
+        f"Faculty: {user.get('faculty') or 'not provided'}; "
+        f"Study year: {user.get('studyYear') or 'not provided'}. "
+        "Use this profile when asked who the user is; never claim you were not told if a value is present."
+    )
+    system_prompt = (
+        'You are Prof AI, the friendly assistant for ProfRate, a platform where Tbilisi State University '
+        'students review professors and courses. Reply briefly in the same language as the latest user '
+        'message (English, Azerbaijani, Turkish, or Georgian). Be accurate and do not invent facts. '
+        'For professor questions, use only the supplied database. The total professor count is the number '
+        'of records in that database; answer count questions directly without estimating. If a professor '
+        'is absent, say they are not in the database.\n'
+        + profile_context
+        + professor_context(request.professors)
+    )
+    messages = []
+    for item in request.history[-10:]:
+        if item.get("role") not in ("user", "bot") or not isinstance(item.get("text"), str):
+            continue
+        role = "assistant" if item["role"] == "bot" else "user"
+        if not messages and role == "assistant":
+            continue
+        if messages and messages[-1]["role"] == role:
+            messages[-1]["content"] += "\n" + item["text"]
+        else:
+            messages.append({"role": role, "content": item["text"]})
+    if not messages or messages[-1]["role"] != "user":
+        raise HTTPException(status_code=400, detail="Latest message must be from the user")
+
     try:
-        user_info_text = ""
-        if request.user:
-            name = request.user.get("firstName", "")
-            surname = request.user.get("lastName", "")
-            faculty = request.user.get("faculty", "")
-            studyYear = request.user.get("studyYear", "")
-            user_info_text = f"\nCRITICAL RULE 3: The person you are talking to is named {name} {surname}. Faculty:{faculty}. Year:{studyYear}. If they ask who they are or about their profile, answer sincerely using this exact information."
-
-        model = genai.GenerativeModel(
-            "gemini-3.5-flash",
-            system_instruction=f"""
-   You are the smart and friendly AI assistant for "ProfRate", a platform where Tbilisi State University students rate and
-   review university teacher and courses.
-   Your name: "Prof AI".
-   Your personality: Helpful, brief, honest, direct, professional and very friendly (like a fellow student).
-
-   CRITICAL RULE 1: Always auto-detect the user's language (it will be English, Azerbaijani, Turkish or Georgian) and reply in
-   the EXACT SAME LANGUAGE the user wrote to you. Never mix languages. Keep answers short.
-
-   CRITICAL RULE 2: If the user asks about a teacher or professor, or recommendation, you MUST call the "get_professor_details" tool. DO NOT invent or make
-   up any teachers that are not in the tool's response. If a teacher is not listed in the tool response, explicitly say "This teacher is not in our database." 
-   {user_info_text}
-   """,
-            tools=[get_professor_details, get_professors_by_id],
+        response = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            json={
+                "model": os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6"),
+                "max_tokens": 700,
+                "system": system_prompt,
+                "messages": messages,
+            },
+            timeout=45,
         )
-        formatted_history = []
-        for msg in request.history[:-1]:
-            gemini_role = "model" if msg["role"] == "bot" else "user"
-            formatted_history.append({"role": gemini_role, "parts": [msg["text"]]})
-
-        last_message = request.history[-1]["text"]
-
-        chat_session = model.start_chat(
-            history=formatted_history, enable_automatic_function_calling=True
-        )
-        response = chat_session.send_message(last_message)
-
-        return {"reply": response.text}
-    except Exception as e:
-        print("Chat error:", e)
-        return {"reply": "Sorry, I am currently unavailable. Please try again later."}
+        response.raise_for_status()
+        payload = response.json()
+        reply = "".join(
+            block.get("text", "") for block in payload.get("content", [])
+            if block.get("type") == "text"
+        ).strip()
+        if not reply:
+            raise ValueError("Claude returned an empty response")
+        return {"reply": reply}
+    except (requests.RequestException, ValueError) as error:
+        print("Claude chat error:", error)
+        raise HTTPException(status_code=502, detail="Claude chat service is unavailable") from error
