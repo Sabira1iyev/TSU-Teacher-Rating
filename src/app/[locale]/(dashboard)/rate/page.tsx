@@ -15,15 +15,6 @@ import { ReviewForm } from "@/types/review";
 import { useUser } from "@/context/UserContext";
 import { useTranslations } from "next-intl";
 
-const STAR_COLOR = {
-  teaching: "#0060a9",
-  examDifficulty: "#d4a017",
-  homeWork: "#d4a017",
-  accessibility: "#0060a9",
-
-  examControlLevel: "#d4a017",
-} as const;
-
 function RatePageContent() {
   const { user } = useUser();
   const router = useRouter();
@@ -147,33 +138,37 @@ function RatePageContent() {
       setError(`${errorSuccess("giveOverall")}`);
       return;
     }
-    if (form.comment.length < 10) {
-      setError(`${errorSuccess("lengthComment")}`);
-      return;
-    }
-    if (form.criteria.teaching === 0) {
-      setError("Please rate the teaching quality criteria!");
+
+        if (form.criteria.teaching === 0) {
+      setError(`${errorSuccess("teaching")}`);
       return;
     }
 
     if (form.criteria.examDifficulty === 0) {
-      setError("Please rate the exam difficulty criteria!");
+      setError(`${errorSuccess("examdiff")}`);
       return;
     }
 
     if (form.criteria.homeWork === 0) {
-      setError("Please rate the exam homework criteria!");
+      setError(`${errorSuccess("homework")}`);
       return;
     }
     if (form.criteria.accessibility === 0) {
-      setError("Please rate the exam accessibility criteria!");
+      setError(`${errorSuccess("access")}`);
       return;
     }
 
     if (form.criteria.examControlLevel === 0) {
-      setError("Please rate the exam exam control level criteria!");
+      setError(`${errorSuccess("examcontrol")}`);
       return;
     }
+
+
+    if (form.comment.length < 10) {
+      setError(`${errorSuccess("lengthComment")}`);
+      return;
+    }
+
 
 
     setError("");
@@ -184,15 +179,17 @@ function RatePageContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, userId: user?.userId }),
       });
-      const data: { message?: unknown } = await res.json();
+      const data: { message?: unknown; code?: unknown } = await res.json();
 
       if (res.ok) {
         setSubmitted(true);
       } else {
         setError(
-          typeof data.message === "string"
-            ? data.message
-            : `${errorSuccess("serverOccured")}`,
+          data.code === "REVIEW_ALREADY_EXISTS"
+            ? errorSuccess("reviewAlreadyExists")
+            : typeof data.message === "string"
+              ? data.message
+              : errorSuccess("serverOccured"),
         );
       }
     } catch (err) {

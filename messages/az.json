@@ -399,7 +399,13 @@
     "nameSurname": "Zəhmət olmasa, adınızı və soyadınızı daxil edin",
     "dontSelectedFac": "Fakültə seçməmisiniz",
     "updatingError": "Yeniləmə zamanı xəta baş verdi",
-    "everythingValid": "Hər şey qaydasındadır, yadda saxlanılır..."
+    "everythingValid": "Hər şey qaydasındadır, yadda saxlanılır...",
+    "teaching": "Zəhmət olmasa, tədrisin keyfiyyətini qiymətləndirin!",
+    "examdiff": "Zəhmət olmasa, imtahanın çətinliyini qiymətləndirin!",
+    "homework": "Zəhmət olmasa, ev tapşırıqlarının çətinliyini qiymətləndirin!",
+    "access": "Zəhmət olmasa, müəllimin əlçatanlığını qiymətləndirin!",
+    "examcontrol": "Zəhmət olmasa, imtahan zamanı nəzarət səviyyəsini qiymətləndirin!",
+    "reviewAlreadyExists": "Bu professor, fənn və semestr üzrə artıq rəy göndərmisiniz. Rəyinizi redaktə edə və ya başqa fənn seçə bilərsiniz."
   },
   "NotFound": {
     "absent": "Dərsdə yoxdur",

@@ -401,7 +401,13 @@
     "nameSurname": "Please enter your name and surname",
     "dontSelectedFac": "You don't have selected Faculty",
     "updatingError": "Updating went wrong",
-    "everythingValid": "Everything is valid, saving..."
+    "everythingValid": "Everything is valid, saving...",
+    "teaching": "Please rate the teaching quality criteria!",
+    "examdiff": "Please rate the exam difficulty criteria!",
+    "homework": "Please rate the homework criteria!",
+    "access": "Please rate the accessibility criteria!",
+    "examcontrol": "Please rate the exam control level criteria!",
+    "reviewAlreadyExists": "You have already submitted a review for this professor for this course and semester. You can edit your review or select a different course."
   },
   "NotFound": {
     "absent": "Absent from class",

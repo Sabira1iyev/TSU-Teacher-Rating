@@ -37,6 +37,7 @@ function RatePageContent() {
   const sidebar = useTranslations("Sidebar");
   const faculties = useTranslations("Faculties");
   const label = useTranslations("Label");
+  const errorSuccess = useTranslations("ErrorSuccess");
   const locale = useLocale();
 
   const [form, setForm] = useState<ReviewForm>({
@@ -174,10 +175,15 @@ function RatePageContent() {
       if (res.ok) {
         setSubmitted(true);
       } else {
-        setError("A server error occurred while submitting the review.");
+        const data: { code?: unknown } = await res.json();
+        setError(
+          data.code === "REVIEW_ALREADY_EXISTS"
+            ? errorSuccess("reviewAlreadyExists")
+            : errorSuccess("serverOccured"),
+        );
       }
     } catch (err) {
-      setError("Could not reach the server.");
+      setError(errorSuccess("couldnotReach"));
     }
   };
 

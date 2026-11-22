@@ -141,8 +141,7 @@ export async function POST(req: NextRequest) {
     if (reviewError?.code === "23505") {
       return NextResponse.json(
         {
-          message:
-            "You have already submitted a review for this professor for this course and semester. You can edit your review or select a different course.",
+          code: "REVIEW_ALREADY_EXISTS",
         },
         {
           status: 409,
@@ -331,8 +330,7 @@ export async function PUT(req: NextRequest) {
     if (updatedError?.code == "23505") {
       return NextResponse.json(
         {
-          message:
-            "You have already submitted a review for this professor for this course and semester. You can edit your review or select a different course.",
+          code: "REVIEW_ALREADY_EXISTS",
         },
         {
           status: 409,
